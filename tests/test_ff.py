@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools' / 'ff'))
 
 import blobs  # noqa: E402
+import lookup  # noqa: E402
 from install import install  # noqa: E402
 from repo import ROOT as REPO, projects  # noqa: E402
 
@@ -59,6 +60,14 @@ class BinariesTest(unittest.TestCase):
     def test_lfs_address_is_https(self):
         self.assertTrue(blobs.lfs_url().startswith('https://'))
         self.assertTrue(blobs.lfs_url().endswith('.git/info/lfs/objects/batch'))
+
+
+class LookupTest(unittest.TestCase):
+    """The MPQ hashes match the format's published constants."""
+
+    def test_table_keys(self):
+        self.assertEqual(lookup.hash_string('(hash table)', 3), 0xC3AF3770)
+        self.assertEqual(lookup.hash_string('(block table)', 3), 0xEC83B3A3)
 
 
 class InstallTest(unittest.TestCase):

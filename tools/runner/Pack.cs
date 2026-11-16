@@ -89,6 +89,7 @@ static class MpqRepack
         };
         if (File.Exists(outPath)) File.Delete(outPath);  // MpqArchive.Create refuses to overwrite (CreateNew); allow reruns
         using (MpqArchive.Create(outPath, files, options)) { }
+        KeepChains(sourceTable, outPath);
 
         // Post-condition for the unnamed case: every entry must sit exactly where the source had it and no
         // source-occupied slot may have been vacated. Anything else would surface only in-game, as
@@ -105,6 +106,34 @@ static class MpqRepack
             Console.WriteLine($"PACK: hash-table layout preserved ({sourceTable.Length} slots).");
         }
         return new Result(files.Count, carried, unnamed, droppedCount);
+    }
+
+    /// <summary>
+    /// Marks deleted every hash slot that was in use or deleted in the source but is empty in the written archive. The
+    /// game looks a file up by probing from its name's slot until an empty one, so a slot vacated by a dropped entry
+    /// must stay "deleted" (probe on), never become "empty" (probe stops), or files behind it become unreachable.
+    /// </summary>
+    static void KeepChains(MpqTables.MpqHashSlot[] source, string outPath)
+    {
+        var bytes = MpqTables.EditHashTable(File.ReadAllBytes(outPath), words =>
+        {
+            int marked = 0;
+            for (int i = 0; i < source.Length; i++)
+            {
+                if (!source[i].IsEmpty && words[i * 4 + 3] == 0xFFFFFFFF)
+                {
+                    words[i * 4] = words[i * 4 + 1] = words[i * 4 + 2] = 0xFFFFFFFF;
+                    words[i * 4 + 3] = 0xFFFFFFFE;
+                    marked++;
+                }
+            }
+            return marked;
+        }, out int count);
+        if (count > 0)
+        {
+            File.WriteAllBytes(outPath, bytes);
+            Console.WriteLine($"PACK: {count} vacated hash slot(s) marked deleted, so every lookup chain stays intact.");
+        }
     }
 }
 
@@ -227,17 +256,20 @@ static class Pack
     /// <c>pack &lt;start.w3x&gt; &lt;src dir&gt; &lt;out.w3x&gt; [--binaries &lt;json&gt;] [--blobs &lt;dir&gt;]
     /// [--script &lt;war3map.j&gt;] [--missing &lt;file&gt;]</c>. <c>--script</c> replaces <c>src/war3map.j</c> (the
     /// assembled script); <c>--missing</c> receives the binaries (<c>sha256 size</c> per line) the blob folder lacks,
-    /// and the command exits 3 so the caller can fetch them and run again.
+    /// and the command exits 3 so the caller can fetch them and run again. <c>--drop a,b</c> leaves those entries of the
+    /// starting map out of the built map.
     /// </summary>
     public static int Run(string[] args)
     {
         if (args.Length < 3)
         {
-            Console.WriteLine("usage: pack <start.w3x> <src dir> <out.w3x> [--binaries json] [--blobs dir] [--script war3map.j] [--missing file]");
+            Console.WriteLine("usage: pack <start.w3x> <src dir> <out.w3x> [--binaries json] [--blobs dir] [--script war3map.j] [--missing file] [--drop a,b]");
             return 2;
         }
         string startMap = args[0], srcDir = args[1], outPath = args[2];
         string script = Option(args, "--script"), blobs = Option(args, "--blobs"), missingList = Option(args, "--missing");
+        var drop = (Option(args, "--drop") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(n => n.Trim().Replace('/', '\\')).ToList();
         var binaries = Option(args, "--binaries") is string list
             ? JsonSerializer.Deserialize<Dictionary<string, Binary>>(File.ReadAllText(list), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
             : new Dictionary<string, Binary>();
@@ -304,7 +336,17 @@ static class Pack
                     newEntries.Add(file);
                 Console.WriteLine($"PACK: {(current != null ? "changed" : "new")} {name}");
             }
-            var result = MpqRepack.Write(archive, readable, replacements, newEntries, new HashSet<ulong>(), outPath);
+            foreach (var name in drop)
+            {
+                if (!probe.FileExists(name))
+                {
+                    Console.WriteLine($"PACK: {name} is to be dropped but the starting map does not hold it.");
+                    return 1;
+                }
+                Console.WriteLine($"PACK: dropped {name}");
+            }
+            var dropped = drop.Select(MpqHash.GetHashedFileName).ToHashSet();
+            var result = MpqRepack.Write(archive, readable, replacements, newEntries, dropped, outPath);
             if (result == null)
                 return 1;
             Console.WriteLine($"PACK: {result.Value.Total} entries — {unchanged} unchanged, {replacements.Count} replaced, " +

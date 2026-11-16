@@ -22,6 +22,7 @@ class Project:
         start_size: The starting map's size in bytes.
         stub_functions: Functions of the map script the build turns into no-ops (the map's own writers of the files
             the league addons write).
+        drop_entries: Files of the starting map the built map leaves out.
     """
     name: str
     family: str
@@ -29,6 +30,7 @@ class Project:
     start_sha256: str
     start_size: int
     stub_functions: tuple[str, ...] = ()
+    drop_entries: tuple[str, ...] = ()
 
     @property
     def folder(self) -> Path:
@@ -62,7 +64,8 @@ def projects() -> dict[str, Project]:
         data = json.loads(meta.read_text(encoding='utf-8'))
         start = data['start_map']
         found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'], start['sha256'],
-                                          start['size'], tuple(data.get('stub_functions', ())))
+                                          start['size'], tuple(data.get('stub_functions', ())),
+                                          tuple(data.get('drop_entries', ())))
     return found
 
 

@@ -7,7 +7,8 @@ Steps, all under build/<map>/:
 4. the runner injects the league addons (league/ for every map, projects/<map>/addons/ for this one, with its anchor
    hooks and stubbed functions), applies the level fill, the map fixes (data/object_overrides.csv), the 3.0 file-name
    fix and the map name, then verifies the result (`verify-map`);
-5. pjass checks the final script.
+5. every file of the project is looked up in the built map the way the game does (tools/ff/lookup.py);
+6. pjass checks the final script.
 """
 from __future__ import annotations
 
@@ -16,6 +17,8 @@ import sys
 from pathlib import Path
 
 import blobs
+import json
+import lookup
 import toolchain
 from repo import BUILD, ROOT, Project
 
@@ -71,6 +74,7 @@ def build(project: Project, name: str) -> Path:
     if project.stub_functions:
         verify += ['--stubs', ','.join(project.stub_functions)]
     step('verify the built map', toolchain.run_dotnet_tool('tools/runner', verify))
+    check_reachable(project, finished)
     check_script(out / 'war3map.j')
     return finished
 
@@ -79,12 +83,23 @@ def pack(project: Project, start: Path, script: Path, packed: Path, missing: Pat
     """Runs the runner's `pack`, downloading the binary files it reports missing and trying once more."""
     args = ['pack', str(start), str(project.src), str(packed), '--script', str(script), '--binaries', str(project.binaries),
             '--blobs', str(blobs.CACHE), '--missing', str(missing)]
+    if project.drop_entries:
+        args += ['--drop', ','.join(project.drop_entries)]
     code = toolchain.run_dotnet_tool('tools/runner', args)
     if code == 3:
         needed = [blobs.Blob(sha, int(size)) for sha, size in (line.split() for line in missing.read_text().split('\n') if line)]
         blobs.fetch(needed)
         code = toolchain.run_dotnet_tool('tools/runner', args)
     step('pack the map', code)
+
+
+def check_reachable(project: Project, map_file: Path) -> None:
+    """Checks that the game finds every file of the project in the built map."""
+    names = list(json.loads(project.binaries.read_text(encoding='utf-8')))
+    names += [p.relative_to(project.src).as_posix() for p in project.src.rglob('*') if p.is_file()]
+    lost = lookup.unreachable(map_file, names)
+    if lost:
+        raise BuildError('the game would not find these files in the built map: ' + ', '.join(lost[:10]))
 
 
 def check_script(script: Path) -> None:

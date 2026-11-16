@@ -2078,7 +2078,13 @@ static class MpqTables
             .Select(n => (HashString(n, 0x100), HashString(n, 0x200))).ToHashSet();
         for (int i = 0; i < src.Length; i++)
         {
-            if (!src[i].IsOccupied) continue;
+            if (src[i].IsEmpty) continue;
+            if (dst[i].IsDeleted) continue;                                 // a probe passes a deleted slot
+            if (!src[i].IsOccupied)
+            {
+                if (dst[i].IsEmpty) problems.Add($"slot {i}: a deleted slot became empty (a lookup chain may break there)");
+                continue;
+            }
             if (dst[i].IsOccupied && dst[i].SameName(src[i])) continue;
             bool isInternal = internalNames.Contains((src[i].NameA, src[i].NameB));
             bool chainEndsHere = !src[(i + 1) % src.Length].IsOccupied;
