@@ -17,15 +17,17 @@ class Project:
     Attributes:
         name: Folder name, e.g. `799x`.
         family: The map's family name (`map_type`), which names its Warcraft III test folder, e.g. `799X`.
-        release: The starting map file under release/.
-        sha256: The starting map's checksum.
+        start_name: File name of the starting map, the complete map a build starts from.
+        start_sha256: The starting map's SHA-256 (its contents are a released file, not in the repository).
+        start_size: The starting map's size in bytes.
         stub_functions: Functions of the map script the build turns into no-ops (the map's own writers of the files
             the league addons write).
     """
     name: str
     family: str
-    release: str
-    sha256: str
+    start_name: str
+    start_sha256: str
+    start_size: int
     stub_functions: tuple[str, ...] = ()
 
     @property
@@ -44,9 +46,9 @@ class Project:
         return self.folder / 'addons'
 
     @property
-    def start_map(self) -> Path:
-        """The starting map (a Git LFS pointer until its object is downloaded)."""
-        return self.folder / 'release' / self.release
+    def binaries(self) -> Path:
+        """The list of the map's binary files: name -> SHA-256 and size."""
+        return self.folder / 'binaries.json'
 
 
 def projects() -> dict[str, Project]:
@@ -58,8 +60,9 @@ def projects() -> dict[str, Project]:
     found = {}
     for meta in sorted((ROOT / 'projects').glob('*/project.json')):
         data = json.loads(meta.read_text(encoding='utf-8'))
-        found[meta.parent.name] = Project(meta.parent.name, data['map_type'], data['release'], data['sha256'],
-                                          tuple(data.get('stub_functions', ())))
+        start = data['start_map']
+        found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'], start['sha256'],
+                                          start['size'], tuple(data.get('stub_functions', ())))
     return found
 
 

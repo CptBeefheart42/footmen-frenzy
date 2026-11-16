@@ -1,9 +1,9 @@
 """Builds a playable map from a project: shared code assembled, files packed, Warcraft III 3.0 fixes applied, checked.
 
 Steps, all under build/<map>/:
-1. the starting map (downloaded from LFS when the clone has only its pointer) is checked against project.json;
+1. the starting map and the binary files that differ from it are downloaded by checksum (tools/ff/blobs.py);
 2. the map script is assembled from src/war3map.j and shared/ (tools/shared_code.py);
-3. the runner packs the starting map with src/ (`pack`), downloading the LFS objects of changed files;
+3. the runner packs the starting map with src/ and binaries.json (`pack`);
 4. the runner injects the league addons (league/ for every map, projects/<map>/addons/ for this one, with its anchor
    hooks and stubbed functions), applies the level fill, the map fixes (data/object_overrides.csv), the 3.0 file-name
    fix and the map name, then verifies the result (`verify-map`);
@@ -15,9 +15,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-import lfs
+import blobs
 import toolchain
-from install import sha256
 from repo import BUILD, ROOT, Project
 
 sys.path.insert(0, str(ROOT / 'tools'))
@@ -50,9 +49,9 @@ def build(project: Project, name: str) -> Path:
     out = BUILD / project.name
     out.mkdir(parents=True, exist_ok=True)
 
-    start = lfs.content(project.start_map)
-    if sha256(start) != project.sha256:
-        raise BuildError(f'{project.start_map.name} does not match the checksum in project.json')
+    start_blob = blobs.Blob(project.start_sha256, project.start_size)
+    blobs.fetch([start_blob])
+    start = start_blob.path
     script = out / 'assembled.j'
     script.write_bytes(assemble((project.src / 'war3map.j').read_bytes()))
 
@@ -77,13 +76,13 @@ def build(project: Project, name: str) -> Path:
 
 
 def pack(project: Project, start: Path, script: Path, packed: Path, missing: Path) -> None:
-    """Runs the runner's `pack`, downloading the LFS objects it reports missing and trying once more."""
-    args = ['pack', str(start), str(project.src), str(packed), '--script', str(script),
-            '--lfs-cache', str(lfs.CACHE), '--missing', str(missing)]
+    """Runs the runner's `pack`, downloading the binary files it reports missing and trying once more."""
+    args = ['pack', str(start), str(project.src), str(packed), '--script', str(script), '--binaries', str(project.binaries),
+            '--blobs', str(blobs.CACHE), '--missing', str(missing)]
     code = toolchain.run_dotnet_tool('tools/runner', args)
     if code == 3:
-        objects = [lfs.LfsObject(oid, int(size)) for oid, size in (line.split() for line in missing.read_text().split('\n') if line)]
-        lfs.fetch(objects)
+        needed = [blobs.Blob(sha, int(size)) for sha, size in (line.split() for line in missing.read_text().split('\n') if line)]
+        blobs.fetch(needed)
         code = toolchain.run_dotnet_tool('tools/runner', args)
     step('pack the map', code)
 

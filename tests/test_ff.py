@@ -2,6 +2,8 @@
 
 Run with `python -m unittest discover -s tests` from the repository root.
 """
+import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,13 +12,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools' / 'ff'))
 
-import lfs  # noqa: E402
-from install import install, sha256  # noqa: E402
-from repo import projects  # noqa: E402
+import blobs  # noqa: E402
+from install import install  # noqa: E402
+from repo import ROOT as REPO, projects  # noqa: E402
 
 
 class ProjectsTest(unittest.TestCase):
-    """ff knows every map under projects/."""
+    """ff knows every map under projects/ and its starting map."""
 
     def test_both_maps_with_their_starting_map(self):
         found = projects()
@@ -24,27 +26,39 @@ class ProjectsTest(unittest.TestCase):
         self.assertEqual(found['799x'].family, '799X')
         self.assertEqual(found['solo'].family, 'Solo Foots')
         for project in found.values():
-            self.assertTrue(project.start_map.is_file(), project.start_map)
+            self.assertRegex(project.start_sha256, '^[0-9a-f]{64}$')
+            self.assertGreater(project.start_size, 1_000_000)
 
 
-class LfsTest(unittest.TestCase):
-    """Pointer files are recognised; real files are left alone."""
+class BinariesTest(unittest.TestCase):
+    """Binary files are listed by checksum and released, never committed."""
 
-    def test_starting_map_pointer_names_the_checksum_in_project_json(self):
+    def test_every_listed_binary_has_a_checksum_and_size(self):
         for project in projects().values():
-            pointer = lfs.read_pointer(project.start_map)
-            if pointer is None:  # a clone with git-lfs holds the real map
-                self.assertEqual(sha256(project.start_map), project.sha256)
-            else:
-                self.assertEqual(pointer.oid, project.sha256)
-                self.assertGreater(pointer.size, 1_000_000)
+            listed = json.loads(project.binaries.read_text())
+            self.assertGreater(len(listed), 1000, project.name)
+            for name, blob in listed.items():
+                self.assertRegex(blob['sha256'], '^[0-9a-f]{64}$', name)
+                self.assertGreater(blob['size'], 0, name)
+                self.assertFalse((project.src / name).exists(), f'{name} is both listed and in src/')
 
-    def test_map_script_is_not_a_pointer(self):
-        self.assertIsNone(lfs.read_pointer(projects()['solo'].src / 'war3map.j'))
+    def test_repository_holds_no_binary_files(self):
+        tracked = subprocess.run(['git', 'ls-files', '-z'], cwd=REPO, capture_output=True, check=True).stdout
+        binary = []
+        for name in filter(None, tracked.decode().split('\0')):
+            data = (REPO / name).read_bytes()
+            try:
+                data.decode('utf-8')
+            except UnicodeDecodeError:
+                binary.append(name)
+                continue
+            if b'\0' in data:
+                binary.append(name)
+        self.assertEqual(binary, [], 'binary files belong in a release, listed in binaries.json')
 
-    def test_https_address_of_an_ssh_remote(self):
-        self.assertTrue(lfs.lfs_url().startswith('https://'))
-        self.assertTrue(lfs.lfs_url().endswith('.git/info/lfs/objects/batch'))
+    def test_lfs_address_is_https(self):
+        self.assertTrue(blobs.lfs_url().startswith('https://'))
+        self.assertTrue(blobs.lfs_url().endswith('.git/info/lfs/objects/batch'))
 
 
 class InstallTest(unittest.TestCase):

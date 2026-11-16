@@ -28,7 +28,6 @@ def doctor() -> int:
               ('.NET SDK', True, lambda: toolchain.dotnet()[0]),
               ('pjass', True, toolchain.pjass),
               ('Lua 5.3', True, toolchain.lua),
-              ('Git LFS (to commit maps and models)', False, lambda: shutil.which('git-lfs') or fail('install Git LFS')),
               ('Warcraft III maps folder (for ff install)', False, lambda: str(maps_folder()))]
     missing = 0
     for label, required, find in checks:

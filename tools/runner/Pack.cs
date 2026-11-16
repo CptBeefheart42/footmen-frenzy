@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using War3Net.IO.Mpq;
 
 /// <summary>
@@ -210,33 +211,36 @@ static class StartMap
 }
 
 /// <summary>
-/// The <c>pack</c> command: builds a complete map from a project's starting map and its source folder.
+/// The <c>pack</c> command: builds a complete map from a project's starting map, its text sources and its list of
+/// binary files.
 /// </summary>
 /// <remarks>
-/// Every file under the source folder is an archive entry (path with backslashes). A file whose bytes equal the
-/// starting map's entry is carried over untouched; a changed file replaces the entry, a new one is added. Git LFS
-/// pointer files stand for their object: equal to the starting map's entry means unchanged, otherwise the object is
-/// read from the LFS cache folder. Files missing from the source folder stay in the map as they are.
+/// The map's entries are the text files under the source folder (path with backslashes) and the binary files named
+/// in the binaries list (name, SHA-256, size), whose contents are kept out of the repository. An entry equal to the
+/// starting map's is carried over untouched, a changed one replaces it, a new one is added. A binary's contents come
+/// from the starting map when the checksums match, otherwise from the blob folder (files named by their SHA-256).
+/// Entries in neither the sources nor the list stay in the map as they are.
 /// </remarks>
 static class Pack
 {
-    const string LfsPointerStart = "version https://git-lfs.github.com/spec/v1\n";
-
     /// <summary>
-    /// <c>pack &lt;start.w3x&gt; &lt;src dir&gt; &lt;out.w3x&gt; [--script &lt;war3map.j&gt;] [--lfs-cache &lt;dir&gt;]
-    /// [--missing &lt;file&gt;]</c>. <c>--script</c> replaces <c>src/war3map.j</c> (the assembled script);
-    /// <c>--missing</c> receives the LFS objects (<c>oid size</c> per line) that the cache lacks, and the command
-    /// exits 3 so the caller can fetch them and run again.
+    /// <c>pack &lt;start.w3x&gt; &lt;src dir&gt; &lt;out.w3x&gt; [--binaries &lt;json&gt;] [--blobs &lt;dir&gt;]
+    /// [--script &lt;war3map.j&gt;] [--missing &lt;file&gt;]</c>. <c>--script</c> replaces <c>src/war3map.j</c> (the
+    /// assembled script); <c>--missing</c> receives the binaries (<c>sha256 size</c> per line) the blob folder lacks,
+    /// and the command exits 3 so the caller can fetch them and run again.
     /// </summary>
     public static int Run(string[] args)
     {
         if (args.Length < 3)
         {
-            Console.WriteLine("usage: pack <start.w3x> <src dir> <out.w3x> [--script <war3map.j>] [--lfs-cache <dir>] [--missing <file>]");
+            Console.WriteLine("usage: pack <start.w3x> <src dir> <out.w3x> [--binaries json] [--blobs dir] [--script war3map.j] [--missing file]");
             return 2;
         }
         string startMap = args[0], srcDir = args[1], outPath = args[2];
-        string script = Option(args, "--script"), lfsCache = Option(args, "--lfs-cache"), missingList = Option(args, "--missing");
+        string script = Option(args, "--script"), blobs = Option(args, "--blobs"), missingList = Option(args, "--missing");
+        var binaries = Option(args, "--binaries") is string list
+            ? JsonSerializer.Deserialize<Dictionary<string, Binary>>(File.ReadAllText(list), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            : new Dictionary<string, Binary>();
 
         var readable = outPath + ".start";
         var startBytes = StartMap.Readable(File.ReadAllBytes(startMap));
@@ -250,32 +254,44 @@ static class Pack
             // every lookup goes through this twin so `archive` keeps its unnamed entries in their slots.
             using var probe = MpqArchive.Open(readable, true);
 
+            var entries = new SortedDictionary<string, Func<byte[]>>(StringComparer.Ordinal);
+            foreach (var path in Directory.EnumerateFiles(srcDir, "*", SearchOption.AllDirectories))
+            {
+                var name = Path.GetRelativePath(srcDir, path).Replace(Path.DirectorySeparatorChar, '\\').Replace('/', '\\');
+                entries[name] = name == "war3map.j" && script != null ? () => File.ReadAllBytes(script) : () => File.ReadAllBytes(path);
+            }
+            var missing = new List<string>();
             var replacements = new Dictionary<ulong, MpqFile>();
             var newEntries = new List<MpqFile>();
-            var missing = new List<string>();
             int unchanged = 0;
-            foreach (var path in Directory.EnumerateFiles(srcDir, "*", SearchOption.AllDirectories).OrderBy(p => p, StringComparer.Ordinal))
+            foreach (var (listed, binary) in binaries)
             {
-                var name = Path.GetRelativePath(srcDir, path).Replace('/', '\\').Replace(Path.DirectorySeparatorChar, '\\');
+                var name = listed.Replace('/', '\\');
+                byte[] current = probe.FileExists(name) ? ReadAll(probe.OpenFile(name)) : null;
+                if (current != null && Sha256(current) == binary.Sha256)
+                {
+                    unchanged++;
+                    continue;
+                }
+                var blob = blobs == null ? null : Path.Combine(blobs, binary.Sha256);
+                if (blob == null || !File.Exists(blob))
+                    missing.Add($"{binary.Sha256} {binary.Size}");
+                else
+                    entries[name] = () => File.ReadAllBytes(blob);
+            }
+            if (missing.Count > 0)
+            {
+                if (missingList != null)
+                    File.WriteAllLines(missingList, missing);
+                Console.WriteLine($"PACK: {missing.Count} changed binary file(s) are not downloaded yet.");
+                return 3;
+            }
+            foreach (var (name, read) in entries)
+            {
                 if (name is "(listfile)" or "(attributes)" or "(signature)")
                     continue;
                 byte[] current = probe.FileExists(name) ? ReadAll(probe.OpenFile(name)) : null;
-                byte[] bytes = name == "war3map.j" && script != null ? File.ReadAllBytes(script) : File.ReadAllBytes(path);
-                if (IsLfsPointer(bytes, out var oid, out var size))
-                {
-                    if (current != null && Sha256(current) == oid)
-                    {
-                        unchanged++;
-                        continue;
-                    }
-                    var cached = lfsCache == null ? null : Path.Combine(lfsCache, oid);
-                    if (cached == null || !File.Exists(cached))
-                    {
-                        missing.Add($"{oid} {size}");
-                        continue;
-                    }
-                    bytes = File.ReadAllBytes(cached);
-                }
+                var bytes = read();
                 if (current != null && current.AsSpan().SequenceEqual(bytes))
                 {
                     unchanged++;
@@ -288,17 +304,10 @@ static class Pack
                     newEntries.Add(file);
                 Console.WriteLine($"PACK: {(current != null ? "changed" : "new")} {name}");
             }
-            if (missing.Count > 0)
-            {
-                if (missingList != null)
-                    File.WriteAllLines(missingList, missing);
-                Console.WriteLine($"PACK: {missing.Count} changed file(s) are Git LFS pointers without their content (git lfs pull).");
-                return 3;
-            }
             var result = MpqRepack.Write(archive, readable, replacements, newEntries, new HashSet<ulong>(), outPath);
             if (result == null)
                 return 1;
-            Console.WriteLine($"PACK: {result.Value.Total} entries — {unchanged} source files unchanged, {replacements.Count} replaced, " +
+            Console.WriteLine($"PACK: {result.Value.Total} entries — {unchanged} unchanged, {replacements.Count} replaced, " +
                 $"{newEntries.Count} added -> {outPath}");
             return 0;
         }
@@ -308,24 +317,13 @@ static class Pack
         }
     }
 
+    /// <summary>One binary file of the map: its SHA-256 and size in bytes.</summary>
+    sealed record Binary(string Sha256, long Size);
+
     static string Option(string[] args, string name)
     {
         int i = Array.IndexOf(args, name);
         return i >= 0 && i + 1 < args.Length ? args[i + 1] : null;
-    }
-
-    static bool IsLfsPointer(byte[] bytes, out string oid, out long size)
-    {
-        oid = null;
-        size = 0;
-        if (bytes.Length > 512 || !bytes.AsSpan().StartsWith(Encoding.ASCII.GetBytes(LfsPointerStart)))
-            return false;
-        foreach (var line in Encoding.ASCII.GetString(bytes).Split('\n'))
-        {
-            if (line.StartsWith("oid sha256:", StringComparison.Ordinal)) oid = line.Substring(11).Trim();
-            else if (line.StartsWith("size ", StringComparison.Ordinal)) long.TryParse(line.Substring(5), out size);
-        }
-        return oid != null;
     }
 
     static byte[] ReadAll(Stream stream)
