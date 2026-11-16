@@ -434,10 +434,16 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
 
     // Split each addon into its top-level globals block(s) and everything else, preserving
     // filename order so shared helpers precede their callers.
+    // Common addons go at the start of the script's functions, so the map's own code can call them (its DPS meter,
+    // -sub and KOTH code use the stats and camera addons); map addons go right before main(), so they can call the
+    // map's functions (Solo's zoom slider).
     var globalsSb = new StringBuilder();
     var fnSb = new StringBuilder();
+    var commonFnSb = new StringBuilder();
+    var mapFnSb = new StringBuilder();
     foreach (var f in addonFiles.Concat(mapAddonFiles))
     {
+        var target = Array.IndexOf(mapAddonFiles, f) >= 0 ? mapFnSb : commonFnSb;
         bool inGlobals = false;
         foreach (var line in File.ReadAllLines(f))
         {
@@ -447,9 +453,13 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
             if (inGlobals)
                 globalsSb.Append(line).Append('\n');
             else
+            {
                 fnSb.Append(line).Append('\n');
+                target.Append(line).Append('\n');
+            }
         }
         fnSb.Append('\n');
+        target.Append('\n');
         Console.WriteLine($"JASS: {(Array.IndexOf(mapAddonFiles, f) >= 0 ? "map addon" : "addon")} {Path.GetFileName(f)}");
     }
 
@@ -469,7 +479,8 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
     using (var reader = new StreamReader(jassStream, new UTF8Encoding(false)))
         jass = reader.ReadToEnd();
 
-    // Every FF_ global/function we inject must be new to the base script.
+    // Every FF_ global/function we inject must be new to the base script. The map's own code may use them (that is
+    // why the common addons go first); only a second declaration is a collision.
     var declared = new List<string>();
     foreach (Match m in Regex.Matches(globalsSb.ToString(), @"^\s*\w+\s+(?:array\s+)?(FF_\w+)", RegexOptions.Multiline))
         declared.Add(m.Groups[1].Value);
@@ -477,7 +488,8 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
         declared.Add(m.Groups[1].Value);
     foreach (var name in declared)
     {
-        if (Regex.IsMatch(jass, $@"\b{Regex.Escape(name)}\b"))
+        var escaped = Regex.Escape(name);
+        if (Regex.IsMatch(jass, $@"^\s*(?:function\s+{escaped}\b|(?:constant\s+)?\w+\s+(?:array\s+)?{escaped}\s*(?:=|$))", RegexOptions.Multiline))
         {
             Console.WriteLine($"JASS: identifier collision — {name} already exists in war3map.j; rename the addon symbol.");
             return 1;
@@ -537,12 +549,17 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
     // of the map's own on the same event (e.g. counting a bought item before the map's handler removes it).
     bool earlyInit = Regex.IsMatch(fnSb.ToString(), @"^function FF_EarlyInit takes nothing returns nothing", RegexOptions.Multiline);
 
-    const string banner = "// === FF addons (injected by the build; sources: scripting/jass) ===\n";
+    const string banner = "// === FF addons (injected by the build; sources: league/) ===\n";
+    const string mapBanner = "// === FF map addons (injected by the build; sources: projects/<map>/addons/) ===\n";
     var sb = new StringBuilder(jass.Length + globalsSb.Length + fnSb.Length + 256);
     sb.Append(jass, 0, endGlobals + 1);                                    // ..incl. '\n' before endglobals
     sb.Append(banner).Append(globalsSb);
-    sb.Append(jass, endGlobals + 1, mainIdx + 1 - (endGlobals + 1));       // endglobals .. incl. '\n' before main
-    sb.Append(banner).Append(fnSb);
+    int functionsStart = jass.IndexOf('\n', endGlobals + 1) + 1;           // the line after endglobals
+    sb.Append(jass, endGlobals + 1, functionsStart - (endGlobals + 1));    // endglobals line
+    sb.Append(banner).Append(commonFnSb);
+    sb.Append(jass, functionsStart, mainIdx + 1 - functionsStart);         // the map's functions .. incl. '\n' before main
+    if (mapFnSb.Length > 0)
+        sb.Append(mapBanner).Append(mapFnSb);
     if (earlyInit)
     {
         sb.Append(jass, mainIdx + 1, initLineStart - (mainIdx + 1));       // main .. up to the InitCustomTriggers line
@@ -719,12 +736,12 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
         foreach (var importPath in Directory.EnumerateFiles(importsDir, "*", SearchOption.AllDirectories).OrderBy(x => x, StringComparer.Ordinal))
         {
             var importName = Path.GetRelativePath(importsDir, importPath).Replace('/', '\\');
+            var importFile = MpqFile.New(new MemoryStream(File.ReadAllBytes(importPath)), importName, false);
+            // A map built by an earlier version of this build already holds the import: the addon's copy replaces it.
             if (probe.FileExists(importName))
-            {
-                Console.WriteLine($"JASS: map addon import {importName} already exists in the base map.");
-                return 1;
-            }
-            newEntries.Add(MpqFile.New(new MemoryStream(File.ReadAllBytes(importPath)), importName, false));
+                replacements[MpqHash.GetHashedFileName(importName)] = importFile;
+            else
+                newEntries.Add(importFile);
             Console.WriteLine($"JASS: map addon import {importName}");
         }
     }
