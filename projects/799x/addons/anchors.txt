@@ -1,0 +1,126 @@
+# Anchor hooks for the main (9v3) map (FF_JASS_ANCHORS; verify-map --anchors gates them).
+# The build changes the map's own functions at fixed lines: each `insert` line goes right after the `anchor` line
+# inside the named `function`, and a `replace` line takes the anchor line's place. The anchor must match a whole
+# line (whitespace-trimmed) EXACTLY ONCE in that function, or the build fails: a new base map that changes one of
+# these triggers has to be looked at, not shipped with silent zeros.
+#   function <name>   starts the hooks for that function (anchors are scoped by function: BASE destroy and
+#                     player destroyed share identical lines)
+#   after <line>      optional, before an anchor: a line found exactly once in the function; the anchor is then the
+#                     first match after it (for a line the function repeats, e.g. in both branches of an if)
+#   anchor <line>     the base script's line to hook
+#   replace <line>    optional: the line that takes the anchor's place
+#   insert <line>     lines to add after the anchor (indented like the anchor); a hook needs a replace or an insert
+# The common addons (league/) come before the map's functions in the script, so inserts can use their globals and
+# call their functions, and the map's own functions; never a map addon's (projects/<map>/addons/) function.
+#
+# Stats (league/15-stats.j): gold the map moves itself, which the score screen never sees.
+# Each insert repeats the hooked call's own amount and credits that call's real sender and receiver slot.
+
+# Pooling (FFP_Transfer moves every -pool / autopool payment): gold moving from a sender who is out, or to a receiver
+# who has left, is a fallen ally's: inherited, never pool.
+function FFP_Transfer
+anchor set FF_st_poolOut[senderId] = FF_st_poolOut[senderId] + amount
+replace if udg_player_active[senderId] and GetPlayerSlotState(target) == PLAYER_SLOT_STATE_PLAYING then
+insert     set FF_st_poolOut[senderId] = FF_st_poolOut[senderId] + amount
+anchor set FF_st_poolIn[targetId] = FF_st_poolIn[targetId] + amount
+insert else
+insert     set FF_st_inhOut[senderId] = FF_st_inhOut[senderId] + amount
+insert     set FF_st_inhIn[targetId] = FF_st_inhIn[targetId] + amount
+insert endif
+
+# BASE collect gold (A08D on a leaver's base): the leaver's gold split over the active allies (ForForce callback).
+function Trig_BASE_collect_gold_Func012Func003A
+anchor call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / udg_activeplayersinteam ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / udg_activeplayersinteam
+insert set FF_st_inhIn[GetConvertedPlayerId(GetEnumPlayer())] = FF_st_inhIn[GetConvertedPlayerId(GetEnumPlayer())] + udg_leaving_gold[udg_temp_playernumber] / udg_activeplayersinteam
+
+# BASE destroy (A06W) and player destroyed (base died, team alive): half to each living trio ally, or all to the
+# one left. Same four lines in both functions.
+function Trig_BASE_destroy_Actions
+anchor call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
+insert set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber] / 2
+anchor call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
+insert set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber] / 2
+anchor call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
+insert set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber]
+anchor call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
+insert set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber]
+
+function Trig_player_destroyed_Actions
+anchor call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
+insert set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber] / 2
+anchor call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
+insert set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber] / 2
+anchor call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
+insert set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber]
+anchor call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
+insert set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber]
+
+# King of the Hill income (every 3s, ForForce over the hill team): each player's actual payout.
+function Trig_KOTH_Income_Func014A
+anchor call AdjustPlayerStateBJ(( udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] = FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] + udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add
+
+# --- Game modes: fixes of the map's own mode logic (tests/simulation/scenarios/*_mode_*.lua) ---
+# Hero-mode vote (In-house, Pub custom): when SD wins, the vote handler starts the game without Start_SD, so there
+# are no taverns. Run it first, as the AP and AR branches run their own start.
+function Trig_Vote_Timer_Expires_Actions
+anchor if ( Trig_Vote_Timer_Expires_Func002Func008Func001Func002C() ) then
+insert call EnableTrigger(gg_trg_Start_SD)
+insert call ConditionalTriggerExecute(gg_trg_Start_SD)
+# A tied or empty vote matches no branch (each needs a strict majority), so nothing would start: SD wins it.
+anchor call DisplayTextToForce(udg_all_players, ( I2S(udg_SD_votes) + " Votes for SD mode" ))
+insert if not ( Trig_Vote_Timer_Expires_Func002Func008C() or Trig_Vote_Timer_Expires_Func002Func008Func001C() ) then
+insert     set udg_SD_votes = udg_AP_votes + udg_AR_votes + 1
+insert endif
+
+function Trig_Start_game_Actions
+anchor set udg_startgold=140
+insert call SetMapFlag(MAP_RESOURCE_TRADING_ALLIES_ONLY, true)
+
+# Spell dummies live until their spell's damage is over. A dummy that is gone when a later tick kills leaves no
+# killer at all, so the game gives no kill, XP or gold. Each life = the spell's duration at the cast level + 1 s.
+# Objection on an enemy: the dummy's Soul Burn.
+function Trig_Objection_Actions
+after call IssueTargetOrderBJ(udg_dummy, "soulburn", udg_temp_target)
+anchor call UnitApplyTimedLifeBJ(0.10, 'BTLF', udg_dummy)
+replace call UnitApplyTimedLifeBJ(RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'ANso'), ABILITY_RLF_DURATION_NORMAL, udg_abilitylevel - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'ANso'), ABILITY_RLF_DURATION_HERO, udg_abilitylevel - 1)) + 1.00, 'BTLF', udg_dummy)
+
+# Parasite: the dummy's Parasite.
+function Trig_Parasite_Actions
+anchor call UnitApplyTimedLifeBJ(0.10, 'BTLF', udg_dummy)
+replace call UnitApplyTimedLifeBJ(RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0HL'), ABILITY_RLF_DURATION_NORMAL, udg_abilitylevel - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0HL'), ABILITY_RLF_DURATION_HERO, udg_abilitylevel - 1)) + 1.00, 'BTLF', udg_dummy)
+
+# Elemental Hellfire: the six Flame Strike dummies.
+function Trig_HERO_Elemental_Hellfire_Actions
+anchor call UnitApplyTimedLifeBJ(4.00, 'BTLF', udg_dummy)
+replace call UnitApplyTimedLifeBJ(RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0CD'), ABILITY_RLF_DURATION_NORMAL, udg_abilitylevel - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0CD'), ABILITY_RLF_DURATION_HERO, udg_abilitylevel - 1)) + 1.00, 'BTLF', udg_dummy)
+
+# Thor's Mjolnir: the hammer's Firebolt missile (up to 120 away) still flies after the order; 0.50 s covers it.
+function Trig_HERO_Thor_Mjolnir_Loop_Actions
+anchor call UnitApplyTimedLifeBJ(0.10, 'BTLF', udg_dummy_mjolnir[udg_X])
+replace call UnitApplyTimedLifeBJ(0.50, 'BTLF', udg_dummy_mjolnir[udg_X])
+
+# Jaina's ultimate: the three orbs vanish at the same moment as before, but stay alive (hidden, no longer casting)
+# while the fire orb's Rain of Fire still burns, so its kills are still credited.
+function Trig_HERO_Jaina_Ulti_Actions
+anchor call RemoveUnit(orb1)
+replace call IssueImmediateOrder(orb1, "stop")
+insert call ShowUnit(orb1, false)
+insert call UnitApplyTimedLife(orb1, 'BTLF', RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_NORMAL, lvl - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_HERO, lvl - 1)) + 1.00)
+anchor call RemoveUnit(orb2)
+replace call IssueImmediateOrder(orb2, "stop")
+insert call ShowUnit(orb2, false)
+insert call UnitApplyTimedLife(orb2, 'BTLF', RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_NORMAL, lvl - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_HERO, lvl - 1)) + 1.00)
+anchor call RemoveUnit(orb3)
+replace call IssueImmediateOrder(orb3, "stop")
+insert call ShowUnit(orb3, false)
+insert call UnitApplyTimedLife(orb3, 'BTLF', RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_NORMAL, lvl - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_HERO, lvl - 1)) + 1.00)

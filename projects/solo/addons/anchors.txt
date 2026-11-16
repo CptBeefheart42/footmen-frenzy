@@ -1,0 +1,83 @@
+# Anchor hooks for the Solo (1v1v1v1) map (FF_JASS_ANCHORS; verify-map --anchors gates them). Format and rules:
+# see projects/799x/addons/anchors.txt. Solo has no pool or leaver-gold transfers (its autopool trigger is never
+# enabled), so only the King of the Hill income is hooked.
+
+# King of the Hill income (ForForce over the hill team; Solo pays active, playing slots only): the actual payout.
+function Trig_KOTH_Income_Func014A
+anchor call AdjustPlayerStateBJ(( udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD)
+insert set FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] = FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] + udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add
+
+# Bot-hosted games (FF_hostBotGame, league/00-common.j): the host's mode dialog is skipped and the map's
+# Normal mode runs, exactly what clicking its first button does.
+function Trig_MODE_GUI_show_Actions
+anchor set udg_temp_playernumber=GetConvertedPlayerId(udg_Host)
+insert if FF_hostBotGame then
+insert     call SoloFootsDisplayMessageToForce(udg_all_players, ( ( "|cff32cd32" + GetPlayerName(udg_Host) ) + " has selected to play in Normal mode.|r" ))
+insert     call ConditionalTriggerExecute(gg_trg_MODE_set_pub_game)
+insert     return
+insert endif
+
+# The pre-mass countdown: 50 s instead of the map's 40 s, more time to pick a hero before the AFK kick
+# (league/25-afk.j). The footmen's spawn (sf_mass_delay_timer) follows the countdown.
+function Trig_MASS_timer_Actions
+anchor set udg_t_premass=40.00
+replace set udg_t_premass=50.00
+
+# The mass sets every base back to 1 spawn per cycle (2 before it), as the main map's Mass START does. Without it
+# every base keeps 2, Overdrive (2 for 45 s) adds nothing, and the first Overdrive to end drops every player not in
+# one to 1 (BASE Overdrive END, the same trigger in both maps). tests/simulation/scenarios/solo_overdrive.lua
+function Trig_Mass_START_Actions
+anchor set udg_mass_active=true
+insert set udg_X=1
+insert loop
+insert     exitwhen udg_X > 12
+insert     set udg_number_of_spawned_units[udg_X]=1
+insert     set udg_X=udg_X + 1
+insert endloop
+
+# --- Kill credit (identical block in projects/799x/addons/anchors.txt and projects/solo/addons/anchors.txt) ---
+# A kill counts for the killer's owner even when the killer is already dead: a moneybag's Kaboom (Lawyer's coin
+# factory) kills the moneybag itself, a missile can land after its shooter died. The map's -kd trigger otherwise
+# drops such a kill entirely (no K/D, no "has slain", no bonus gold); the kill log follows the same rule.
+function Trig_Multiboard_Update_Func005C
+anchor if ( not ( IsUnitAliveBJ(udg_temp_killing_unit) == true ) ) then
+replace if ( udg_temp_killing_unit == null ) then
+
+# Spell dummies live until their spell's damage is over. A dummy that is gone when a later tick kills leaves no
+# killer at all, so the game gives no kill, XP or gold. Each life = the spell's duration at the cast level + 1 s.
+# Objection on an enemy: the dummy's Soul Burn.
+function Trig_Objection_Actions
+after call IssueTargetOrderBJ(udg_dummy, "soulburn", udg_temp_target)
+anchor call UnitApplyTimedLifeBJ(0.10, 'BTLF', udg_dummy)
+replace call UnitApplyTimedLifeBJ(RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'ANso'), ABILITY_RLF_DURATION_NORMAL, udg_abilitylevel - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'ANso'), ABILITY_RLF_DURATION_HERO, udg_abilitylevel - 1)) + 1.00, 'BTLF', udg_dummy)
+
+# Parasite: the dummy's Parasite.
+function Trig_Parasite_Actions
+anchor call UnitApplyTimedLifeBJ(0.10, 'BTLF', udg_dummy)
+replace call UnitApplyTimedLifeBJ(RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0HL'), ABILITY_RLF_DURATION_NORMAL, udg_abilitylevel - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0HL'), ABILITY_RLF_DURATION_HERO, udg_abilitylevel - 1)) + 1.00, 'BTLF', udg_dummy)
+
+# Elemental Hellfire: the six Flame Strike dummies.
+function Trig_HERO_Elemental_Hellfire_Actions
+anchor call UnitApplyTimedLifeBJ(4.00, 'BTLF', udg_dummy)
+replace call UnitApplyTimedLifeBJ(RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0CD'), ABILITY_RLF_DURATION_NORMAL, udg_abilitylevel - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(udg_dummy, 'A0CD'), ABILITY_RLF_DURATION_HERO, udg_abilitylevel - 1)) + 1.00, 'BTLF', udg_dummy)
+
+# Thor's Mjolnir: the hammer's Firebolt missile (up to 120 away) still flies after the order; 0.50 s covers it.
+function Trig_HERO_Thor_Mjolnir_Loop_Actions
+anchor call UnitApplyTimedLifeBJ(0.10, 'BTLF', udg_dummy_mjolnir[udg_X])
+replace call UnitApplyTimedLifeBJ(0.50, 'BTLF', udg_dummy_mjolnir[udg_X])
+
+# Jaina's ultimate: the three orbs vanish at the same moment as before, but stay alive (hidden, no longer casting)
+# while the fire orb's Rain of Fire still burns, so its kills are still credited.
+function Trig_HERO_Jaina_Ulti_Actions
+anchor call RemoveUnit(orb1)
+replace call IssueImmediateOrder(orb1, "stop")
+insert call ShowUnit(orb1, false)
+insert call UnitApplyTimedLife(orb1, 'BTLF', RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_NORMAL, lvl - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_HERO, lvl - 1)) + 1.00)
+anchor call RemoveUnit(orb2)
+replace call IssueImmediateOrder(orb2, "stop")
+insert call ShowUnit(orb2, false)
+insert call UnitApplyTimedLife(orb2, 'BTLF', RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_NORMAL, lvl - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_HERO, lvl - 1)) + 1.00)
+anchor call RemoveUnit(orb3)
+replace call IssueImmediateOrder(orb3, "stop")
+insert call ShowUnit(orb3, false)
+insert call UnitApplyTimedLife(orb3, 'BTLF', RMaxBJ(BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_NORMAL, lvl - 1), BlzGetAbilityRealLevelField(BlzGetUnitAbility(orb2, 'A064'), ABILITY_RLF_DURATION_HERO, lvl - 1)) + 1.00)

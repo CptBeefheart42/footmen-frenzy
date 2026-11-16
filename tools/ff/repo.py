@@ -19,11 +19,14 @@ class Project:
         family: The map's family name (`map_type`), which names its Warcraft III test folder, e.g. `799X`.
         release: The starting map file under release/.
         sha256: The starting map's checksum.
+        stub_functions: Functions of the map script the build turns into no-ops (the map's own writers of the files
+            the league addons write).
     """
     name: str
     family: str
     release: str
     sha256: str
+    stub_functions: tuple[str, ...] = ()
 
     @property
     def folder(self) -> Path:
@@ -34,6 +37,11 @@ class Project:
     def src(self) -> Path:
         """The folder holding every file of the map."""
         return self.folder / 'src'
+
+    @property
+    def addons(self) -> Path:
+        """The map's own league addons (`*.j`, `anchors.txt`, `imports/`)."""
+        return self.folder / 'addons'
 
     @property
     def start_map(self) -> Path:
@@ -50,7 +58,8 @@ def projects() -> dict[str, Project]:
     found = {}
     for meta in sorted((ROOT / 'projects').glob('*/project.json')):
         data = json.loads(meta.read_text(encoding='utf-8'))
-        found[meta.parent.name] = Project(meta.parent.name, data['map_type'], data['release'], data['sha256'])
+        found[meta.parent.name] = Project(meta.parent.name, data['map_type'], data['release'], data['sha256'],
+                                          tuple(data.get('stub_functions', ())))
     return found
 
 

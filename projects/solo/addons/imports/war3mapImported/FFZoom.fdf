@@ -1,0 +1,134 @@
+// FFZoom.fdf — frame templates for the Solo map's camera-zoom slider (scripting/jass-solo/50-zoomslider.j).
+//
+// Verbatim copies of Blizzard's definitions from UI\FrameDef\UI\EscMenuTemplates.fdf, QuestDialog.fdf and
+// ScriptDialog.fdf (WC3 2.0.4.23745; byte-identical in 3.0.0.24268), renamed and with every INHERITS resolved
+// inline. The map's original slider used those templates by name, but on WC3 3.0 they are not loaded yet at
+// map start, so it came out invisible. Shipping our own copies removes that dependency; DecorateFileNames +
+// the war3skins keys are kept so fonts and race skins resolve exactly like the game's own escape menu.
+
+// --- FFZoomSlider = QuestMainListScrollBar INHERITS WITHCHILDREN EscMenuScrollBarTemplate -------------------
+Frame "SCROLLBAR" "FFZoomSlider" {
+    Width 0.012,
+    SliderLayoutVertical,
+
+    ControlBackdrop "FFZoomSliderBackdrop",
+    Frame "BACKDROP" "FFZoomSliderBackdrop" {
+        DecorateFileNames,
+        BackdropTileBackground,
+        BackdropBackground  "EscMenuSliderBackground",
+        BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize  0.006,
+        BackdropBackgroundSize 0.006,
+        BackdropBackgroundInsets 0.0025 0.0025 0.0025 0.0025,
+        BackdropEdgeFile  "EscMenuSliderBorder",
+        BackdropBlendAll,
+    }
+
+    SliderThumbButtonFrame "FFZoomSliderThumbButton",
+    Frame "BUTTON" "FFZoomSliderThumbButton" {
+        Width 0.016,
+        Height 0.016,
+
+        ControlBackdrop "FFZoomSliderThumbButtonBackdrop",
+        Frame "BACKDROP" "FFZoomSliderThumbButtonBackdrop" {
+            DecorateFileNames,
+            BackdropBlendAll,
+            BackdropBackground  "EscMenuSliderThumbButton",
+        }
+    }
+}
+
+// --- FFZoomLabel = EscMenuLabelTextTemplate ----------------------------------------------------------------
+Frame "TEXT" "FFZoomLabel" {
+    DecorateFileNames,
+    FrameFont "EscMenuTextFont", 0.011, "",
+    FontJustificationH JUSTIFYLEFT,
+    FontJustificationV JUSTIFYMIDDLE,
+    FontFlags "FIXEDSIZE",
+    FontColor 0.99 0.827 0.0705 1.0,
+    FontHighlightColor 1.0 1.0 1.0 1.0,
+    FontDisabledColor 0.2 0.2 0.2 1.0,
+    FontShadowColor 0.0 0.0 0.0 0.9,
+    FontShadowOffset 0.002 -0.002,
+}
+
+// --- FFZoomLockButton = ScriptDialogButton INHERITS WITHCHILDREN EscMenuButtonTemplate ----------------------
+Frame "GLUETEXTBUTTON" "FFZoomLockButton" {
+    Width 0.228,
+    Height 0.035,
+    ControlStyle "AUTOTRACK|HIGHLIGHTONMOUSEOVER",
+    ButtonPushedTextOffset 0.002f -0.002f,
+    UseActiveContext,
+
+    ControlBackdrop "FFZoomLockButtonBackdrop",
+    Frame "BACKDROP" "FFZoomLockButtonBackdrop" {
+        DecorateFileNames,
+        BackdropTileBackground,
+        BackdropBackground  "EscMenuButtonBackground",
+        BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize  0.0125,
+        BackdropBackgroundSize  0.256,
+        BackdropBackgroundInsets 0.005 0.005 0.005 0.005,
+        BackdropEdgeFile  "EscMenuButtonBorder",
+    }
+
+    ControlPushedBackdrop "FFZoomLockButtonPushedBackdrop",
+    Frame "BACKDROP" "FFZoomLockButtonPushedBackdrop" {
+        DecorateFileNames,
+        BackdropTileBackground,
+        BackdropBackground  "EscMenuButtonPushedBackground",
+        BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize  0.0125,
+        BackdropBackgroundSize  0.256,
+        BackdropBackgroundInsets 0.005 0.005 0.005 0.005,
+        BackdropEdgeFile  "EscMenuButtonPushedBorder",
+    }
+
+    ControlDisabledBackdrop "FFZoomLockButtonDisabledBackdrop",
+    Frame "BACKDROP" "FFZoomLockButtonDisabledBackdrop" {
+        DecorateFileNames,
+        BackdropTileBackground,
+        BackdropBackground  "EscMenuButtonDisabledBackground",
+        BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize  0.0125,
+        BackdropBackgroundSize  0.256,
+        BackdropBackgroundInsets 0.005 0.005 0.005 0.005,
+        BackdropEdgeFile  "EscMenuButtonDisabledBorder",
+    }
+
+    ControlDisabledPushedBackdrop "FFZoomLockButtonDisabledPushedBackdrop",
+    Frame "BACKDROP" "FFZoomLockButtonDisabledPushedBackdrop" {
+        DecorateFileNames,
+        BackdropTileBackground,
+        BackdropBackground  "EscMenuButtonDisabledPushedBackground",
+        BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize  0.0125,
+        BackdropBackgroundSize  0.256,
+        BackdropBackgroundInsets 0.005 0.005 0.005 0.005,
+        BackdropEdgeFile  "EscMenuButtonDisabledPushedBorder",
+    }
+
+    ControlMouseOverHighlight "FFZoomLockButtonHighlight",
+    Frame "HIGHLIGHT" "FFZoomLockButtonHighlight" {
+        DecorateFileNames,
+        HighlightType "FILETEXTURE",
+        HighlightAlphaFile "EscMenuButtonMouseOverHighlight",
+        HighlightAlphaMode "ADD",
+    }
+
+    ButtonText "FFZoomLockButtonText",
+    Frame "TEXT" "FFZoomLockButtonText" {
+        DecorateFileNames,
+        FrameFont "EscMenuTextFont", 0.013, "",
+        FontJustificationH JUSTIFYCENTER,
+        FontJustificationV JUSTIFYMIDDLE,
+        FontJustificationOffset 0.0 -0.002,
+        FontFlags "FIXEDSIZE",
+        FontColor 0.99 0.827 0.0705 1.0,
+        FontHighlightColor 1.0 1.0 1.0 1.0,
+        FontDisabledColor 0.5 0.5 0.5 1.0,
+        FontShadowColor 0.0 0.0 0.0 0.9,
+        FontShadowOffset 0.002 -0.002,
+        Text "",
+    }
+}

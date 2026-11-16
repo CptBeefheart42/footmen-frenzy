@@ -4,8 +4,9 @@ Steps, all under build/<map>/:
 1. the starting map (downloaded from LFS when the clone has only its pointer) is checked against project.json;
 2. the map script is assembled from src/war3map.j and shared/ (tools/shared_code.py);
 3. the runner packs the starting map with src/ (`pack`), downloading the LFS objects of changed files;
-4. the runner applies the level fill, the map fixes (data/object_overrides.csv), the 3.0 file-name fix and the map
-   name, then verifies the result (`verify-map`);
+4. the runner injects the league addons (league/ for every map, projects/<map>/addons/ for this one, with its anchor
+   hooks and stubbed functions), applies the level fill, the map fixes (data/object_overrides.csv), the 3.0 file-name
+   fix and the map name, then verifies the result (`verify-map`);
 5. pjass checks the final script.
 """
 from __future__ import annotations
@@ -23,6 +24,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 from shared_code import assemble  # noqa: E402
 
 OVERRIDES = ROOT / 'data' / 'object_overrides.csv'
+LEAGUE = ROOT / 'league'
 
 
 class BuildError(RuntimeError):
@@ -57,14 +59,19 @@ def build(project: Project, name: str) -> Path:
     packed = out / 'packed.w3x'
     pack(project, start, script, packed, out / 'missing.txt')
 
-    no_addons = out / 'no-addons'
-    no_addons.mkdir(exist_ok=True)
     finished = out / name
-    step('apply the 3.0 fixes and the map name', toolchain.run_dotnet_tool('tools/runner', [], {
-        'FF_JASS_ADDONS': str(no_addons), 'FF_BASEMAP': str(packed), 'FF_OUTPUT': str(out), 'FF_OUTPUT_MAP': name,
+    anchors = project.addons / 'anchors.txt'
+    step('add the league addons and the 3.0 fixes', toolchain.run_dotnet_tool('tools/runner', [], {
+        'FF_JASS_ADDONS': str(LEAGUE), 'FF_JASS_MAP_ADDONS': str(project.addons) if project.addons.is_dir() else '',
+        'FF_JASS_ANCHORS': str(anchors) if anchors.is_file() else '', 'FF_JASS_STUB_FUNCS': ','.join(project.stub_functions),
+        'FF_BASEMAP': str(packed), 'FF_OUTPUT': str(out), 'FF_OUTPUT_MAP': name,
         'FF_OBJECT_OVERRIDES': str(OVERRIDES), 'FF_MAP_NAME': title}))
-    step('verify the built map', toolchain.run_dotnet_tool(
-        'tools/runner', ['verify-map', str(finished), '--name', title, '--overrides', str(OVERRIDES)]))
+    verify = ['verify-map', str(finished), '--name', title, '--overrides', str(OVERRIDES)]
+    if anchors.is_file():
+        verify += ['--anchors', str(anchors)]
+    if project.stub_functions:
+        verify += ['--stubs', ','.join(project.stub_functions)]
+    step('verify the built map', toolchain.run_dotnet_tool('tools/runner', verify))
     check_script(out / 'war3map.j')
     return finished
 

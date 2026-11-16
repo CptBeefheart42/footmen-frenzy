@@ -2,5 +2,10 @@
   "map_type": "Solo Foots",
   "release": "Solo Foots UPDATE25.w3x",
   "sha256": "af791df061685774e7ce78d54f6233d390e5f71619da6dcbab6c270346910a69",
-  "source_payloads": 1419
+  "source_payloads": 1419,
+  "stub_functions": [
+    "SoloFootsFFWriteHeroKill",
+    "SoloFootsFFWriteResult",
+    "zoom___CreateSlider"
+  ]
 }

@@ -2959,48 +2959,6 @@ trigger st__Missiles_reset
 trigger st__Missiles_move
 trigger array st___prototype4
 integer f__arg_this
-
-// === FF addons (injected by the build; sources: scripting/jass) ===
-    // Never expires; only TimerGetElapsed is read off it, to timestamp log rows (mirrors the C#
-    // systems' gameTimer). Started by FF_BootTick in 90-init.j.
-timer FF_gameTimer= null
-boolean FF_kl_dirty= false
-integer array FF_kl_unitKills
-integer array FF_kl_heroKills
-integer array FF_kl_unitDeaths
-integer array FF_kl_heroDeaths
-    // The "who killed whom" feed; capped so the file stays constant-ish sized in marathon games.
-string array FF_kl_feed
-integer FF_kl_feedN= 0
-    // Slots 1..12 (index 0 unused): ever-active participants, and who we already reported out.
-boolean array FF_gr_participant
-boolean array FF_gr_eliminated
-    // Side index 1..4 (FFA) / 1..2 (6v6); the mode is fixed well before the first death.
-boolean array FF_gr_sideDead
-    // Sides in elimination order (first to die = last place).
-integer array FF_gr_deathOrder
-integer FF_gr_deathN= 0
-string array FF_gr_events
-integer FF_gr_eventN= 0
-boolean FF_gr_ended= false
-timer FF_gr_pollTimer= null
-    // Collapsed-block result override; see FFEnd_Resolve. Latched so a second END execution
-    // can never re-settle the match, and published so GameResult reports the same verdict.
-boolean FFEnd_done= false
-boolean FFEnd_settled= false
-integer FFEnd_winnerSlot= 0
-    // Player elimination order, so a collapsed-block game can still emit placements.
-integer array FF_gr_outOrder
-integer FF_gr_outN= 0
-    // Per-observer state, indexed by 0-based player id.
-integer array FF_oc_mode
-integer array FF_oc_focus
-integer array FF_oc_cycleTick
-unit array FF_oc_followed
-integer FF_oc_tick= 0
-    // Shared hero-kill interrupt (one event for everyone; the camera lock itself stays per-player).
-unit FF_oc_interruptUnit= null
-integer FF_oc_interruptUntil= 0
     // -- SoloSub observer substitution state ------------------------------
 integer array SoloSub_observerForPlayer
 integer array SoloSub_playerForObserver
@@ -3229,104 +3187,6 @@ boolean array FFR_Locked
     boolean GSI_Purchased = false
     boolean GSI_Used = false
     rect GSI_Bounds = null
-
-
-// RC6 bot reporting and host integration.
-    string FF_gameToken = ""
-    integer FF_PRELOAD_MAX = 240
-    boolean FF_hostBotGame = false
-    boolean FF_kl_done = false
-    boolean FF_STATS_DAMAGE = true
-    integer array FF_st_poolOut
-    integer array FF_st_poolIn
-    integer array FF_st_inhOut
-    integer array FF_st_inhIn
-    integer array FF_st_kothGold
-    integer array FF_st_denyOwn
-    integer array FF_st_denyAlly
-    integer array FF_st_tmCasts
-    integer array FF_st_tmHits
-    integer array FF_st_tmDenied
-    integer array FF_st_tmSaves
-    integer array FF_st_creeps
-    integer array FF_st_creepGold
-    integer array FF_st_teamRes
-    integer FF_ST_DMG_OUT = 0
-    integer FF_ST_DMG_BLD = 1
-    integer FF_ST_DMG_IN = 2
-    integer array FF_st_dmg
-    real array FF_st_dmgRem
-    integer FF_ST_ALIVE = 0
-    integer FF_ST_OUT = 1
-    integer FF_ST_LEFT = 2
-    integer array FF_st_state
-    string array FF_st_leftT
-    integer array FF_st_heroLvl
-    string array FF_st_row
-    string array FF_st_row2
-    integer array FF_st_sig
-    string array FF_st_key
-    integer array FF_st_val
-    integer FF_st_n = 0
-    integer FF_st_split = 0
-    real FF_ST_TM_WAIT = 4.0
-    integer FF_ST_TM_MAX = 32
-    unit array FF_st_tmCaster
-    unit array FF_st_tmTarget
-    integer array FF_st_tmSlot
-    real array FF_st_tmUntil
-    integer FF_st_tmN = 0
-    hashtable FF_us_ht = InitHashtable()
-    hashtable FF_us_learned = InitHashtable()
-    integer FF_US_CHAT_BURST = 4
-    integer FF_US_CMD_CAP = 999
-    integer FF_US_ITEM = 1
-    integer FF_US_UNIT = 2
-    integer FF_US_TECH = 3
-    integer FF_US_TOWER = 4
-    integer FF_US_SPELL = 5
-    integer FF_US_CMD = 6
-    integer FF_US_CATS = 6
-    integer FF_US_EVENT_MAX = 400
-    integer FF_US_SOLD_MAX = 64
-    integer FF_US_HERO_MAX = 16
-    integer FF_US_SKILL_MAX = 64
-    integer FF_US_BASE_TYPES = 50
-    integer array FF_us_n
-    string array FF_us_catName
-    boolean array FF_us_dirty
-    integer array FF_us_rowN
-    integer array FF_us_heroN
-    string array FF_us_events
-    integer FF_us_eventN = 0
-    boolean FF_us_sharedDirty = false
-    unit array FF_us_heroSeen
-    boolean array FF_us_hadHero
-    boolean array FF_us_swapSeen
-    unit array FF_us_sold
-    unit array FF_us_seller
-    integer array FF_us_soldCost
-    integer FF_us_soldN = 0
-    timer FF_us_soldTimer = null
-    integer array FF_us_kothHold
-    integer array FF_us_kothCaps
-    player FF_us_kothLast = null
-    string FF_us_modes = null
-    trigger FF_us_modeHook = null
-    string FF_us_modeExtra = ""
-    string array FF_us_cmd
-    integer FF_us_cmdN = 0
-    integer array FF_us_chatBurst
-    string FF_us_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-    integer FF_GR_EVENT_MAX = 200
-    string FF_gr_gameendRow = null
-    integer FF_bv_N = 9
-    real FF_bv_SIGHT = 2000.0
-    integer FF_bv_DUMMY = 'h055'
-    integer FF_bv_DETECT_OWL = 'Adtg'
-    integer FF_bv_DETECT_SENTRY = 'A05H'
-    group FF_bv_units = null
-string array FF_rxRosterName
     hashtable DK_Hash = null
     timer DK_Timer = null
     real DK_Now = 0.0
@@ -6327,62 +6187,12 @@ function PBI_Init takes nothing returns nothing
     set pawn = null
 endfunction
 
-function FF_EndsWith takes string s, string suffix returns boolean
-    local integer ls = StringLength(s)
-    local integer lx = StringLength(suffix)
-    if lx > ls then
-        return false
-    endif
-    return SubString(s, ls - lx, ls) == suffix
-endfunction
 
-function FF_IsHostBotName takes string name returns boolean
-    if name == null then
-        return false
-    endif
-    return FF_EndsWith(name, "CoralShark#113567") or FF_EndsWith(name, "OhNaahs#1537") or FF_EndsWith(name, "LustyPuppy#1929")
-endfunction
 
-function FF_IsBotName takes string name returns boolean
-    if name == null then
-        return false
-    endif
-    if FF_IsHostBotName(name) then
-        return true
-    endif
-    // efl-obs (observes and streams), and the retired 1.0 fleet accounts (still ours).
-    return FF_EndsWith(name, "MangoThief#115445") or FF_EndsWith(name, "Vertical#11718") or FF_EndsWith(name, "Industry#11190") or FF_EndsWith(name, "BryanBoitano#1725")
-endfunction
 
-function FF_HostBotInGame takes nothing returns boolean
-    local integer i = 0
-    local player p
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        set p = Player(i)
-        if GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(p) == MAP_CONTROL_USER and FF_IsHostBotName(GetPlayerName(p)) then
-            return true
-        endif
-        set i = i + 1
-    endloop
-    return false
-endfunction
 
-function FF_LocalClientIsBot takes nothing returns boolean
-    return FF_IsBotName(GetPlayerName(GetLocalPlayer()))
-endfunction
 
-function FFLoadTrace_Mark takes string stage returns nothing
-    call PreloadGenClear()
-    call PreloadGenStart()
-    call Preload(stage)
-    call PreloadGenEnd("ff_rx_startup_trace.txt")
-endfunction
 
-function FFLoadTrace_Ready takes nothing returns nothing
-    call DestroyTimer(GetExpiredTimer())
-    call FFLoadTrace_Mark("Startup reached the 2-second timer; gameplay triggers are running.")
-endfunction
 
 function GSI_Blocked takes unit u returns boolean
     local integer i = 0
@@ -28285,8 +28095,6 @@ function Trig_Vote_Timer_Expires_Actions takes nothing returns nothing
                 call ConditionalTriggerExecute(gg_trg_Start_game)
             else
                 if ( Trig_Vote_Timer_Expires_Func002Func008Func001Func002C() ) then
-                    call EnableTrigger(gg_trg_Start_SD)
-                    call ConditionalTriggerExecute(gg_trg_Start_SD)
                     call ConditionalTriggerExecute(gg_trg_Start_game)
                 else
                     if FFModePrivateVote then
@@ -29102,9 +28910,6 @@ endfunction
 
 function Trig_KOTH_Income_Func014A takes nothing returns nothing
     call AdjustPlayerStateBJ(( udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-    set FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] = FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] + udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add
-    // RC6BOT TELEMETRY END
     set udg_KOTH_Gold_Division_To_Add=0
 endfunction
 
@@ -29217,16 +29022,6 @@ function Trig_KOTH_Hill_Dies_Func002C takes nothing returns boolean
     return true
 endfunction
 
-function FF_st_Slot takes player p returns integer
-    local integer s = GetPlayerId(p) + 1
-    if s >= 1 and s <= 12 then
-        return s
-    endif
-    if s > 12 and s <= bj_MAX_PLAYER_SLOTS then
-        return SoloSub_playerForObserver[s - 1]
-    endif
-    return 0
-endfunction
 
 function Trig_KOTH_Hill_Dies_Actions takes nothing returns nothing
     local integer previousTeam = udg_KOTH_Team_Number
@@ -55955,10 +55750,6 @@ endfunction
 
 function Trig_BASE_collect_gold_Func012Func003A takes nothing returns nothing
     call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / udg_activeplayersinteam ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-    set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / udg_activeplayersinteam
-    set FF_st_inhIn[GetConvertedPlayerId(GetEnumPlayer())] = FF_st_inhIn[GetConvertedPlayerId(GetEnumPlayer())] + udg_leaving_gold[udg_temp_playernumber] / udg_activeplayersinteam
-    // RC6BOT TELEMETRY END
 endfunction
 
 function Trig_BASE_collect_gold_Func012C takes nothing returns boolean
@@ -56071,36 +55862,20 @@ function Trig_BASE_destroy_Actions takes nothing returns nothing
     if ( Trig_BASE_destroy_Func012C() ) then
         call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_1)), ( "You receive " + ( I2S(( udg_leaving_gold[udg_temp_playernumber] / 2 )) + " Gold." ) ))
         call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-        set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
-        set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber] / 2
-    // RC6BOT TELEMETRY END
         call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_2)), ( "You receive " + ( I2S(( udg_leaving_gold[udg_temp_playernumber] / 2 )) + " Gold." ) ))
         call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-        set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
-        set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber] / 2
-    // RC6BOT TELEMETRY END
     else
         call DoNothing()
     endif
     if ( Trig_BASE_destroy_Func013C() ) then
         call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_1)), ( "You receive " + ( I2S(udg_leaving_gold[udg_temp_playernumber]) + " Gold." ) ))
         call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-        set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
-        set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber]
-    // RC6BOT TELEMETRY END
     else
         call DoNothing()
     endif
     if ( Trig_BASE_destroy_Func014C() ) then
         call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_2)), ( "You receive " + ( I2S(udg_leaving_gold[udg_temp_playernumber]) + " Gold." ) ))
         call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-        set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
-        set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber]
-    // RC6BOT TELEMETRY END
     else
         call DoNothing()
     endif
@@ -61256,36 +61031,20 @@ function Trig_player_destroyed_Actions takes nothing returns nothing
         if ( Trig_player_destroyed_Func016Func003C() ) then
             call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_1)), ( "You receive " + ( I2S(( udg_leaving_gold[udg_temp_playernumber] / 2 )) + " Gold." ) ))
             call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-            set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
-            set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber] / 2
-    // RC6BOT TELEMETRY END
             call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_2)), ( "You receive " + ( I2S(( udg_leaving_gold[udg_temp_playernumber] / 2 )) + " Gold." ) ))
             call AdjustPlayerStateBJ(( udg_leaving_gold[udg_temp_playernumber] / 2 ), ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-            set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber] / 2
-            set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber] / 2
-    // RC6BOT TELEMETRY END
         else
             call DoNothing()
         endif
         if ( Trig_player_destroyed_Func016Func004C() ) then
             call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_1)), ( "You receive " + ( I2S(udg_leaving_gold[udg_temp_playernumber]) + " Gold." ) ))
             call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_1), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-            set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
-            set FF_st_inhIn[udg_temp_playernumber_ally_1] = FF_st_inhIn[udg_temp_playernumber_ally_1] + udg_leaving_gold[udg_temp_playernumber]
-    // RC6BOT TELEMETRY END
         else
             call DoNothing()
         endif
         if ( Trig_player_destroyed_Func016Func005C() ) then
             call DisplayTextToForce(GetForceOfPlayer(ConvertedPlayer(udg_temp_playernumber_ally_2)), ( "You receive " + ( I2S(udg_leaving_gold[udg_temp_playernumber]) + " Gold." ) ))
             call AdjustPlayerStateBJ(udg_leaving_gold[udg_temp_playernumber], ConvertedPlayer(udg_temp_playernumber_ally_2), PLAYER_STATE_RESOURCE_GOLD)
-    // RC6BOT TELEMETRY BEGIN
-            set FF_st_inhOut[udg_temp_playernumber] = FF_st_inhOut[udg_temp_playernumber] + udg_leaving_gold[udg_temp_playernumber]
-            set FF_st_inhIn[udg_temp_playernumber_ally_2] = FF_st_inhIn[udg_temp_playernumber_ally_2] + udg_leaving_gold[udg_temp_playernumber]
-    // RC6BOT TELEMETRY END
         else
             call DoNothing()
         endif
@@ -61736,156 +61495,15 @@ function Trig_END_Func001C takes nothing returns boolean
     return true
 endfunction
 
-function FFEnd_BlockOf takes integer slot returns integer
-    if udg_mode_6v6 then
-        if ( slot >= 1 and slot <= 3 ) or ( slot >= 10 and slot <= 12 ) then
-            return 1
-        endif
-        return 2
-    endif
-    return ( slot - 1 ) / 3 + 1
-endfunction
 
-function FFEnd_ParticipantCount takes nothing returns integer
-    local integer p= 1
-    local integer n= 0
-    loop
-        exitwhen p > 12
-        if FF_gr_participant[p] then
-            set n=n + 1
-        endif
-        set p=p + 1
-    endloop
-    return n
-endfunction
 
-function FFEnd_BlockCount takes nothing returns integer
-    local integer p
-    local integer b= 1
-    local integer n= 0
-    local boolean any
-    loop
-        exitwhen b > 4
-        set any=false
-        set p=1
-        loop
-            exitwhen p > 12
-            if FF_gr_participant[p] and FFEnd_BlockOf(p) == b then
-                set any=true
-            endif
-            set p=p + 1
-        endloop
-        if any then
-            set n=n + 1
-        endif
-        set b=b + 1
-    endloop
-    return n
-endfunction
 
-function FFEnd_AliveCount takes nothing returns integer
-    local integer p= 1
-    local integer n= 0
-    loop
-        exitwhen p > 12
-        if udg_player_active[p] then
-            set n=n + 1
-        endif
-        set p=p + 1
-    endloop
-    return n
-endfunction
 
-function FFEnd_LastAlive takes nothing returns integer
-    local integer p= 1
-    loop
-        exitwhen p > 12
-        if udg_player_active[p] then
-            return p
-        endif
-        set p=p + 1
-    endloop
-    return 0
-endfunction
 
-function FFEnd_FlagAll takes integer winner returns nothing
-    local integer p= 1
-    loop
-        exitwhen p > 12
-        if winner == 0 then
-            call MMD_FlagPlayer(ConvertedPlayer(p) , MMD_FLAG_DRAWER)
-        elseif p == winner then
-            call MMD_FlagPlayer(ConvertedPlayer(p) , MMD_FLAG_WINNER)
-        else
-            call MMD_FlagPlayer(ConvertedPlayer(p) , MMD_FLAG_LOSER)
-        endif
-        call TriggerSleepAction(0.25)
-        set p=p + 1
-    endloop
-endfunction
 
-function FFEnd_IsUserSlot takes integer p returns boolean
-    return GetPlayerSlotState(ConvertedPlayer(p)) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(ConvertedPlayer(p)) == MAP_CONTROL_USER
-endfunction
 
-function FFEnd_Resolve takes nothing returns boolean
-    local integer winner
-    local integer alive
-    local integer p
-    if FFEnd_done then
-        return true
-    endif
-    if FFEnd_ParticipantCount() < 2 then
-        // Not a real match; leave the original logic alone.
-        return false
-    endif
-    if FFEnd_BlockCount() >= 2 then
-        // Two or more blocks took part, so the block branches can express this result
-        // correctly. Nothing to override.
-        return false
-    endif
-    set alive=FFEnd_AliveCount()
-    if alive > 1 then
-        // Still contested. The block branches would crown the shared block right now, so
-        // suppress them without declaring anything.
-        return true
-    endif
-    set FFEnd_done=true
-    set winner=FFEnd_LastAlive()
-    // Published before the sleeps below, so GameResult writes the verdict to ff_result.txt
-    // on its next poll rather than ~20s later.
-    set FFEnd_winnerSlot=winner
-    set FFEnd_settled=true
-    if winner == 0 then
-        call DisplayTextToForce(udg_all_players, "|cffffcc00Every base fell - the game is a draw.|r")
-    else
-        call DisplayTextToForce(udg_all_players, "|cff32cd32" + udg_orig_player_name[winner] + " wins!|r")
-        call SetPlayerStateBJ(ConvertedPlayer(winner), PLAYER_STATE_GAME_RESULT, 0)
-    endif
-    call PlaySoundBJ(gg_snd_HumanX1)
-    call FFEnd_FlagAll(winner)
-    // Same tail as the original paths: let the MMD queue finish, then signal the host bot.
-    call TriggerSleepAction(17.25)
-    call s__File_close(s__File_write(s__File_open("wc3mt.txt") , "wc3mt-GameEnd"))
-    set p=1
-    loop
-        exitwhen p > 12
-        if FFEnd_IsUserSlot(p) then
-            if p == winner then
-                call CustomVictoryBJ(ConvertedPlayer(p), true, true)
-            else
-                call CustomDefeatBJ(ConvertedPlayer(p), "TRIGSTR_10301")
-            endif
-        endif
-        set p=p + 1
-    endloop
-    return true
-endfunction
 
 function Trig_END_Actions takes nothing returns nothing
-    if FFEnd_Resolve() then
-        return
-    endif
     if ( Trig_END_Func001C() ) then
         // TEAM 1 WINS
         if ( Trig_END_Func001Func007C() ) then
@@ -62682,27 +62300,16 @@ function FF_Editor_InitTriggers takes nothing returns nothing
 endfunction
 
 function FF_Editor_RunInitialization takes nothing returns nothing
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before FFGS_InitSettings")
     call FFGS_InitSettings()
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_Unit_Indexer")
     call ConditionalTriggerExecute(gg_trg_Unit_Indexer)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_W3MMD_Library")
     call ConditionalTriggerExecute(gg_trg_W3MMD_Library)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_init")
     call ConditionalTriggerExecute(gg_trg_init)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_set_hero_numbers")
     call ConditionalTriggerExecute(gg_trg_set_hero_numbers)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_GM_set_messages")
     call ConditionalTriggerExecute(gg_trg_GM_set_messages)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_Initialization")
     call ConditionalTriggerExecute(gg_trg_Initialization)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_set_spawn_variables")
     call ConditionalTriggerExecute(gg_trg_set_spawn_variables)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_set_spawn_rates")
     call ConditionalTriggerExecute(gg_trg_set_spawn_rates)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before ConditionalTriggerExecute gg_trg_set_base")
     call ConditionalTriggerExecute(gg_trg_set_base)
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before FFGS_SchedulerStart")
     call FFGS_SchedulerStart()
     // v63: the base tech gate (BUT_*) and the base tech menu (BTM_*) are
     // DISABLED. Base upgrade buttons behave exactly as they did before v55.
@@ -62724,1649 +62331,121 @@ function FF_Editor_RunInitialization takes nothing returns nothing
     //
     // call BUT_Init()
     // call BTM_Init()
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: before LGOLD_Init")
     call LGOLD_Init()
-    call FFLoadTrace_Mark("FF_Editor_RunInitialization: completed")
 endfunction
 
-function FF_Pad2 takes integer n returns string
-    if n < 10 then
-        return "0" + I2S(n)
-    endif
-    return I2S(n)
-endfunction
 
-function FF_Elapsed takes nothing returns string
-    local integer total = R2I(TimerGetElapsed(FF_gameTimer))
-    return FF_Pad2(total / 60) + ":" + FF_Pad2(ModuloInteger(total, 60))
-endfunction
 
-function FF_Sanitize takes string s returns string
-    local string out = ""
-    local integer i = 0
-    local integer n
-    local string c
-    if s == null then
-        return ""
-    endif
-    set n = StringLength(s)
-    loop
-        exitwhen i >= n
-        set c = SubString(s, i, i + 1)
-        if c == "," or c == ";" or c == "\n" or c == "\r" then
-            set out = out + " "
-        elseif c == "\"" then
-            set out = out + "'"
-        else
-            set out = out + c
-        endif
-        set i = i + 1
-    endloop
-    return out
-endfunction
 
-function FF_UnitAlive takes unit u returns boolean
-    return u != null and GetUnitTypeId(u) != 0 and not IsUnitType(u, UNIT_TYPE_DEAD)
-endfunction
 
-function FF_kl_LocalClientIsBot takes nothing returns boolean
-    local string name= GetPlayerName(GetLocalPlayer())
-    if name == null then
-        return false
-    endif
-    return FF_EndsWith(name , "Vertical#11718") or FF_EndsWith(name , "Industry#11190") or FF_EndsWith(name , "BryanBoitano#1725") or FF_EndsWith(name , "LustyPuppy#1929") or FF_EndsWith(name , "CoralShark#113567") or FF_EndsWith(name , "MangoThief#115445")
-endfunction
 
-function FF_kl_OwnerName takes integer slot returns string
-    if slot >= 1 and slot <= 12 and udg_orig_player_name[slot] != "" then
-        return FF_Sanitize(udg_orig_player_name[slot])
-    endif
-    // 0 is the herokill rows' "not a player slot" sentinel; anything out of range would
-    // index Player(-1), so answer without touching the player list.
-    if slot < 1 or slot > bj_MAX_PLAYER_SLOTS then
-        return ""
-    endif
-    return FF_Sanitize(GetPlayerName(Player(slot - 1)))
-endfunction
 
-function FF_DataFile takes string base returns string
-    if FF_LocalClientIsBot() then
-        return base + "_" + FF_gameToken + ".txt"
-    endif
-    return base + ".txt"
-endfunction
 
-function FF_kl_Flush takes nothing returns nothing
-    local integer i = 1
-    if not FF_LocalClientIsBot() then
-        return
-    endif
-    call PreloadGenClear()
-    call PreloadGenStart()
-    call Preload("owner,unit,hero,unit_died,hero_died")
-    loop
-        exitwhen i > 12
-        if udg_unit_kills[i] != 0 or udg_hero_kills[i] != 0 or udg_unit_deaths[i] != 0 or udg_hero_deaths[i] != 0 then
-            call Preload(FF_Sanitize(GetPlayerName(Player(i - 1))) + "," + I2S(udg_unit_kills[i]) + "," + I2S(udg_hero_kills[i]) + "," + I2S(udg_unit_deaths[i]) + "," + I2S(udg_hero_deaths[i]))
-        endif
-        set i = i + 1
-    endloop
-    set i = 0
-    loop
-        exitwhen i >= FF_kl_feedN
-        call Preload(FF_kl_feed[i])
-        set i = i + 1
-    endloop
-    call PreloadGenEnd(FF_DataFile("ff_killlog"))
-endfunction
 
-function FF_kl_OnFlushTick takes nothing returns nothing
-    if FF_kl_done or not FF_kl_dirty then
-        return
-    endif
-    set FF_kl_dirty = false
-    call FF_kl_Flush()
-endfunction
 
-function FF_kl_MapCounts takes unit victim, unit killer returns boolean
-    local integer k
-    if killer == null or not IsUnitEnemy(killer, GetOwningPlayer(victim)) or IsUnitIllusion(victim) then
-        return false
-    endif
-    if GetUnitTypeId(killer) == 0 then
-        return false
-    endif
-    set k = GetPlayerId(GetOwningPlayer(killer))
-    return k >= 0 and k < 12
-endfunction
 
-function FF_kl_OnDeath takes nothing returns nothing
-    local unit victim = GetTriggerUnit()
-    local unit killer = GetKillingUnit()
-    // The counters themselves are the map's; any death may have moved them, and the next tick
-    // reads them (the map's trigger has long run by then, whatever the trigger order).
-    set FF_kl_dirty = true
-    // Hero kills are rare enough to record individually â€” only those the map counts, so the feed
-    // agrees with the hero column. The killer may itself be a footman, not a hero, so its actual
-    // name is logged.
-    if not FF_kl_done and IsUnitType(victim, UNIT_TYPE_HERO) and FF_kl_feedN < 400 and FF_kl_MapCounts(victim, killer) then
-        set FF_kl_feed[FF_kl_feedN] = "herokill," + FF_Elapsed() + "," + FF_Sanitize(GetPlayerName(GetOwningPlayer(killer))) + "," + FF_Sanitize(GetUnitName(killer)) + "," + FF_Sanitize(GetPlayerName(GetOwningPlayer(victim))) + "," + FF_Sanitize(GetUnitName(victim))
-        set FF_kl_feedN = FF_kl_feedN + 1
-    endif
-    set victim = null
-    set killer = null
-endfunction
 
-function FF_KillLog_Init takes nothing returns nothing
-    local trigger t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddAction(t, function FF_kl_OnDeath)
-    call TimerStart(CreateTimer(), 30.0, true, function FF_kl_OnFlushTick)
-    // Write the header immediately so the file exists from match start.
-    call FF_kl_Flush()
-    set t = null
-endfunction
 
-function FF_gr_SideCount takes nothing returns integer
-    if udg_mode_6v6 then
-        return 2
-    endif
-    return 4
-endfunction
 
-function FF_gr_SideLabel takes integer side returns string
-    if udg_mode_6v6 then
-        if side == 1 then
-            return "west"
-        endif
-        return "east"
-    endif
-    return "team" + I2S(side)
-endfunction
 
-function FF_gr_IsMember takes integer slot,integer side returns boolean
-    local boolean west
-    if udg_mode_6v6 then
-        set west=( slot >= 1 and slot <= 3 ) or ( slot >= 10 and slot <= 12 )
-        if side == 1 then
-            return west
-        endif
-        return not west
-    endif
-    return ( slot - 1 ) / 3 + 1 == side
-endfunction
 
-function FF_gr_SideLabelOf takes integer slot returns string
-    local integer s= 1
-    loop
-        exitwhen s > FF_gr_SideCount()
-        if FF_gr_IsMember(slot , s) then
-            return FF_gr_SideLabel(s)
-        endif
-        set s=s + 1
-    endloop
-    return "-"
-endfunction
 
-function FF_gr_SideParticipated takes integer side returns boolean
-    local integer p= 1
-    loop
-        exitwhen p > 12
-        if FF_gr_IsMember(p , side) and FF_gr_participant[p] then
-            return true
-        endif
-        set p=p + 1
-    endloop
-    return false
-endfunction
 
-function FF_gr_SideAlive takes integer side returns boolean
-    local integer p= 1
-    loop
-        exitwhen p > 12
-        if FF_gr_IsMember(p , side) and udg_player_active[p] then
-            return true
-        endif
-        set p=p + 1
-    endloop
-    return false
-endfunction
 
-function FF_gr_Name takes integer slot returns string
-    return FF_Sanitize(udg_orig_player_name[slot])
-endfunction
 
-function FF_gr_RosterOf takes integer side returns string
-    local string out= ""
-    local integer p= 1
-    loop
-        exitwhen p > 12
-        if FF_gr_participant[p] and ( side < 0 or FF_gr_IsMember(p , side) ) then
-            if StringLength(out) > 0 then
-                set out=out + ";"
-            endif
-            set out=out + I2S(p) + ":" + FF_gr_Name(p)
-        endif
-        set p=p + 1
-    endloop
-    return out
-endfunction
 
-function FF_gr_AddEvent takes string line returns nothing
-    if FF_gr_eventN < FF_GR_EVENT_MAX then
-        set FF_gr_events[FF_gr_eventN] = line
-        set FF_gr_eventN = FF_gr_eventN + 1
-    endif
-endfunction
 
-function FF_gr_PreloadRoster takes nothing returns nothing
-    local string head = "roster,"
-    local string cur = head
-    local string e
-    local integer p = 1
-    loop
-        exitwhen p > 12
-        if FF_gr_participant[p] then
-            set e = I2S(p) + ":" + FF_gr_Name(p)
-            if cur != head and StringLength(cur) + 1 + StringLength(e) > FF_PRELOAD_MAX then
-                call Preload(cur)
-                set head = "roster_more,"
-                set cur = head
-            endif
-            if cur == head then
-                set cur = cur + e
-            else
-                set cur = cur + ";" + e
-            endif
-        endif
-        set p = p + 1
-    endloop
-    call Preload(cur)
-endfunction
 
-function FF_us_PreloadEvents takes nothing returns nothing
-    local integer i = 0
-    loop
-        exitwhen i >= FF_us_eventN
-        call Preload(FF_us_events[i])
-        set i = i + 1
-    endloop
-endfunction
 
-function FF_SideLabel takes integer side returns string
-    if udg_mode_6v6 then
-        if side == 1 then
-            return "west"
-        endif
-        return "east"
-    endif
-    return "team" + I2S(side)
-endfunction
 
-function FF_us_PreloadShared takes nothing returns nothing
-    local integer side = 1
-    if FF_us_modes != null then
-        call Preload(FF_us_modes)
-    endif
-    loop
-        exitwhen side > 4
-        if FF_us_kothHold[side] > 0 or FF_us_kothCaps[side] > 0 then
-            call Preload("koth," + FF_SideLabel(side) + ",hold=" + I2S(FF_us_kothHold[side]) + ",caps=" + I2S(FF_us_kothCaps[side]))
-        endif
-        set side = side + 1
-    endloop
-endfunction
 
-function FF_us_RowKey takes integer slot returns integer
-    return 5000 + slot
-endfunction
 
-function FF_us_PreloadSlot takes integer slot returns nothing
-    local integer i = 0
-    loop
-        exitwhen i >= FF_us_rowN[slot]
-        call Preload(LoadStr(FF_us_ht, FF_us_RowKey(slot), i))
-        set i = i + 1
-    endloop
-endfunction
 
-function FF_gr_Flush takes nothing returns nothing
-    local integer i = 0
-    local string now = FF_Elapsed()
-    call PreloadGenClear()
-    call PreloadGenStart()
-    // The file's format: bumped when a key's meaning changes (that key also gets a new name); otherwise records and
-    // keys are only ever added (docs/result-contract.md). A file without this row is format 1.
-    call Preload("format,2")
-    if udg_mode_6v6 then
-        call Preload("mode,6v6")
-    else
-        call Preload("mode,ffa")
-    endif
-    call FF_gr_PreloadRoster()
-    loop
-        exitwhen i >= FF_gr_eventN
-        call Preload(FF_gr_events[i])
-        set i = i + 1
-    endloop
-    call FF_us_PreloadEvents()
-    set i = 1
-    loop
-        exitwhen i > 12
-        if FF_gr_participant[i] and FF_st_row[i] != null then
-            call Preload("stats," + I2S(i) + ",t=" + now + FF_st_row[i])
-            call Preload("stats," + I2S(i) + ",t=" + now + FF_st_row2[i])
-        endif
-        set i = i + 1
-    endloop
-    call FF_us_PreloadShared()
-    set i = 1
-    loop
-        exitwhen i > 12
-        if FF_gr_participant[i] then
-            call FF_us_PreloadSlot(i)
-        endif
-        set i = i + 1
-    endloop
-    if FF_gr_gameendRow != null then
-        call Preload(FF_gr_gameendRow)
-    endif
-    call PreloadGenEnd(FF_DataFile("ff_result"))
-endfunction
 
-function FF_st_HeroLevel takes integer slot returns integer
-    local group g = CreateGroup()
-    local unit u
-    local integer best = 0
-    call GroupEnumUnitsOfPlayer(g, Player(slot - 1), null)
-    loop
-        set u = FirstOfGroup(g)
-        exitwhen u == null
-        call GroupRemoveUnit(g, u)
-        if IsUnitType(u, UNIT_TYPE_HERO) and not IsUnitIllusion(u) and GetHeroLevel(u) > best then
-            set best = GetHeroLevel(u)
-        endif
-    endloop
-    call DestroyGroup(g)
-    set g = null
-    return best
-endfunction
 
-function FF_st_Freeze takes integer slot, integer state returns nothing
-    set FF_st_heroLvl[slot] = IMaxBJ(FF_st_heroLvl[slot], FF_st_HeroLevel(slot))
-    set FF_st_state[slot] = state
-endfunction
 
-function FF_st_Track takes integer slot, boolean active returns boolean
-    if FF_st_state[slot] != FF_ST_ALIVE then
-        return false
-    endif
-    if GetPlayerSlotState(Player(slot - 1)) == PLAYER_SLOT_STATE_LEFT and not SoloSub_IsEffectivePlayer(Player(slot - 1)) then
-        call FF_st_Freeze(slot, FF_ST_LEFT)
-        set FF_st_leftT[slot] = FF_Elapsed()
-        return true
-    endif
-    if not active then
-        call FF_st_Freeze(slot, FF_ST_OUT)
-        return true
-    endif
-    return false
-endfunction
 
-function FF_kl_Final takes nothing returns nothing
-    if FF_kl_done then
-        return
-    endif
-    set FF_kl_done = true
-    set FF_kl_dirty = false
-    call FF_kl_Flush()
-endfunction
 
-function FF_us_RefreshShared takes nothing returns boolean
-    local boolean changed = FF_us_sharedDirty
-    set FF_us_sharedDirty = false
-    return changed
-endfunction
 
-function FF_st_V takes string key, integer v returns nothing
-    set FF_st_key[FF_st_n] = key
-    set FF_st_val[FF_st_n] = v
-    set FF_st_n = FF_st_n + 1
-endfunction
 
-function FF_st_Tech takes integer slot, integer techid returns integer
-    return GetPlayerTechCount(Player(slot - 1), techid, true)
-endfunction
 
-function FF_st_RaceLevel takes integer slot returns integer
-    return IMaxBJ(IMaxBJ(FF_st_Tech(slot, 'Robs'), FF_st_Tech(slot, 'Rugf')), IMaxBJ(FF_st_Tech(slot, 'Rhan'), FF_st_Tech(slot, 'R004')))
-endfunction
 
-function FF_st_Collect takes integer slot returns nothing
-    local player p = Player(slot - 1)
-    local integer d = slot * 3
-    set FF_st_n = 0
-    call FF_st_V(",given=", GetPlayerScore(p, PLAYER_SCORE_GOLD_GIVEN) + FF_st_poolOut[slot])
-    call FF_st_V(",recv=", GetPlayerScore(p, PLAYER_SCORE_GOLD_RECEIVED) + FF_st_poolIn[slot])
-    call FF_st_V(",pool_out=", FF_st_poolOut[slot])
-    call FF_st_V(",pool_in=", FF_st_poolIn[slot])
-    call FF_st_V(",inh_out=", FF_st_inhOut[slot])
-    call FF_st_V(",inh_in=", FF_st_inhIn[slot])
-    call FF_st_V(",mined=", GetPlayerScore(p, PLAYER_SCORE_GOLD_MINED_TOTAL))
-    call FF_st_V(",tech=", GetPlayerScore(p, PLAYER_SCORE_TECH_PERCENT))
-    call FF_st_V(",ukills=", udg_unit_kills[slot])
-    call FF_st_V(",hkills=", udg_hero_kills[slot])
-    call FF_st_V(",razed=", GetPlayerScore(p, PLAYER_SCORE_STRUCT_RAZED))
-    call FF_st_V(",food=", GetPlayerScore(p, PLAYER_SCORE_FOOD_MAXUSED))
-    call FF_st_V(",koth_gold=", FF_st_kothGold[slot])
-    call FF_st_V(",hero_lvl=", FF_st_heroLvl[slot])
-    set FF_st_split = FF_st_n
-    call FF_st_V(",deny_own=", FF_st_denyOwn[slot])
-    call FF_st_V(",deny_ally=", FF_st_denyAlly[slot])
-    call FF_st_V(",tm_casts=", FF_st_tmCasts[slot])
-    call FF_st_V(",tm_hits=", FF_st_tmHits[slot])
-    call FF_st_V(",tm_denied=", FF_st_tmDenied[slot])
-    call FF_st_V(",tm_saves=", FF_st_tmSaves[slot])
-    call FF_st_V(",creeps=", FF_st_creeps[slot])
-    call FF_st_V(",creep_gold=", FF_st_creepGold[slot])
-    call FF_st_V(",atk_lvl=", FF_st_Tech(slot, 'Rhme'))
-    call FF_st_V(",def_lvl=", FF_st_Tech(slot, 'Rhar'))
-    call FF_st_V(",race_lvl=", FF_st_RaceLevel(slot))
-    call FF_st_V(",team_res=", FF_st_teamRes[slot])
-    if FF_STATS_DAMAGE then
-        call FF_st_V(",dmg_out=", FF_st_dmg[d + FF_ST_DMG_OUT])
-        call FF_st_V(",dmg_bld=", FF_st_dmg[d + FF_ST_DMG_BLD])
-        call FF_st_V(",dmg_in=", FF_st_dmg[d + FF_ST_DMG_IN])
-    endif
-    set p = null
-endfunction
 
-function FF_st_Sig takes integer slot returns integer
-    local integer h = FF_st_state[slot]
-    local integer i = 0
-    loop
-        exitwhen i >= FF_st_n
-        set h = h * 31 + FF_st_val[i]
-        set i = i + 1
-    endloop
-    return h
-endfunction
 
-function FF_st_StateField takes integer slot returns string
-    if FF_st_state[slot] == FF_ST_ALIVE then
-        return ",state=alive"
-    elseif FF_st_state[slot] == FF_ST_OUT then
-        return ",state=out"
-    endif
-    return ",state=left,left_t=" + FF_st_leftT[slot]
-endfunction
 
-function FF_st_Join takes integer from, integer to returns string
-    local string s = ""
-    local integer i = from
-    loop
-        exitwhen i >= to
-        set s = s + FF_st_key[i] + I2S(FF_st_val[i])
-        set i = i + 1
-    endloop
-    return s
-endfunction
 
-function FF_st_Refresh takes integer slot returns boolean
-    local integer sig
-    if FF_st_state[slot] == FF_ST_ALIVE then
-        set FF_st_heroLvl[slot] = IMaxBJ(FF_st_heroLvl[slot], FF_st_HeroLevel(slot))
-    endif
-    call FF_st_Collect(slot)
-    set sig = FF_st_Sig(slot)
-    if FF_st_row[slot] != null and sig == FF_st_sig[slot] then
-        return false
-    endif
-    set FF_st_sig[slot] = sig
-    set FF_st_row[slot] = FF_st_StateField(slot) + FF_st_Join(0, FF_st_split)
-    set FF_st_row2[slot] = FF_st_Join(FF_st_split, FF_st_n)
-    return true
-endfunction
 
-function FF_us_CountKey takes integer slot, integer cat returns integer
-    return slot * 8 + cat
-endfunction
 
-function FF_us_OrderKey takes integer slot, integer cat returns integer
-    return 1000 + slot * 8 + cat
-endfunction
 
-function FF_us_EmitRow takes integer slot, string row returns nothing
-    call SaveStr(FF_us_ht, FF_us_RowKey(slot), FF_us_rowN[slot], row)
-    set FF_us_rowN[slot] = FF_us_rowN[slot] + 1
-endfunction
 
-function FF_us_Append takes integer slot, string head, string cur, string entry, string sep returns string
-    if cur == null then
-        return head + entry
-    endif
-    if StringLength(cur) + StringLength(sep) + StringLength(entry) > FF_PRELOAD_MAX then
-        call FF_us_EmitRow(slot, cur)
-        return head + entry
-    endif
-    return cur + sep + entry
-endfunction
 
-function FF_us_Char takes integer c returns string
-    if c < 32 or c > 126 then
-        return "?"
-    endif
-    return SubString(FF_us_chars, c - 32, c - 31)
-endfunction
 
-function FF_us_Id2S takes integer id returns string
-    return FF_us_Char(id / 16777216) + FF_us_Char(ModuloInteger(id / 65536, 256)) + FF_us_Char(ModuloInteger(id / 256, 256)) + FF_us_Char(ModuloInteger(id, 256))
-endfunction
 
-function FF_us_Entry takes integer slot, integer cat, integer oid returns string
-    local string name
-    if cat == FF_US_CMD then
-        set name = SubString(FF_us_cmd[oid], 1, StringLength(FF_us_cmd[oid]))
-    else
-        set name = FF_us_Id2S(oid)
-    endif
-    return name + "=" + I2S(LoadInteger(FF_us_ht, FF_us_CountKey(slot, cat), oid))
-endfunction
 
-function FF_us_HeroSlotKey takes integer slot, integer h returns integer
-    return 6000 + slot * 16 + h
-endfunction
 
-function FF_us_BuildRows takes integer slot returns nothing
-    local integer cat = 1
-    local integer key
-    local integer i
-    local integer h
-    local integer oid
-    local integer n
-    local string head
-    local string cur
-    set FF_us_rowN[slot] = 0
-    loop
-        exitwhen cat > FF_US_CATS
-        set key = FF_us_CountKey(slot, cat)
-        if FF_us_n[key] > 0 then
-            set head = "use," + I2S(slot) + "," + FF_us_catName[cat] + ","
-            set cur = null
-            set i = 0
-            loop
-                exitwhen i >= FF_us_n[key]
-                set oid = LoadInteger(FF_us_ht, FF_us_OrderKey(slot, cat), i)
-                set cur = FF_us_Append(slot, head, cur, FF_us_Entry(slot, cat, oid), ",")
-                set i = i + 1
-            endloop
-            call FF_us_EmitRow(slot, cur)
-        endif
-        set cat = cat + 1
-    endloop
-    set h = 0
-    loop
-        exitwhen h >= FF_us_heroN[slot]
-        set key = FF_us_HeroSlotKey(slot, h)
-        set n = LoadInteger(FF_us_ht, key, -3)
-        if n > 0 then
-            set head = "skills," + I2S(slot) + "," + FF_us_Id2S(LoadInteger(FF_us_ht, key, -1)) + ","
-            set cur = null
-            set i = 0
-            loop
-                exitwhen i >= n
-                set cur = FF_us_Append(slot, head, cur, FF_us_Id2S(LoadInteger(FF_us_ht, key, i)), ";")
-                set i = i + 1
-            endloop
-            call FF_us_EmitRow(slot, cur)
-        endif
-        set h = h + 1
-    endloop
-endfunction
 
-function FF_us_Refresh takes integer slot returns boolean
-    if not FF_us_dirty[slot] then
-        return false
-    endif
-    set FF_us_dirty[slot] = false
-    call FF_us_BuildRows(slot)
-    return true
-endfunction
 
-function FF_gr_RefreshStats takes nothing returns boolean
-    local boolean changed = FF_us_RefreshShared()
-    local integer p = 1
-    loop
-        exitwhen p > 12
-        if FF_gr_participant[p] then
-            if FF_st_Refresh(p) then
-                set changed = true
-            endif
-            if FF_us_Refresh(p) then
-                set changed = true
-            endif
-        endif
-        set p = p + 1
-    endloop
-    return changed
-endfunction
 
-function FF_gr_Poll takes nothing returns nothing
-    local string now
-    local boolean changed= false
-    local integer p= 1
-    local integer s= 1
-    local integer sideCount
-    local integer participated= 0
-    local integer alive= 0
-    local integer lastAlive= 0
-    local integer place
-    local integer i
-    if FF_gr_ended then
-        return
-    endif
-    set now=FF_Elapsed()
-    // 1. participant tracking + individual eliminations. A player is "out" the moment the map
-    //    flips their player_active off (their base died) â€” the same signal END reads.
-    loop
-        exitwhen p > 12
-        if udg_player_active[p] then
-            if not FF_gr_participant[p] then
-                // First sighting: flush now so mode + roster reach the file at match start,
-                // not only once somebody is eliminated.
-                set FF_gr_participant[p]=true
-                set changed=true
-            endif
-        elseif FF_gr_participant[p] and not FF_gr_eliminated[p] then
-            set FF_gr_eliminated[p]=true
-            call FF_gr_AddEvent("out," + now + "," + I2S(p) + "," + FF_gr_SideLabelOf(p) + "," + FF_gr_Name(p))
-            // Kept so a collapsed-block game can still emit a placement table.
-            set FF_gr_outOrder[FF_gr_outN]=p
-            set FF_gr_outN=FF_gr_outN + 1
-            set changed=true
-        endif
-        if FF_gr_participant[p] then
-            if FF_st_Track(p, udg_player_active[p]) then
-                set changed=true
-            endif
-            if FF_rxRosterName[p] != FF_gr_Name(p) then
-                set FF_rxRosterName[p]=FF_gr_Name(p)
-                set changed=true
-            endif
-        endif
-        set p=p + 1
-    endloop
-    // 1b. If FFEnd settled the match at player level (every participant shared one slot
-    //     block, so no side could win), report exactly that verdict instead of re-deriving
-    //     one from a side model with the same blind spot. Placements: winner first, then the
-    //     eliminated players in reverse order of leaving.
-    if FFEnd_settled then
-        set FF_gr_ended=true
-        call PauseTimer(FF_gr_pollTimer)
-        set place=1
-        if FFEnd_winnerSlot > 0 then
-            call FF_gr_AddEvent("winner," + now + "," + FF_gr_SideLabelOf(FFEnd_winnerSlot) + "," + I2S(FFEnd_winnerSlot) + ":" + FF_gr_Name(FFEnd_winnerSlot))
-            call FF_gr_AddEvent("placement,1," + FF_gr_SideLabelOf(FFEnd_winnerSlot) + "," + I2S(FFEnd_winnerSlot) + ":" + FF_gr_Name(FFEnd_winnerSlot))
-            set place=2
-        endif
-        set i=FF_gr_outN - 1
-        loop
-            exitwhen i < 0
-            call FF_gr_AddEvent("placement," + I2S(place) + "," + FF_gr_SideLabelOf(FF_gr_outOrder[i]) + "," + I2S(FF_gr_outOrder[i]) + ":" + FF_gr_Name(FF_gr_outOrder[i]))
-            set place=place + 1
-            set i=i - 1
-        endloop
-        set FF_gr_gameendRow="gameend," + now
-        // Final kill-log write. The 30s dirty tick is unsynchronised with the end of the
-        // match, so without this the deciding fight is missing from the file. Must run
-        // before FF_gr_Flush: both share the single PreloadGen buffer.
-        call FF_kl_Final()
-        call FF_gr_RefreshStats()
-        call FF_gr_Flush()
-        return
-    endif
-    // 2. side bookkeeping.
-    set sideCount=FF_gr_SideCount()
-    loop
-        exitwhen s > sideCount
-        if FF_gr_SideParticipated(s) then
-            set participated=participated + 1
-        endif
-        if FF_gr_SideAlive(s) then
-            set alive=alive + 1
-            set lastAlive=s
-        elseif FF_gr_SideParticipated(s) and not FF_gr_sideDead[s] then
-            set FF_gr_sideDead[s]=true
-            set FF_gr_deathOrder[FF_gr_deathN]=s
-            set FF_gr_deathN=FF_gr_deathN + 1
-            call FF_gr_AddEvent("sidedead," + now + "," + FF_gr_SideLabel(s))
-            set changed=true
-        endif
-        set s=s + 1
-    endloop
-    // 3. clean victory: >=2 sides played, exactly one standing. Placement table: 1st = survivor,
-    //    then the dead sides in reverse death order (last to die finished 2nd).
-    if participated >= 2 and alive == 1 then
-        set FF_gr_ended=true
-        call PauseTimer(FF_gr_pollTimer)
-        // Final kill-log write; see the note on the FFEnd path above. FF_gr_Flush runs at
-        // the end of this function, after this call, so the shared PreloadGen buffer is
-        // never interleaved.
-        call FF_kl_Final()
-        call FF_gr_AddEvent("winner," + now + "," + FF_gr_SideLabel(lastAlive) + "," + FF_gr_RosterOf(lastAlive))
-        call FF_gr_AddEvent("placement,1," + FF_gr_SideLabel(lastAlive) + "," + FF_gr_RosterOf(lastAlive))
-        set place=2
-        set i=FF_gr_deathN - 1
-        loop
-            exitwhen i < 0
-            call FF_gr_AddEvent("placement," + I2S(place) + "," + FF_gr_SideLabel(FF_gr_deathOrder[i]) + "," + FF_gr_RosterOf(FF_gr_deathOrder[i]))
-            set place=place + 1
-            set i=i - 1
-        endloop
-        set FF_gr_gameendRow="gameend," + now
-        set changed=true
-    endif
-    if changed then
-        call FF_gr_RefreshStats()
-        call FF_gr_Flush()
-    endif
-endfunction
 
-function FF_gr_OnStatsTick takes nothing returns nothing
-    if not FF_gr_ended and FF_gr_RefreshStats() then
-        call FF_gr_Flush()
-    endif
-endfunction
 
-function FF_GameResult_Init takes nothing returns nothing
-    set FF_gr_pollTimer = CreateTimer()
-    call TimerStart(FF_gr_pollTimer, 1.00, true, function FF_gr_Poll)
-    call TimerStart(CreateTimer(), 30.00, true, function FF_gr_OnStatsTick)
-    // Ensure the file exists from match start, even for an instantly-aborted game.
-    call FF_gr_Flush()
-endfunction
 
-function FF_oc_CanObserve takes player p returns boolean
-    if GetPlayerSlotState(p) != PLAYER_SLOT_STATE_PLAYING or GetPlayerController(p) != MAP_CONTROL_USER then
-        return false
-    endif
-    return GetPlayerTeam(p) == 4
-endfunction
 
-function FF_oc_IsActivePlayer takes integer pn returns boolean
-    local player p= Player(pn - 1)
-    return GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(p) == MAP_CONTROL_USER and GetPlayerTeam(p) != 4
-endfunction
 
-function FF_oc_NextActivePlayer takes integer pn returns integer
-    local integer step= 0
-    loop
-        exitwhen step >= 12
-        set pn=ModuloInteger(pn, 12) + 1
-        if FF_oc_IsActivePlayer(pn) then
-            return pn
-        endif
-        set step=step + 1
-    endloop
-    return pn
-endfunction
 
-function FF_oc_LivingHero takes integer pn returns unit
-    if pn < 1 or pn > 12 then
-        return null
-    endif
-    if FF_UnitAlive(udg_herO[pn]) then
-        return udg_herO[pn]
-    endif
-    return null
-endfunction
 
-function FF_oc_LivingAlliedHero takes integer pn returns unit
-    local integer n= 1
-    if pn < 1 or pn > 12 then
-        return null
-    endif
-    loop
-        exitwhen n > 12
-        if n != pn and IsPlayerAlly(Player(pn - 1), Player(n - 1)) and FF_oc_LivingHero(n) != null then
-            return FF_oc_LivingHero(n)
-        endif
-        set n=n + 1
-    endloop
-    return null
-endfunction
 
-function FF_oc_ResolveFocusHero takes integer pn returns unit
-    if FF_oc_LivingHero(pn) != null then
-        return FF_oc_LivingHero(pn)
-    endif
-    return FF_oc_LivingAlliedHero(pn)
-endfunction
 
-function FF_oc_PlayerLabel takes integer pn returns string
-    return "player " + I2S(pn) + " (" + GetPlayerName(Player(pn - 1)) + ")"
-endfunction
 
-function FF_oc_OnCommand takes nothing returns nothing
-    local player p= GetTriggerPlayer()
-    local integer slot
-    local string chat
-    local string arg= ""
-    local integer n
-    if not FF_oc_CanObserve(p) then
-        call DisplayTextToPlayer(p, 0, 0, "|cffff8000-cam / -obs is for observers only.|r")
-        set p=null
-        return
-    endif
-    set slot=GetPlayerId(p)
-    // Tail after "-cam ", e.g. "3", "auto", "off", or "" for a bare "-cam".
-    set chat=GetEventPlayerChatString()
-    if StringLength(chat) > 5 then
-        set arg=SubString(chat, 5, StringLength(chat))
-    endif
-    // (JASS string == is case-insensitive, so "off"/"OFF"/"Off" are all covered.)
-    if arg == "off" or arg == "0" then
-        set FF_oc_mode[slot]=0
-        set FF_oc_followed[slot]=null
-        call ResetToGameCameraForPlayer(p, 0)
-        call DisplayTextToPlayer(p, 0, 0, "|cffff8000Spectator camera: OFF|r - free-look.")
-        set p=null
-        return
-    endif
-    set n=S2I(arg)
-    if n >= 1 and n <= 12 then
-        set FF_oc_mode[slot]=1
-        set FF_oc_focus[slot]=n
-        // Clearing the lock forces a re-lock on the next director tick.
-        set FF_oc_followed[slot]=null
-        call DisplayTextToPlayer(p, 0, 0, "|cff32cd32Spectator camera:|r following " + FF_oc_PlayerLabel(n) + ". Type -cam for auto-cycle, -cam off to stop.")
-        set p=null
-        return
-    endif
-    if StringLength(arg) == 0 or arg == "auto" then
-        set FF_oc_mode[slot]=2
-        set FF_oc_focus[slot]=FF_oc_NextActivePlayer(0)
-        set FF_oc_cycleTick[slot]=FF_oc_tick + 240
-        set FF_oc_followed[slot]=null
-        call DisplayTextToPlayer(p, 0, 0, "|cff32cd32Spectator camera: AUTO|r - cycling players (60s each). Type -cam N to lock one, -cam off to stop.")
-        set p=null
-        return
-    endif
-    call DisplayTextToPlayer(p, 0, 0, "|cffff8000Usage:|r -cam N (player 1-12), -cam (auto-cycle), or -cam off. -obs works the same.")
-    set p=null
-endfunction
 
-function FF_oc_OnDeath takes nothing returns nothing
-    local unit victim= GetTriggerUnit()
-    local unit killer
-    if not IsUnitType(victim, UNIT_TYPE_HERO) then
-        set victim=null
-        return
-    endif
-    set killer=GetKillingUnit()
-    if killer == null then
-        set victim=null
-        return
-    endif
-    if FF_UnitAlive(killer) then
-        set FF_oc_interruptUnit=killer
-    else
-        set FF_oc_interruptUnit=victim
-    endif
-    set FF_oc_interruptUntil=FF_oc_tick + 20
-    set victim=null
-    set killer=null
-endfunction
 
-function FF_oc_OnTick takes nothing returns nothing
-    local integer i= 0
-    local boolean interrupt
-    local player p
-    local unit hero
-    set FF_oc_tick=FF_oc_tick + 1
-    set interrupt=FF_oc_tick < FF_oc_interruptUntil and FF_UnitAlive(FF_oc_interruptUnit)
-    // Drop the reference once the window closes, so a dead hero's handle is not pinned
-    // by this global until the next hero kill happens to overwrite it.
-    if not interrupt and FF_oc_interruptUnit != null then
-        set FF_oc_interruptUnit=null
-    endif
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if FF_oc_mode[i] != 0 then
-            set p=Player(i)
-            if FF_oc_CanObserve(p) then
-                if FF_oc_mode[i] == 2 and interrupt then
-                    // Hold the cycle while the kill is on screen (keep the dwell time).
-                    if FF_oc_cycleTick[i] <= FF_oc_tick then
-                        set FF_oc_cycleTick[i]=FF_oc_tick + 1
-                    endif
-                    if FF_oc_interruptUnit != FF_oc_followed[i] then
-                        set FF_oc_followed[i]=FF_oc_interruptUnit
-                        call SetCameraTargetControllerNoZForPlayer(p, FF_oc_interruptUnit, 0, 0, false)
-                    endif
-                else
-                    if FF_oc_mode[i] == 2 and FF_oc_tick >= FF_oc_cycleTick[i] then
-                        set FF_oc_focus[i]=FF_oc_NextActivePlayer(FF_oc_focus[i])
-                        set FF_oc_cycleTick[i]=FF_oc_tick + 240
-                        call DisplayTextToPlayer(p, 0, 0, "|cff9acd32Now watching:|r " + FF_oc_PlayerLabel(FF_oc_focus[i]))
-                    endif
-                    set hero=FF_oc_ResolveFocusHero(FF_oc_focus[i])
-                    if hero != null and hero != FF_oc_followed[i] then
-                        set FF_oc_followed[i]=hero
-                        call SetCameraTargetControllerNoZForPlayer(p, hero, 0, 0, false)
-                    endif
-                endif
-            endif
-        endif
-        set i=i + 1
-    endloop
-    set p=null
-    set hero=null
-endfunction
 
-function FF_ObserverCamera_Init takes nothing returns nothing
-    local trigger ct= CreateTrigger()
-    local trigger dt= CreateTrigger()
-    local integer i= 0
-    // Listen from every slot (prefix match, so "-cam 3" fires too); OnCommand enforces the
-    // observer-only rule. -obs is an alias: both prefixes are four characters, so the
-    // argument parser in FF_oc_OnCommand (SubString from index 5) needs no change.
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerChatEvent(ct, Player(i), "-cam", false)
-        call TriggerRegisterPlayerChatEvent(ct, Player(i), "-obs", false)
-        set i=i + 1
-    endloop
-    call TriggerAddAction(ct, function FF_oc_OnCommand)
-    call TriggerRegisterAnyUnitEventBJ(dt, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddAction(dt, function FF_oc_OnDeath)
-    call TimerStart(CreateTimer(), 0.25, true, function FF_oc_OnTick)
-    set ct=null
-    set dt=null
-endfunction
 
-function FF_ComputeGameToken takes nothing returns string
-    local string roster = ""
-    local integer i = 0
-    local integer h
-    local player p
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        set p = Player(i)
-        if GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(p) == MAP_CONTROL_USER then
-            set roster = roster + GetPlayerName(p) + "|"
-        endif
-        set i = i + 1
-    endloop
-    set p = null
-    // Fold the signed hash into 0..2^31-1 so the name never carries a '-'.
-    set h = StringHash(roster)
-    if h < 0 then
-        set h = h + 2147483647
-        set h = h + 1
-    endif
-    return I2S(h)
-endfunction
 
-function FF_st_OnSpell takes nothing returns nothing
-    local integer id = GetSpellAbilityId()
-    local integer s
-    if (id == 'ANtm' or id == 'A0G0') and FF_st_tmN < FF_ST_TM_MAX then
-        set s = FF_st_Slot(GetOwningPlayer(GetTriggerUnit()))
-        if s > 0 and GetSpellTargetUnit() != null then
-            set FF_st_tmCasts[s] = FF_st_tmCasts[s] + 1
-            set FF_st_tmCaster[FF_st_tmN] = GetTriggerUnit()
-            set FF_st_tmTarget[FF_st_tmN] = GetSpellTargetUnit()
-            set FF_st_tmSlot[FF_st_tmN] = s
-            set FF_st_tmUntil[FF_st_tmN] = TimerGetElapsed(FF_gameTimer) + FF_ST_TM_WAIT
-            set FF_st_tmN = FF_st_tmN + 1
-        endif
-    endif
-endfunction
 
-function FF_st_TmDrop takes integer i returns nothing
-    set FF_st_tmN = FF_st_tmN - 1
-    set FF_st_tmCaster[i] = FF_st_tmCaster[FF_st_tmN]
-    set FF_st_tmTarget[i] = FF_st_tmTarget[FF_st_tmN]
-    set FF_st_tmSlot[i] = FF_st_tmSlot[FF_st_tmN]
-    set FF_st_tmUntil[i] = FF_st_tmUntil[FF_st_tmN]
-    set FF_st_tmCaster[FF_st_tmN] = null
-    set FF_st_tmTarget[FF_st_tmN] = null
-endfunction
 
-function FF_st_IsFeedUnit takes integer id returns boolean
-    return id == 'hfoo' or id == 'earc' or id == 'hrif' or id == 'uban' or id == 'otbk' or id == 'ugho'
-endfunction
 
-function FF_st_OnDeath takes nothing returns nothing
-    local unit victim = GetTriggerUnit()
-    local unit killer = GetKillingUnit()
-    local player vp = GetOwningPlayer(victim)
-    local player kp = null
-    local integer ks = 0
-    local integer i = FF_st_tmN - 1
-    if killer != null then
-        set kp = GetOwningPlayer(killer)
-        set ks = FF_st_Slot(kp)
-    endif
-    // Transmute in flight on this unit: hit, or denied (and saved, if its own side killed it).
-    loop
-        exitwhen i < 0
-        if FF_st_tmTarget[i] == victim then
-            if killer != null and killer == FF_st_tmCaster[i] then
-                set FF_st_tmHits[FF_st_tmSlot[i]] = FF_st_tmHits[FF_st_tmSlot[i]] + 1
-            else
-                set FF_st_tmDenied[FF_st_tmSlot[i]] = FF_st_tmDenied[FF_st_tmSlot[i]] + 1
-                if ks > 0 and (kp == vp or IsPlayerAlly(kp, vp)) then
-                    set FF_st_tmSaves[ks] = FF_st_tmSaves[ks] + 1
-                endif
-            endif
-            call FF_st_TmDrop(i)
-        endif
-        set i = i - 1
-    endloop
-    // Denies: a feed unit of the killer's own or an allied base.
-    if ks > 0 and FF_st_IsFeedUnit(GetUnitTypeId(victim)) and not IsUnitIllusion(victim) then
-        if kp == vp then
-            set FF_st_denyOwn[ks] = FF_st_denyOwn[ks] + 1
-        elseif IsPlayerAlly(kp, vp) then
-            set FF_st_denyAlly[ks] = FF_st_denyAlly[ks] + 1
-        endif
-    endif
-    set victim = null
-    set killer = null
-    set vp = null
-    set kp = null
-endfunction
 
-function FF_st_AddDamage takes integer slot, integer kind, real d returns nothing
-    local integer i = slot * 3 + kind
-    local real r = FF_st_dmgRem[i] + d
-    set FF_st_dmg[i] = FF_st_dmg[i] + R2I(r)
-    set FF_st_dmgRem[i] = r - I2R(R2I(r))
-endfunction
 
-function FF_st_OnDamage takes nothing returns boolean
-    local unit src = GetEventDamageSource()
-    local unit tgt = GetTriggerUnit()
-    local real d = GetEventDamage()
-    local player ps
-    local player pt
-    local integer s
-    local integer t
-    if src != null and d > 0.0 then
-        set ps = GetOwningPlayer(src)
-        set pt = GetOwningPlayer(tgt)
-        if ps != pt and not IsPlayerAlly(ps, pt) then
-            set s = FF_st_Slot(ps)
-            set t = FF_st_Slot(pt)
-            if s >= 1 and s <= 12 then
-                if IsUnitType(tgt, UNIT_TYPE_STRUCTURE) then
-                    call FF_st_AddDamage(s, FF_ST_DMG_BLD, d)
-                else
-                    call FF_st_AddDamage(s, FF_ST_DMG_OUT, d)
-                endif
-            endif
-            if t >= 1 and t <= 12 then
-                call FF_st_AddDamage(t, FF_ST_DMG_IN, d)
-            endif
-        endif
-        set ps = null
-        set pt = null
-    endif
-    set src = null
-    set tgt = null
-    return false
-endfunction
 
-function FF_Stats_Init takes nothing returns nothing
-    local trigger t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_SPELL_EFFECT)
-    call TriggerAddAction(t, function FF_st_OnSpell)
-    set t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddAction(t, function FF_st_OnDeath)
-    if FF_STATS_DAMAGE then
-        set t = CreateTrigger()
-        call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_DAMAGED)
-        call TriggerAddCondition(t, Condition(function FF_st_OnDamage))
-    endif
-    set t = null
-endfunction
 
-function FF_us_SetCommands takes string list returns nothing
-    local integer len = StringLength(list)
-    local integer from = 0
-    local integer i = 0
-    loop
-        exitwhen i > len
-        if i == len or SubString(list, i, i + 1) == " " then
-            if i > from then
-                set FF_us_cmd[FF_us_cmdN] = SubString(list, from, i)
-                set FF_us_cmdN = FF_us_cmdN + 1
-            endif
-            set from = i + 1
-        endif
-        set i = i + 1
-    endloop
-endfunction
 
-function FF_us_Put takes integer slot, integer cat, integer oid, integer v, boolean assign returns nothing
-    local integer key = FF_us_CountKey(slot, cat)
-    if slot < 1 or slot > 12 then
-        return
-    endif
-    if not HaveSavedInteger(FF_us_ht, key, oid) then
-        call SaveInteger(FF_us_ht, FF_us_OrderKey(slot, cat), FF_us_n[key], oid)
-        set FF_us_n[key] = FF_us_n[key] + 1
-        call SaveInteger(FF_us_ht, key, oid, 0)
-    endif
-    if not assign then
-        set v = LoadInteger(FF_us_ht, key, oid) + v
-    endif
-    call SaveInteger(FF_us_ht, key, oid, v)
-    set FF_us_dirty[slot] = true
-endfunction
 
-function FF_us_Add takes integer slot, integer cat, integer oid returns nothing
-    call FF_us_Put(slot, cat, oid, 1, false)
-endfunction
 
-function FF_us_AddEvent takes string line returns nothing
-    if FF_us_eventN < FF_US_EVENT_MAX then
-        set FF_us_events[FF_us_eventN] = line
-        set FF_us_eventN = FF_us_eventN + 1
-        set FF_us_sharedDirty = true
-    endif
-endfunction
 
-function FF_us_OnSoldTick takes nothing returns nothing
-    local integer i = 0
-    local unit u
-    local integer s
-    local integer id
-    loop
-        exitwhen i >= FF_us_soldN
-        set u = FF_us_sold[i]
-        set id = GetUnitTypeId(u)
-        if id != 0 then
-            set s = FF_st_Slot(GetOwningPlayer(u))
-            if s > 0 then
-                call FF_us_Add(s, FF_US_UNIT, id)
-                if IsUnitType(u, UNIT_TYPE_HERO) then
-                    // 'hhou': Solo's hero altar
-                    if GetUnitTypeId(FF_us_seller[i]) == 'hhou' then
-                        call FF_us_AddEvent("pick," + FF_Elapsed() + "," + I2S(s) + "," + FF_us_Id2S(id) + ",altar")
-                    endif
-                elseif FF_us_soldCost[i] > 0 then
-                    set FF_st_creeps[s] = FF_st_creeps[s] + 1
-                    set FF_st_creepGold[s] = FF_st_creepGold[s] + FF_us_soldCost[i]
-                endif
-            endif
-        endif
-        set FF_us_sold[i] = null
-        set FF_us_seller[i] = null
-        set i = i + 1
-    endloop
-    set FF_us_soldN = 0
-    set u = null
-endfunction
 
-function FF_us_OnUnitSold takes nothing returns nothing
-    local unit u = GetSoldUnit()
-    local integer cost = BlzGetUnitIntegerField(u, UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE)
-    // The map's creep-limit trigger reads and clears that field; if it handled this very sale first, its globals
-    // hold the sold unit and its price.
-    if cost == 0 and udg_temp_unit == u then
-        set cost = udg_creep_gold_cost
-    endif
-    if FF_us_soldN < FF_US_SOLD_MAX then
-        set FF_us_sold[FF_us_soldN] = u
-        set FF_us_seller[FF_us_soldN] = GetSellingUnit()
-        set FF_us_soldCost[FF_us_soldN] = cost
-        set FF_us_soldN = FF_us_soldN + 1
-        call TimerStart(FF_us_soldTimer, 0.0, false, function FF_us_OnSoldTick)
-    endif
-    set u = null
-endfunction
 
-function FF_us_OnResearch takes nothing returns nothing
-    local unit u = GetTriggerUnit()
-    local player p = GetOwningPlayer(u)
-    local integer s = FF_st_Slot(p)
-    local integer oid = GetResearched()
-    if s > 0 then
-        call FF_us_Put(s, FF_US_TECH, oid, GetPlayerTechCount(p, oid, true), true)
-        if GetUnitTypeId(u) == 'n003' then
-            set FF_st_teamRes[s] = FF_st_teamRes[s] + 1
-        endif
-    endif
-    set u = null
-    set p = null
-endfunction
 
-function FF_us_IsBase takes unit u returns boolean
-    local integer id = GetUnitTypeId(u)
-    local integer i = 0
-    if IsUnitType(u, UNIT_TYPE_TOWNHALL) then
-        return true
-    endif
-    loop
-        exitwhen i > FF_US_BASE_TYPES
-        if udg_base_type[i] == id then
-            return true
-        endif
-        set i = i + 1
-    endloop
-    return false
-endfunction
 
-function FF_us_IsTower takes integer id returns boolean
-    return id == 'hwtw' or id == 'etrp' or id == 'hgtw' or id == 'h05U' or id == 'hctw' or id == 'hatw' or id == 'h00S' or id == 'emow' or id == 'otrb' or id == 'owtw' or id == 'o01D'
-endfunction
 
-function FF_us_OnUpgrade takes nothing returns nothing
-    local unit u = GetTriggerUnit()
-    local integer s = FF_st_Slot(GetOwningPlayer(u))
-    local integer id = GetUnitTypeId(u)
-    if s > 0 then
-        if FF_us_IsBase(u) then
-            call FF_us_AddEvent("baseup," + FF_Elapsed() + "," + I2S(s) + "," + FF_us_Id2S(id))
-        elseif FF_us_IsTower(id) then
-            call FF_us_Add(s, FF_US_TOWER, id)
-        endif
-    endif
-    set u = null
-endfunction
 
-function FF_us_HeroKey takes integer slot, unit hero returns integer
-    local integer h = 0
-    local integer hid = GetHandleId(hero)
-    local integer key
-    loop
-        exitwhen h >= FF_us_heroN[slot]
-        set key = FF_us_HeroSlotKey(slot, h)
-        if LoadInteger(FF_us_ht, key, -2) == hid then
-            return key
-        endif
-        set h = h + 1
-    endloop
-    if h >= FF_US_HERO_MAX then
-        return 0
-    endif
-    set key = FF_us_HeroSlotKey(slot, h)
-    set FF_us_heroN[slot] = h + 1
-    call SaveInteger(FF_us_ht, key, -1, GetUnitTypeId(hero))
-    call SaveInteger(FF_us_ht, key, -2, hid)
-    call SaveInteger(FF_us_ht, key, -3, 0)
-    return key
-endfunction
 
-function FF_us_OnSkill takes nothing returns nothing
-    local unit hero = GetTriggerUnit()
-    local integer s = FF_st_Slot(GetOwningPlayer(hero))
-    local integer abil = GetLearnedSkill()
-    local integer key
-    local integer n
-    call SaveBoolean(FF_us_learned, GetHandleId(hero), abil, true)
-    if s > 0 then
-        set key = FF_us_HeroKey(s, hero)
-        if key > 0 then
-            set n = LoadInteger(FF_us_ht, key, -3)
-            if n < FF_US_SKILL_MAX then
-                call SaveInteger(FF_us_ht, key, n, abil)
-                call SaveInteger(FF_us_ht, key, -3, n + 1)
-                set FF_us_dirty[s] = true
-            endif
-        endif
-    endif
-    set hero = null
-endfunction
 
-function FF_us_OnSpell takes nothing returns nothing
-    local unit u = GetTriggerUnit()
-    local integer abil = GetSpellAbilityId()
-    if IsUnitType(u, UNIT_TYPE_HERO) and not IsUnitIllusion(u) and LoadBoolean(FF_us_learned, GetHandleId(u), abil) then
-        call FF_us_Add(FF_st_Slot(GetOwningPlayer(u)), FF_US_SPELL, abil)
-    endif
-    set u = null
-endfunction
 
-function FF_us_OnChat takes nothing returns nothing
-    local integer s = FF_st_Slot(GetTriggerPlayer())
-    local string msg
-    local integer len
-    local integer cl
-    local integer i = 0
-    if s == 0 then
-        return
-    endif
-    set FF_us_chatBurst[s] = FF_us_chatBurst[s] + 1
-    if FF_us_chatBurst[s] > FF_US_CHAT_BURST then
-        return
-    endif
-    set msg = GetEventPlayerChatString()
-    if SubString(msg, 0, 1) != "-" then
-        return
-    endif
-    set len = StringLength(msg)
-    loop
-        exitwhen i >= FF_us_cmdN
-        set cl = StringLength(FF_us_cmd[i])
-        if len >= cl and SubString(msg, 0, cl) == FF_us_cmd[i] and (len == cl or SubString(msg, cl, cl + 1) == " ") then
-            if LoadInteger(FF_us_ht, FF_us_CountKey(s, FF_US_CMD), i) < FF_US_CMD_CAP then
-                call FF_us_Add(s, FF_US_CMD, i)
-            endif
-            return
-        endif
-        set i = i + 1
-    endloop
-endfunction
 
-function FF_us_Bit takes boolean b returns string
-    if b then
-        return "1"
-    endif
-    return "0"
-endfunction
 
-function FF_us_Flag takes string key, boolean on returns string
-    return "," + key + "=" + FF_us_Bit(on)
-endfunction
 
-function FF_us_OnModesFinal takes nothing returns nothing
-    local string colossal = "0"
-    local string s
-    if udg_colossal_on then
-        set colossal = I2S(udg_colossal_max_wave)
-    endif
-    set FF_us_modeExtra = ""
-    if FF_us_modeHook != null then
-        call TriggerExecute(FF_us_modeHook)
-    endif
-    set s = "modes,sel=" + I2S(udg_selected_mode) + FF_us_Flag("pub", udg_mode_pub) + FF_us_Flag("inhouse", udg_mode_inhouse)
-    set s = s + FF_us_Flag("koth", udg_mode_koth) + FF_us_Flag("club777", udg_mode_777club)
-    set s = s + FF_us_Flag("madness", udg_mode_madness) + FF_us_Flag("mirror", udg_mode_mirror)
-    set s = s + FF_us_Flag("overdrive", udg_mode_overdrive) + ",colossal=" + colossal + FF_us_Flag("onev1", udg_mode_1v1)
-    set s = s + FF_us_Flag("debug", udg_mode_debugmode) + FF_us_Flag("nomass", udg_mode_no_mass)
-    set FF_us_modes = s + FF_us_Flag("strong", udg_mode_strong_mode) + FF_us_modeExtra
-    set FF_us_sharedDirty = true
-endfunction
 
-function FF_us_ResetChatBurst takes nothing returns nothing
-    local integer s = 1
-    loop
-        exitwhen s > 12
-        set FF_us_chatBurst[s] = 0
-        set s = s + 1
-    endloop
-endfunction
 
-function FF_us_PollPicks takes nothing returns nothing
-    local integer s = 1
-    local unit u
-    local string how
-    loop
-        exitwhen s > 12
-        set u = udg_herO[s]
-        if u != FF_us_heroSeen[s] then
-            if u != null then
-                set how = "pick"
-                if udg_swapped[s] and not FF_us_swapSeen[s] then
-                    set how = "swap"
-                    set FF_us_swapSeen[s] = true
-                elseif FF_us_hadHero[s] then
-                    set how = "repick"
-                endif
-                call FF_us_AddEvent("pick," + FF_Elapsed() + "," + I2S(s) + "," + FF_us_Id2S(GetUnitTypeId(u)) + "," + how)
-                set FF_us_hadHero[s] = true
-            endif
-            set FF_us_heroSeen[s] = u
-        endif
-        set s = s + 1
-    endloop
-    set u = null
-endfunction
 
-function FF_SideOf takes integer slot returns integer
-    if udg_mode_6v6 then
-        if (slot >= 1 and slot <= 3) or (slot >= 10 and slot <= 12) then
-            return 1
-        endif
-        return 2
-    endif
-    return (slot - 1) / 3 + 1
-endfunction
 
-function FF_us_PollKoth takes nothing returns nothing
-    local integer ks
-    local integer side
-    if udg_KOTH_Player == null then
-        return
-    endif
-    set ks = FF_st_Slot(udg_KOTH_Player)
-    if ks > 0 then
-        set side = FF_SideOf(ks)
-        set FF_us_kothHold[side] = FF_us_kothHold[side] + 1
-        if udg_KOTH_Player != FF_us_kothLast then
-            set FF_us_kothCaps[side] = FF_us_kothCaps[side] + 1
-        endif
-        set FF_us_sharedDirty = true
-    endif
-    set FF_us_kothLast = udg_KOTH_Player
-endfunction
 
-function FF_st_TmExpire takes nothing returns nothing
-    local real now = TimerGetElapsed(FF_gameTimer)
-    local integer i = FF_st_tmN - 1
-    loop
-        exitwhen i < 0
-        if now > FF_st_tmUntil[i] then
-            call FF_st_TmDrop(i)
-        endif
-        set i = i - 1
-    endloop
-endfunction
 
-function FF_us_Poll takes nothing returns nothing
-    call FF_us_ResetChatBurst()
-    call FF_us_PollPicks()
-    call FF_us_PollKoth()
-    call FF_st_TmExpire()
-endfunction
 
-function FF_Usage_Init takes nothing returns nothing
-    local trigger t
-    local integer i = 0
-    set FF_us_catName[FF_US_ITEM] = "item"
-    set FF_us_catName[FF_US_UNIT] = "unit"
-    set FF_us_catName[FF_US_TECH] = "tech"
-    set FF_us_catName[FF_US_TOWER] = "tower"
-    set FF_us_catName[FF_US_SPELL] = "spell"
-    set FF_us_catName[FF_US_CMD] = "cmd"
-    // Every chat command of both maps and the addons.
-    call FF_us_SetCommands("-votekick -commands -players -forfeit -message -killme -reveal -guided -status -bounds")
-    call FF_us_SetCommands("-bounty -repick -killa -mhoff -clear -debug -scale -mhon -time -swap -pool -next -help")
-    call FF_us_SetCommands("-hero -kick -draw -gold -fog -cam -lvl -kd -ct -vk -p -t -c -i")
-    set FF_us_soldTimer = CreateTimer()
-    call FF_us_SetCommands("-sub -obs")
-    set t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_SELL)
-    call TriggerAddAction(t, function FF_us_OnUnitSold)
-    set t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_RESEARCH_FINISH)
-    call TriggerAddAction(t, function FF_us_OnResearch)
-    set t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_UPGRADE_FINISH)
-    call TriggerAddAction(t, function FF_us_OnUpgrade)
-    set t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_HERO_SKILL)
-    call TriggerAddAction(t, function FF_us_OnSkill)
-    set t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_SPELL_EFFECT)
-    call TriggerAddAction(t, function FF_us_OnSpell)
-    set t = CreateTrigger()
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerChatEvent(t, Player(i), "-", false)
-        set i = i + 1
-    endloop
-    call TriggerAddAction(t, function FF_us_OnChat)
-    set t = CreateTrigger()
-    call TriggerRegisterTimerExpireEvent(t, udg_timer_AI_hero_pick)
-    call TriggerAddAction(t, function FF_us_OnModesFinal)
-    call TimerStart(CreateTimer(), 1.00, true, function FF_us_Poll)
-    set t = null
-endfunction
 
-function FF_bv_IsBotObserver takes player p returns boolean
-    if GetPlayerSlotState(p) != PLAYER_SLOT_STATE_PLAYING or GetPlayerController(p) != MAP_CONTROL_USER then
-        return false
-    endif
-    return GetPlayerTeam(p) == 4 and FF_IsBotName(GetPlayerName(p))
-endfunction
 
-function FF_bv_Unshare takes player bot returns nothing
-    local integer i = 0
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if Player(i) != bot then
-            call SetPlayerAlliance(bot, Player(i), ALLIANCE_SHARED_VISION, false)
-        endif
-        set i = i + 1
-    endloop
-endfunction
 
-function FF_bv_Place takes player owner, real x, real y returns nothing
-    local unit u = CreateUnit(owner, FF_bv_DUMMY, x, y, 0.0)
-    if u == null then
-        return
-    endif
-    call UnitAddAbility(u, FF_bv_DETECT_OWL)
-    call UnitAddAbility(u, FF_bv_DETECT_SENTRY)
-    call BlzSetUnitRealField(u, UNIT_RF_SIGHT_RADIUS, FF_bv_SIGHT)
-    call BlzSetUnitRealField(u, UNIT_RF_HIT_POINTS_REGENERATION_RATE, 0.0)
-    call SetUnitInvulnerable(u, true)
-    call SetUnitVertexColor(u, 255, 255, 255, 0)
-    call GroupAddUnit(FF_bv_units, u)
-    set u = null
-endfunction
 
-function FF_bv_Grid takes player owner returns nothing
-    local rect r = GetPlayableMapRect()
-    local real x0 = GetRectMinX(r)
-    local real y0 = GetRectMinY(r)
-    local real cw = (GetRectMaxX(r) - x0) / FF_bv_N
-    local real ch = (GetRectMaxY(r) - y0) / FF_bv_N
-    local integer i = 0
-    local integer j
-    loop
-        exitwhen i >= FF_bv_N
-        set j = 0
-        loop
-            exitwhen j >= FF_bv_N
-            call FF_bv_Place(owner, x0 + (i + 0.5) * cw, y0 + (j + 0.5) * ch)
-            set j = j + 1
-        endloop
-        set i = i + 1
-    endloop
-    set r = null
-endfunction
 
-function FF_bv_TopUp takes nothing returns nothing
-    local unit u = GetEnumUnit()
-    call SetUnitState(u, UNIT_STATE_LIFE, GetUnitState(u, UNIT_STATE_MAX_LIFE))
-    set u = null
-endfunction
 
-function FF_bv_OnTick takes nothing returns nothing
-    call ForGroup(FF_bv_units, function FF_bv_TopUp)
-endfunction
 
-function FF_BotVision_Init takes nothing returns nothing
-    local integer i = 0
-    local boolean any = false
-    set FF_bv_units = CreateGroup()
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if FF_bv_IsBotObserver(Player(i)) then
-            call FF_bv_Unshare(Player(i))
-            call FF_bv_Grid(Player(i))
-            set any = true
-        endif
-        set i = i + 1
-    endloop
-    if any then
-        call TimerStart(CreateTimer(), 2.0, true, function FF_bv_OnTick)
-    endif
-endfunction
 
-function FF_BootTick takes nothing returns nothing
-    call FFLoadTrace_Mark("FF_BootTick: before DestroyTimer")
-    call DestroyTimer(GetExpiredTimer())
-    set FF_gameTimer=CreateTimer()
-    call FFLoadTrace_Mark("FF_BootTick: before TimerStart")
-    call TimerStart(FF_gameTimer, 1000000.0, false, null)
-    call FFLoadTrace_Mark("FF_BootTick: before FF_KillLog_Init")
-    set FF_gameToken=FF_ComputeGameToken()
-    set FF_hostBotGame=FF_HostBotInGame()
-    call FF_KillLog_Init()
-    call FFLoadTrace_Mark("FF_BootTick: before FF_Stats_Init")
-    call FF_Stats_Init()
-    call FFLoadTrace_Mark("FF_BootTick: before FF_Usage_Init")
-    call FF_Usage_Init()
-    call FFLoadTrace_Mark("FF_BootTick: before FF_GameResult_Init")
-    call FF_GameResult_Init()
-    call FFLoadTrace_Mark("FF_BootTick: before FF_ObserverCamera_Init")
-    call FF_ObserverCamera_Init()
-    call FFLoadTrace_Mark("FF_BootTick: before FF_BotVision_Init")
-    call FF_BotVision_Init()
-    call FFLoadTrace_Mark("FF_BootTick: completed")
-endfunction
 
-function FF_Init takes nothing returns nothing
-    call TimerStart(CreateTimer(), 0.10, false, function FF_BootTick)
-endfunction
 
-function FF_SideCount takes nothing returns integer
-    if udg_mode_6v6 then
-        return 2
-    endif
-    return 4
-endfunction
 
-function FF_IsMember takes integer slot, integer side returns boolean
-    return FF_SideOf(slot) == side
-endfunction
 
-function FF_us_OnItemSold takes nothing returns nothing
-    call FF_us_Add(FF_st_Slot(GetOwningPlayer(GetBuyingUnit())), FF_US_ITEM, GetItemTypeId(GetSoldItem()))
-endfunction
 
-function FF_EarlyInit takes nothing returns nothing
-    local trigger t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_SELL_ITEM)
-    call TriggerAddAction(t, function FF_us_OnItemSold)
-    set t = null
-endfunction
 
-function FF_MM_Extra takes nothing returns nothing
-    local boolean transmute = false
-    local integer x = 1
-    loop
-        exitwhen x > udg_total_hero_count
-        if udg_hero_category[x] == 11 then
-            set transmute = true
-        endif
-        set x = x + 1
-    endloop
-    set FF_us_modeExtra = ",pro=" + FF_us_Bit(FFR4Pro or udg_mode_promode) + ",notransmute=" + FF_us_Bit(not transmute)
-endfunction
 
-function FF_MM_Init takes nothing returns nothing
-    set FF_us_modeHook = CreateTrigger()
-    call TriggerAddAction(FF_us_modeHook, function FF_MM_Extra)
-endfunction
 
 
 function sa__Missiles_terminate takes nothing returns boolean
@@ -66617,53 +64696,31 @@ function InitTrig_FF_Runtime takes nothing returns nothing
     call TriggerRegisterAnyUnitEventBJ(rewardDeath, EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddAction(rewardDeath, function FF_RewardDeath)
     set rewardDeath = null
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before ExecuteFunc")
     call ExecuteFunc("FF_Editor_InitStructs")
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before ExecuteFunc")
     call ExecuteFunc("MMD__init")
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before ExecuteFunc")
     call ExecuteFunc("TimerUtils___init")
     set FF_Editor_Phoken=Rect(- 2784.0, - 352.0, - 2592.0, - 160.0)
     set FF_Editor_HEROshowroom=Rect(1952.0, - 704.0, 3392.0, 192.0)
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FF_Editor_InitGlobals")
     call FF_Editor_InitGlobals()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FF_Editor_InitTriggers")
-    // RC6BOT INIT BEGIN
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FF_EarlyInit")
-    call FF_EarlyInit()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FF_MM_Init")
-    call FF_MM_Init()
-    // RC6BOT INIT END
     call PBI_Init()
     call MD_Init()
     call FF_Editor_InitTriggers()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FF_Init")
-    call FF_Init()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FF_Editor_RunInitialization")
     call FF_Editor_RunInitialization()
     call DPS_Init()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before CreateUnit")
     call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), 'HOr1', GetRectCenterX(gg_rct_EXILE), GetRectCenterY(gg_rct_EXILE), 270.0)
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before CreateUnit")
     call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), 'HGr1', GetRectCenterX(gg_rct_EXILE) + 64.0, GetRectCenterY(gg_rct_EXILE), 270.0)
     call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), 'HTf1', GetRectCenterX(gg_rct_EXILE) + 192.0, GetRectCenterY(gg_rct_EXILE), 270.0)
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before OM_Init")
     call OM_Init()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before FS_Init")
     call FS_Init()
     call DK_Init()
     call MU_Init()
     call TFP_Init()
     call FF_CompactHeroTooltips_Init()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before GD_Init")
     call GD_Init()
     call GPS_Init()
     call GTW_Init()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: before GSI_Init")
     call GSI_Init()
     call DR_Init()
-    call FFLoadTrace_Mark("InitTrig_FF_Runtime: completed")
-    call TimerStart(CreateTimer(), 2.00, false, function FFLoadTrace_Ready)
     call ExecuteFunc("MF_InitHeroPolicy")
     call ExecuteFunc("VG_Init")
     call LX_Init()
@@ -67693,42 +65750,26 @@ function FF_InitDebugTwistedFate takes nothing returns nothing
 endfunction
 
 function main takes nothing returns nothing
-    call FFLoadTrace_Mark("main: before SetCameraBounds")
     call SetCameraBounds(- 3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), - 3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), - 3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), - 3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
-    call FFLoadTrace_Mark("main: before SetDayNightModels")
     call SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
-    call FFLoadTrace_Mark("main: before SetHDWaterParamsEx")
     call SetHDWaterParamsEx(0, 0, 0, false, 20, 0, 100, 10, 0, 50, 100, 100)
-    call FFLoadTrace_Mark("main: before NewSoundEnvironment")
     call NewSoundEnvironment("Default")
-    call FFLoadTrace_Mark("main: before SetAmbientDaySound")
     call SetAmbientDaySound("CityScapeDay")
-    call FFLoadTrace_Mark("main: before SetAmbientNightSound")
     call SetAmbientNightSound("CityScapeNight")
-    call FFLoadTrace_Mark("main: before SetMapMusic")
     call SetMapMusic("Music", true, 0)
-    call FFLoadTrace_Mark("main: before InitSounds")
     call InitSounds()
-    call FFLoadTrace_Mark("main: before CreateRegions")
     call CreateRegions()
-    call FFLoadTrace_Mark("main: before CreateCameras")
     call CreateCameras()
-    call FFLoadTrace_Mark("main: before InitUpgrades")
     call InitUpgrades()
-    call FFLoadTrace_Mark("main: before CreateAllUnits")
     call CreateAllUnits()
-    call FFLoadTrace_Mark("main: before InitBlizzard")
     call InitBlizzard()
 
 
-    call FFLoadTrace_Mark("main: before InitGlobals")
     call InitGlobals()
-    call FFLoadTrace_Mark("main: before InitCustomTriggers")
     set FF_DraftPageClick = CreateSound("Sound\\Interface\\MouseClick1.wav",false,false,false,10,10,"")
     call InitCustomTriggers()
     call FF_InitDebugTwistedFate()
 
-    call FFLoadTrace_Mark("main: completed")
 
 endfunction
 

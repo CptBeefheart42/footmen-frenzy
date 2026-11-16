@@ -2809,51 +2809,6 @@ boolean array ffgs_spawn_enabled_player
     boolean ffgs_mass_mode = false
     integer ffgs_max_phase_unlocked = 0
     integer ffgs_validation_errors = 0
-//= FFGS-GLOBALS-END
-// === FF addons (injected by the build; sources: scripting/jass) ===
-    // Never expires; only TimerGetElapsed is read off it, to timestamp log rows (mirrors the C#
-    // systems' gameTimer). Started by FF_BootTick in 90-init.j.
-    timer FF_gameTimer = null
-    // Tells concurrent games on one box apart in the output file names (see FF_DataFile).
-    // Computed once at boot by FF_ComputeGameToken; identical on every client.
-    string FF_gameToken = ""
-    boolean FF_kl_dirty = false
-    integer array FF_kl_unitKills
-    integer array FF_kl_heroKills
-    integer array FF_kl_unitDeaths
-    integer array FF_kl_heroDeaths
-    // The "who killed whom" feed; capped so the file stays constant-ish sized in marathon games.
-    string array FF_kl_feed
-    integer FF_kl_feedN = 0
-    // Slots 1..12 (index 0 unused): ever-active participants, and who we already reported out.
-    boolean array FF_gr_participant
-    boolean array FF_gr_eliminated
-    // Side index 1..4 (FFA) / 1..2 (6v6); the mode is fixed well before the first death.
-    boolean array FF_gr_sideDead
-    // Sides in elimination order (first to die = last place).
-    integer array FF_gr_deathOrder
-    integer FF_gr_deathN = 0
-    string array FF_gr_events
-    integer FF_gr_eventN = 0
-    boolean FF_gr_ended = false
-    timer FF_gr_pollTimer = null
-    // Per-observer state, indexed by 0-based player id.
-    integer array FF_oc_mode        // 0 = off, 1 = manual, 2 = auto
-    integer array FF_oc_focus       // manual: pinned player; auto: current cycle player (1..12)
-    integer array FF_oc_cycleTick   // auto: director tick at which to advance
-    unit array FF_oc_followed       // hero currently locked, so we only re-lock on a change
-    integer FF_oc_tick = 0
-    // Shared hero-kill interrupt (one event for everyone; the camera lock itself stays per-player).
-    unit FF_oc_interruptUnit = null
-    integer FF_oc_interruptUntil = 0
-    // FF_bv_N x FF_bv_N detectors per bot over the playable area: ~7000 / 9 = ~780 cells, half
-    // diagonal ~550 — inside the dummy's 800 night sight with margin.
-    integer FF_bv_N = 9
-    real FF_bv_SIGHT = 2000.0
-    integer FF_bv_DUMMY = 'h055'
-    integer FF_bv_DETECT_OWL = 'Adtg'
-    integer FF_bv_DETECT_SENTRY = 'A05H'
-    group FF_bv_units = null
     constant integer OM_HERO = 'HOr1'
     constant integer OM_ATTACK = 'AOz1'
     constant integer OM_PULSE = 'AOz2'
@@ -3004,7 +2959,6 @@ hashtable GD_Data = InitHashtable()
 group GD_Enum = CreateGroup()
 timer GD_Timer = CreateTimer()
 location GD_Loc = Location(0.0, 0.0)
-integer array FF_st_tmHits
 hashtable DK_Hash = null
 timer DK_Timer = null
 real DK_Now = 0.0
@@ -15659,7 +15613,6 @@ function zoom___CreateSlider takes nothing returns nothing
     local framehandle gameUI= BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
     local trigger sliderTrigger= CreateTrigger()
     local trigger lockTrigger= CreateTrigger()
-    return // stubbed by the FF addons build (FF_JASS_STUB_FUNCS)
     if ( not BlzLoadTOCFile("war3mapImported\\templates.toc") ) then
         call BJDebugMsg("|cffff0000Zoom UI failed to load templates.toc.|r")
     endif
@@ -16430,16 +16383,6 @@ function Trig_KOTH_Hill_Dies_Func002C takes nothing returns boolean
     return true
 endfunction
 
-function FF_st_Slot takes player p returns integer
-    local integer s = GetPlayerId(p) + 1
-    if s >= 1 and s <= 12 then
-        return s
-    endif
-    if s > 12 and s <= bj_MAX_PLAYER_SLOTS then
-        return SoloSub_playerForObserver[s - 1]
-    endif
-    return 0
-endfunction
 
 function Trig_KOTH_Hill_Dies_Actions takes nothing returns nothing
     local integer previousTeam = udg_KOTH_Team_Number
@@ -18125,7 +18068,6 @@ endfunction
 
 function SoloFootsFFWriteHeroKill takes unit killer, unit victim returns nothing
     local string line="herokill," + SoloFootsFFTime() + "," + GetPlayerName(GetOwningPlayer(killer)) + "," + GetUnitName(killer) + "," + GetPlayerName(GetOwningPlayer(victim)) + "," + GetUnitName(victim)
-    return // stubbed by the FF addons build (FF_JASS_STUB_FUNCS)
     set SoloFoots_FFKillLog=FileIO_Read("ff_killlog.txt")
     if SoloFoots_FFKillLog == "" then
         set SoloFoots_FFKillLog=line
@@ -18138,7 +18080,6 @@ endfunction
 function SoloFootsFFWriteResult takes integer winnerPlayerNumber returns nothing
     local integer i=1
     local string result="function PreloadFiles takes nothing returns nothing\n\n\tcall PreloadStart()\n\tcall Preload( \"mode,ffa\" )\n\tcall Preload( \"roster,"
-    return // stubbed by the FF addons build (FF_JASS_STUB_FUNCS)
     if SoloFoots_FFResultWritten then
         return
     endif
@@ -47023,696 +46964,51 @@ function SoloFootsSouthCliffFog takes nothing returns nothing
     set fogRect=null
 endfunction
 
-function FF_Pad2 takes integer n returns string
-    if n < 10 then
-        return "0" + I2S(n)
-    endif
-    return I2S(n)
-endfunction
 
-function FF_Elapsed takes nothing returns string
-    local integer total = R2I(TimerGetElapsed(FF_gameTimer))
-    return FF_Pad2(total / 60) + ":" + FF_Pad2(ModuloInteger(total, 60))
-endfunction
 
-function FF_Sanitize takes string s returns string
-    local string out = ""
-    local integer i = 0
-    local integer n
-    local string c
-    if s == null then
-        return ""
-    endif
-    set n = StringLength(s)
-    loop
-        exitwhen i >= n
-        set c = SubString(s, i, i + 1)
-        if c == "," or c == ";" or c == "\n" or c == "\r" then
-            set out = out + " "
-        elseif c == "\"" then
-            set out = out + "'"
-        else
-            set out = out + c
-        endif
-        set i = i + 1
-    endloop
-    return out
-endfunction
 
-function FF_EndsWith takes string s, string suffix returns boolean
-    local integer ls = StringLength(s)
-    local integer lx = StringLength(suffix)
-    if lx > ls then
-        return false
-    endif
-    return SubString(s, ls - lx, ls) == suffix
-endfunction
 
-function FF_UnitAlive takes unit u returns boolean
-    return u != null and GetUnitTypeId(u) != 0 and not IsUnitType(u, UNIT_TYPE_DEAD)
-endfunction
 
-function FF_IsBotName takes string name returns boolean
-    if name == null then
-        return false
-    endif
-    // 1.0 fleet (efl-0..efl-5 / Bot-1..Bot-6; shut down 2026-09, accounts kept). The 2.0 boxes
-    // reuse two of them: efl-9v3 = CoralShark#113567, efl-obs = MangoThief#115445 (verified live
-    // 2026-09-05 from each box's "Signed in as" journal line).
-    if FF_EndsWith(name, "Vertical#11718") or FF_EndsWith(name, "Industry#11190") or FF_EndsWith(name, "BryanBoitano#1725") or FF_EndsWith(name, "LustyPuppy#1929") or FF_EndsWith(name, "CoralShark#113567") or FF_EndsWith(name, "MangoThief#115445") then
-        return true
-    endif
-    // 2.0 fleet, new account: efl-1v1-0 (the 1v1v1v1 host).
-    return FF_EndsWith(name, "OhNaahs#1537")
-endfunction
 
-function FF_LocalClientIsBot takes nothing returns boolean
-    return FF_IsBotName(GetPlayerName(GetLocalPlayer()))
-endfunction
 
-function FF_ComputeGameToken takes nothing returns string
-    local string roster = ""
-    local integer i = 0
-    local integer h
-    local player p
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        set p = Player(i)
-        if GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(p) == MAP_CONTROL_USER then
-            set roster = roster + GetPlayerName(p) + "|"
-        endif
-        set i = i + 1
-    endloop
-    set p = null
-    // Fold the signed hash into 0..2^31-1 so the name never carries a '-'.
-    set h = StringHash(roster)
-    if h < 0 then
-        set h = h + 2147483647
-        set h = h + 1
-    endif
-    return I2S(h)
-endfunction
 
-function FF_DataFile takes string base returns string
-    if FF_LocalClientIsBot() then
-        return base + "_" + FF_gameToken + ".txt"
-    endif
-    return base + ".txt"
-endfunction
 
-function FF_kl_Flush takes nothing returns nothing
-    local integer i = 0
-    if not FF_LocalClientIsBot() then
-        return
-    endif
-    call PreloadGenClear()
-    call PreloadGenStart()
-    call Preload("owner,unit,hero,unit_died,hero_died")
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if FF_kl_unitKills[i] != 0 or FF_kl_heroKills[i] != 0 or FF_kl_unitDeaths[i] != 0 or FF_kl_heroDeaths[i] != 0 then
-            call Preload(FF_Sanitize(GetPlayerName(Player(i))) + "," + I2S(FF_kl_unitKills[i]) + "," + I2S(FF_kl_heroKills[i]) + "," + I2S(FF_kl_unitDeaths[i]) + "," + I2S(FF_kl_heroDeaths[i]))
-        endif
-        set i = i + 1
-    endloop
-    set i = 0
-    loop
-        exitwhen i >= FF_kl_feedN
-        call Preload(FF_kl_feed[i])
-        set i = i + 1
-    endloop
-    call PreloadGenEnd(FF_DataFile("ff_killlog"))
-endfunction
 
-function FF_kl_OnFlushTick takes nothing returns nothing
-    if not FF_kl_dirty then
-        return
-    endif
-    set FF_kl_dirty = false
-    call FF_kl_Flush()
-endfunction
 
-function FF_kl_OnDeath takes nothing returns nothing
-    local unit victim = GetTriggerUnit()
-    local unit killer = GetKillingUnit()
-    local boolean isHero
-    local integer id
-    // Base/building kills are tracked authoritatively by GameResult; the scoreboard ignores
-    // structures. A death with no killer (decay/expire) is neither a kill nor a combat loss.
-    if IsUnitType(victim, UNIT_TYPE_STRUCTURE) or killer == null then
-        set victim = null
-        set killer = null
-        return
-    endif
-    set isHero = IsUnitType(victim, UNIT_TYPE_HERO)
-    set id = GetPlayerId(GetOwningPlayer(killer))
-    if id >= 0 and id < bj_MAX_PLAYER_SLOTS then
-        if isHero then
-            set FF_kl_heroKills[id] = FF_kl_heroKills[id] + 1
-        else
-            set FF_kl_unitKills[id] = FF_kl_unitKills[id] + 1
-        endif
-        set FF_kl_dirty = true
-    endif
-    set id = GetPlayerId(GetOwningPlayer(victim))
-    if id >= 0 and id < bj_MAX_PLAYER_SLOTS then
-        if isHero then
-            set FF_kl_heroDeaths[id] = FF_kl_heroDeaths[id] + 1
-        else
-            set FF_kl_unitDeaths[id] = FF_kl_unitDeaths[id] + 1
-        endif
-        set FF_kl_dirty = true
-    endif
-    // Hero kills are rare enough to record individually. The killer unit may itself be a footman,
-    // not a hero, so its actual name is logged.
-    if isHero and FF_kl_feedN < 400 then
-        set FF_kl_feed[FF_kl_feedN] = "herokill," + FF_Elapsed() + "," + FF_Sanitize(GetPlayerName(GetOwningPlayer(killer))) + "," + FF_Sanitize(GetUnitName(killer)) + "," + FF_Sanitize(GetPlayerName(GetOwningPlayer(victim))) + "," + FF_Sanitize(GetUnitName(victim))
-        set FF_kl_feedN = FF_kl_feedN + 1
-        set FF_kl_dirty = true
-    endif
-    set victim = null
-    set killer = null
-endfunction
 
-function FF_KillLog_Init takes nothing returns nothing
-    local trigger t = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddAction(t, function FF_kl_OnDeath)
-    call TimerStart(CreateTimer(), 30.0, true, function FF_kl_OnFlushTick)
-    // Write the header immediately so the file exists from match start.
-    call FF_kl_Flush()
-    set t = null
-endfunction
 
-function FF_gr_SideCount takes nothing returns integer
-    if udg_mode_6v6 then
-        return 2
-    endif
-    return 4
-endfunction
 
-function FF_gr_SideLabel takes integer side returns string
-    if udg_mode_6v6 then
-        if side == 1 then
-            return "west"
-        endif
-        return "east"
-    endif
-    return "team" + I2S(side)
-endfunction
 
-function FF_gr_IsMember takes integer slot, integer side returns boolean
-    local boolean west
-    if udg_mode_6v6 then
-        set west = (slot >= 1 and slot <= 3) or (slot >= 10 and slot <= 12)
-        if side == 1 then
-            return west
-        endif
-        return not west
-    endif
-    return (slot - 1) / 3 + 1 == side
-endfunction
 
-function FF_gr_SideLabelOf takes integer slot returns string
-    local integer s = 1
-    loop
-        exitwhen s > FF_gr_SideCount()
-        if FF_gr_IsMember(slot, s) then
-            return FF_gr_SideLabel(s)
-        endif
-        set s = s + 1
-    endloop
-    return "-"
-endfunction
 
-function FF_gr_SideParticipated takes integer side returns boolean
-    local integer p = 1
-    loop
-        exitwhen p > 12
-        if FF_gr_IsMember(p, side) and FF_gr_participant[p] then
-            return true
-        endif
-        set p = p + 1
-    endloop
-    return false
-endfunction
 
-function FF_gr_SideAlive takes integer side returns boolean
-    local integer p = 1
-    loop
-        exitwhen p > 12
-        if FF_gr_IsMember(p, side) and udg_player_active[p] then
-            return true
-        endif
-        set p = p + 1
-    endloop
-    return false
-endfunction
 
-function FF_gr_Name takes integer slot returns string
-    return FF_Sanitize(udg_orig_player_name[slot])
-endfunction
 
-function FF_gr_RosterOf takes integer side returns string
-    local string out = ""
-    local integer p = 1
-    loop
-        exitwhen p > 12
-        if FF_gr_participant[p] and (side < 0 or FF_gr_IsMember(p, side)) then
-            if StringLength(out) > 0 then
-                set out = out + ";"
-            endif
-            set out = out + I2S(p) + ":" + FF_gr_Name(p)
-        endif
-        set p = p + 1
-    endloop
-    return out
-endfunction
 
-function FF_gr_AddEvent takes string line returns nothing
-    if FF_gr_eventN < 200 then
-        set FF_gr_events[FF_gr_eventN] = line
-        set FF_gr_eventN = FF_gr_eventN + 1
-    endif
-endfunction
 
-function FF_gr_Flush takes nothing returns nothing
-    local integer i = 0
-    call PreloadGenClear()
-    call PreloadGenStart()
-    if udg_mode_6v6 then
-        call Preload("mode,6v6")
-    else
-        call Preload("mode,ffa")
-    endif
-    call Preload("roster," + FF_gr_RosterOf(-1))
-    loop
-        exitwhen i >= FF_gr_eventN
-        call Preload(FF_gr_events[i])
-        set i = i + 1
-    endloop
-    call PreloadGenEnd(FF_DataFile("ff_result"))
-endfunction
 
-function FF_gr_Poll takes nothing returns nothing
-    local string now
-    local boolean changed = false
-    local integer p = 1
-    local integer s = 1
-    local integer sideCount
-    local integer participated = 0
-    local integer alive = 0
-    local integer lastAlive = 0
-    local integer place
-    local integer i
-    if FF_gr_ended then
-        return
-    endif
-    set now = FF_Elapsed()
-    // 1. participant tracking + individual eliminations. A player is "out" the moment the map
-    //    flips their player_active off (their base died) — the same signal END reads.
-    loop
-        exitwhen p > 12
-        if udg_player_active[p] then
-            set FF_gr_participant[p] = true
-        elseif FF_gr_participant[p] and not FF_gr_eliminated[p] then
-            set FF_gr_eliminated[p] = true
-            call FF_gr_AddEvent("out," + now + "," + I2S(p) + "," + FF_gr_SideLabelOf(p) + "," + FF_gr_Name(p))
-            set changed = true
-        endif
-        set p = p + 1
-    endloop
-    // 2. side bookkeeping.
-    set sideCount = FF_gr_SideCount()
-    loop
-        exitwhen s > sideCount
-        if FF_gr_SideParticipated(s) then
-            set participated = participated + 1
-        endif
-        if FF_gr_SideAlive(s) then
-            set alive = alive + 1
-            set lastAlive = s
-        elseif FF_gr_SideParticipated(s) and not FF_gr_sideDead[s] then
-            set FF_gr_sideDead[s] = true
-            set FF_gr_deathOrder[FF_gr_deathN] = s
-            set FF_gr_deathN = FF_gr_deathN + 1
-            call FF_gr_AddEvent("sidedead," + now + "," + FF_gr_SideLabel(s))
-            set changed = true
-        endif
-        set s = s + 1
-    endloop
-    // 3. clean victory: >=2 sides played, exactly one standing. Placement table: 1st = survivor,
-    //    then the dead sides in reverse death order (last to die finished 2nd).
-    if participated >= 2 and alive == 1 then
-        set FF_gr_ended = true
-        call PauseTimer(FF_gr_pollTimer)
-        call FF_gr_AddEvent("winner," + now + "," + FF_gr_SideLabel(lastAlive) + "," + FF_gr_RosterOf(lastAlive))
-        call FF_gr_AddEvent("placement,1," + FF_gr_SideLabel(lastAlive) + "," + FF_gr_RosterOf(lastAlive))
-        set place = 2
-        set i = FF_gr_deathN - 1
-        loop
-            exitwhen i < 0
-            call FF_gr_AddEvent("placement," + I2S(place) + "," + FF_gr_SideLabel(FF_gr_deathOrder[i]) + "," + FF_gr_RosterOf(FF_gr_deathOrder[i]))
-            set place = place + 1
-            set i = i - 1
-        endloop
-        call FF_gr_AddEvent("gameend," + now)
-        set changed = true
-    endif
-    if changed then
-        call FF_gr_Flush()
-    endif
-endfunction
 
-function FF_GameResult_Init takes nothing returns nothing
-    set FF_gr_pollTimer = CreateTimer()
-    call TimerStart(FF_gr_pollTimer, 1.00, true, function FF_gr_Poll)
-    // Ensure the file exists from match start, even for an instantly-aborted game.
-    call FF_gr_Flush()
-endfunction
 
-function FF_oc_CanObserve takes player p returns boolean
-    if GetPlayerSlotState(p) != PLAYER_SLOT_STATE_PLAYING or GetPlayerController(p) != MAP_CONTROL_USER then
-        return false
-    endif
-    return GetPlayerTeam(p) == 4
-endfunction
 
-function FF_oc_IsActivePlayer takes integer pn returns boolean
-    local player p = Player(pn - 1)
-    return GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(p) == MAP_CONTROL_USER and GetPlayerTeam(p) != 4
-endfunction
 
-function FF_oc_NextActivePlayer takes integer pn returns integer
-    local integer step = 0
-    loop
-        exitwhen step >= 12
-        set pn = ModuloInteger(pn, 12) + 1
-        if FF_oc_IsActivePlayer(pn) then
-            return pn
-        endif
-        set step = step + 1
-    endloop
-    return pn
-endfunction
 
-function FF_oc_LivingHero takes integer pn returns unit
-    if pn < 1 or pn > 12 then
-        return null
-    endif
-    if FF_UnitAlive(udg_herO[pn]) then
-        return udg_herO[pn]
-    endif
-    return null
-endfunction
 
-function FF_oc_LivingAlliedHero takes integer pn returns unit
-    local integer n = 1
-    if pn < 1 or pn > 12 then
-        return null
-    endif
-    loop
-        exitwhen n > 12
-        if n != pn and IsPlayerAlly(Player(pn - 1), Player(n - 1)) and FF_oc_LivingHero(n) != null then
-            return FF_oc_LivingHero(n)
-        endif
-        set n = n + 1
-    endloop
-    return null
-endfunction
 
-function FF_oc_ResolveFocusHero takes integer pn returns unit
-    if FF_oc_LivingHero(pn) != null then
-        return FF_oc_LivingHero(pn)
-    endif
-    return FF_oc_LivingAlliedHero(pn)
-endfunction
 
-function FF_oc_PlayerLabel takes integer pn returns string
-    return "player " + I2S(pn) + " (" + GetPlayerName(Player(pn - 1)) + ")"
-endfunction
 
-function FF_oc_OnCommand takes nothing returns nothing
-    local player p = GetTriggerPlayer()
-    local integer slot
-    local string chat
-    local string arg = ""
-    local integer n
-    if not FF_oc_CanObserve(p) then
-        call DisplayTextToPlayer(p, 0, 0, "|cffff8000-cam is for observers only.|r")
-        set p = null
-        return
-    endif
-    set slot = GetPlayerId(p)
-    // Tail after "-cam ", e.g. "3", "auto", "off", or "" for a bare "-cam".
-    set chat = GetEventPlayerChatString()
-    if StringLength(chat) > 5 then
-        set arg = SubString(chat, 5, StringLength(chat))
-    endif
-    // (JASS string == is case-insensitive, so "off"/"OFF"/"Off" are all covered.)
-    if arg == "off" or arg == "0" then
-        set FF_oc_mode[slot] = 0
-        set FF_oc_followed[slot] = null
-        call ResetToGameCameraForPlayer(p, 0)
-        call DisplayTextToPlayer(p, 0, 0, "|cffff8000Spectator camera: OFF|r - free-look.")
-        set p = null
-        return
-    endif
-    set n = S2I(arg)
-    if n >= 1 and n <= 12 then
-        set FF_oc_mode[slot] = 1
-        set FF_oc_focus[slot] = n
-        // Clearing the lock forces a re-lock on the next director tick.
-        set FF_oc_followed[slot] = null
-        call DisplayTextToPlayer(p, 0, 0, "|cff32cd32Spectator camera:|r following " + FF_oc_PlayerLabel(n) + ". Type -cam for auto-cycle, -cam off to stop.")
-        set p = null
-        return
-    endif
-    if StringLength(arg) == 0 or arg == "auto" then
-        set FF_oc_mode[slot] = 2
-        set FF_oc_focus[slot] = FF_oc_NextActivePlayer(0)
-        set FF_oc_cycleTick[slot] = FF_oc_tick + 240
-        set FF_oc_followed[slot] = null
-        call DisplayTextToPlayer(p, 0, 0, "|cff32cd32Spectator camera: AUTO|r - cycling players (60s each). Type -cam N to lock one, -cam off to stop.")
-        set p = null
-        return
-    endif
-    call DisplayTextToPlayer(p, 0, 0, "|cffff8000Usage:|r -cam N (player 1-12), -cam (auto-cycle), or -cam off.")
-    set p = null
-endfunction
 
-function FF_oc_OnDeath takes nothing returns nothing
-    local unit victim = GetTriggerUnit()
-    local unit killer
-    if not IsUnitType(victim, UNIT_TYPE_HERO) then
-        set victim = null
-        return
-    endif
-    set killer = GetKillingUnit()
-    if killer == null then
-        set victim = null
-        return
-    endif
-    if FF_UnitAlive(killer) then
-        set FF_oc_interruptUnit = killer
-    else
-        set FF_oc_interruptUnit = victim
-    endif
-    set FF_oc_interruptUntil = FF_oc_tick + 20
-    set victim = null
-    set killer = null
-endfunction
 
-function FF_oc_OnTick takes nothing returns nothing
-    local integer i = 0
-    local boolean interrupt
-    local player p
-    local unit hero
-    set FF_oc_tick = FF_oc_tick + 1
-    set interrupt = FF_oc_tick < FF_oc_interruptUntil and FF_UnitAlive(FF_oc_interruptUnit)
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if FF_oc_mode[i] != 0 then
-            set p = Player(i)
-            if FF_oc_CanObserve(p) then
-                if FF_oc_mode[i] == 2 and interrupt then
-                    // Hold the cycle while the kill is on screen (keep the dwell time).
-                    if FF_oc_cycleTick[i] <= FF_oc_tick then
-                        set FF_oc_cycleTick[i] = FF_oc_tick + 1
-                    endif
-                    if FF_oc_interruptUnit != FF_oc_followed[i] then
-                        set FF_oc_followed[i] = FF_oc_interruptUnit
-                        call SetCameraTargetControllerNoZForPlayer(p, FF_oc_interruptUnit, 0, 0, false)
-                    endif
-                else
-                    if FF_oc_mode[i] == 2 and FF_oc_tick >= FF_oc_cycleTick[i] then
-                        set FF_oc_focus[i] = FF_oc_NextActivePlayer(FF_oc_focus[i])
-                        set FF_oc_cycleTick[i] = FF_oc_tick + 240
-                        call DisplayTextToPlayer(p, 0, 0, "|cff9acd32Now watching:|r " + FF_oc_PlayerLabel(FF_oc_focus[i]))
-                    endif
-                    set hero = FF_oc_ResolveFocusHero(FF_oc_focus[i])
-                    if hero != null and hero != FF_oc_followed[i] then
-                        set FF_oc_followed[i] = hero
-                        call SetCameraTargetControllerNoZForPlayer(p, hero, 0, 0, false)
-                    endif
-                endif
-            endif
-        endif
-        set i = i + 1
-    endloop
-    set p = null
-    set hero = null
-endfunction
 
-function FF_ObserverCamera_Init takes nothing returns nothing
-    local trigger ct = CreateTrigger()
-    local trigger dt = CreateTrigger()
-    local integer i = 0
-    // Listen from every slot (prefix match, so "-cam 3" fires too); OnCommand enforces the
-    // observer-only rule.
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        call TriggerRegisterPlayerChatEvent(ct, Player(i), "-cam", false)
-        set i = i + 1
-    endloop
-    call TriggerAddAction(ct, function FF_oc_OnCommand)
-    call TriggerRegisterAnyUnitEventBJ(dt, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddAction(dt, function FF_oc_OnDeath)
-    call TimerStart(CreateTimer(), 0.25, true, function FF_oc_OnTick)
-    set ct = null
-    set dt = null
-endfunction
 
-function FF_bv_IsBotObserver takes player p returns boolean
-    if GetPlayerSlotState(p) != PLAYER_SLOT_STATE_PLAYING or GetPlayerController(p) != MAP_CONTROL_USER then
-        return false
-    endif
-    return GetPlayerTeam(p) == 4 and FF_IsBotName(GetPlayerName(p))
-endfunction
 
-function FF_bv_Place takes player owner, real x, real y returns nothing
-    local unit u = CreateUnit(owner, FF_bv_DUMMY, x, y, 0.0)
-    if u == null then
-        return
-    endif
-    call UnitAddAbility(u, FF_bv_DETECT_OWL)
-    call UnitAddAbility(u, FF_bv_DETECT_SENTRY)
-    call BlzSetUnitRealField(u, UNIT_RF_SIGHT_RADIUS, FF_bv_SIGHT)
-    call BlzSetUnitRealField(u, UNIT_RF_HIT_POINTS_REGENERATION_RATE, 0.0)
-    call SetUnitInvulnerable(u, true)
-    call SetUnitVertexColor(u, 255, 255, 255, 0)
-    call GroupAddUnit(FF_bv_units, u)
-    set u = null
-endfunction
 
-function FF_bv_Grid takes player owner returns nothing
-    local rect r = GetPlayableMapRect()
-    local real x0 = GetRectMinX(r)
-    local real y0 = GetRectMinY(r)
-    local real cw = (GetRectMaxX(r) - x0) / FF_bv_N
-    local real ch = (GetRectMaxY(r) - y0) / FF_bv_N
-    local integer i = 0
-    local integer j
-    loop
-        exitwhen i >= FF_bv_N
-        set j = 0
-        loop
-            exitwhen j >= FF_bv_N
-            call FF_bv_Place(owner, x0 + (i + 0.5) * cw, y0 + (j + 0.5) * ch)
-            set j = j + 1
-        endloop
-        set i = i + 1
-    endloop
-    set r = null
-endfunction
 
-function FF_bv_TopUp takes nothing returns nothing
-    local unit u = GetEnumUnit()
-    call SetUnitState(u, UNIT_STATE_LIFE, GetUnitState(u, UNIT_STATE_MAX_LIFE))
-    set u = null
-endfunction
 
-function FF_bv_OnTick takes nothing returns nothing
-    call ForGroup(FF_bv_units, function FF_bv_TopUp)
-endfunction
 
-function FF_BotVision_Init takes nothing returns nothing
-    local integer i = 0
-    local boolean any = false
-    set FF_bv_units = CreateGroup()
-    loop
-        exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if FF_bv_IsBotObserver(Player(i)) then
-            call FF_bv_Grid(Player(i))
-            set any = true
-        endif
-        set i = i + 1
-    endloop
-    if any then
-        call TimerStart(CreateTimer(), 2.0, true, function FF_bv_OnTick)
-    endif
-endfunction
 
-function FF_BootTick takes nothing returns nothing
-    call DestroyTimer(GetExpiredTimer())
-    set FF_gameTimer = CreateTimer()
-    call TimerStart(FF_gameTimer, 1000000.0, false, null)
-    set FF_gameToken = FF_ComputeGameToken()  // before the first flush names a file
-    call FF_KillLog_Init()
-    call FF_GameResult_Init()
-    call FF_ObserverCamera_Init()
-    call FF_BotVision_Init()
-endfunction
 
-function FF_Init takes nothing returns nothing
-    call TimerStart(CreateTimer(), 0.10, false, function FF_BootTick)
-endfunction
 
-function FF_ZoomSlider_Create takes nothing returns nothing
-    local framehandle gameUI = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
-    local trigger sliderTrigger = CreateTrigger()
-    local trigger lockTrigger = CreateTrigger()
-    call DestroyTimer(GetExpiredTimer())
-    call BlzLoadTOCFile("war3mapImported\\FFZoom.toc")
-    set zoom___slider = BlzCreateFrameByType("SLIDER", "FootmenZoomVertical", gameUI, "FFZoomSlider", 0)
-    set zoom___sliderLabel = BlzCreateFrame("FFZoomLabel", zoom___slider, 0, 0)
-    call BlzFrameClearAllPoints(zoom___slider)
-    call BlzFrameSetAbsPoint(zoom___slider, FRAMEPOINT_CENTER, 0.190, 0.083)
-    call BlzFrameSetSize(zoom___slider, 0.009, 0.082)
-    call BlzFrameSetAbsPoint(zoom___sliderLabel, FRAMEPOINT_CENTER, 0.190, 0.029)
-    call BlzFrameSetTextColor(zoom___sliderLabel, 0xFFFFCC00)
-    call BlzFrameSetScale(zoom___sliderLabel, 0.55)
-    call BlzFrameSetMinMaxValue(zoom___slider, I2R(zoom___gMinDistance), I2R(zoom___gMaxDistance))
-    call BlzFrameSetStepSize(zoom___slider, 100.00)
-    call BlzFrameSetEnable(zoom___slider, true)
-    call BlzFrameSetVisible(zoom___slider, true)
-    set zoom___lockButton = BlzCreateFrame("FFZoomLockButton", gameUI, 0, 0)
-    call BlzFrameSetAbsPoint(zoom___lockButton, FRAMEPOINT_CENTER, 0.190, 0.138)
-    call BlzFrameSetSize(zoom___lockButton, 0.025, 0.020)
-    call BlzFrameSetLevel(zoom___lockButton, 10)
-    call BlzFrameSetText(zoom___lockButton, "")
-    set zoom___lockLabel = BlzCreateFrameByType("TEXT", "", zoom___lockButton, "", 0)
-    call BlzFrameSetAbsPoint(zoom___lockLabel, FRAMEPOINT_CENTER, 0.190, 0.138)
-    call BlzFrameSetSize(zoom___lockLabel, 0.010, 0.010)
-    call BlzFrameSetTextAlignment(zoom___lockLabel, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
-    call BlzFrameSetScale(zoom___lockLabel, 0.55)
-    call BlzFrameSetLevel(zoom___lockLabel, 11)
-    call BlzFrameSetText(zoom___lockLabel, "|cffffffffX|r")
-    call BlzTriggerRegisterFrameEvent(sliderTrigger, zoom___slider, FRAMEEVENT_SLIDER_VALUE_CHANGED)
-    call TriggerAddAction(sliderTrigger, function zoom___handleSlider)
-    call BlzTriggerRegisterFrameEvent(lockTrigger, zoom___lockButton, FRAMEEVENT_CONTROL_CLICK)
-    call TriggerAddAction(lockTrigger, function zoom___handleLockButton)
-    call BlzFrameSetValue(zoom___slider, GetCameraField(CAMERA_FIELD_TARGET_DISTANCE))
-    call zoom___UpdateSliderLabel(R2I(GetCameraField(CAMERA_FIELD_TARGET_DISTANCE)))
-    call zoom___UpdateLockButton(GetLocalPlayer())
-    set gameUI = null
-    set sliderTrigger = null
-    set lockTrigger = null
-endfunction
 
-function FF_MapInit takes nothing returns nothing
-    call TimerStart(CreateTimer(), 0.25, false, function FF_ZoomSlider_Create)
-endfunction
 
 function OM_MoveDamage takes integer level returns real
     if level <= 1 then
@@ -57566,8 +56862,6 @@ call ExecuteFunc("TimerUtils___init")
     set FF_DraftPageClick = CreateSound("Sound\\Interface\\MouseClick1.wav",false,false,false,10,10,"")
     call InitCustomTriggers()
     call FF_InitDebugTwistedFate()
-    call FF_Init()
-    call FF_MapInit()
     call RunInitializationTriggers()
     call OM_Init()
     call FS_Init()

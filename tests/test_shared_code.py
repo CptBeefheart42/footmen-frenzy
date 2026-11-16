@@ -69,8 +69,8 @@ class ExtractTest(unittest.TestCase):
 
     def test_function_that_differs_between_maps_is_refused(self):
         with self.assertRaisesRegex(SharedCodeError, 'functions differ'):
-            extract('is-bot', ['FF_IsBotName'], [], scripts(), self.shared)
-        self.assertFalse((self.shared / 'is-bot').exists())
+            extract('architect', ['Trig_HERO_Architect_Recruit_Actions'], [], scripts(), self.shared)
+        self.assertFalse((self.shared / 'architect').exists())
 
     def test_functions_that_are_spread_out_are_refused(self):
         with self.assertRaisesRegex(SharedCodeError, 'not next to each other'):
