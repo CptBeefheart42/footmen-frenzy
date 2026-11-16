@@ -39,6 +39,8 @@ using FootmenFrenzy.Shared;
 //   `verify-map <w3x> [--name S] [--author S] [--loading-title S] [--credits S] [--funcs a,b] [--stubs a,b] [--imports a,b] [--overrides csv] [--anchors txt]`
 //                  release gate for a BUILT map (see VerifyMap)
 //   `check-anchors <w3x> <anchors.txt>`  dry-runs the anchor hooks on a base map's script (exit 1 if one doesn't apply)
+//   `pack <start.w3x> <src dir> <out.w3x> [--script j] [--lfs-cache dir] [--missing file]`  a project's starting map
+//                  plus its source files -> a complete map (see Pack)
 //                  Every build applies the WC3 3.0 level fill (tools/shared/AbilityLevelFill.cs) to war3map.w3a.
 //
 // When FF_BASEMAP is a .w3x file it is first extracted to a temp folder, so the same proven
@@ -81,6 +83,8 @@ if (args.Length > 0 && args[0] == "check-anchors")
     return CheckAnchors(args.Skip(1).ToArray());
 if (args.Length > 0 && args[0] == "jass-to-lua")
     return JassToLua(args.Skip(1).ToArray(), commonJ, blizzardJ);
+if (args.Length > 0 && args[0] == "pack")
+    return Pack.Run(args.Skip(1).ToArray());
 
 string jassAddonsDir = Environment.GetEnvironmentVariable("FF_JASS_ADDONS");
 if (!string.IsNullOrEmpty(jassAddonsDir))
@@ -699,10 +703,6 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
         }
         replacements[MpqHash.GetHashedFileName("war3map.wts")] = MpqFile.New(new MemoryStream(wtsBytes), "war3map.wts", false);
     }
-    var internalNames = new HashSet<ulong>
-    {
-        MpqHash.GetHashedFileName("(listfile)"), MpqHash.GetHashedFileName("(attributes)"), MpqHash.GetHashedFileName("(signature)"),
-    };
     // Entries appended after the carried ones (named, placed by probing into free slots): the renamed asset
     // copies (their compressed data passed through from `probe`) and the map addons' imports.
     var newEntries = new List<MpqFile>();
@@ -723,87 +723,19 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
             Console.WriteLine($"JASS: map addon import {importName}");
         }
     }
-    var sourceFiles = archive.GetMpqFiles().ToList();
     // The originals of renamed assets are dropped only from a fully named base: in a protected map (unnamed
     // entries pinned to their slots) removing one could vacate a slot inside a probe chain.
-    bool protectedBase = sourceFiles.Any(f => f is not MpqKnownFile);
+    bool protectedBase = archive.GetMpqFiles().Any(f => f is not MpqKnownFile);
     var renamedFrom = protectedBase ? new HashSet<ulong>() : renames.Keys.Select(MpqHash.GetHashedFileName).ToHashSet();
-    var files = new List<MpqFile>();
-    int carried = 0, unnamed = 0, dropped = 0;
-    foreach (var f in sourceFiles)
-    {
-        if (internalNames.Contains(f.Name))
-            continue;
-        if (renamedFrom.Contains(f.Name))
-        {
-            dropped++;
-            continue;
-        }
-        if (replacements.TryGetValue(f.Name, out var repl))
-        {
-            files.Add(repl);
-            replacements.Remove(f.Name);
-            continue;
-        }
-        files.Add(f);
-        carried++;
-        if (f is not MpqKnownFile)
-            unnamed++;
-    }
-    if (replacements.Count > 0)
-    {
-        Console.WriteLine("JASS: internal error — a replacement entry was not matched in the source archive.");
-        return 1;
-    }
-    files.AddRange(newEntries);
-    bool hadListFile = archive.FileExists("(listfile)");
-    if (hadListFile && unnamed > 0)
-    {
-        // Named entries are placed by probing, unnamed ones pinned to their old slot — mixing the
-        // two can collide. No map of ours does this; refuse rather than guess.
-        Console.WriteLine($"JASS: the base has a partial (listfile) ({unnamed} entries unnamed) — unsupported.");
-        return 1;
-    }
-    var sourceTable = MpqTables.ReadHashTable(baseMapPath);
-    var options = new MpqArchiveCreateOptions
-    {
-        ListFileCreateMode = hadListFile ? MpqFileCreateMode.Overwrite : MpqFileCreateMode.Prune,
-        // Unnamed entries are pinned to their source slots (see below); a slot vacated by pruning
-        // (attributes) could then cut the probe chain that leads to one of them. Regenerating the
-        // file keeps its slot occupied (fresh CRCs, placed by name into the same chain).
-        AttributesCreateMode = unnamed > 0 ? MpqFileCreateMode.Overwrite : MpqFileCreateMode.Prune,
-        AttributesFlags = AttributesFlags.Crc32,   // no timestamps — keeps the build reproducible
-        BlockSize = 3,
-        // An unnamed entry's hash-table slot can only be reproduced in a table of the SAME size
-        // (its slot is name-hash mod size, and the name is unknown); with a bigger table War3Net
-        // hedges by cloning the entry into every candidate slot (8x for 2048 -> 16384), which
-        // bloats the block table. Keeping the source size makes the carry-over exact.
-        HashTableSize = checked((ushort)sourceTable.Length),
-    };
     string outPath = Path.Combine(outputFolder, outputMapName);
-    if (File.Exists(outPath)) File.Delete(outPath);  // MpqArchive.Create refuses to overwrite (CreateNew); allow reruns
-    using (MpqArchive.Create(outPath, files, options)) { }
-    Console.WriteLine($"PACK: {files.Count} entries — {carried} carried over unchanged" +
-        (unnamed > 0 ? $" ({unnamed} unnamed, no listfile)" : "") +
+    var packed = MpqRepack.Write(archive, baseMapPath, replacements, newEntries, renamedFrom, outPath);
+    if (packed == null)
+        return 1;
+    Console.WriteLine($"PACK: {packed.Value.Total} entries — {packed.Value.Carried} carried over unchanged" +
+        (packed.Value.Unnamed > 0 ? $" ({packed.Value.Unnamed} unnamed, no listfile)" : "") +
         $", replaced war3map.j{(stamped ? " + the war3map.wts version stamp" : "")}{(branded ? " + branding" : "")}{(fill.Cells > 0 ? " + the war3map.w3a level fill" : "")}" +
         $"{(renames.Count > 0 ? " + asset-path rewrites" : "")}" +
-        $"{(newEntries.Count > 0 ? $"; added {newEntries.Count} new entr{(newEntries.Count == 1 ? "y" : "ies")}" : "")}{(dropped > 0 ? $", dropped {dropped} renamed original(s)" : "")}.");
-
-    // Post-condition for the unnamed case: the game finds a file by probing forward from its
-    // name's slot until it hits an EMPTY slot, so every entry must sit exactly where the source
-    // had it and no source-occupied slot may have been vacated. Anything else would surface only
-    // in-game, as "file not found"/"map corrupted".
-    if (unnamed > 0)
-    {
-        var problems = MpqTables.CompareLayout(sourceTable, MpqTables.ReadHashTable(outPath));
-        if (problems.Count > 0)
-        {
-            foreach (var pr in problems) Console.WriteLine($"JASS: LAYOUT CHECK FAILED — {pr}");
-            File.Delete(outPath);
-            return 1;
-        }
-        Console.WriteLine($"JASS: hash-table layout preserved ({sourceTable.Length} slots).");
-    }
+        $"{(newEntries.Count > 0 ? $"; added {newEntries.Count} new entr{(newEntries.Count == 1 ? "y" : "ies")}" : "")}{(packed.Value.Dropped > 0 ? $", dropped {packed.Value.Dropped} renamed original(s)" : "")}.");
     Console.WriteLine($"BUILD OK -> {outPath}");
     return 0;
 }
@@ -2167,6 +2099,46 @@ static class MpqTables
             seed2 = c + seed1 + seed2 + (seed2 << 5) + 3;
         }
         return seed1;
+    }
+
+    /// <summary>
+    /// Lets <paramref name="edit"/> change an archive's decrypted hash table (four words per slot: name A, name B,
+    /// locale and platform, block index) and returns the archive with the table re-encrypted, or the archive itself
+    /// when nothing changed.
+    /// </summary>
+    /// <param name="archive">The whole archive file.</param>
+    /// <param name="edit">Changes the words in place and returns how many slots it changed.</param>
+    /// <param name="changed">The number <paramref name="edit"/> returned.</param>
+    public static byte[] EditHashTable(byte[] archive, Func<uint[], int> edit, out int changed)
+    {
+        var copy = (byte[])archive.Clone();
+        MpqHeader header;
+        using (var stream = new MemoryStream(copy))
+            header = MpqHeader.Parse(stream, true);
+        var offset = (int)header.HashTablePosition;
+        var words = new uint[header.HashTableSize * 4];
+        Buffer.BlockCopy(copy, offset, words, 0, words.Length * 4);
+        var key = HashString("(hash table)", 0x300);
+        Decrypt(words, key);
+        changed = edit(words);
+        if (changed == 0)
+            return archive;
+        Encrypt(words, key);
+        Buffer.BlockCopy(words, 0, copy, offset, words.Length * 4);
+        return copy;
+    }
+
+    static void Encrypt(uint[] data, uint key)
+    {
+        uint seed = 0xEEEEEEEE;
+        for (int i = 0; i < data.Length; i++)
+        {
+            seed += CryptTable[0x400 + (key & 0xFF)];
+            uint plain = data[i];
+            data[i] = plain ^ (key + seed);
+            key = ((~key << 0x15) + 0x11111111) | (key >> 0x0B);
+            seed = plain + seed + (seed << 5) + 3;
+        }
     }
 
     static void Decrypt(uint[] data, uint key)
