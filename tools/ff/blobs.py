@@ -5,7 +5,8 @@ starting map the same way. The contents are released files; this module download
 local cache `.tools/blobs/<sha256>`, checking every checksum. Download sources, first match wins:
 1. the cache;
 2. `blob_url` in ff.local.json (or the FF_BLOB_URL environment variable): an address with `{sha256}` in it, e.g. a
-   release whose files are named by their SHA-256;
+   release whose files are named by their SHA-256; a private store's token is read from the file `blob_token_file`
+   names (or FF_BLOB_TOKEN_FILE) and sent as `Authorization: token ...`;
 3. the Git LFS storage of the `origin` remote (public, no login), which holds the files of the imported maps.
 """
 from __future__ import annotations
@@ -46,25 +47,31 @@ def fetch(blobs: list[Blob]) -> None:
     if not missing:
         return
     CACHE.mkdir(parents=True, exist_ok=True)
-    url = blob_url()
+    url = setting('blob_url', 'FF_BLOB_URL')
     if url:
+        before = len(missing)
         missing = [b for b in missing if not download(url.format(sha256=b.sha256), b)]
+        print(f'downloaded {before - len(missing)} binary file(s) from the release store')
     if missing:
         from_lfs(missing)
-    print(f'downloaded {len(blobs)} binary file(s)' if len(blobs) > 1 else 'downloaded 1 binary file')
+        print(f'downloaded {len(missing)} binary file(s) from Git LFS storage')
 
 
-def blob_url() -> str | None:
-    """The configured release address with `{sha256}`, if any."""
+def setting(key: str, environment: str) -> str | None:
+    """A local setting: the environment variable, else the key in ff.local.json."""
     config = ROOT / 'ff.local.json'
-    configured = json.loads(config.read_text(encoding='utf-8')).get('blob_url') if config.is_file() else None
-    return os.environ.get('FF_BLOB_URL') or configured
+    configured = json.loads(config.read_text(encoding='utf-8')).get(key) if config.is_file() else None
+    return os.environ.get(environment) or configured
 
 
 def download(url: str, blob: Blob) -> bool:
     """Downloads one blob into the cache; returns False when the address has no such file."""
+    headers = {}
+    token_file = setting('blob_token_file', 'FF_BLOB_TOKEN_FILE')
+    if token_file:
+        headers['Authorization'] = 'token ' + Path(token_file).expanduser().read_text(encoding='utf-8').strip()
     try:
-        with urllib.request.urlopen(url) as response:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=headers)) as response:
             data = response.read()
     except urllib.error.HTTPError as error:
         if error.code == 404:
