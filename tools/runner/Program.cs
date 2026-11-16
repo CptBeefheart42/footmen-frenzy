@@ -418,12 +418,8 @@ static bool SetComputerSlotsInMapInfo(MapInfo mapInfo, HashSet<int> slots, Dicti
 
 static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFolder, string outputMapName, string version, string versionPattern, string stubFuncs, string commonJPath, string blizzardJPath, string mapAddonsDir, string anchorsPath)
 {
+    // An empty addon folder builds the map without addons: the level fill, map fixes, branding and checks still apply.
     var addonFiles = Directory.EnumerateFiles(addonsDir, "*.j").OrderBy(Path.GetFileName, StringComparer.Ordinal).ToArray();
-    if (addonFiles.Length == 0)
-    {
-        Console.WriteLine($"JASS: no *.j addon files found in {addonsDir}.");
-        return 1;
-    }
     bool hasMapAddons = !string.IsNullOrEmpty(mapAddonsDir);
     var mapAddonFiles = Array.Empty<string>();
     if (hasMapAddons)
@@ -514,6 +510,14 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
     if (computerSlots == null || (computerSlots.Count > 0 && !SetComputerSlotsInScript(ref jass, computerSlots)))
         return 1;
 
+    string injected;
+    if (addonFiles.Length == 0 && mapAddonFiles.Length == 0)
+    {
+        injected = jass;
+        Console.WriteLine("JASS: no addons; the map script is packed as it is.");
+    }
+    else
+    {
     int endGlobals = jass.IndexOf("\nendglobals", StringComparison.Ordinal);
     int mainIdx = jass.IndexOf("\nfunction main takes nothing returns nothing", StringComparison.Ordinal);
     if (endGlobals < 0 || mainIdx < 0 || endGlobals > mainIdx)
@@ -554,8 +558,9 @@ static int BuildJassAddons(string baseMapPath, string addonsDir, string outputFo
     if (Regex.IsMatch(fnSb.ToString(), @"^function FF_E2E_Init takes nothing returns nothing", RegexOptions.Multiline))
         sb.Append("    call FF_E2E_Init()\n");
     sb.Append(jass, initLineEnd + 1, jass.Length - (initLineEnd + 1));
-    var injected = sb.ToString();
+    injected = sb.ToString();
     Console.WriteLine($"JASS: injected {declared.Count} FF_ symbols; init hook after InitCustomTriggers()" + (earlyInit ? ", FF_EarlyInit() before it." : "."));
+    }
 
     // WC3 3.0 asset paths (see AssetPaths): imported files the map references with a dotted file name are
     // renamed and every reference rewritten. Planned before the parse so the script's literals are checked in
