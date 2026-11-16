@@ -1,0 +1,3 @@
+#!/bin/sh
+# ff: the one command for working on the maps (tools/ff).
+exec python3 "$(dirname "$0")/tools/ff" "$@"
