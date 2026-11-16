@@ -1,0 +1,27 @@
+Code,Name,Tier,Race
+hfoo,FOOTMAN,0,Human
+earc,ARCHER,1,NightElf
+hrif,RIFLEMAN,1,Human
+uban,BANSHEE,1,Undead
+otbk,BERSERKER,1,Orc
+nskf,BURNING ARCHER,1,Elintian
+hmil,MILITIA,2,Human
+ngh2,WRAITH,2,Elintian
+ohun,HEADHUNTER,2,Orc
+esen,HUNTRESS,2,NightElf
+ucry,CRYPT FIEND,2,Undead
+hspt,SPELLBREAKER,3,Human
+orai,RAIDER,3,Orc
+e00H,DRUID OF TALON,3,NightElf
+n04X,WARLOCK,3,Elintian
+uskm,SKELETAL MAGE,3,Undead
+hkni,KNIGHT,4,Human
+e00I,DRYAD,4,NightElf
+hdhw,MORTAR BOMBERS,4,Human
+uabo,ABOMINATION,4,Undead
+otau,TAUREN,4,Orc
+o009,DARK TAUREN,5,Orc
+h014,DARK KNIGHT,5,Human
+e004,DARK DRYAD,5,NightElf
+u009,DARK ABOMINATION,5,Undead
+h018,DARK MORTAR BOMBERS,5,Human

@@ -1,5 +1,4 @@
 /build/
-/tools.local.json
 __pycache__/
 *.pyc
 .env
@@ -8,3 +7,7 @@ __pycache__/
 .vs/
 .idea/
 *.pending
+tools/*/bin/
+tools/*/obj/
+/.tools/
+/ff.local.json

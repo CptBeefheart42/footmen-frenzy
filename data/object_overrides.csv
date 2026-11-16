@@ -1,0 +1,32 @@
+# Footmen Frenzy map fixes — single ability cells every build writes into both maps after the WC3 3.0 level fill
+# (runner FF_OBJECT_OVERRIDES; checked by verify-map --overrides). Keep it small: the maps' own object data stays
+# authoritative.
+# Object,Field,Level,Pointer,Type,Value   (Value <unset> removes the cell; the value may contain commas)
+#
+# 2026-09-15: Blizzard never damages buildings. "Building Reduction" (Hbz4) is the damage multiplier against structures;
+# the maps had 0.1 (10%) at every level. Applies to every Blizzard: AHbz (Archmage), A0O3 (PRIV copy), A04V (1 level,
+# but its stored levels 2-6 are set too), A087.
+AHbz,Hbz4,1,4,Unreal,0
+AHbz,Hbz4,2,4,Unreal,0
+AHbz,Hbz4,3,4,Unreal,0
+AHbz,Hbz4,4,4,Unreal,0
+AHbz,Hbz4,5,4,Unreal,0
+AHbz,Hbz4,6,4,Unreal,0
+A0O3,Hbz4,1,4,Unreal,0
+A0O3,Hbz4,2,4,Unreal,0
+A0O3,Hbz4,3,4,Unreal,0
+A0O3,Hbz4,4,4,Unreal,0
+A0O3,Hbz4,5,4,Unreal,0
+A0O3,Hbz4,6,4,Unreal,0
+A04V,Hbz4,1,4,Unreal,0
+A04V,Hbz4,2,4,Unreal,0
+A04V,Hbz4,3,4,Unreal,0
+A04V,Hbz4,4,4,Unreal,0
+A04V,Hbz4,5,4,Unreal,0
+A04V,Hbz4,6,4,Unreal,0
+A087,Hbz4,1,4,Unreal,0
+A087,Hbz4,2,4,Unreal,0
+A087,Hbz4,3,4,Unreal,0
+A087,Hbz4,4,4,Unreal,0
+A087,Hbz4,5,4,Unreal,0
+A087,Hbz4,6,4,Unreal,0

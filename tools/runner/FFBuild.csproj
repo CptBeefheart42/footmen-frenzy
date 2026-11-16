@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <!-- Lint gate: a compiler warning fails the build (the checks build both tools) -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyName>FFBuild</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.16.0" />
+    <PackageReference Include="WCSharp.ConstantGenerator" Version="3.1.3" />
+    <PackageReference Include="WCSharp.CSharpLua" Version="6.0.2" />
+    <PackageReference Include="WCSharp.CSharpLua.CoreSystem" Version="6.0.6" />
+    <PackageReference Include="War3Net.Build" Version="6.1.2" />
+    <PackageReference Include="War3Net.Build.Core" Version="6.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- shared with tools/BalanceTool: the WC3 3.0 level fill and the repository lookup -->
+    <Compile Include="../shared/AbilityLevelFill.cs" Link="Shared/AbilityLevelFill.cs" />
+    <Compile Include="../shared/Repo.cs" Link="Shared/Repo.cs" />
+  </ItemGroup>
+</Project>
