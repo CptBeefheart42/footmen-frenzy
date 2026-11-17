@@ -14,6 +14,8 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends python3 python3-openpyxl lua5.3 git git-lfs \
  && rm -rf /var/lib/apt/lists/*
 COPY --from=pjass /pjass/pjass /usr/local/bin/pjass
+# CI runs its steps in this image: the checkout step is a JavaScript action and needs Node.js.
+COPY --from=node:20-bookworm-slim /usr/local/bin/node /usr/local/bin/node
 # NUGET_XMLDOC_MODE=none: the C#-to-Lua transpiler reads its templates from the packages' XML docs.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1 NUGET_XMLDOC_MODE=none HOME=/tmp
 WORKDIR /repo
