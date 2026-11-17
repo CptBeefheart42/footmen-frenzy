@@ -13,14 +13,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import subprocess
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-from repo import ROOT, TOOLS
+from repo import ROOT, TOOLS, setting
 
 CACHE = TOOLS / 'blobs'
 
@@ -55,13 +54,6 @@ def fetch(blobs: list[Blob]) -> None:
     if missing:
         from_lfs(missing)
         print(f'downloaded {len(missing)} binary file(s) from Git LFS storage')
-
-
-def setting(key: str, environment: str) -> str | None:
-    """A local setting: the environment variable, else the key in ff.local.json."""
-    config = ROOT / 'ff.local.json'
-    configured = json.loads(config.read_text(encoding='utf-8')).get(key) if config.is_file() else None
-    return os.environ.get(environment) or configured
 
 
 def download(url: str, blob: Blob) -> bool:

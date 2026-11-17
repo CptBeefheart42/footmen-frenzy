@@ -1,0 +1,17 @@
+# Known deviations of the WC3 3.0 probe (bin/ff-probe.w3x, CustomMapData\ff_probe.txt) that check_probe.py accepts.
+# kind,a,b,c,note
+#   readback,<ability>,<field>,<level>: a control cell that reads 0 instead of the stored value (an R line).
+#   unreadable,<class>,<max>,,        : fields natives can't read (string/target fields), at most <max> per class.
+# The nine readbacks: integer "flag" cells (stored 1, read 0) whose cause is not explained; accepted so a NEW
+# deviation stands out. Remove a row once explained or fixed.
+readback,A019,Owk4,1,
+readback,A0AC,Ear3,1,
+readback,A0HS,Ear3,1,
+readback,AEah,Eah2,1,
+readback,AEar,Ear3,1,
+readback,AHmt,Hmt3,1,
+readback,ANtm,Ntm4,1,
+readback,AOwk,Owk4,1,
+readback,AREW,Owk4,1,
+unreadable,FILL,14,,
+unreadable,GAP,11,,

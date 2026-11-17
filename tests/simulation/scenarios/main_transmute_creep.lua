@@ -1,0 +1,28 @@
+-- Transmute on a creep hired at a creep shop: a hit, and also a tm_creeps.
+T.lobby()
+T.boot()
+T.advance(20)
+T.pickHeroes()
+
+local creep = T.buyUnit(T.unitsOf(1, "H005")[1], T.shop("n00R"), "n00Q")
+local spare = T.buyUnit(T.unitsOf(2, "H005")[1], T.shop("n00R"), "n00Q")
+T.advance(1)
+local caster = T.unit(4, "H005")
+T.learn(caster, "ANtm")
+T.cast(caster, "ANtm", creep); T.kill(creep, caster)
+local foot = T.unit(1, "hfoo"); T.cast(caster, "ANtm", foot); T.kill(foot, caster)
+T.kill(spare, T.unit(5, "hfoo"))               -- a hired creep killed without a Transmute
+T.flush()
+
+T.check("a Transmute landed on a hired creep is a hit and a tm_creeps", function()
+    local s = T.stats(4)
+    T.eq(s.tm_casts, 2, "tm_casts")
+    T.eq(s.tm_hits, 2, "tm_hits (the creep and the footman)")
+    T.eq(s.tm_creeps, 1, "tm_creeps (the creep only)")
+    T.eq(T.stats(1).creeps, 1, "the creep was hired")
+    T.eq(T.stats(1).tm_creeps, 0, "the creep's owner")
+end)
+T.check("a dead creep leaves the hired group", function()
+    T.eq(IsUnitInGroup(creep, FF_st_hired), false, "transmuted creep")
+    T.eq(IsUnitInGroup(spare, FF_st_hired), false, "creep killed otherwise")
+end)

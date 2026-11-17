@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -51,6 +52,13 @@ class Project:
     def binaries(self) -> Path:
         """The list of the map's binary files: name -> SHA-256 and size."""
         return self.folder / 'binaries.json'
+
+
+def setting(key: str, environment: str) -> str | None:
+    """A local setting: the environment variable when set, else `key` in ff.local.json (a file Git ignores)."""
+    config = ROOT / 'ff.local.json'
+    configured = json.loads(config.read_text(encoding='utf-8')).get(key) if config.is_file() else None
+    return os.environ.get(environment) or configured
 
 
 def projects() -> dict[str, Project]:

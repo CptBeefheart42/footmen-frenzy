@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -19,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
-from repo import ROOT, project, projects  # noqa: E402
+from repo import ROOT, project, projects, setting  # noqa: E402
 
 
 def doctor() -> int:
@@ -57,9 +58,9 @@ def check() -> int:
     """Runs every check: shared code, tool tests, and a full build of every map."""
     failed = []
     for label, command in [('shared code', [sys.executable, str(ROOT / 'tools' / 'shared_code.py'), 'check']),
-                           ('tool tests', [sys.executable, '-m', 'unittest', 'discover', '-s', str(ROOT / 'tests')])]:
+                           ('tool tests', [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-t', '.'])]:
         print(f'== {label}')
-        if subprocess.run(command, cwd=ROOT).returncode != 0:
+        if subprocess.run(command, cwd=ROOT, env=test_environment()).returncode != 0:
             failed.append(label)
     for name, proj in projects().items():
         print(f'== build {name}')
@@ -70,6 +71,15 @@ def check() -> int:
             failed.append(f'build {name}')
     print('all checks passed' if not failed else 'FAILED: ' + ', '.join(failed))
     return 1 if failed else 0
+
+
+def test_environment() -> dict:
+    """The environment for the tests: the efl-bot checkout from `efl_bot` in ff.local.json (FF_EFL_BOT)."""
+    env = dict(os.environ)
+    bot = setting('efl_bot', 'FF_EFL_BOT')
+    if bot:
+        env['FF_EFL_BOT'] = str(Path(bot).expanduser())
+    return env
 
 
 def main(argv: list[str] | None = None) -> int:

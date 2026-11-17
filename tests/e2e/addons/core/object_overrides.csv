@@ -1,0 +1,17 @@
+# e2e builds only (Makefile e2e-build adds it to FF_OBJECT_OVERRIDES after scripting/object_overrides.csv; verify-map
+# rejects any E2xx ability, so a release never carries one). Object,Field,Level,Pointer,Type,Value
+#
+# E2Ra "Raze": the scenarios' killing tool. A copy of the creep Storm Bolt (ACtb, order creepthunderbolt: no hero
+# skill uses that order) a hero casts on a unit or a building anywhere on the map, free and without cooldown; the
+# core's spell handler (FF_E2E_Raze) then deals the killing damage from the caster. So a scripted kill goes through a
+# real order and cast like a player's, with the caster's hero as the killer, and a manual test can end a game with it
+# in seconds.
+E2Ra,<new>,0,0,String,ACtb
+E2Ra,aher,0,0,Int,0
+E2Ra,alev,0,0,Int,1
+E2Ra,anam,0,0,String,E2E Raze
+E2Ra,aran,1,0,Unreal,99999
+E2Ra,acdn,1,0,Unreal,0
+E2Ra,amcs,1,0,Int,0
+E2Ra,acas,1,0,Unreal,0
+E2Ra,atar,1,0,String,air,ground,structure,enemies,neutral,vulnerable,invulnerable

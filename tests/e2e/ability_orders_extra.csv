@@ -1,0 +1,16 @@
+# Order strings the test client's local game data doesn't hold (neutralabilityfunc.txt of the custom_v1 set is not
+# downloaded on ~/wc3-test), for neutral hero spells our heroes are based on. NOT read from the game files: if one
+# is wrong, the skills scenario records the cast as refused (`order=none`) — a visible failure, never a false pass.
+code,order,orderon,orderoff,unorder
+ANtm,transmute,,,
+ANfd,fingerofdeath,,,
+Afod,fingerofdeath,,,
+ANab,acidbomb,,,
+ANfb,firebolt,,,
+ANdr,drain,,,
+ANso,soulburn,,,
+ANvc,volcano,,,
+ANcr,chemicalrage,,,
+ANlm,lavamonster,,,
+Advm,devourmagic,,,
+Afae,faeriefire,,,
