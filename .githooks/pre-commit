@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+"""The quick checks before every commit (ff setup turns this hook on): no private details in the staged files, the
+shared code assembles and is not copied more, the ff and shared-code tests. The full check is `ff check`."""
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools' / 'ff'))
+import leaks  # noqa: E402
+
+staged = subprocess.run(['git', 'diff', '--cached', '--name-only', '-z', '--diff-filter=ACM'], cwd=ROOT,
+                        capture_output=True, check=True).stdout.decode().split('\0')
+found = leaks.scan([f for f in staged if f])
+if found:
+    print('pre-commit: private details in the staged files:\n' + '\n'.join(found))
+    sys.exit(1)
+for command in ([sys.executable, 'tools/shared_code.py', 'check'],
+                [sys.executable, '-m', 'unittest', '-q', 'tests.test_ff', 'tests.test_shared_code']):
+    if subprocess.run(command, cwd=ROOT).returncode != 0:
+        print('pre-commit: the quick checks failed; nothing was committed (ff check shows everything)')
+        sys.exit(1)

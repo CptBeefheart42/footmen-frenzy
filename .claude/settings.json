@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./ff doctor)", "Bash(./ff build:*)", "Bash(./ff install:*)", "Bash(./ff test:*)", "Bash(./ff check)",
+      "Bash(ff doctor)", "Bash(ff build:*)", "Bash(ff install:*)", "Bash(ff test:*)", "Bash(ff check)",
+      "Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)", "Bash(git show:*)", "Bash(git fetch:*)",
+      "Bash(git branch:*)", "Bash(gh pr list:*)", "Bash(gh pr view:*)", "Bash(gh pr diff:*)"
+    ],
+    "deny": [
+      "Read(./ff.local.json)", "Read(~/.config/**)", "Bash(git push --force:*)", "Bash(git push -f:*)",
+      "Bash(git push origin main:*)", "Bash(ff blobs upload)", "Bash(./ff blobs upload)"
+    ]
+  }
+}

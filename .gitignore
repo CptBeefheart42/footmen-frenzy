@@ -11,3 +11,6 @@ tools/*/bin/
 tools/*/obj/
 /.tools/
 /ff.local.json
+
+# Claude Code skills: a link or copy of .agents/skills that ff setup makes
+/.claude/skills
