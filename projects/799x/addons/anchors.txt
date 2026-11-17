@@ -16,6 +16,12 @@
 # Stats (league/15-stats.j): gold the map moves itself, which the score screen never sees.
 # Each insert repeats the hooked call's own amount and credits that call's real sender and receiver slot.
 
+# -sub (when sub.enabled is on): the moment an observer takes over a slot, before the map renames the slot to the
+# substitute, league/22-sub.j records it (the sub row, the leaver's name kept, the slot's stats go on).
+function SoloSub_TryReplace
+anchor set SoloSub_playerForObserver[observerId]=playerNumber
+insert call FF_sub_OnReplace(playerNumber, observerId, GetPlayerName(observer))
+
 # Pooling (FFP_Transfer moves every -pool / autopool payment): gold moving from a sender who is out, or to a receiver
 # who has left, is a fallen ally's: inherited, never pool.
 function FFP_Transfer

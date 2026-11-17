@@ -1,0 +1,25 @@
+-- -sub switched off (799X's default, project.json settings sub.enabled): with an observer in the game, a player who
+-- leaves is handled at once as without -sub, and typing -sub offers nobody to take over.
+local lobby = T.defaultLobby()
+lobby[13] = { name = "Oscar#1313", observer = true }
+T.lobby(lobby)
+T.boot()
+T.advance(20)
+T.pickHeroes()
+T.advance(10)
+T.leave(2)
+T.advance(1)
+T.chat(1, "-sub")
+T.advance(1)
+T.flush()
+
+T.check("-sub does nothing: no dialog for the player who typed it", function()
+    T.eq(#T.buttons(1), 0, "dialog buttons shown to slot 1")
+end)
+T.check("the leaver is handled at once: the slot counts as left", function()
+    local s = T.stats(2)
+    T.ok(s and s.state == "left", "stats state of slot 2: " .. tostring(s and s.state))
+end)
+T.check("no sub record", function()
+    T.eq(#T.events("sub"), 0, "sub records")
+end)

@@ -64,7 +64,11 @@ function FF_gr_SideAlive takes integer side returns boolean
     return false
 endfunction
 
+// A substituted slot keeps the name of the player who left it (22-sub.j); the map renames the slot to the substitute.
 function FF_gr_Name takes integer slot returns string
+    if FF_sub_active[slot] then
+        return FF_Sanitize(FF_sub_origName[slot])
+    endif
     return FF_Sanitize(udg_orig_player_name[slot])
 endfunction
 

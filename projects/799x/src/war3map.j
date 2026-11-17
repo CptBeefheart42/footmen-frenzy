@@ -28660,6 +28660,14 @@ function SoloSub_LeavePrelude takes nothing returns boolean
     local boolean reopen
     local integer poolSlot
     set SoloSub_leaveInheritNumber=0
+    // -sub off (project.json settings sub.enabled): a player's leave runs the stock cleanup at once; an observer's
+    // leave (ids 12-23 are registered too) changes nothing.
+    if not FF_CFG_SUB_ENABLED then
+        if udg_Votekick_Defeat_Kicked_Player then
+            return false
+        endif
+        return GetPlayerId(GetTriggerPlayer()) >= 12
+    endif
     // v61: re-entered from SoloSub_PendingExpiry rather than by a real leave.
     // Point the stock cleanup at the abandoned slot and let it run.
     if SoloSub_abandonSlot != 0 then
@@ -28875,6 +28883,16 @@ function InitTrig_SoloSub takes nothing returns nothing
     local trigger commandTrigger= CreateTrigger()
     local trigger chooseTrigger= CreateTrigger()
     local trigger confirmTrigger= CreateTrigger()
+    // -sub is opt-in (project.json settings sub.enabled): off, nothing of it is set up.
+    if not FF_CFG_SUB_ENABLED then
+        call DestroyTrigger(commandTrigger)
+        call DestroyTrigger(chooseTrigger)
+        call DestroyTrigger(confirmTrigger)
+        set commandTrigger=null
+        set chooseTrigger=null
+        set confirmTrigger=null
+        return
+    endif
     set SoloSub_chooseDialog=DialogCreate()
     set SoloSub_confirmDialog=DialogCreate()
     set SoloSub_responseTimer=CreateTimer()

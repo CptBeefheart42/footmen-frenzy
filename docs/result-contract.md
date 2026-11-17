@@ -23,6 +23,7 @@ other client writes the plain name. Only the name differs: the content is the sa
 | `mode,ffa` / `mode,6v6` | always, after `format` | how slots form sides: FFA = 1-3, 4-6, 7-9, 10-12; 6v6 = West / East |
 | `roster,<slot>:<name>;...` + `roster_more,...` | from the first second | every participant (never an observer); more rows when one would pass the length limit |
 | `afk,<t>,<slot>,<name>` | a player is removed for having no hero, or having done nothing since the game started, 15 s after the mass began and once the gold pool is open (`league/25-afk.j`) | the game doesn't count for them: from then on the slot is in no roster, stats, usage row or side |
+| `sub,<t>,<slot>,<name>` | 799X built with `sub.enabled`: an observer took over the slot of a player who left (`league/22-sub.j`) | the slot plays on: the roster keeps the player who left, the slot's stats continue with `state=sub`; efl-bot does not read it yet |
 | `out,<t>,<slot>,<side>,<name>` | a player is out | the map cleared `udg_player_active`: base destroyed, or a whole team left |
 | `sidedead,<t>,<side>` | a side is out | its last player is out |
 | `winner,<t>,<side>,<members>` | exactly one side left | the map's own END condition |

@@ -93,6 +93,10 @@ function FF_st_Slot takes player p returns integer
     if s >= 1 and s <= 12 then
         return s
     endif
+    // an observer who took over a slot (22-sub.j) plays for it
+    if s >= 13 and s <= 24 then
+        return FF_sub_slotOf[s]
+    endif
     return 0
 endfunction
 
@@ -136,7 +140,7 @@ function FF_st_Track takes integer slot, boolean active returns boolean
     if FF_st_state[slot] != FF_ST_ALIVE then
         return false
     endif
-    if GetPlayerSlotState(Player(slot - 1)) == PLAYER_SLOT_STATE_LEFT then
+    if GetPlayerSlotState(Player(slot - 1)) == PLAYER_SLOT_STATE_LEFT and not FF_sub_active[slot] then
         call FF_st_Freeze(slot, FF_ST_LEFT)
         set FF_st_leftT[slot] = FF_Elapsed()
         return true
@@ -224,7 +228,9 @@ function FF_st_Join takes integer from, integer to returns string
 endfunction
 
 function FF_st_StateField takes integer slot returns string
-    if FF_st_state[slot] == FF_ST_ALIVE then
+    if FF_st_state[slot] == FF_ST_ALIVE and FF_sub_active[slot] then
+        return ",state=sub"
+    elseif FF_st_state[slot] == FF_ST_ALIVE then
         return ",state=alive"
     elseif FF_st_state[slot] == FF_ST_OUT then
         return ",state=out"

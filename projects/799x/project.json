@@ -18,6 +18,9 @@
     },
     "modes": {
       "4k": false
+    },
+    "sub": {
+      "enabled": false
     }
   }
 }
