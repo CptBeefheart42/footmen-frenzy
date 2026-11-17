@@ -7,6 +7,10 @@
     ff test sim [scenario ...]    build both maps and play the simulation scenarios against them
     ff blobs add <map> <entry> <file>   list a new binary file (model, texture) of a map
     ff blobs upload               upload listed binary files the release store lacks (maintainers)
+    ff e2e build|run|check <map> <scenario>   an e2e scenario: build its test map / also play it on the test
+                                  client and judge it / judge the last run (tests/e2e/README.md)
+    ff e2e suite | ladder         every scenario, played and judged, then the ladder check / only the ladder check
+    ff e2e probe | probe-build    the WC3 3.0 probe map: build, play and judge it / only build it
     ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
@@ -27,6 +31,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import blobs  # noqa: E402
+import e2e  # noqa: E402
 import hotkeys  # noqa: E402
 import leaks  # noqa: E402
 import toolchain  # noqa: E402
@@ -194,6 +199,24 @@ def release(version: str) -> Path:
     return archive
 
 
+def e2e_command(args) -> int:
+    """Runs `ff e2e <action> [map scenario]`; returns the exit code."""
+    if args.action == 'suite':
+        return e2e.suite()
+    if args.action == 'ladder':
+        return e2e.ladder()
+    if args.action == 'probe':
+        return e2e.probe()
+    if args.action == 'probe-build':
+        print(f'built {e2e.build_probe(project("799x"))}')
+        return 0
+    if not args.map or not args.scenario:
+        fail(f'ff e2e {args.action} needs a map and a scenario, e.g. ff e2e {args.action} 799x observer')
+    if args.action == 'check':
+        return e2e.judge(project(args.map), args.scenario)
+    return e2e.scenario(args.map, args.scenario, only_build=args.action == 'build')
+
+
 def blob_command(args) -> int:
     """ff blobs add <map> <entry> <file> | ff blobs upload."""
     if args.action == 'add':
@@ -240,6 +263,10 @@ def main(argv: list[str] | None = None) -> int:
     p = commands.add_parser('test', help='run a test suite')
     p.add_argument('suite', choices=['sim'])
     p.add_argument('scenarios', nargs='*', help='scenario names (default: all)')
+    p = commands.add_parser('e2e', help='the real-client e2e suite (tests/e2e/README.md)')
+    p.add_argument('action', choices=['build', 'run', 'check', 'suite', 'ladder', 'probe', 'probe-build'])
+    p.add_argument('map', nargs='?', choices=list(projects()))
+    p.add_argument('scenario', nargs='?')
     p = commands.add_parser('hotkeys', help="rewrite a map's hotkey list after an intended change")
     p.add_argument('map', choices=list(projects()))
     commands.add_parser('check', help='every check a change passes before it is committed')
@@ -257,6 +284,8 @@ def main(argv: list[str] | None = None) -> int:
             return blob_command(args)
         if args.command == 'docker':
             return docker(args.rest or ['check'])
+        if args.command == 'e2e':
+            return e2e_command(args)
         if args.command == 'hotkeys':
             print(f'wrote {hotkeys.write(project(args.map))}')
             return 0

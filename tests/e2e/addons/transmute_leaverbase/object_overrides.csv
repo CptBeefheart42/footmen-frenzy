@@ -1,0 +1,6 @@
+# transmute_leaverbase only: Transmute's cast range is 3000 instead of 450, so a cast from 2000 away keeps the
+# projectile (normal speed, 380/s) in the air ~5 s: time for the target's owner to leave and an ally to destroy the
+# leaver's base before it lands. Object,Field,Level,Pointer,Type,Value
+ANtm,aran,1,0,Unreal,3000
+ANtm,aran,2,0,Unreal,3000
+ANtm,aran,3,0,Unreal,3000

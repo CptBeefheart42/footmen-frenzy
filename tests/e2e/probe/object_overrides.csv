@@ -1,0 +1,6 @@
+# FF 3.0 probe — data variants the JASS natives can't write, applied by the build runner after the level fill
+# (FF_OBJECT_OVERRIDES, ff e2e probe only — never in a release).
+# Object,Field,Level,Pointer,Type,Value   (Value <unset> removes the cell; the value may contain commas)
+#
+# History: v3 found that an unset "Targets Allowed" hits nothing at levels 5+; v4 showed the SLK blank token "_"
+# restores the default targets (now part of the level fill). v5 checks the maps exactly as they ship: no overrides.

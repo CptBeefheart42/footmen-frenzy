@@ -1,7 +1,7 @@
 // e2e scenario "kill_credit": enemy heroes killed by a killer that is dead, or a spell dummy, by the time the damage
 // lands, through real game actions, with the client as player 1 (slot 1, a participant; slots 2-12 are computers —
 // `slots` file), all before Mass START (~98s) at the empty map centre. Each kill must count for slot 1 in the map's
-// own counters (the kill-credit hooks in scripting/jass-main/anchors.txt).
+// own counters (the kill-credit hooks in projects/799x/addons/anchors.txt).
 //   1 coin factory: a moneybag's Kaboom (it dies in its own blast)   4 Elemental Hellfire: a Flame Strike tick
 //   2 Objection: a Soul Burn tick, after the dummy's old 0.10 s life 5 Jaina's ultimate: a Rain of Fire burn tick,
 //   3 Parasite: a Parasite tick, after the dummy's old 0.10 s life      after the orbs vanished

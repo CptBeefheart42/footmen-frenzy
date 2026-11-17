@@ -20,6 +20,7 @@ WIN_DOCS = r"C:\users\steamuser\Documents\Warcraft III"
 BNET = "C:/Program Files (x86)/Battle.net/Battle.net.exe"
 LAUNCHER = "C:/Program Files (x86)/Battle.net/Battle.net Launcher.exe"
 WC3_PROC = re.compile(r"_retail_.x86_64.Warcraft III\.exe")
+CRASH_PROC = re.compile(r"BlizzardError\.exe")
 BNET_PROC = re.compile(r"Battle\.net\.exe")
 BNET_MAIN_PROC = re.compile(r"Battle\.net\.exe --in-process")
 AUTO_LOGIN_WAIT_S = 25
@@ -120,11 +121,11 @@ class Client:
         return res
 
     @staticmethod
-    def terminate(pids):
-        """Sends SIGTERM to each process that still runs."""
+    def terminate(pids, sig=signal.SIGTERM):
+        """Sends `sig` (default SIGTERM) to each process that still runs."""
         for p in pids:
             try:
-                os.kill(p, signal.SIGTERM)
+                os.kill(p, sig)
             except ProcessLookupError:
                 pass
 
@@ -259,10 +260,17 @@ class Client:
             time.sleep(3)
         return None
 
+    def wc3_crashed(self):
+        """Whether the game is gone or its crash reporter (BlizzardError.exe) is up."""
+        return not self.pids(WC3_PROC) or bool(self.pids(CRASH_PROC))
+
     def close_wc3(self):
-        """Closes the game; a process that lingers after its window closed (Proton) is terminated."""
+        """Closes the game; a process that lingers after its window closed (Proton) is terminated, and so is a
+        crash reporter."""
         for w in self.windows("^Warcraft III$"):
             self.xdo("windowclose", w)
+        # the crash reporter's dialog ignores the close and SIGTERM
+        self.terminate(self.pids(CRASH_PROC), signal.SIGKILL)
         pids = self.pids(WC3_PROC)
         if not self.wait_until(lambda: not any(Path(f"/proc/{p}").exists() for p in pids), 30):
             self.terminate(pids)

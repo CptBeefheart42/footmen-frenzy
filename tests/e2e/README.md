@@ -6,7 +6,7 @@ and what the bot's parser and the league make of them. Manual, before a release,
 (`~/wc3-test`). The simulation tests (`tests/simulation`) cover what the map *script* decides, on every push.
 
 ```
-make test-e2e            # everything (~90 min): the probe + 9 scenario runs, each judged, then the ladder check
+make test-e2e            # everything (~100 min): the probe + the E2E_SUITE runs, each judged, then the ladder check
                          #   E2E_PROBE=0: without the probe; FF_EFL_BOT=<checkout>: score with that bot, not the pin
 make e2e-run e2e-check E2E_MAP=main E2E_SCENARIO=ffa   # one scenario: build, play, judge (bin/e2e/main-ffa/)
 make test-e2e-ladder     # score the finished games with the bot the fleet runs (tests/e2e/efl-bot.ref)
@@ -42,10 +42,14 @@ make e2e-fixtures        # the last runs' ff_result / ff_killlog files for an ef
    mouse events — WC3 under Wine ignores xdotool's `--window` events.
 5. Done when `ff_e2e.txt` ends with `END`; the outputs (`ff_result*`, `ff_killlog*`, `ff_e2e*`) and the screenshots
    land in `bin/e2e/<map>-<scenario>/`; WC3 is closed (window, then the process).
+6. A crash ends the run at once: when the WC3 process is gone or its crash reporter (`BlizzardError.exe`) is up, the
+   runner writes `crash.txt` (seconds into the game, the last `ff_e2e.txt` record) and copies WC3's new crash reports (a
+   folder each: `Crash.txt`, `War3Log.txt`, `War3.dmp`) to `Errors/`. Every scenario's check then fails "the client did not crash".
 
 ## e2e builds (`tests/e2e/addons`, never released)
 
-`make e2e-build` = the release build of the map + `tests/e2e/addons/core` + `tests/e2e/addons/<scenario>`, and:
+`make e2e-build` = the release build of the map + `tests/e2e/addons/core` + `tests/e2e/addons/<scenario>` (+ the
+shared folders its `include` file names, one per line), and:
 
 - the participant slots the scenario's `slots` file names become Computer slots in the map's player data
   (`FF_SLOT_CONTROLLERS`), so the one client sits in the first slot left a User slot;
@@ -71,15 +75,18 @@ screen count it like in a real game. The addon only records (`ff_e2e.txt`); `che
 | `solo-observer` | Solo | slot 13 (first observer slot), like a fleet bot | the computer host's AFK timer starts the game; BotVision on an invisible unit; `-kd` not counted as usage; the bases fall to the Raze skill; the spectator's file: roster of the four seats, winner, placements, `gameend`, the Solo modes row |
 | `solo` | Solo | slot 1 (participant) | a whole 1v1v1v1 deathmatch game: the four Solo seats, purchases, research, kills, KOTH, placements, the Solo modes row |
 | `afk` | main + Solo | slot 1 (participant, never picks a hero) | the AFK kick: the mass begins (main 90 s, Solo 50 s), the warning 5 s later (screenshot), the kick 15 s after the mass began (main Pub: when the trading timer opens the gold pool) through the map's own kick (an action after it records the state; the defeat dialog's screenshot); the computers without a hero stay; the result file: an `afk` record with the client's name, slot 1 in no roster, stats or usage row |
+| `transmute_destroyed`, `transmute_left` | main + Solo | slot 1 (participant, the Alchemist) | a Transmute projectile in the air when the side of its target drops out — its last player destroyed (the base falls) or left (the map's own kick); on main the side's allies (slots 5, 6) go first the same way, so slot 4 is its last player; on Solo it is slot 5. The control first: a deny (the target's own footman kills it in flight, no crash). Then the loss, 30 s of play (Solo removes a lost player's units ~20 s later), the side out of the game, the Transmute counters (a leaver's target is hit on Solo, dodged on main). A crash fails the run with `loss` as the last record. One shared script (`transmute/`), one run per loss: a crash ends the run. **Single player does not reproduce the multiplayer crash** this guards against: the target's owner is a computer, whose client never leaves the game; the crash needs a human whose client really leaves (see below) |
 | `skills` | main + Solo | slot 1 | every hero skill (~280) at every level the engine gives it: every stored numeric cell read back (`BlzGetAbility*LevelField`), then one cast per level (8 at a time, a fresh caster with 100000 mana, enemy / enemy hero / damaged ally / own unit / point / instant, one retry elsewhere). Mana spent and cooldown started must equal the map's `amcs` / `acdn`: the WC3 3.0 level-fill check in the real client. Data from `gen_skills.py` (map object data + map fixes), orders from `gen_orders.py` (the test client's game data), known cases in `skills_exceptions.csv`; a skill fails when 2+ of its levels are refused or have no effect (single misses move between runs). ~12 min per map |
 | `kd` | main | slot 1 (participant) | the map's -kd counters case by case before Mass START: an enemy footman (a kill and a death), own and allied footmen, an illusion (Wand of Illusion), a killer already dead (counted for its owner), a neutral-aggressive killer, slot 4's cannon tower killing a footman by its own attack (kill for the tower's owner), enemy and allied heroes; then kill log = stats `ukills`/`hkills` = the counters of all 12 slots at one snapshot, and `-kd` |
 | `kill_credit` | main | slot 1 (participant) | enemy heroes killed by a killer that is dead, or a spell dummy, when the damage lands — a moneybag's Kaboom (coin factory), Objection's Soul Burn and Parasite ticks after the dummies' old 0.10 s life, a Hellfire Flame Strike tick, a Rain of Fire burn after Jaina's orbs vanished, Thor's hammer Firebolt — by real casts: each counts for slot 1 (hero kill, hero death, the engine names a slot-1 killer, slot 1's hero earns XP); then stats `ukills`/`hkills` = the counters of all 12 slots |
+| `towerfire` | main | slot 1 (participant) | a tower's attack on friendly units before Mass START: a cannon's splash kills an enemy next to its target (control) but spares allied and own footmen, also the Arcane Tower of Terror's; a tower accepts an attack order on an allied or own footman (order event `attack` + that target) and kills only that one; the deny counters per case; from Mass START on, every order event counted (~250/s, almost all the map's own) and the map never orders a building to attack a friendly unit |
 | `trade` | main | slot 1 (participant) | gold between allies once the map allows it (~240 s): `-pool` to slot 2 and 400 back (`pool_out`/`pool_in`, the score screen untouched); the Allies menu by real input (single player disables its button, so the script clicks it open; the runner clicks slot 2's gold icon three times and Accept): the score screen's gold given = received = 300, the gold of both slots moves by exactly that in the tick it lands, no pool counter moves; the stats rows carry both routes |
 | `transmute_creeps` | main + Solo | slot 1 (participant, the Alchemist) | which Transmutes count as `tm_creeps`: two enemy sides hire four creeps (`n00A`, level 3: Transmute takes creeps up to level 6-8, the level-10 Turtle never) through real sales at the creep shops, each marked as hired; one Transmute per case at the empty map centre: on a hired creep (a hit and a `tm_creeps`), on the same creep type nobody hired (a hit only), on a footman (a hit only), on a hired creep its own side kills first (denied, a save for that side), on a hired creep removed in flight (a cast only); a hired creep killed without a Transmute leaves the hired group; then the stats rows, the kill log and the counters at one snapshot, the game paused so no later flush adds to them |
 | probe | probe map | — | `make e2e-probe`: the WC3 3.0 ability data the client loaded + Blizzard's damage by level (`check_probe.py`, `probe_expect.csv`) |
 
 Not covered (single player can't): a second human (another observer seeing the bot's detection), a real leaver,
-desyncs. Leaving is covered by the simulation (`main_forfeit`, `main_dissolve`, `main_leave_after_end`, `solo_forfeit`,
+desyncs, and the multiplayer crash when a Transmute projectile is in the air while its target's owner leaves or is
+destroyed (crashes every client; `transmute_*` show single player survives the same steps). Leaving is covered by the simulation (`main_forfeit`, `main_dissolve`, `main_leave_after_end`, `solo_forfeit`,
 `solo_dissolve`) and `make test-sim-ladder` (a forfeit is scored, a game nobody won is not). The rules are listed with
 their tests in `docs/result-contract.md`.
 

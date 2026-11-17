@@ -17,12 +17,13 @@ While the game runs, the map's test addon asks for input through CustomMapData/f
   * `WAIT <n> seq <step>;<step>...`: a series of inputs, once per <n>, for a game paused by its own menu (the
     Allies menu): `key <key>`, `tap <x> <y>` (one click, never repeated), `wait <seconds>`, `shot` (a screenshot).
 
-A screenshot follows each. The run ends when <file> holds <marker> (default END) as its last record, or fails on
-the timeout (screenshot kept).
+A screenshot follows each. The run ends when <file> holds <marker> (default END) as its last record. It fails on
+the timeout (screenshot kept), or as soon as the game crashes: its process is gone or its crash reporter is up. A
+crash leaves crash.txt (when, and the done file's last record) and WC3's new crash reports (Errors/) in the out dir.
 
 Only a test client is used: a prefix under ~/wc3-test (or FF_WC3_PREFIX), never ~/wc3-stage. The client normally
 logs in by itself (Battle.net auto-login); when its saved session is gone, bnet_login.py types the test account's
-credentials. Exit codes: 0 done, 1 timeout or no game, 2 the login needs manual help.
+credentials. Exit codes: 0 done, 1 timeout, crash or no game, 2 the login needs manual help.
 """
 import argparse
 import fnmatch
@@ -43,6 +44,7 @@ PHASE_FILE = "ff_e2e_phase.txt"
 LOAD_POLLS, LOAD_POLL_S = 60, 5
 CLICK_AFTER_S, CLICK_REPEAT_S = 4, 6
 LAUNCH_ATTEMPTS = 2
+CRASH_FILE = "crash.txt"
 _WAIT = re.compile(r"WAIT (\d+) (chat|key|click|seq) (.*)$")
 _STEP = re.compile(r"(key \S+|tap [\d.]+ [\d.]+|wait [\d.]+|shot)$")
 
@@ -157,7 +159,7 @@ class Session:
         """Answers requests until `done_file` ends with `marker`.
 
         Returns:
-            True when the marker appeared, False on the timeout.
+            `done` when the marker appeared, `crash` when the game crashed, `timeout` otherwise.
         """
         end = time.time() + timeout
         while time.time() < end:
@@ -167,9 +169,24 @@ class Session:
                     self.answer(w)
             rows = read_rows(self.c.data / done_file)
             if rows and rows[-1] == marker:
-                return True
+                return "done"
+            if self.c.wc3_crashed():
+                self.record_crash(rows)
+                return "crash"
             time.sleep(2)
-        return False
+        return "timeout"
+
+    def record_crash(self, rows):
+        """Writes crash.txt (seconds into the game, the done file's last record) and copies WC3's new crash reports
+        (a folder each: Crash.txt, War3Log.txt, War3.dmp)."""
+        last = rows[-1] if rows else "(none)"
+        log(f"the game crashed after {int(time.time() - self.start)}s; last record: {last}")
+        (self.out / CRASH_FILE).write_text(f"after={int(time.time() - self.start)}s\nlast={last}\n")
+        time.sleep(5)  # the reporter writes its folder a moment after the crash
+        errors = self.c.docs / "Errors"
+        for d in sorted(errors.iterdir()) if errors.is_dir() else []:
+            if d.is_dir() and d.stat().st_mtime >= self.start:
+                shutil.copytree(d, self.out / "Errors" / d.name, dirs_exist_ok=True)
 
 
 HANDLERS = {"chat": Session.chat, "key": Session.key, "click": Session.click, "seq": Session.seq}
@@ -264,7 +281,7 @@ def main(argv=None):
         argv: The command line (default: sys.argv[1:]).
 
     Returns:
-        0 when the done marker appeared, 1 on the timeout.
+        0 when the done marker appeared, 1 on the timeout or a crash.
     """
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("map", type=Path)
@@ -282,20 +299,20 @@ def main(argv=None):
     patterns = [done_file, PHASE_FILE, *a.collect]
     log(f"client {c.root} (WC3 {c.build_version()}), map {src.name}")
     prepare(c, src, a.out, patterns)
-    ok, win, t0 = False, None, time.time()
+    outcome, win, t0 = "timeout", None, time.time()
     try:
         win = launch(c, src, a.out, patterns)
         c.screenshot(win, a.out / "start.png")
-        ok = Session(c, win, a.out).play(done_file, marker, a.timeout)
-        c.screenshot(win, a.out / ("end.png" if ok else "timeout.png"))
+        outcome = Session(c, win, a.out).play(done_file, marker, a.timeout)
+        c.screenshot(win, a.out / ("end.png" if outcome == "done" else f"{outcome}.png"))
     finally:
         c.set_args(None)
         if win or c.pids(WC3_PROC):
             c.close_wc3()
         for f in data_files(c, patterns):
             shutil.copy2(f, a.out / f.name)
-        log(f"{'done' if ok else 'TIMEOUT'} after {int(time.time() - t0)}s -> {a.out}")
-    return 0 if ok else 1
+        log(f"{outcome.upper() if outcome != 'done' else 'done'} after {int(time.time() - t0)}s -> {a.out}")
+    return 0 if outcome == "done" else 1
 
 
 if __name__ == "__main__":

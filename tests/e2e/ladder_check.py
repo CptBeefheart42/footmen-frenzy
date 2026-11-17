@@ -90,7 +90,7 @@ def roster_entries(text):
 
 def run_tag(out):
     """A run's name in the report: `<map>/<scenario>` for simulation runs, the folder name otherwise."""
-    return f"{out.parent.name}/{out.name}" if out.parent.name in ("main", "solo") else out.name
+    return f"{out.parent.name}/{out.name}" if out.parent.name in ("799x", "solo") else out.name
 
 
 def check_stored_match(checks, tag, bot, engine, result, kills):

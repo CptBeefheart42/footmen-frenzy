@@ -2,12 +2,12 @@
 """Negative controls for the e2e checks: doctored copies of a real, passing run must FAIL, for the right reason.
 
     tests/e2e/selftest.py <out dir of a passing ffa run> [<out dir of a passing probe run>]
-                          [--skills <main-skills out dir>] [--kd <main-kd out dir>]
-                          [--trade <main-trade out dir>]
+                          [--skills <799x-skills out dir>] [--kd <799x-kd out dir>]
+                          [--trade <799x-trade out dir>]
 
 Each mutation is what a real regression would look like in the files the map writes: the result's end missing, an
 engine counter stuck at 0, the file under the wrong name, a slot's second stats row lost, a tie in the placements,
-a kill-log row short of a field, a kill log off the -kd counters, an Allies-menu trade not counted; for the probe, Blizzard dealing no damage at level 5; for the skills, a spell
+a kill-log row short of a field, a kill log off the -kd counters, a game crash, an Allies-menu trade not counted; for the probe, Blizzard dealing no damage at level 5; for the skills, a spell
 that costs no mana. The unmodified copy must pass first, else the selftest proves nothing.
 """
 import argparse
@@ -28,6 +28,11 @@ from tests.common.preload import rewrite_rows  # noqa: E402
 def result_file(d):
     """The run's result file (ff_result.txt or ff_result_<token>.txt)."""
     return next(Path(d).glob("ff_result*.txt"))
+
+
+def crashed(d):
+    """Leaves the crash note run.py writes when the game crashed (a run that ended still has its END)."""
+    (Path(d) / "crash.txt").write_text("after=120s\nlast=END\n")
 
 
 def drop_gameend(d):
@@ -139,6 +144,7 @@ FFA = [
     Mutation("a tie in the placements", placement_tie, "placements 1..N"),
     Mutation("script gold counted as received on the score screen", given_by_script, "leave the score screen's given"),
     Mutation("a kill-log row one field short", short_killlog_row, "kill log owner rows"),
+    Mutation("the game crashed", crashed, "the client did not crash"),
 ]
 PROBE = [Mutation("Blizzard level 5 deals no damage", blizzard_l5_zero)]
 SKILLS = [Mutation("one cast free of mana (unset level cells)", skills_mana_zero, "mana spent")]
@@ -202,9 +208,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("ffa", type=Path, help="out dir of a passing ffa run")
     ap.add_argument("probe", type=Path, nargs="?", help="out dir of a passing probe run")
-    ap.add_argument("--skills", type=Path, help="out dir of a passing main-skills run")
-    ap.add_argument("--kd", type=Path, help="out dir of a passing main-kd run")
-    ap.add_argument("--trade", type=Path, help="out dir of a passing main-trade run")
+    ap.add_argument("--skills", type=Path, help="out dir of a passing 799x-skills run")
+    ap.add_argument("--kd", type=Path, help="out dir of a passing 799x-kd run")
+    ap.add_argument("--trade", type=Path, help="out dir of a passing 799x-trade run")
     a = ap.parse_args(argv)
     py, checker = sys.executable, str(E2E_DIR / "check_e2e.py")
     checks = Checks("selftest")
@@ -213,8 +219,8 @@ def main(argv=None):
         control(checks, "probe", a.probe, lambda d: [py, str(E2E_DIR / "check_probe.py"), str(d / "ff_probe.txt")],
                 PROBE)
     if a.skills:
-        expect = a.skills.parent / "stage" / "main-skills" / "skills_expect.json"
-        control(checks, "skills", a.skills, lambda d: [py, checker, "skills", str(d), "--map", "main"], SKILLS,
+        expect = a.skills.parent / "stage" / "799x-skills" / "skills_expect.json"
+        control(checks, "skills", a.skills, lambda d: [py, checker, "skills", str(d), "--map", "799x"], SKILLS,
                 prepare=lambda d: shutil.copy2(expect, d / "skills_expect.json"))
     if a.kd:
         control(checks, "kd", a.kd, lambda d: [py, checker, "kd", str(d)], KD)

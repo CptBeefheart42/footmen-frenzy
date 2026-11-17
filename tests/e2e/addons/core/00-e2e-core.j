@@ -320,7 +320,7 @@ function FF_E2E_RazeOrder takes nothing returns nothing
 endfunction
 
 // Kills `target` the way a player would: `caster` (a hero) casts the e2e build's own ability E2Ra ("Raze", a creep
-// Storm Bolt copy with unlimited range, no cost, no cooldown: scripting/jass-e2e/core/object_overrides.csv) on it,
+// Storm Bolt copy with unlimited range, no cost, no cooldown: tests/e2e/addons/core/object_overrides.csv) on it,
 // and the spell's effect deals the killing damage from the caster. The target's vision is shared with the caster's
 // owner first and the order follows 0.5s later (the engine refuses an order on a unit its owner can't see). If the
 // order is refused the damage is dealt directly, and the record says so and why (`raze,...,order=0,...`): the checks

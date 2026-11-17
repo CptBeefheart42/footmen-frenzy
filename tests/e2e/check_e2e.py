@@ -43,7 +43,7 @@ class Run(Checks):
         killlog: The parsed kill log, once check_files has read it (bot clients only).
     """
 
-    def __init__(self, out, map_name="main"):
+    def __init__(self, out, map_name="799x"):
         super().__init__("e2e check")
         self.out = Path(out)
         self.map = map_name
@@ -180,7 +180,11 @@ def check_killlog(run, name):
 
 
 def check_finished(run):
-    """Checks that the scenario's addon reached its last step (its END record)."""
+    """Checks that the game did not crash (run.py's crash.txt) and the scenario's addon reached its last step (its
+    END record)."""
+    crash = run.out / "crash.txt"
+    run.check("the client did not crash", not crash.is_file(),
+              crash.read_text().replace("\n", " ").strip() if crash.is_file() else "")
     run.check("scenario finished (END)", run.e2e and run.e2e[-1] == "END", f"last record {run.e2e[-1:]}")
 
 
@@ -846,7 +850,7 @@ def check_afk(run, bot):
     kicked = run.one("kicked")
     run.eq("the kick removed slot 1", kicked.get("slot"), "1")
     pool_in = as_int(mass.get("poolin")) or 0
-    if run.map == "main":
+    if run.map == "799x":
         run.check("main (Pub): the pool is still closed at the mass", pool_in > 15, f"poolin {pool_in}")
     else:
         run.eq("Solo: no pool to wait for", pool_in, 0)
@@ -890,7 +894,7 @@ def check_transmute_creeps(run, bot):
     run.eq("client seated in slot 1 (Player 0)", run.one("e2e").get("local"), "0")
     hero = run.one("hero")
     side = {"A": hero.get("A"), "B": hero.get("B"), "1": "1"}
-    run.eq("enemy sides", (side["A"], side["B"]), ("4", "7") if run.map == "main" else ("5", "8"))
+    run.eq("enemy sides", (side["A"], side["B"]), ("4", "7") if run.map == "799x" else ("5", "8"))
     run.eq("slot 1's hero is ours, with Transmute", (hero.get("ours"), run.one("skill").get("ANtm")), ("1", "1"))
     run.eq("four sales ordered", [h.get("order") for h in run.rec("hire")], ["1"] * 4)
     hired = run.one("hired")
@@ -937,8 +941,95 @@ def check_transmute_creeps(run, bot):
         check_counter_snapshot(run, res, bot, "tcsnap")
 
 
+def check_transmute(run, bot):
+    """A Transmute projectile in the air when the side of its target drops out (transmute_destroyed / _left): the
+    client survives the control (a deny) and the loss, and the side is out of the game; the game goes on."""
+    case = run.one("e2e").get("scenario", "").removeprefix("transmute_")
+    res = check_files(run, bot, need_end=False)
+    hero = run.one("hero")
+    run.eq("slot 1's hero is the scenario's Alchemist (tavern-area pick)", hero.get("ours"), "1")
+    run.eq("Transmute learned", run.one("skill").get("ANtm"), "1")
+    side = hero.get("side", "")
+    run.eq("target side: slot 4 on main, slot 5 on Solo", side, "4" if run.map == "799x" else "5")
+    run.eq("both casts ordered", [c.get("order") for c in run.rec("cast")], ["1", "1"])
+    deny = run.one("deny")
+    run.eq("the control: the side's own footman killed the target in flight (dead, casts, hits, denied, saves)",
+           [deny.get(k) for k in ("dead", "casts", "hits", "denied", "saves")], ["1", "1", "0", "1", "1"])
+    if run.map == "799x":
+        # a destroyed player is out of the map's play (player_active); a leaver whose allies stay keeps it (they take
+        # over the base): the slot has left
+        allies = run.one("allies")
+        out = ["active5", "active6"] if case == "destroyed" else ["state5", "state6"]
+        run.eq("main: the side's allies (slots 5, 6) are out first, slot 4 is still in",
+               [allies.get(k) for k in (*out, "active4")], ["0", "0", "1"] if case == "destroyed" else
+               ["left", "left", "1"])
+    loss = run.one("loss")
+    run.eq("the loss came while the projectile was in the air", (loss.get("case"), loss.get("inflight")), (case, "1"))
+    run.eq("the client played on for 30 s after the loss (tick rows)", len(run.rec("tick")), 6)
+    after = run.one("after")
+    run.eq("after the loss: the side is out (player_active)", after.get(f"active{side}"), "0")
+    if case == "left":
+        run.eq("after the loss: the side's slot has left", after.get(f"state{side}"), "left")
+    run.eq("after the loss: the target is dead, the hero alive (alive, hero)",
+           [after.get(k) for k in ("alive", "hero")], ["0", "1"])
+    # A destroyed side's units are killed at once (no killer: the Transmute is denied). A leaver's are removed at once
+    # on main (dodged); Solo removes them ~20 s later, so the projectile lands (a hit).
+    hit = case == "left" and run.map == "solo"
+    run.eq("after the loss: Transmute counters (casts, hits, denied)", [after.get(k) for k in ("casts", "hits", "denied")],
+           ["2", "1" if hit else "0", "2" if case == "destroyed" else "1"])
+    if not res:
+        return
+    run.eq("the result file has the side out", [e.subject for e in res.events_of("sidedead")], ["team2"])
+    st = res.stats.get(int(side or 0))
+    run.eq(f"stats,{side}: state", st and st.state, "out" if case == "destroyed" else "left")
+
+
+def check_towerfire(run, bot):
+    """A tower's attack on allied units: splash on its own, ordered attacks, and the order events behind them."""
+    check_files(run, bot, need_end=False)
+    run.eq("client seated in slot 1 (Player 0)", run.one("e2e").get("local"), "0")
+
+    def killed_by_tower(case):
+        return sorted(d.get("victim") for d in run.rec("death", case=str(case)) if d.get("bytower") == "1")
+
+    def deny(case):
+        r = run.one("deny", case=str(case))
+        return {k: as_int(r.get(k)) for k in ("own1", "ally1", "own2", "ally2")}
+
+    def tower_orders(case):
+        return [(o.get("name"), o.get("target")) for o in run.rec("order", case=str(case))]
+
+    run.eq("case 1: the splash of a shot at an enemy spares the allied and the own footman next to it",
+           killed_by_tower(1), ["4"])
+    run.eq("case 1: no denies", deny(1), {"own1": 0, "ally1": 0, "own2": 0, "ally2": 0})
+    print(f"INFO case 1: the tower's order events while it picks an enemy on its own: {tower_orders(1)}")
+    for case, target, victims, want in ((2, "1", ["1"], {"own1": 0, "ally1": 0, "own2": 0, "ally2": 1}),
+                                        (3, "2", ["2"], {"own1": 0, "ally1": 0, "own2": 1, "ally2": 1})):
+        who = "allied" if target == "1" else "own"
+        run.eq(f"case {case}: the tower accepts an attack order on an {who} footman",
+               run.one("issue", case=str(case)).get("ok"), "1")
+        run.check(f"case {case}: the order event names the attack and the {who} target",
+                  ("attack", target) in tower_orders(case), f"{tower_orders(case)}")
+        run.eq(f"case {case}: the tower killed the {who} target only, not the footman next to it",
+               killed_by_tower(case), victims)
+        run.eq(f"case {case}: deny counters (cumulative)", deny(case), want)
+    run.eq("case 4 (control): the splash of a shot at an enemy kills the enemy next to it",
+           killed_by_tower(4), ["4", "4"])
+    run.eq("case 5: an Arcane Tower of Terror's splash spares the allied and the own footman too",
+           killed_by_tower(5), ["4"])
+    orders = run.one("orders")
+    run.check("order count after Mass START recorded", bool(orders), f"{orders}")
+    if orders:
+        secs = max(1, (as_int(orders.get("to")) or 0) - (as_int(orders.get("from")) or 0))
+        print(f"INFO order events in {secs}s from {orders.get('from')}s: all={orders.get('all')} "
+              f"({(as_int(orders.get('all')) or 0) / secs:.1f}/s), unit-target={orders.get('target')}, "
+              f"by buildings={orders.get('building')}")
+        run.eq("the map itself never orders a building to attack an allied or own unit",
+               orders.get("friendly_attack"), "0")
+
+
 SCENARIOS = {"afk": check_afk, "observer": check_observer, "ffa": check_ffa, "kd": check_kd, "kill_credit": check_kill_credit, "transmute_creeps": check_transmute_creeps, "trade": check_trade, "solo": check_solo, "solo-observer": check_solo_observer,
-             "skills": check_skills}
+             "skills": check_skills, "transmute_destroyed": check_transmute, "transmute_left": check_transmute, "towerfire": check_towerfire}
 
 
 def main(argv=None):
@@ -953,7 +1044,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("scenario", choices=sorted(SCENARIOS))
     ap.add_argument("out")
-    ap.add_argument("--map", default="main", choices=["main", "solo"])
+    ap.add_argument("--map", default="799x", choices=["799x", "solo"])
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--bot", dest="bot", action="store_true", default=True)
     g.add_argument("--no-bot", dest="bot", action="store_false")

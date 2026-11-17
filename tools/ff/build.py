@@ -37,7 +37,28 @@ class BuildError(RuntimeError):
     """A build step failed; the message says which and why."""
 
 
-def build(project: Project, name: str, out: Path | None = None, settings: dict | None = None) -> Path:
+@dataclasses.dataclass(frozen=True)
+class TestParts:
+    """What a test build (an e2e scenario) uses instead of the release's addons, and adds.
+
+    Attributes:
+        league: The league addons to inject (a staged copy of league/ with the test client on the bot list).
+        map_addons: The map addons to inject (the map's own, the e2e core and the scenario's), staged.
+        overrides: Object-data changes applied after data/object_overrides.csv (the e2e core's, the scenario's).
+        slots: Which participant slots are computers (`computer:1-11`, the runner's FF_SLOT_CONTROLLERS).
+        stub_functions: Functions switched off instead of the project's own (the probe switches off the map's triggers).
+        anchors: Whether the project's anchor hooks go in.
+    """
+    league: Path
+    map_addons: Path
+    overrides: tuple[Path, ...] = ()
+    slots: str = ''
+    stub_functions: tuple[str, ...] | None = None
+    anchors: bool = True
+
+
+def build(project: Project, name: str, out: Path | None = None, settings: dict | None = None,
+          test: TestParts | None = None, title: str | None = None) -> Path:
     """Builds `project` into build/<map>/<name>.
 
     Args:
@@ -45,6 +66,9 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
         name: The map's file name, ending in .w3x; without the extension it is also the in-game map name.
         out: Another build folder (a variant of the map, e.g. for tests).
         settings: Settings that replace the project's own, key by key (e.g. {"sub": {"enabled": True}}).
+        test: The parts of a test build. Such a map is never released: the release gate (`verify-map`, which rejects
+            test code) is left out.
+        title: The in-game map name, when it is not the file name without its extension.
 
     Returns:
         The built map.
@@ -54,7 +78,7 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
     """
     if not name.lower().endswith('.w3x') or Path(name).name != name:
         raise BuildError(f'the map name must be a file name ending in .w3x, not "{name}"')
-    title = name[:-4]
+    title = title or name[:-4]
     if settings:
         project = dataclasses.replace(project, settings=merged(project.settings, settings))
     out = out or BUILD / project.name
@@ -72,12 +96,27 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
 
     finished = out / name
     anchors = project.addons / 'anchors.txt'
-    map_addons = stage_map_addons(project, out / 'addons')
-    step('add the league addons and the 3.0 fixes', toolchain.run_dotnet_tool('tools/runner', [], {
-        'FF_JASS_ADDONS': str(LEAGUE), 'FF_JASS_MAP_ADDONS': str(map_addons) if map_addons else '',
-        'FF_JASS_ANCHORS': str(anchors) if anchors.is_file() else '', 'FF_JASS_STUB_FUNCS': ','.join(project.stub_functions),
+    if test and not test.anchors:
+        anchors = out / 'no-anchors.txt'
+    stubs = test.stub_functions if test and test.stub_functions is not None else project.stub_functions
+    if test:
+        map_addons = test.map_addons
+        add_settings(project, map_addons)
+    else:
+        map_addons = stage_map_addons(project, out / 'addons')
+    overrides = ';'.join(str(p) for p in (OVERRIDES, *(test.overrides if test else ())))
+    environment = {
+        'FF_JASS_ADDONS': str(test.league if test else LEAGUE), 'FF_JASS_MAP_ADDONS': str(map_addons) if map_addons else '',
+        'FF_JASS_ANCHORS': str(anchors) if anchors.is_file() else '', 'FF_JASS_STUB_FUNCS': ','.join(stubs),
         'FF_BASEMAP': str(packed), 'FF_OUTPUT': str(out), 'FF_OUTPUT_MAP': name,
-        'FF_OBJECT_OVERRIDES': str(OVERRIDES), 'FF_MAP_NAME': title}))
+        'FF_OBJECT_OVERRIDES': overrides, 'FF_MAP_NAME': title}
+    if test and test.slots:
+        environment['FF_SLOT_CONTROLLERS'] = test.slots
+    step('add the league addons and the 3.0 fixes', toolchain.run_dotnet_tool('tools/runner', [], environment))
+    if test:
+        check_reachable(project, finished)
+        check_script(out / 'war3map.j')
+        return finished
     verify = ['verify-map', str(finished), '--name', title, '--overrides', str(OVERRIDES)]
     if anchors.is_file():
         verify += ['--anchors', str(anchors)]
@@ -115,9 +154,14 @@ def stage_map_addons(project: Project, folder: Path) -> Path | None:
     if project.addons.is_dir():
         shutil.copytree(project.addons, folder, ignore=shutil.ignore_patterns('anchors.txt'))
     folder.mkdir(parents=True, exist_ok=True)
+    add_settings(project, folder)
+    return folder
+
+
+def add_settings(project: Project, folder: Path) -> None:
+    """Writes the settings addon (05-settings.j) into a map-addon folder, when the project has settings."""
     if project.settings:
         (folder / '05-settings.j').write_text(settings_addon(project), encoding='utf-8', newline='\n')
-    return folder
 
 
 def settings_addon(project: Project) -> str:

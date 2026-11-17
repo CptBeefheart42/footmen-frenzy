@@ -9,7 +9,8 @@ without the host's dialog). Offline (-loadfile) WC3 names the client "Local Play
 addon renames it to --bot (01-e2e-client.j), a battletag-like name the league keeps as a player.
 
 <out dir>/map is the map's own addons (projects/<map>/addons, imports included) plus
-tests/e2e/addons/core and tests/e2e/addons/<scenario>.
+tests/e2e/addons/core and tests/e2e/addons/<scenario>. A scenario that shares its script with others names the
+shared folders under tests/e2e/addons in an `include` file, one per line; their *.j files are staged too.
 
 Release builds never go through here, and verify-map rejects any build with FF_E2E_ symbols.
 """
@@ -61,17 +62,39 @@ def client_name_addon(bot):
             "endfunction\n")
 
 
+def includes(scen):
+    """The shared folders a scenario's `include` file names (none without the file).
+
+    Args:
+        scen: The scenario folder.
+
+    Returns:
+        The folders, in the file's order.
+
+    Raises:
+        SystemExit: When a named folder does not exist.
+    """
+    inc = scen / "include"
+    if not inc.is_file():
+        return []
+    dirs = [scen.parent / line.strip() for line in inc.read_text().splitlines() if line.strip()]
+    for d in dirs:
+        if not d.is_dir():
+            sys.exit(f"stage: {inc} names no folder {d}")
+    return dirs
+
+
 def stage(map_name, scenario, out, bot=""):
     """Builds the two addon folders.
 
     Args:
-        map_name: `main` or `solo`.
+        map_name: `799x` or `solo`.
         scenario: The scenario folder under tests/e2e/addons.
         out: The stage folder (replaced).
         bot: The client's battletag, or empty for a client off the bot list.
 
     Raises:
-        SystemExit: On an unknown scenario, an invalid --bot, or an addon file name clash.
+        SystemExit: On an unknown scenario or included folder, an invalid --bot, or an addon file name clash.
     """
     out = Path(out)
     scen = REPO / "tests" / "e2e" / "addons" / scenario
@@ -89,7 +112,7 @@ def stage(map_name, scenario, out, bot=""):
             sys.exit(f"stage: {e}")
     shutil.copytree(REPO / "projects" / map_name / "addons", out / "map", ignore=shutil.ignore_patterns("anchors.txt"))
     (out / "map" / "01-e2e-client.j").write_text(client_name_addon(bot))
-    for src in (REPO / "tests" / "e2e" / "addons" / "core", scen):
+    for src in (REPO / "tests" / "e2e" / "addons" / "core", *includes(scen), scen):
         for f in sorted(src.glob("*.j")):
             if (out / "map" / f.name).exists():
                 sys.exit(f"stage: {f.name} clashes with a map addon file name")
@@ -103,7 +126,7 @@ def main(argv=None):
         argv: The command line (default: sys.argv[1:]).
     """
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("map", choices=["main", "solo"])
+    ap.add_argument("map", choices=["799x", "solo"])
     ap.add_argument("scenario")
     ap.add_argument("out")
     ap.add_argument("--bot", default="")

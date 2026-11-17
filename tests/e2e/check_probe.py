@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verdict on a WC3 3.0 probe run (make probe-build, played by tests/e2e/run.py).
+"""Verdict on a WC3 3.0 probe run (ff e2e probe, played by tests/e2e/run.py).
 
     tests/e2e/check_probe.py <ff_probe.txt> [--expect <probe_expect.csv>]
 
