@@ -3,7 +3,7 @@
 
 function FF_MA_AfkKick takes nothing returns nothing
     local integer n = FF_afk_slot
-    call CustomDefeatBJ(Player(n - 1), "Removed from the game: no hero (AFK).")
+    call CustomDefeatBJ(Player(n - 1), "Removed from the game (AFK).")
     // a leave event the defeat raised has run the map's own leaver handling already
     if not udg_player_active[n] then
         return

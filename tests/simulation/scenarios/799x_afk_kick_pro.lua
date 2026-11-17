@@ -1,5 +1,6 @@
--- The AFK kick in a Pro game: the gold pool is open from the first second, so a player without a hero is removed
--- 15 s after the mass began, as on Solo (afk_kick: the Pub game waits for the pool). Slot 2 never picks a hero.
+-- The AFK kick in a Pro game: the gold pool is open from the first second, so a player who has done nothing is removed
+-- 15 s after the mass began, as on Solo (afk_kick: the Pub game waits for the pool). Slot 2 never picks a hero (the
+-- auto hero gives it one at the mass) and never does anything.
 local M = require("modes")
 M.boot()
 M.pick("pro")
@@ -20,7 +21,7 @@ T.check("13 s after the mass: nobody is removed", function()
     T.eq(#T.events("afk"), 0, "afk records")
 end)
 T.advance(3)
-T.check("16 s after the mass: the player without a hero is removed", function()
+T.check("16 s after the mass: the player who did nothing is removed", function()
     T.eq(#T.events("afk"), 1, "afk records")
     T.eq(T.result(2), "defeat", "the map's verdict for slot 2")
     T.eq(T.result(1), nil, "the map's verdict for slot 1")

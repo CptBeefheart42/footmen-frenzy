@@ -31820,7 +31820,7 @@ function FF_AutoPick_Player takes integer playerNumber returns nothing
     if ( heroId == 0 ) then
         return
     endif
-    call DisplayTextToPlayer(p, 0, 0, "You did not choose a hero by 2:00. A random hero has been assigned.")
+    call DisplayTextToPlayer(p, 0, 0, "You did not choose a hero in time. A random hero has been assigned.")
     call CreateNUnitsAtLoc(1, heroId, p, udg_loc_tavern, bj_UNIT_FACING)
 endfunction
 
