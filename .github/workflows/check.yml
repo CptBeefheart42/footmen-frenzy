@@ -1,0 +1,46 @@
+# ff check on every push, inside the image of Dockerfile (image.yml keeps it in the CI's registry). The contract with
+# the bot's parser runs against an efl-bot checkout when the CI names one (vars.EFL_BOT_REPO at vars.EFL_BOT_REF, read
+# with secrets.EFL_BOT_TOKEN); without one it is skipped and says so. Binary files come from the release store
+# vars.BLOB_URL (with {sha256}), read with secrets.BLOB_TOKEN.
+name: check
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    if: vars.REGISTRY != ''
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_USER }}/footmen-frenzy-check:latest
+      credentials:
+        username: ${{ vars.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+      - name: efl-bot checkout for the contract check
+        if: vars.EFL_BOT_REPO != ''
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.EFL_BOT_REPO }}
+          ref: ${{ vars.EFL_BOT_REF }}
+          token: ${{ secrets.EFL_BOT_TOKEN }}
+          path: .tools/efl-bot
+      - name: A change to the maps or tools comes with a test
+        run: python3 tools/ff/scope.py origin/main
+      - name: ff check
+        env:
+          FF_EFL_BOT: ${{ vars.EFL_BOT_REPO != '' && format('{0}/.tools/efl-bot', github.workspace) || '' }}
+          FF_BLOB_URL: ${{ vars.BLOB_URL }}
+          BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
+        run: |
+          if [ -n "$BLOB_TOKEN" ]; then
+            printf '%s' "$BLOB_TOKEN" > "$RUNNER_TEMP/blob-token"
+            export FF_BLOB_TOKEN_FILE="$RUNNER_TEMP/blob-token"
+          fi
+          python3 tools/ff check
