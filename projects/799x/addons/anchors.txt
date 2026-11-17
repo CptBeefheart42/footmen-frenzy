@@ -69,23 +69,6 @@ function Trig_KOTH_Income_Func014A
 anchor call AdjustPlayerStateBJ(( udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add ), GetEnumPlayer(), PLAYER_STATE_RESOURCE_GOLD)
 insert set FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] = FF_st_kothGold[GetConvertedPlayerId(GetEnumPlayer())] + udg_KOTH_Gold_To_Add + udg_KOTH_Gold_Division_To_Add
 
-# --- Game modes: fixes of the map's own mode logic (tests/simulation/scenarios/*_mode_*.lua) ---
-# Hero-mode vote (In-house, Pub custom): when SD wins, the vote handler starts the game without Start_SD, so there
-# are no taverns. Run it first, as the AP and AR branches run their own start.
-function Trig_Vote_Timer_Expires_Actions
-anchor if ( Trig_Vote_Timer_Expires_Func002Func008Func001Func002C() ) then
-insert call EnableTrigger(gg_trg_Start_SD)
-insert call ConditionalTriggerExecute(gg_trg_Start_SD)
-# A tied or empty vote matches no branch (each needs a strict majority), so nothing would start: SD wins it.
-anchor call DisplayTextToForce(udg_all_players, ( I2S(udg_SD_votes) + " Votes for SD mode" ))
-insert if not ( Trig_Vote_Timer_Expires_Func002Func008C() or Trig_Vote_Timer_Expires_Func002Func008Func001C() ) then
-insert     set udg_SD_votes = udg_AP_votes + udg_AR_votes + 1
-insert endif
-
-function Trig_Start_game_Actions
-anchor set udg_startgold=140
-insert call SetMapFlag(MAP_RESOURCE_TRADING_ALLIES_ONLY, true)
-
 # Spell dummies live until their spell's damage is over. A dummy that is gone when a later tick kills leaves no
 # killer at all, so the game gives no kill, XP or gold. Each life = the spell's duration at the cast level + 1 s.
 # Objection on an enemy: the dummy's Soul Burn.

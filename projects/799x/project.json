@@ -9,5 +9,15 @@
     "FF_SOURCE_MANIFEST.json",
     "source_roundtrip/FF_Runtime.j",
     "source_roundtrip/globals.j"
-  ]
+  ],
+  "settings": {
+    "pooling": {
+      "pub_open_s": 230,
+      "pro_open_s": 0,
+      "pair_limit": 0
+    },
+    "modes": {
+      "4k": false
+    }
+  }
 }

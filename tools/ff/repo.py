@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,6 +24,7 @@ class Project:
         stub_functions: Functions of the map script the build turns into no-ops (the map's own writers of the files
             the league addons write).
         drop_entries: Files of the starting map the built map leaves out.
+        settings: The map's game settings; the build hands them to the map script as FF_CFG_* constants.
     """
     name: str
     family: str
@@ -32,6 +33,7 @@ class Project:
     start_size: int
     stub_functions: tuple[str, ...] = ()
     drop_entries: tuple[str, ...] = ()
+    settings: dict = field(default_factory=dict, hash=False, compare=False)
 
     @property
     def folder(self) -> Path:
@@ -73,7 +75,7 @@ def projects() -> dict[str, Project]:
         start = data['start_map']
         found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'], start['sha256'],
                                           start['size'], tuple(data.get('stub_functions', ())),
-                                          tuple(data.get('drop_entries', ())))
+                                          tuple(data.get('drop_entries', ())), data.get('settings', {}))
     return found
 
 

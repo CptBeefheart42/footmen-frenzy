@@ -6110,6 +6110,11 @@ function FF_IsStandardPub takes nothing returns boolean
     return udg_mode_pub and not FFR4Pro and not FFMode4K
 endfunction
 
+// Pooling never opens in this game: standard Pub when its unlock time is set to -1 (project.json settings).
+function FFPool_PubClosed takes nothing returns boolean
+    return FF_IsStandardPub() and FF_CFG_POOLING_PUB_OPEN_S < 0
+endfunction
+
 function PBI_Allowed takes nothing returns boolean
     local integer owner = GetItemUserData(GetManipulatedItem())
     return owner == 0 or owner == GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
@@ -26938,7 +26943,7 @@ function InitTrig_Camera_Zoom takes nothing returns nothing
 endfunction
 
 function FFR4_PoolingAllowed takes nothing returns boolean
-    return not FF_IsStandardPub() and not FFR4NoPool and not udg_mode_promode and udg_autopoool_allowed
+    return not FFPool_PubClosed() and not FFR4NoPool and not udg_mode_promode and udg_autopoool_allowed
 endfunction
 
 function FFR4_LockPooling takes nothing returns nothing
@@ -27044,7 +27049,7 @@ function FFMode_ForcePub takes nothing returns nothing
     call PauseTimer(udg_timer_voting)
     set FFModeStage=0
     set FFR4Pro=false
-    set FFR4NoPool=true
+    set FFR4NoPool=FF_CFG_POOLING_PUB_OPEN_S < 0
     set FFMode4K=false
     set FFModePrivateVote=false
     set udg_FFCH_Mode=false
@@ -27060,7 +27065,10 @@ function FFMode_ShowCustomMenu takes nothing returns nothing
     call DialogClear(udg_dlg_mode[pn])
     call DialogSetMessage(udg_dlg_mode[pn],"Choose Custom Game (10 seconds)")
     set udg_dlg_btn_mode_01[pn]=DialogAddButton(udg_dlg_mode[pn],"Private / Tournament Mode",0)
-    set udg_dlg_btn_mode_02[pn]=DialogAddButton(udg_dlg_mode[pn],"4k Mode",0)
+    set udg_dlg_btn_mode_02[pn]=null
+    if FF_CFG_MODES_4K then
+        set udg_dlg_btn_mode_02[pn]=DialogAddButton(udg_dlg_mode[pn],"4k Mode",0)
+    endif
     call DialogDisplay(p,udg_dlg_mode[pn],true)
     call FFMode_BeginCountdown(2)
     set p=null
@@ -27209,7 +27217,7 @@ function Trig_MODE_GUI_show_Actions takes nothing returns nothing
     call FFStart_ClearSelectors()
     call FFR4_LockPooling()
     set FFR4Pro=false
-    set FFR4NoPool=true
+    set FFR4NoPool=FF_CFG_POOLING_PUB_OPEN_S < 0
     // RC6BOT HOST BEGIN
     if FF_hostBotGame then
         call PauseTimer(udg_Host_AFK_Timer)
@@ -27288,7 +27296,7 @@ function Trig_MODE_GUI_execute_Actions takes nothing returns nothing
     if FFModeStage == 1 then
         if clicked == udg_dlg_btn_mode_01[pn] or clicked == udg_dlg_btn_mode_02[pn] then
             set FFR4Pro=clicked == udg_dlg_btn_mode_02[pn]
-            set FFR4NoPool=not FFR4Pro
+            set FFR4NoPool=not FFR4Pro and FF_CFG_POOLING_PUB_OPEN_S < 0
             call FFMode_Resolve()
             call ConditionalTriggerExecute(gg_trg_MODE_set_pub_game_default)
         elseif clicked == udg_dlg_btn_mode_04[pn] then
@@ -27378,7 +27386,7 @@ endfunction
 
 function Trig_MODE_set_pub_game_custom_Actions takes nothing returns nothing
     set FFR4Pro=false
-    set FFR4NoPool=true
+    set FFR4NoPool=FF_CFG_POOLING_PUB_OPEN_S < 0
     call FFMode_Resolve()
     call ConditionalTriggerExecute(gg_trg_MODE_set_pub_game_default)
 endfunction
@@ -31442,10 +31450,12 @@ function Trig_Start_game_Actions takes nothing returns nothing
         // TRADE TIMER
         if ( Trig_Start_game_Func016Func010C() ) then
             set udg_t_trading=3.00
+        elseif FFR4Pro then
+            set udg_t_trading=I2R(FF_CFG_POOLING_PRO_OPEN_S)
         else
-            set udg_t_trading=230.00
+            set udg_t_trading=I2R(FF_CFG_POOLING_PUB_OPEN_S)
         endif
-        if not FF_IsStandardPub() and not FFR4NoPool then
+        if not FFPool_PubClosed() and not FFR4NoPool then
             call StartTimerBJ(udg_timer_trading, false, udg_t_trading)
             call CreateTimerDialogBJ(udg_timer_trading, "Pooling unlock")
             set udg_timer_window_trading=GetLastCreatedTimerDialogBJ()
@@ -31512,7 +31522,7 @@ function Trig_Start_game_Actions takes nothing returns nothing
     if udg_FFCH_Mode then
         call FFCH_Start()
     endif
-    if FF_IsStandardPub() or (FFR4NoPool and not udg_mode_pub) then
+    if FFPool_PubClosed() or (FFR4NoPool and not udg_mode_pub) then
         call FFR4_LockPooling()
     endif
     // START TIMERS
@@ -35791,7 +35801,7 @@ function Trig_turn_trading_ON_Func002C takes nothing returns boolean
 endfunction
 
 function Trig_turn_trading_ON_Actions takes nothing returns nothing
-    if FF_IsStandardPub() or FFR4NoPool then
+    if FFPool_PubClosed() or FFR4NoPool then
         call FFR4_LockPooling()
         return
     endif
@@ -35804,10 +35814,10 @@ function Trig_turn_trading_ON_Actions takes nothing returns nothing
         set udg_autopoool_allowed=true
         call SetMapFlag(MAP_RESOURCE_TRADING_ALLIES_ONLY, true)
         call SetMapFlag(MAP_LOCK_RESOURCE_TRADING, true)
-        if FFR4Pro then
+        if FFR4Pro or FF_CFG_POOLING_PAIR_LIMIT <= 0 then
             call DisplayTextToForce(udg_all_players, "Pooling is available: use -pool or F3.")
         else
-            call DisplayTextToForce(udg_all_players, "Pooling is available: use -pool or F3. Limit: 5000 gold per teammate.")
+            call DisplayTextToForce(udg_all_players, "Pooling is available: use -pool or F3. Limit: " + I2S(FF_CFG_POOLING_PAIR_LIMIT) + " gold per teammate.")
         endif
     endif
     call DestroyTrigger(GetTriggeringTrigger())
@@ -38506,8 +38516,8 @@ function FFP_Transfer takes integer senderId, integer targetId, integer requeste
     set key = senderId * 16 + targetId
     set available = GetPlayerState(sender, PLAYER_STATE_RESOURCE_GOLD)
     set amount = IMinBJ(requested, available)
-    if not FFR4Pro then
-        set amount = IMinBJ(amount, 5000 - FFP_PairSent[key])
+    if FF_CFG_POOLING_PAIR_LIMIT > 0 and not FFR4Pro then
+        set amount = IMinBJ(amount, FF_CFG_POOLING_PAIR_LIMIT - FFP_PairSent[key])
     endif
     if amount > 0 then
         call SetPlayerState(sender, PLAYER_STATE_RESOURCE_GOLD, available - amount)
@@ -38544,9 +38554,9 @@ function Trig_autopool_time_Actions takes nothing returns nothing
                     call DisplayTimedTextToPlayer(ConvertedPlayer(senderId), 0, 0, 1.00, I2S(amount) + " |cffffcc00Gold|r sent to " + GetPlayerName(ConvertedPlayer(targetId)))
                     call DisplayTimedTextToPlayer(ConvertedPlayer(targetId), 0, 0, 1.00, I2S(amount) + " |cffffcc00Gold|r received from " + GetPlayerName(ConvertedPlayer(senderId)))
                 endif
-                if not FFR4Pro and FFP_PairSent[senderId * 16 + targetId] >= 5000 then
+                if FF_CFG_POOLING_PAIR_LIMIT > 0 and not FFR4Pro and FFP_PairSent[senderId * 16 + targetId] >= FF_CFG_POOLING_PAIR_LIMIT then
                     set udg_autopoolto[senderId] = 0
-                    call DisplayTimedTextToPlayer(ConvertedPlayer(senderId), 0, 0, 5.00, "Pooling limit reached: 5000 gold to this ally. Choose another ally with -pool.")
+                    call DisplayTimedTextToPlayer(ConvertedPlayer(senderId), 0, 0, 5.00, "Pooling limit reached: " + I2S(FF_CFG_POOLING_PAIR_LIMIT) + " gold to this ally. Choose another ally with -pool.")
                 endif
             endif
         endif
@@ -38792,9 +38802,9 @@ function F3_SendAllGold_Callback takes nothing returns nothing
             call DisplayTimedTextToPlayer(sender, 0, 0, 3.00, I2S(amount) + " |cffffcc00Gold|r sent to " + GetPlayerName(ConvertedPlayer(targetId)))
             call DisplayTimedTextToPlayer(ConvertedPlayer(targetId), 0, 0, 3.00, I2S(amount) + " |cffffcc00Gold|r received from " + GetPlayerName(sender))
         endif
-        if not FFR4Pro and FFP_PairSent[senderId * 16 + targetId] >= 5000 then
+        if FF_CFG_POOLING_PAIR_LIMIT > 0 and not FFR4Pro and FFP_PairSent[senderId * 16 + targetId] >= FF_CFG_POOLING_PAIR_LIMIT then
             set udg_autopoolto[senderId] = 0
-            call DisplayTimedTextToPlayer(sender, 0, 0, 5.00, "Pooling limit reached: 5000 gold to this ally. Choose another ally with -pool.")
+            call DisplayTimedTextToPlayer(sender, 0, 0, 5.00, "Pooling limit reached: " + I2S(FF_CFG_POOLING_PAIR_LIMIT) + " gold to this ally. Choose another ally with -pool.")
         endif
     endif
     set sender = null

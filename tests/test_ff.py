@@ -3,6 +3,7 @@
 Run with `python -m unittest discover -s tests` from the repository root.
 """
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -13,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools' / 'ff'))
 
 import blobs  # noqa: E402
+import build  # noqa: E402
 import lookup  # noqa: E402
 from install import install  # noqa: E402
 from repo import ROOT as REPO, projects  # noqa: E402
@@ -68,6 +70,23 @@ class LookupTest(unittest.TestCase):
     def test_table_keys(self):
         self.assertEqual(lookup.hash_string('(hash table)', 3), 0xC3AF3770)
         self.assertEqual(lookup.hash_string('(block table)', 3), 0xEC83B3A3)
+
+
+class SettingsTest(unittest.TestCase):
+    """project.json settings reach the map script as constants."""
+
+    def test_799x_settings_become_constants(self):
+        text = build.settings_addon(projects()['799x'])
+        self.assertIn('constant integer FF_CFG_POOLING_PUB_OPEN_S = 230', text)
+        self.assertIn('constant integer FF_CFG_POOLING_PRO_OPEN_S = 0', text)
+        self.assertIn('constant boolean FF_CFG_MODES_4K = false', text)
+        self.assertTrue(text.splitlines()[1] == 'globals' and text.rstrip().endswith('endglobals'))
+
+    def test_every_setting_the_script_uses_is_set(self):
+        project = projects()['799x']
+        used = set(re.findall(r'\bFF_CFG_\w+', (project.src / 'war3map.j').read_text(encoding='utf-8', errors='replace')))
+        defined = set(re.findall(r'constant \w+ (FF_CFG_\w+)', build.settings_addon(project)))
+        self.assertEqual(used - defined, set())
 
 
 class InstallTest(unittest.TestCase):

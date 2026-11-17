@@ -12,6 +12,7 @@ Steps, all under build/<map>/:
 """
 from __future__ import annotations
 
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -63,8 +64,9 @@ def build(project: Project, name: str) -> Path:
 
     finished = out / name
     anchors = project.addons / 'anchors.txt'
+    map_addons = stage_map_addons(project, out / 'addons')
     step('add the league addons and the 3.0 fixes', toolchain.run_dotnet_tool('tools/runner', [], {
-        'FF_JASS_ADDONS': str(LEAGUE), 'FF_JASS_MAP_ADDONS': str(project.addons) if project.addons.is_dir() else '',
+        'FF_JASS_ADDONS': str(LEAGUE), 'FF_JASS_MAP_ADDONS': str(map_addons) if map_addons else '',
         'FF_JASS_ANCHORS': str(anchors) if anchors.is_file() else '', 'FF_JASS_STUB_FUNCS': ','.join(project.stub_functions),
         'FF_BASEMAP': str(packed), 'FF_OUTPUT': str(out), 'FF_OUTPUT_MAP': name,
         'FF_OBJECT_OVERRIDES': str(OVERRIDES), 'FF_MAP_NAME': title}))
@@ -77,6 +79,42 @@ def build(project: Project, name: str) -> Path:
     check_reachable(project, finished)
     check_script(out / 'war3map.j')
     return finished
+
+
+def stage_map_addons(project: Project, folder: Path) -> Path | None:
+    """Copies the map's own addons into `folder` and adds the settings addon; returns None when there is neither."""
+    shutil.rmtree(folder, ignore_errors=True)
+    if not project.addons.is_dir() and not project.settings:
+        return None
+    if project.addons.is_dir():
+        shutil.copytree(project.addons, folder, ignore=shutil.ignore_patterns('anchors.txt'))
+    folder.mkdir(parents=True, exist_ok=True)
+    if project.settings:
+        (folder / '05-settings.j').write_text(settings_addon(project), encoding='utf-8', newline='\n')
+    return folder
+
+
+def settings_addon(project: Project) -> str:
+    """The map's settings as JASS constants: {"pooling": {"pub_open_s": 230}} -> FF_CFG_POOLING_PUB_OPEN_S = 230."""
+    lines = []
+
+    def walk(prefix: str, value) -> None:
+        if isinstance(value, dict):
+            for key, inner in value.items():
+                walk(f'{prefix}_{key}'.upper(), inner)
+        elif isinstance(value, bool):
+            lines.append(f'    constant boolean {prefix} = {"true" if value else "false"}')
+        elif isinstance(value, int):
+            lines.append(f'    constant integer {prefix} = {value}')
+        elif isinstance(value, float):
+            lines.append(f'    constant real {prefix} = {value}')
+        else:
+            text = str(value).replace('\\', '\\\\').replace('"', '\\"')
+            lines.append(f'    constant string {prefix} = "{text}"')
+
+    walk('FF_CFG', project.settings)
+    return (f'// The settings of projects/{project.name}/project.json, written by ff build.\n'
+            'globals\n' + '\n'.join(lines) + '\nendglobals\n')
 
 
 def pack(project: Project, start: Path, script: Path, packed: Path, missing: Path) -> None:

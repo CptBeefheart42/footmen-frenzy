@@ -64,7 +64,7 @@ go away; a key whose meaning changes gets a new name instead.
 | `dmg_out` / `dmg_bld` / `dmg_in` | damage to non-structures / structures / taken, between non-allies, overkill included | damage events | probation |
 
 `modes,<k>=<v>,...` (written once, when the modes are final): `sel`, `pub`, `inhouse`, `koth`, `club777`, `madness`,
-`mirror`, `overdrive`, `colossal`, `onev1`, `debug`, `nomass`, `strong`. 799X adds `pro` and `notransmute`;
+`mirror`, `overdrive`, `colossal`, `onev1`, `debug`, `nomass`, `strong`. 799X adds `pro`, `notransmute` and `4k`;
 Solo adds `nopool`. All are 0/1 except `sel` (the selected mode) and `colossal`.
 
 `koth,<side>,hold=<s>,caps=<n>`: sides are numbered like `out` / `placement` (`team1..team4`, `west` / `east` in
