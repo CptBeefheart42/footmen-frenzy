@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools' / 'ff'))
 
 import blobs  # noqa: E402
+import leaks  # noqa: E402
 import build  # noqa: E402
 import lookup  # noqa: E402
 from install import install  # noqa: E402
@@ -90,6 +91,22 @@ class SettingsTest(unittest.TestCase):
         used = set(re.findall(r'\bFF_CFG_\w+', (project.src / 'war3map.j').read_text(encoding='utf-8', errors='replace')))
         defined = set(re.findall(r'constant \w+ (FF_CFG_\w+)', build.settings_addon(project)))
         self.assertEqual(used - defined, set())
+
+
+class LeaksTest(unittest.TestCase):
+    """Personal details are found before they are committed; generic test values are not."""
+
+    def test_findings(self):
+        with tempfile.TemporaryDirectory() as work:
+            file = Path(work) / 'notes.md'
+            at, users, home = '@', 'Users', '/home/'   # assembled, so this file itself holds no finding
+            file.write_text(f'mail me at someone{at}private-mail.net\nC:\\{users}\\Someone\\Documents\n{home}someone/src\n'
+                            f'tester{at}example.org, C:\\{users.lower()}\\steamuser\\Documents, 1+x{at}users.noreply.github.com\n')
+            found = [f.split(': ', 1)[1] for f in leaks.scan([str(file)])]
+        self.assertEqual(found, ['an e-mail address', 'a Windows user folder', 'a Linux home folder'])
+
+    def test_repository_is_clean(self):
+        self.assertEqual(leaks.scan(leaks.tracked_and_staged()), [])
 
 
 class InstallTest(unittest.TestCase):

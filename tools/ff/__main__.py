@@ -5,11 +5,14 @@
     ff build <map> [--name F]     build a map into build/<map>/ (default name: <map>-dev.w3x)
     ff install <map> [--name F]   build, then put it into the Warcraft III Tests folder
     ff test sim [scenario ...]    build both maps and play the simulation scenarios against them
+    ff blobs add <map> <entry> <file>   list a new binary file (model, texture) of a map
+    ff blobs upload               upload listed binary files the release store lacks (maintainers)
     ff check                      every check a change passes before it is committed
 """
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
@@ -18,6 +21,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import blobs  # noqa: E402
+import leaks  # noqa: E402
 import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
@@ -48,12 +53,30 @@ def fail(message: str):
 
 
 def setup() -> int:
-    """Installs pjass and Lua into .tools/ and turns on the pre-commit check."""
+    """Installs pjass and Lua into .tools/, makes the skills visible to Claude Code and turns on the pre-commit check."""
     for install_one in (toolchain.setup_pjass, toolchain.setup_lua):
         print(install_one())
+    print(link_skills())
     subprocess.run(['git', 'config', 'core.hooksPath', '.githooks'], cwd=ROOT, check=True)
     print('pre-commit check: on')
     return doctor()
+
+
+def link_skills() -> str:
+    """Claude Code reads skills from .claude/skills, every other tool from .agents/skills: a link where the system
+    allows one, else a copy (run ff setup again after changing a skill)."""
+    target, link = ROOT / '.agents' / 'skills', ROOT / '.claude' / 'skills'
+    link.parent.mkdir(exist_ok=True)
+    if link.is_symlink() or link.is_file():
+        link.unlink()
+    elif link.is_dir():
+        shutil.rmtree(link)
+    try:
+        link.symlink_to(Path('..') / '.agents' / 'skills', target_is_directory=True)
+        return 'skills: .claude/skills links to .agents/skills'
+    except OSError:
+        shutil.copytree(target, link)
+        return 'skills: copied to .claude/skills (no links on this system: run ff setup again after changing a skill)'
 
 
 # Map variants the simulation plays too: a map built with some settings changed. Their scenarios are named
@@ -88,8 +111,13 @@ def simulate(scenarios: list[str] | None = None, build_maps: bool = True) -> int
 
 
 def check() -> int:
-    """Runs every check: shared code, tool tests, a full build of every map, and the simulation."""
+    """Runs every check: private details, shared code, tool tests, a full build of every map, and the simulation."""
     failed = []
+    print('== private details')
+    found = leaks.scan(leaks.tracked_and_staged())
+    print('\n'.join(found) if found else 'none found')
+    if found:
+        failed.append('private details')
     for label, command in [('shared code', [sys.executable, str(ROOT / 'tools' / 'shared_code.py'), 'check']),
                            ('tool tests', [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-t', '.'])]:
         print(f'== {label}')
@@ -108,6 +136,21 @@ def check() -> int:
             failed.append('simulation')
     print('all checks passed' if not failed else 'FAILED: ' + ', '.join(failed))
     return 1 if failed else 0
+
+
+def blob_command(args) -> int:
+    """ff blobs add <map> <entry> <file> | ff blobs upload."""
+    if args.action == 'add':
+        if not (args.map and args.entry and args.file):
+            raise RuntimeError('usage: ff blobs add <map> <path inside the map> <file>')
+        blob = blobs.add(project(args.map).binaries, args.entry, args.file)
+        print(f'listed {args.entry} ({blob.size} bytes, {blob.sha256[:12]}) in projects/{args.map}/binaries.json')
+        return 0
+    listed = [blobs.Blob(b['sha256'], b['size']) for p in projects().values()
+              for b in json.loads(p.binaries.read_text(encoding='utf-8')).values()]
+    done = blobs.upload([b for b in listed if b.path.is_file()])
+    print(f'uploaded {len(done)} binary file(s) to the release store')
+    return 0
 
 
 def test_environment() -> dict:
@@ -129,6 +172,11 @@ def main(argv: list[str] | None = None) -> int:
         p = commands.add_parser(name, help=text)
         p.add_argument('map', choices=list(projects()))
         p.add_argument('--name', help='file name of the map, ending in .w3x (default: <map>-dev.w3x)')
+    p = commands.add_parser('blobs', help='binary files of a map (models, textures, sounds)')
+    p.add_argument('action', choices=['add', 'upload'])
+    p.add_argument('map', nargs='?', choices=list(projects()))
+    p.add_argument('entry', nargs='?', help='add: the path inside the map, e.g. war3mapImported/Hero.mdx')
+    p.add_argument('file', nargs='?', type=Path, help='add: the file on disk')
     p = commands.add_parser('test', help='run a test suite')
     p.add_argument('suite', choices=['sim'])
     p.add_argument('scenarios', nargs='*', help='scenario names (default: all)')
@@ -143,6 +191,8 @@ def main(argv: list[str] | None = None) -> int:
             return check()
         if args.command == 'test':
             return simulate(args.scenarios)
+        if args.command == 'blobs':
+            return blob_command(args)
         proj = project(args.map)
         built = build(proj, args.name or f'{proj.name}-dev.w3x')
         print(f'built {built}')
