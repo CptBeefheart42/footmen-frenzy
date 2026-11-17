@@ -11,3 +11,4 @@ league/** -text
 projects/**/addons/** -text
 projects/**/objects/** text eol=lf
 shared/** -text
+projects/*/base.w3x binary

@@ -23,7 +23,7 @@ Explain briefly, then ask if anything is unclear:
 
 ## 2. Install and check the tools
 
-Ask which system they use. They need Git with Git LFS, Python 3.10+, the .NET SDK (6 or newer) and this AI tool.
+Ask which system they use. They need Git, Python 3.10+, the .NET SDK (6 or newer) and this AI tool.
 Then run `ff doctor` together and go through what it says is missing; `ff setup` installs pjass and Lua. On Ubuntu or
 WSL, `ff docker check` is the alternative that needs only Docker.
 

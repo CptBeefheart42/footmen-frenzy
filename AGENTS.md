@@ -27,7 +27,8 @@ is not yours. Never push to `main`, never create tags or releases, never deploy.
 | `projects/<map>/src/war3map.j` | the map script: **the** source of the map's code (see "Code first") |
 | `projects/<map>/src/` | the map's other text files (string table `war3map.wts`, text configs) |
 | `projects/<map>/objects/*.txt` | the map's object data (units, abilities, items, upgrades, buffs, ...) as text, one line per field |
-| `projects/<map>/project.json` | the map's starting map, its **settings** (pooling, modes, -sub ...), functions the build switches off |
+| `projects/<map>/base.w3x` | the starting map: terrain, placed objects, imports as the World Editor last saved them (the only binary files in git) |
+| `projects/<map>/project.json` | where the starting map came from, its **settings** (pooling, modes, -sub ...), functions the build switches off |
 | `projects/<map>/binaries.json` | binary files newer than the starting map (models, textures), by checksum, in the release store |
 | `projects/<map>/addons/` | league code for this map only, and `anchors.txt` (lines the build inserts into the map's functions) |
 | `league/` | league code both maps get: the result file the bot scores, stats, kill log, observer camera, AFK rule |

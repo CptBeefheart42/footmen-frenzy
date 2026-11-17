@@ -6,7 +6,7 @@ install the maps, on Windows and Linux.
 | Map | Players | Folder | Starting map |
 |---|---|---|---|
 | 799X ("9v3") | 4 sides of 3, 12 observer slots | `projects/799x` | Reforged_Footmen_Frenzy_v7.9.9X-T19 |
-| Solo Foots | 4, 12 observer slots | `projects/solo` | Solo Foots UPDATE25 |
+| Solo Foots | 4, 12 observer slots | `projects/solo` | Solo Foots UPDATE38 |
 
 ## Get started
 
@@ -29,7 +29,9 @@ set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
   text configuration files.
 - `projects/<map>/binaries.json`: every binary file of the map (models, textures, sounds, object data, terrain) by
   name, SHA-256 and size. The files themselves are released, not kept here (see [Binary files](#binary-files)).
-- `projects/<map>/project.json`: the starting map (by checksum), the map's family name, the functions the build turns
+- `projects/<map>/base.w3x`: the starting map, the complete map as the World Editor last saved it (terrain, placed
+  objects, imports). It and its twin are the only binary files in git.
+- `projects/<map>/project.json`: the release the starting map came from, the map's family name, the functions the build turns
   off and the files it leaves out.
 - `projects/<map>/addons/`: league addons and anchor hooks for this map only.
 - `league/`: the league addons both maps get: the result file the bot scores (`ff_result`), the kill log, per-player
@@ -44,7 +46,7 @@ set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
 ## How a map is built
 
 `ff build <map>`:
-1. downloads the starting map and the binary files that differ from it;
+1. downloads the binary files that differ from the starting map (`base.w3x`);
 2. assembles the script: `src/war3map.j` with the shared code;
 3. packs the starting map with the sources (unchanged files are carried over byte for byte);
 4. adds the league addons, the WC3 3.0 level fill (unset ability levels 5+ read 0 on 3.0), the 3.0 file-name fix

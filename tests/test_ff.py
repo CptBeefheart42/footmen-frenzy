@@ -30,12 +30,13 @@ class ProjectsTest(unittest.TestCase):
         self.assertEqual(found['799x'].family, '799X')
         self.assertEqual(found['solo'].family, 'Solo Foots')
         for project in found.values():
-            self.assertRegex(project.start_sha256, '^[0-9a-f]{64}$')
-            self.assertGreater(project.start_size, 1_000_000)
+            self.assertTrue(project.start_name.endswith('.w3x'), project.name)
+            # a map file starts with its own header or directly with the MPQ archive's
+            self.assertIn(project.base.read_bytes()[:4], (b'HM3W', b'MPQ\x1a'), f'{project.name}: base.w3x is a map')
 
 
 class BinariesTest(unittest.TestCase):
-    """Binary files are listed by checksum and released, never committed."""
+    """Binary files are listed by checksum and released; the starting maps are the only ones committed."""
 
     def test_every_listed_binary_has_a_checksum_and_size(self):
         for project in projects().values():
@@ -49,7 +50,7 @@ class BinariesTest(unittest.TestCase):
             self.assertEqual(len(object_files), 14, project.name)
             self.assertEqual(object_files & set(listed), set(), 'object data is text, never a listed binary')
 
-    def test_repository_holds_no_binary_files(self):
+    def test_the_starting_maps_are_the_only_binary_files(self):
         tracked = subprocess.run(['git', 'ls-files', '-z'], cwd=REPO, capture_output=True, check=True).stdout
         binary = []
         for name in filter(None, tracked.decode().split('\0')):
@@ -61,7 +62,8 @@ class BinariesTest(unittest.TestCase):
                 continue
             if b'\0' in data:
                 binary.append(name)
-        self.assertEqual(binary, [], 'binary files belong in a release, listed in binaries.json')
+        starting_maps = sorted(str(p.base.relative_to(REPO)) for p in projects().values())
+        self.assertEqual(sorted(binary), starting_maps, 'other binary files belong in a release, listed in binaries.json')
 
     def test_lfs_address_is_http(self):
         self.assertTrue(blobs.lfs_url().startswith(('https://', 'http://')))

@@ -1,7 +1,8 @@
 """Builds a playable map from a project: shared code assembled, files packed, Warcraft III 3.0 fixes applied, checked.
 
 Steps, all under build/<map>/:
-1. the starting map and the binary files that differ from it are downloaded by checksum (tools/ff/blobs.py);
+1. the starting map is projects/<map>/base.w3x; the binary files that differ from it are downloaded by checksum
+   (tools/ff/blobs.py);
 2. the map script is assembled from src/war3map.j and shared/ (tools/shared_code.py), and the object data is turned
    from text (objects/) into the map's binary files (runner `objects to-binary`);
 3. the runner packs the starting map with those sources and binaries.json (`pack`);
@@ -59,9 +60,9 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
     out = out or BUILD / project.name
     out.mkdir(parents=True, exist_ok=True)
 
-    start_blob = blobs.Blob(project.start_sha256, project.start_size)
-    blobs.fetch([start_blob])
-    start = start_blob.path
+    start = project.base
+    if not start.is_file():
+        raise BuildError(f'{start.relative_to(ROOT)} is missing: the starting map is part of the repository')
     script = out / 'assembled.j'
     script.write_bytes(assemble((project.src / 'war3map.j').read_bytes()))
 

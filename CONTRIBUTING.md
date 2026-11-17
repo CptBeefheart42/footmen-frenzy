@@ -16,4 +16,4 @@ How a change gets from an idea into the maps. The AI tools follow the same steps
 
 Binary files (models, textures, sounds) never go into git: `ff blobs add` lists them, a maintainer uploads them to the
 release store. A map edited in the World Editor (terrain, placement) replaces the map's starting map
-(`projects/<map>/base.w3x`, Git LFS).
+(`projects/<map>/base.w3x`, a normal file in git).

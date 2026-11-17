@@ -18,9 +18,7 @@ class Project:
     Attributes:
         name: Folder name, e.g. `799x`.
         family: The map's family name (`map_type`), which names its Warcraft III test folder, e.g. `799X`.
-        start_name: File name of the starting map, the complete map a build starts from.
-        start_sha256: The starting map's SHA-256 (its contents are a released file, not in the repository).
-        start_size: The starting map's size in bytes.
+        start_name: The release the starting map (`base.w3x`, the complete map a build starts from) came from.
         stub_functions: Functions of the map script the build turns into no-ops (the map's own writers of the files
             the league addons write).
         drop_entries: Files of the starting map the built map leaves out.
@@ -30,8 +28,6 @@ class Project:
     name: str
     family: str
     start_name: str
-    start_sha256: str
-    start_size: int
     stub_functions: tuple[str, ...] = ()
     drop_entries: tuple[str, ...] = ()
     settings: dict = field(default_factory=dict, hash=False, compare=False)
@@ -41,6 +37,11 @@ class Project:
     def folder(self) -> Path:
         """The project folder."""
         return ROOT / 'projects' / self.name
+
+    @property
+    def base(self) -> Path:
+        """The starting map: terrain, placed objects and imports as the World Editor last saved them."""
+        return self.folder / 'base.w3x'
 
     @property
     def src(self) -> Path:
@@ -80,8 +81,8 @@ def projects() -> dict[str, Project]:
     for meta in sorted((ROOT / 'projects').glob('*/project.json')):
         data = json.loads(meta.read_text(encoding='utf-8'))
         start = data['start_map']
-        found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'], start['sha256'],
-                                          start['size'], tuple(data.get('stub_functions', ())),
+        found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'],
+                                          tuple(data.get('stub_functions', ())),
                                           tuple(data.get('drop_entries', ())), data.get('settings', {}),
                                           data.get('release_name', '{map}-{version}.w3x'))
     return found

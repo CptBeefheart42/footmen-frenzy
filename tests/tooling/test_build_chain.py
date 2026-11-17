@@ -32,8 +32,8 @@ try:
 except ImportError:
     HAVE_OPENPYXL = False
 
-# Solo Foots UPDATE38 as released: the newer version of the Solo starting map (UPDATE25) for the reconcile tests.
-UPDATE38 = blobs.Blob('c7efd78643c56b04b7b95d6b2ff785c98e5f45c5a36d56773403887dbce3a8ed', 43006815)
+# Solo Foots UPDATE25 as released: an older version of the Solo starting map (UPDATE38) for the reconcile tests.
+UPDATE25 = blobs.Blob('af791df061685774e7ce78d54f6233d390e5f71619da6dcbab6c270346910a69', 41323143)
 LEAGUE = REPO / 'league'
 ADDONS = {name: project.addons for name, project in projects().items()}
 
@@ -81,8 +81,7 @@ def setUpModule():
     for project in ('tools/BalanceTool', 'tools/runner'):
         subprocess.run([exe, 'build', str(REPO / project), '-c', 'Release', '-v', 'q', '-nologo'], env=env,
                        check=True, capture_output=True)
-    solo = projects()['solo']
-    blobs.fetch([blobs.Blob(solo.start_sha256, solo.start_size), UPDATE38])
+    blobs.fetch([UPDATE25])
 
 
 class Work(unittest.TestCase):
@@ -90,9 +89,8 @@ class Work(unittest.TestCase):
 
     def setUp(self):
         self.work = Path(tempfile.mkdtemp())
-        solo = projects()['solo']
-        self.old = blobs.Blob(solo.start_sha256, solo.start_size).path
-        self.new = UPDATE38.path
+        self.old = UPDATE25.path
+        self.new = projects()['solo'].base
 
     def tearDown(self):
         shutil.rmtree(self.work)
