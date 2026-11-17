@@ -1,11 +1,11 @@
--- Pro, the host's second button: Single Draft at once like Pub, start gold 140, and the gold pool open from the
--- first second: gold trading with allies, -pool and the autopool (with the gold it keeps back).
+-- Pro, the host's second button: Single Draft at once like Pub, start gold 100, and the gold pool open from the
+-- first second (settings pooling.pro_open_s): -pool and the autopool (with the gold it keeps back).
 local M = require("modes")
 M.boot()
 M.pick("pro")
 local gold = T.gold(1)
 
-M.checkStart(gold, 140)
+M.checkStart(gold, 100)
 M.checkTaverns("SD")
 T.advance(3)
 M.checkTradingOpen(true, "5 s in")

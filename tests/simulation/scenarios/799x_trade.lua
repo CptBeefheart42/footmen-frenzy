@@ -6,7 +6,7 @@ T.lobby({ [1] = { name = "Alpha#1111" }, [2] = { name = "Bravo#2222" }, [3] = { 
 T.boot()
 T.advance(20)
 T.pickHeroes()
-T.advance(218)
+T.advance(222)                                     -- 799X opens the pool 230 s after its start (about 11 s in)
 
 local CANCEL = "TRIGSTR_1684"                      -- the pool dialog's cancel button (map strings stay unresolved)
 

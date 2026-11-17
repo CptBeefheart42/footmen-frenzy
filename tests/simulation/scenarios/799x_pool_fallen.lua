@@ -6,7 +6,7 @@ T.lobby({ [1] = { name = "Alpha#1111" }, [2] = { name = "Bravo#2222" }, [3] = { 
 T.boot()
 T.advance(20)
 T.pickHeroes()
-T.advance(218)
+T.advance(222)                                     -- 799X opens the pool 230 s after its start (about 11 s in)
 
 T.chat(2, "-pool"); T.click(2, "Alpha")
 T.chat(3, "-pool"); T.click(3, "Alpha")
