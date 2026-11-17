@@ -13,6 +13,7 @@ Steps, all under build/<map>/:
 """
 from __future__ import annotations
 
+import dataclasses
 import shutil
 import subprocess
 import sys
@@ -35,12 +36,14 @@ class BuildError(RuntimeError):
     """A build step failed; the message says which and why."""
 
 
-def build(project: Project, name: str) -> Path:
+def build(project: Project, name: str, out: Path | None = None, settings: dict | None = None) -> Path:
     """Builds `project` into build/<map>/<name>.
 
     Args:
         project: The map project.
         name: The map's file name, ending in .w3x; without the extension it is also the in-game map name.
+        out: Another build folder (a variant of the map, e.g. for tests).
+        settings: Settings that replace the project's own, key by key (e.g. {"sub": {"enabled": True}}).
 
     Returns:
         The built map.
@@ -51,7 +54,9 @@ def build(project: Project, name: str) -> Path:
     if not name.lower().endswith('.w3x') or Path(name).name != name:
         raise BuildError(f'the map name must be a file name ending in .w3x, not "{name}"')
     title = name[:-4]
-    out = BUILD / project.name
+    if settings:
+        project = dataclasses.replace(project, settings=merged(project.settings, settings))
+    out = out or BUILD / project.name
     out.mkdir(parents=True, exist_ok=True)
 
     start_blob = blobs.Blob(project.start_sha256, project.start_size)
@@ -81,6 +86,14 @@ def build(project: Project, name: str) -> Path:
     check_reachable(project, finished)
     check_script(out / 'war3map.j')
     return finished
+
+
+def merged(base: dict, changes: dict) -> dict:
+    """`base` with `changes` laid over it, nested dictionaries key by key."""
+    result = dict(base)
+    for key, value in changes.items():
+        result[key] = merged(result.get(key, {}), value) if isinstance(value, dict) else value
+    return result
 
 
 def stage_sources(project: Project, folder: Path) -> Path:

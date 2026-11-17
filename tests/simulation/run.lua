@@ -36,7 +36,7 @@ load_jass_lua(luaDir .. "/Blizzard.lua")
 load_jass_lua(luaDir .. "/" .. map .. ".lua")
 W.nameConstants()
 
-T.map = map
+T.map = map:gsub("%-.*$", "")   -- a variant (799x-sub) is still its map
 local name = scenario:match("([^/\\]+)%.lua$")
 local ok, err = xpcall(function() dofile(scenario) end, debug.traceback)
 

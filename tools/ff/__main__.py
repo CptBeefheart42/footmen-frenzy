@@ -56,6 +56,11 @@ def setup() -> int:
     return doctor()
 
 
+# Map variants the simulation plays too: a map built with some settings changed. Their scenarios are named
+# <variant>_*.lua (tests/simulation/run.py).
+SIM_VARIANTS = {'799x-sub': ('799x', {'sub': {'enabled': True}})}
+
+
 def simulate(scenarios: list[str] | None = None, build_maps: bool = True) -> int:
     """Plays the simulation scenarios against both maps' built scripts, then checks the files they wrote against
     efl-bot's parser (skipped without an efl-bot checkout)."""
@@ -68,6 +73,9 @@ def simulate(scenarios: list[str] | None = None, build_maps: bool = True) -> int
         if build_maps:
             build(proj, f'{name}-sim.w3x')
         pairs += [str(BUILD / name / 'war3map.j'), str(lua_dir / f'{name}.lua')]
+    for variant, (base, settings) in SIM_VARIANTS.items():
+        build(project(base), f'{variant}-sim.w3x', BUILD / variant, settings)
+        pairs += [str(BUILD / variant / 'war3map.j'), str(lua_dir / f'{variant}.lua')]
     if toolchain.run_dotnet_tool('tools/runner', ['jass-to-lua', *pairs]) != 0:
         print('could not turn the map scripts into Lua')
         return 1

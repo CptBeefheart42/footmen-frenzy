@@ -1,7 +1,7 @@
 """Runs the simulation scenarios against the maps' transpiled scripts.
 
 Every scenario (tests/simulation/scenarios/*.lua) runs in a fresh Lua state: `799x_*` scenarios on 799X, `solo_*` on
-Solo, the rest on both. Each check prints PASS or FAIL (XFAIL: a known bug of the map, T.knownBug). The files a run
+Solo, `799x-sub_*` on 799X built with -sub on, the rest on both maps. Each check prints PASS or FAIL (XFAIL: a known bug of the map, T.knownBug). The files a run
 writes in the game's Preload format go to <out>/<map>/<scenario>/ for the contract check against the bot's parser.
 
     python -m tests.simulation.run <lua dir> <out dir> <lua interpreter> [scenario.lua ...]
@@ -19,6 +19,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 MAPS = ('799x', 'solo')
+# Variants of a map built with some settings changed (tools/ff SIM_VARIANTS): only their own scenarios run on them.
+VARIANTS = ('799x-sub',)
 
 
 @dataclass
@@ -32,7 +34,7 @@ class Summary:
 
 def maps_of(scenario: Path) -> tuple[str, ...]:
     """The maps a scenario runs on, from its file name's prefix."""
-    for name in MAPS:
+    for name in VARIANTS + MAPS:
         if scenario.stem.startswith(name + '_'):
             return (name,)
     return MAPS
