@@ -251,7 +251,7 @@ endfunction
 
 // The units a base sends that count for denies: footmen (tier 0) and the tier-1 spawns (spawns.csv).
 function FF_st_IsFeedUnit takes integer id returns boolean
-    return id == 'hfoo' or id == 'earc' or id == 'hrif' or id == 'uban' or id == 'otbk' or id == 'nskf' or id == 'ugho'
+    return id == 'hfoo' or id == 'earc' or id == 'hrif' or id == 'uban' or id == 'otbk' or id == 'nskf' or id == 'ugho' or id == 'h060'
 endfunction
 
 // Removes Transmute i from the in-flight list (the last one takes its place).
