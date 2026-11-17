@@ -1,5 +1,0 @@
-# Footmen Frenzy admin list — one Battle.net tag per line (e.g. Name#1234).
-# These players may use admin commands (currently: -mhon / -mhoff maphack toggle).
-# Lines starting with # and blank lines are ignored. Edit, then `make script-build` to apply.
-miRaculix#1853
-CptBeefheart#21297

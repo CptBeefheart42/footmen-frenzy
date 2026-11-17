@@ -27,3 +27,14 @@ function ReloadGameCachesFromDisk() return false end
 function InitGameCache() return H("gamecache") end
 function GetSoundDuration() return 0 end
 function GetSoundFileDuration() return 0 end
+
+-- On-screen text, kept per receiving player in order (T.texts). Blizzard.j's force variants call these only for the
+-- local player, as the game shows them only there.
+W.texts = {}
+local function say(p, msg)
+    local id = GetPlayerId(p)
+    W.texts[id] = W.texts[id] or {}
+    table.insert(W.texts[id], msg)
+end
+function DisplayTextToPlayer(p, x, y, msg) say(p, msg) end
+function DisplayTimedTextToPlayer(p, x, y, duration, msg) say(p, msg) end

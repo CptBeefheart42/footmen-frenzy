@@ -103,6 +103,18 @@ end
 --- Whether map flag `flag` (MAP_LOCK_RESOURCE_TRADING, ...) is set right now.
 function T.mapFlag(flag) return W.mapFlags[flag] or false end
 
+--- The on-screen texts slot `slot` got, in order (a TRIGSTR_n string stays unresolved, as in the script).
+function T.texts(slot) return W.texts[slot - 1] or {} end
+
+--- How many of slot `slot`'s on-screen texts contain `needle` (plain text, no patterns).
+function T.saw(slot, needle)
+    local n = 0
+    for _, t in ipairs(T.texts(slot)) do
+        if string.find(t, needle, 1, true) then n = n + 1 end
+    end
+    return n
+end
+
 --- The codes a shop has in stock (units and items), sorted.
 function T.stock(shop)
     local out = {}
