@@ -1,0 +1,5 @@
+# war3map.w3b: destructable data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[B000 : YTfc]
+bcpd int = 0                            # Show Dead Version in Palette

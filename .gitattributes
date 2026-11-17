@@ -9,4 +9,5 @@ projects/**/src/** -text
 data/** -text
 league/** -text
 projects/**/addons/** -text
+projects/**/objects/** text eol=lf
 shared/** -text

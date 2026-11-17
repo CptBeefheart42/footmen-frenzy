@@ -1,0 +1,624 @@
+# war3mapSkin.w3h: buff data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[B001 : BUst]
+fube string = "TRIGSTR_4251"            # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Undead\\Sleep\\SleepTarget.mdl" # Target
+fnsf string = "TRIGSTR_4079"            # Editor Suffix
+fnam string = "TRIGSTR_6229"            # Name (Editor Only)
+fefl string = "CreepSleepSnoreLoop"     # Effect Sound (Looping)
+fta0 string = "overhead"                # Target Attachment Point 1
+
+[B000 : BHab]
+ftip string = "TRIGSTR_2344"            # Tooltip
+fube string = "TRIGSTR_2345"            # Tooltip - Extended
+
+[B002 : BUau]
+ftip string = "TRIGSTR_2346"            # Tooltip
+fube string = "TRIGSTR_2347"            # Tooltip - Extended
+
+[B003 : AEsd]
+fnam string = "TRIGSTR_2348"            # Name (Editor Only)
+ftat string = "Abilities\\Spells\\Human\\Polymorph\\PolymorphFallingSheepart.mdl" # Target
+
+[B004 : BOae]
+ftip string = "TRIGSTR_2349"            # Tooltip
+fube string = "TRIGSTR_2350"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNPenguin.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlTarget.mdl" # Target
+
+[B005 : BOae]
+ftip string = "TRIGSTR_2351"            # Tooltip
+fube string = "TRIGSTR_2352"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDizzy.blp" # Icon
+ftat string = "Abilities\\Spells\\Undead\\Cripple\\CrippleTarget.mdl" # Target
+
+[B006 : BOae]
+ftip string = "TRIGSTR_2353"            # Tooltip
+fube string = "TRIGSTR_2354"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDizzy.blp" # Icon
+ftat string = "Abilities\\Spells\\Undead\\Cripple\\CrippleTarget.mdl" # Target
+fnam string = "TRIGSTR_2355"            # Name (Editor Only)
+
+[B007 : BOae]
+ftip string = "TRIGSTR_2356"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNFrost.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlTarget.mdl" # Target
+fube string = "TRIGSTR_2357"            # Tooltip - Extended
+
+[B008 : BEme]
+ftip string = "TRIGSTR_2358"            # Tooltip
+fube string = "TRIGSTR_2359"            # Tooltip - Extended
+
+[B009 : BOsf]
+ftip string = "TRIGSTR_2360"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCarrionScarabs.blp" # Icon
+
+[B00A : Bfae]
+fta0 string = "overhead"                # Target Attachment Point 1
+ftip string = "TRIGSTR_2361"            # Tooltip
+fube string = "TRIGSTR_2362"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerationAura.blp" # Icon
+
+[B00B : BNef]
+ftip string = "TRIGSTR_9674"            # Tooltip
+fube string = "TRIGSTR_2364"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDireWolf.blp" # Icon
+
+[B00C : Bslo]
+ftip string = "TRIGSTR_13764"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNTornado.blp" # Icon
+
+[B00D : BOsf]
+ftip string = "TRIGSTR_14888"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRockGolem.blp" # Icon
+
+[B00E : BOsf]
+ftip string = "TRIGSTR_16236"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDruidOfTheTalon.blp" # Icon
+
+[B00F : BUav]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNShamanMaster.blp" # Icon
+ftip string = "TRIGSTR_2368"            # Tooltip
+fube string = "TRIGSTR_2369"            # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Other\\GeneralAuraTarget\\GeneralAuraTarget.mdl" # Target
+
+[B00G : BHad]
+ftip string = "TRIGSTR_4113"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNHumanArmorUpOne.blp" # Icon
+fube string = "TRIGSTR_4153"            # Tooltip - Extended
+
+[B00H : BHab]
+ftip string = "TRIGSTR_4119"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNPotionBlue.blp" # Icon
+fube string = "TRIGSTR_4154"            # Tooltip - Extended
+
+[B00I : BOac]
+ftip string = "TRIGSTR_4145"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNSteelMelee.blp" # Icon
+fube string = "TRIGSTR_4155"            # Tooltip - Extended
+
+[B00J : BUau]
+ftip string = "TRIGSTR_5983"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNPotionGreen.blp" # Icon
+ftat string = ""                        # Target
+fube string = "TRIGSTR_4157"            # Tooltip - Extended
+
+[B00K : BHab]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNPotionBlue.blp" # Icon
+
+[B00L : Bfro]
+fnsf string = "TRIGSTR_3429"            # Editor Suffix
+fnam string = "TRIGSTR_3475"            # Name (Editor Only)
+fart string = "ReplaceableTextures\\CommandButtons\\BTNFreezingBreath.blp" # Icon
+
+[B00M : BUfa]
+ftip string = "TRIGSTR_2123"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNAdvancedMoonArmor.blp" # Icon
+ftat string = "Abilities\\Spells\\Orc\\SpiritLink\\SpiritLinkTarget.mdl" # Target
+fube string = "TRIGSTR_4777"            # Tooltip - Extended
+
+[B00N : BOsf]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNChaosBlademaster.blp" # Icon
+ftip string = "TRIGSTR_5540"            # Tooltip
+
+[B00O : BEim]
+ftip string = "TRIGSTR_5594"            # Tooltip
+fube string = "TRIGSTR_5632"            # Tooltip - Extended
+
+[B00P : Bstt]
+ftip string = "TRIGSTR_5933"            # Tooltip
+fube string = "TRIGSTR_5934"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNGoblinLandMine.blp" # Icon
+
+[B00Q : BNsw]
+ftip string = "TRIGSTR_6066"            # Tooltip
+fube string = "TRIGSTR_5992"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNMarine.blp" # Icon
+feat string = "Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl" # Effect
+
+[B00R : BNef]
+ftip string = "TRIGSTR_6165"            # Tooltip
+fube string = "TRIGSTR_6166"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNWendigoAncient.blp" # Icon
+
+[B00S : BUsl]
+ftip string = "TRIGSTR_7502"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNAbility_Hibernation.blp" # Icon
+fube string = "TRIGSTR_6231"            # Tooltip - Extended
+
+[B00T : BNab]
+ftip string = "TRIGSTR_6583"            # Tooltip
+fube string = "TRIGSTR_6484"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNSans Style.blp" # Icon
+ftat string = "Abilities\\Weapons\\PoisonSting\\PoisonStingTarget.mdl" # Target
+
+[B00U : BUfa]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNPoisoning Shield.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\Drain\\DrainCaster.mdl" # Target
+fube string = "TRIGSTR_5889"            # Tooltip - Extended
+ftip string = "TRIGSTR_6485"            # Tooltip
+fsat string = "Abilities\\Spells\\Other\\AcidBomb\\BottleImpact.mdl" # Special
+fta0 string = "origin"                  # Target Attachment Point 1
+
+[B00V : BIcf]
+ftip string = "TRIGSTR_6471"            # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCoD.blp" # Icon
+fube string = "TRIGSTR_6472"            # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedTarget.mdl" # Target
+fsat string = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdl" # Special
+fta0 string = "chest"                   # Target Attachment Point 1
+
+[B00W : BNin]
+ftip string = "TRIGSTR_6889"            # Tooltip
+fube string = "TRIGSTR_6904"            # Tooltip - Extended
+
+[B00X : BNsw]
+ftip string = "TRIGSTR_7105"            # Tooltip
+fube string = "TRIGSTR_7106"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNClockWerkGoblin.blp" # Icon
+
+[B00Y : BHad]
+ftip string = "TRIGSTR_7165"            # Tooltip
+fube string = "TRIGSTR_7166"            # Tooltip - Extended
+
+[B00Z : BOac]
+ftip string = "TRIGSTR_7170"            # Tooltip
+fube string = "TRIGSTR_7171"            # Tooltip - Extended
+
+[B010 : BOae]
+ftip string = "TRIGSTR_7172"            # Tooltip
+fube string = "TRIGSTR_7173"            # Tooltip - Extended
+
+[B011 : BUau]
+ftip string = "TRIGSTR_7174"            # Tooltip
+fube string = "TRIGSTR_7175"            # Tooltip - Extended
+
+[B012 : Bhwd]
+ftip string = "TRIGSTR_7124"            # Tooltip
+fube string = "TRIGSTR_7177"            # Tooltip - Extended
+
+[B013 : BNsq]
+ftip string = "TRIGSTR_7339"            # Tooltip
+fube string = "TRIGSTR_7340"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNBlackDragon.blp" # Icon
+
+[X000 : XHbz]
+fnam string = "TRIGSTR_7678"            # Name (Editor Only)
+fefs string = "GoblinZeppelinWhat"      # Effect Sound
+fefl string = ""                        # Effect Sound (Looping)
+feat string = "Cannonball D Rain.mdx"   # Effect
+
+[B014 : BNab]
+ftip string = "TRIGSTR_8233"            # Tooltip
+fube string = "TRIGSTR_8253"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNSkull.blp" # Icon
+ftat string = "Abilities\\Weapons\\ZigguratMissile\\ZigguratMissile.mdl" # Target
+
+[X001 : XEsf]
+feat string = "FrostStomp.mdx"          # Effect
+fnam string = "TRIGSTR_714"             # Name (Editor Only)
+
+[B015 : BEim]
+ftip string = "TRIGSTR_8281"            # Tooltip
+fube string = "TRIGSTR_8282"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNStatic Lightning.blp" # Icon
+fsat string = "Abilities\\Spells\\Orc\\LightningShield\\LightningShieldBuff.mdl" # Special
+ftat string = "Abilities\\Spells\\Orc\\LightningShield\\LightningShieldTarget.mdl" # Target
+fta0 string = "origin"                  # Target Attachment Point 1
+fspt string = ""                        # Special Attachment Point
+
+[B016 : BUav]
+ftip string = "TRIGSTR_8785"            # Tooltip
+fsat string = ""                        # Special
+fart string = "ReplaceableTextures\\CommandButtons\\BTNHolyRestorationAura.BLP" # Icon
+fube string = "TRIGSTR_8809"            # Tooltip - Extended
+
+[B017 : BNin]
+ftip string = "TRIGSTR_5620"            # Tooltip
+fube string = "TRIGSTR_5672"            # Tooltip - Extended
+
+[B018 : BEim]
+ftip string = "TRIGSTR_5946"            # Tooltip
+ftat string = ""                        # Target
+fsat string = ""                        # Special
+fart string = "ReplaceableTextures\\CommandButtons\\BTNShockStorm.blp" # Icon
+fube string = "TRIGSTR_6220"            # Tooltip - Extended
+
+[B019 : BHad]
+ftip string = "TRIGSTR_6221"            # Tooltip
+fube string = "TRIGSTR_6222"            # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Other\\GeneralAuraTarget\\GeneralAuraTarget.mdl" # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNProtection.blp" # Icon
+
+[X002 : XHbz]
+fnam string = "TRIGSTR_6604"            # Name (Editor Only)
+fefs string = "GoblinZeppelinWhat"      # Effect Sound
+fefl string = ""                        # Effect Sound (Looping)
+feat string = "DarknessMeteor.mdx"      # Effect
+
+[B01A : BHtc]
+ftip string = "TRIGSTR_3562"            # Tooltip
+fube string = "TRIGSTR_4520"            # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDeathCurse.blp" # Icon
+ftat string = ""                        # Target
+
+[B01B : Bhwd]
+ftip string = "TRIGSTR_10159"           # Tooltip
+fube string = "TRIGSTR_10160"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDeadProphetStaff.blp" # Icon
+
+[B01C : Boar]
+fube string = "TRIGSTR_10161"           # Tooltip - Extended
+ftip string = "TRIGSTR_10162"           # Tooltip
+ftat string = "Units\\Undead\\PlagueCloud\\PlagueCloudtarget.mdl" # Target
+fefl string = ""                        # Effect Sound (Looping)
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDeadProphetStaff.blp" # Icon
+
+[B01D : BNsw]
+ftip string = "TRIGSTR_10180"           # Tooltip
+fube string = "TRIGSTR_10181"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNSumo.blp" # Icon
+
+[B01E : BUau]
+ftip string = "TRIGSTR_10258"           # Tooltip
+fube string = "TRIGSTR_10259"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDeadProphetStaff.blp" # Icon
+
+[B01F : BOwk]
+ftip string = "TRIGSTR_6504"            # Tooltip
+fube string = "TRIGSTR_6506"            # Tooltip - Extended
+
+[B01G : BNin]
+fnam string = "TRIGSTR_9917"            # Name (Editor Only)
+ftip string = "TRIGSTR_10408"           # Tooltip
+fube string = "TRIGSTR_10409"           # Tooltip - Extended
+
+[B01H : Bslo]
+fnsf string = "TRIGSTR_11301"           # Editor Suffix
+fart string = "ReplaceableTextures\\CommandButtons\\BTNOrbOfFrost.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\FrostDamage\\FrostDamage.mdl" # Target
+
+[B01I : Bcsd]
+fnam string = "TRIGSTR_11300"           # Name (Editor Only)
+fnsf string = "TRIGSTR_11303"           # Editor Suffix
+fube string = "TRIGSTR_11307"           # Tooltip - Extended
+
+[BTSS : Bcri]
+ftip string = "TRIGSTR_11914"           # Tooltip
+fube string = "TRIGSTR_11915"           # Tooltip - Extended
+ftat string = ""                        # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNGolemThunderclap.blp" # Icon
+fnsf string = "TRIGSTR_4402"            # Editor Suffix
+
+[BTSD : Bcri]
+ftip string = "TRIGSTR_11917"           # Tooltip
+fube string = "TRIGSTR_11918"           # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Orc\\StasisTrap\\StasisTotemTarget.mdl" # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNGolemThunderclap.blp" # Icon
+fnsf string = "TRIGSTR_17670"           # Editor Suffix
+fta0 string = "overhead"                # Target Attachment Point 1
+
+[BCRA : BHad]
+ftip string = "TRIGSTR_11981"           # Tooltip
+fube string = "TRIGSTR_11936"           # Tooltip - Extended
+ftat string = ""                        # Target
+fta0 string = ""                        # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTNHardenedSkin.blp" # Icon
+fnsf string = "TRIGSTR_12011"           # Editor Suffix
+
+[BSEI : BNdh]
+ftip string = "TRIGSTR_16527"           # Tooltip
+fube string = "TRIGSTR_12040"           # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdl" # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNTaunt.blp" # Icon
+fnsf string = "TRIGSTR_12041"           # Editor Suffix
+
+[BSHC : Bbsk]
+ftip string = "TRIGSTR_12028"           # Tooltip
+fube string = "TRIGSTR_12053"           # Tooltip - Extended
+ftat string = ""                        # Target
+fta1 string = ""                        # Target Attachment Point 2
+fta0 string = ""                        # Target Attachment Point 1
+ftac int = 0                            # Target Attachments
+fart string = "ReplaceableTextures\\CommandButtons\\BTNEvasion.blp" # Icon
+fnsf string = "TRIGSTR_12030"           # Editor Suffix
+
+[BSHP : Bpxf]
+ftip string = "TRIGSTR_12052"           # Tooltip
+fnsf string = "TRIGSTR_12055"           # Editor Suffix
+fube string = ""                        # Tooltip - Extended
+ftat string = ""                        # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNEvasion.blp" # Icon
+
+[BHSS : BHtc]
+ftip string = "TRIGSTR_12229"           # Tooltip
+fube string = "TRIGSTR_12230"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDeathPact.blp" # Icon
+fnsf string = "TRIGSTR_12135"           # Editor Suffix
+
+[BREA : BNsi]
+ftip string = "TRIGSTR_12164"           # Tooltip
+fube string = "TRIGSTR_12165"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCleavingAttack.blp" # Icon
+fnsf string = "TRIGSTR_12183"           # Editor Suffix
+
+[BBLA : BUav]
+ftip string = "TRIGSTR_12047"           # Tooltip
+fube string = "TRIGSTR_12087"           # Tooltip - Extended
+
+[BGLS : Bslo]
+ftip string = "TRIGSTR_11933"           # Tooltip
+fube string = "TRIGSTR_11934"           # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Orc\\StasisTrap\\StasisTotemTarget.mdl" # Target
+fta0 string = "overhead"                # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTNAbility_Hunter_SniperShot.blp" # Icon
+fspd int = 0                            # Required Spell Detail
+
+[BRES : Bblo]
+ftip string = "TRIGSTR_12146"           # Tooltip
+fube string = "TRIGSTR_12375"           # Tooltip - Extended
+ftat string = "Abilities\\Weapons\\AncestralGuardianMissile\\AncestralGuardianMissile.mdl" # Target
+fta0 string = "weapon"                  # Target Attachment Point 1
+fta1 string = ""                        # Target Attachment Point 2
+ftac int = 1                            # Target Attachments
+fnsf string = "TRIGSTR_12385"           # Editor Suffix
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCloudOfFog.blp" # Icon
+
+[BREI : Binv]
+ftip string = "TRIGSTR_12149"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCloudOfFog.blp" # Icon
+fnsf string = "TRIGSTR_12145"           # Editor Suffix
+fube string = "TRIGSTR_9937"            # Tooltip - Extended
+
+[BBER : Bbsk]
+ftip string = "TRIGSTR_12171"           # Tooltip
+fube string = ""                        # Tooltip - Extended
+fnsf string = "TRIGSTR_12172"           # Editor Suffix
+ftat string = ""                        # Target
+fta1 string = ""                        # Target Attachment Point 2
+fta0 string = ""                        # Target Attachment Point 1
+ftac int = 0                            # Target Attachments
+fart string = "ReplaceableTextures\\WorldEditUI\\Editor-Ally-NoPriority.blp" # Icon
+
+[BENC : BHab]
+ftip string = "TRIGSTR_12296"           # Tooltip
+fube string = "TRIGSTR_12297"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNMagicalSentry.blp" # Icon
+
+[BINC : Bcri]
+ftip string = "TRIGSTR_12416"           # Tooltip
+fnsf string = "TRIGSTR_12418"           # Editor Suffix
+fube string = ""                        # Tooltip - Extended
+ftat string = ""                        # Target
+
+[BDEV : BHad]
+ftip string = "TRIGSTR_11421"           # Tooltip
+fube string = "TRIGSTR_11982"           # Tooltip - Extended
+
+[REPO : BOwk]
+ftip string = "TRIGSTR_12170"           # Tooltip
+fnsf string = "TRIGSTR_12167"           # Editor Suffix
+fube string = "TRIGSTR_12445"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCloudOfFog.blp" # Icon
+
+[BKOH : BHad]
+fube string = "TRIGSTR_3593"            # Tooltip - Extended
+ftip string = "TRIGSTR_12370"           # Tooltip
+ftat string = ""                        # Target
+fta0 string = ""                        # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTNGoldMine.blp" # Icon
+fnam string = "TRIGSTR_15159"           # Name (Editor Only)
+fnsf string = "TRIGSTR_12371"           # Editor Suffix
+
+[B01K : BUau]
+ftip string = "TRIGSTR_12543"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNQuickMobility.blp" # Icon
+fube string = "TRIGSTR_12558"           # Tooltip - Extended
+
+[B01J : Basl]
+fube string = "TRIGSTR_11787"           # Tooltip - Extended
+ftip string = "TRIGSTR_11811"           # Tooltip
+fnsf string = "TRIGSTR_11789"           # Editor Suffix
+fart string = "ReplaceableTextures\\CommandButtons\\BTNAvatar.blp" # Icon
+fnam string = "TRIGSTR_11784"           # Name (Editor Only)
+ftat string = ""                        # Target
+
+[B01L : BHbd]
+fnam string = "TRIGSTR_13012"           # Name (Editor Only)
+feat string = "Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissile.mdl" # Effect
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDeathCoil.blp" # Icon
+
+[B01M : AEsd]
+fnam string = "TRIGSTR_13196"           # Name (Editor Only)
+ftat string = "Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissile.mdl" # Target
+fta0 string = "head"                    # Target Attachment Point 1
+
+[B01N : Bpig]
+fnsf string = "TRIGSTR_13945"           # Editor Suffix
+fsat string = "war3mapImported\\Bleed.mdx" # Special
+ftat string = "war3mapImported\\Bleed.mdx" # Target
+fefs string = "MetalHeavySliceFlesh"    # Effect Sound
+fta0 string = "overhead"                # Target Attachment Point 1
+fspt string = "overhead"                # Special Attachment Point
+
+[B01O : BUfa]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNPoisoning Shield.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\Drain\\DrainCaster.mdl" # Target
+fube string = "TRIGSTR_9488"            # Tooltip - Extended
+ftip string = "TRIGSTR_9660"            # Tooltip
+fsat string = "war3mapImported\\Poison Spider.mdx" # Special
+fnsf string = "TRIGSTR_9779"            # Editor Suffix
+fspt string = "overhead"                # Special Attachment Point
+fspd int = 2                            # Required Spell Detail
+
+[B01P : BNsw]
+ftip string = "TRIGSTR_14018"           # Tooltip
+fube string = "TRIGSTR_14021"           # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCryptFiend.blp" # Icon
+
+[B01Q : Binf]
+ftip string = "TRIGSTR_14267"           # Tooltip
+fube string = "TRIGSTR_14296"           # Tooltip - Extended
+ftat string = ""                        # Target
+fta0 string = ""                        # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTN_ArcaneProtection.blp" # Icon
+fnsf string = "TRIGSTR_13078"           # Editor Suffix
+
+[B01R : Bslo]
+ftip string = "TRIGSTR_14714"           # Tooltip
+fube string = "TRIGSTR_14715"           # Tooltip - Extended
+ftat string = "Abilities\\Spells\\NightElf\\Immolation\\ImmolationDamage.mdl" # Target
+fnsf string = "TRIGSTR_14716"           # Editor Suffix
+
+[B01S : Bcrs]
+fnam string = "TRIGSTR_14827"           # Name (Editor Only)
+ftip string = "TRIGSTR_14850"           # Tooltip
+fube string = "TRIGSTR_14852"           # Tooltip - Extended
+
+[Bfer : Bfro]
+end = new
+fnsf string = "TRIGSTR_14853"           # Editor Suffix
+fnam string = "TRIGSTR_14854"           # Name (Editor Only)
+ftip string = "TRIGSTR_14855"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCRFrostShock.blp" # Icon
+
+[B01T : Bdvv]
+fnsf string = "TRIGSTR_13094"           # Editor Suffix
+
+[B01U : Bdig]
+fnam string = "TRIGSTR_13095"           # Name (Editor Only)
+
+[B01V : BEim]
+fnsf string = "TRIGSTR_14809"           # Editor Suffix
+fsat string = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdl" # Special
+ftat string = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedTarget.mdl" # Target
+fta0 string = "chest"                   # Target Attachment Point 1
+fspt string = "chest"                   # Special Attachment Point
+
+[BTOR : BPSE]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNTornado.blp" # Icon
+ftip string = "TRIGSTR_13728"           # Tooltip
+fnsf string = "TRIGSTR_15038"           # Editor Suffix
+
+[B01W : BOae]
+ftip string = "TRIGSTR_15536"           # Tooltip
+fnsf string = "TRIGSTR_15537"           # Editor Suffix
+fube string = "TRIGSTR_15538"           # Tooltip - Extended
+ftat string = ""                        # Target
+fta0 string = ""                        # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDefend.blp" # Icon
+
+[B01X : Bbsk]
+ftip string = "TRIGSTR_15539"           # Tooltip
+fube string = ""                        # Tooltip - Extended
+ftac int = 0                            # Target Attachments
+fta1 string = ""                        # Target Attachment Point 2
+fta0 string = ""                        # Target Attachment Point 1
+ftat string = ""                        # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNDefend.blp" # Icon
+fnsf string = "TRIGSTR_15540"           # Editor Suffix
+
+[B022 : BHwe]
+fnsf string = "TRIGSTR_15605"           # Editor Suffix
+ftip string = "TRIGSTR_15677"           # Tooltip
+
+[B01Y : Bfro]
+fnsf string = "TRIGSTR_15579"           # Editor Suffix
+fnam string = "TRIGSTR_15581"           # Name (Editor Only)
+fart string = "ReplaceableTextures\\PassiveButtons\\PASLifeSteal.blp" # Icon
+
+[X003 : XNmo]
+fnam string = "TRIGSTR_15828"           # Name (Editor Only)
+ftat string = "Abilities\\Spells\\Orc\\SpiritLink\\SpiritLinkZapTarget.mdl" # Target
+fta0 string = "origin"                  # Target Attachment Point 1
+
+[B01Z : ANmd]
+fnsf string = "TRIGSTR_16975"           # Editor Suffix
+ftat string = "Abilities\\Spells\\Orc\\SpiritLink\\SpiritLinkTarget.mdl" # Target
+
+[X004 : XNmo]
+fnsf string = "TRIGSTR_16976"           # Editor Suffix
+
+[X005 : XHbz]
+fnam string = "TRIGSTR_16995"           # Name (Editor Only)
+fefs string = "DoomTarget"              # Effect Sound
+fefl string = ""                        # Effect Sound (Looping)
+feat string = "war3mapImported\\MonsoonBoltTarget_Fel.mdx" # Effect
+
+[B020 : Bfro]
+fnsf string = "TRIGSTR_17034"           # Editor Suffix
+fnam string = "TRIGSTR_17035"           # Name (Editor Only)
+fart string = "ReplaceableTextures\\CommandButtons\\BTNFreezingBreath.blp" # Icon
+
+[B021 : BHav]
+ftip string = "TRIGSTR_15826"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCheese.blp" # Icon
+fube string = "TRIGSTR_15827"           # Tooltip - Extended
+
+[B023 : Bfro]
+fnsf string = "TRIGSTR_18048"           # Editor Suffix
+fnam string = "TRIGSTR_18049"           # Name (Editor Only)
+fart string = "ReplaceableTextures\\PassiveButtons\\PASBTNSeaGiantPulverize.blp" # Icon
+ftip string = "TRIGSTR_18050"           # Tooltip
+fube string = "TRIGSTR_18051"           # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Other\\FrostDamage\\FrostDamage.mdl" # Target
+
+[B024 : BUim]
+ftip string = "TRIGSTR_5658"            # Tooltip
+feat string = "war3mapImported\\IceImpaleHitTarget.mdx" # Effect
+
+[B025 : BNsq]
+ftip string = "TRIGSTR_733"             # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNZergling.blp" # Icon
+fube string = ""                        # Tooltip - Extended
+
+[B026 : Bcrs]
+fnam string = "TRIGSTR_4947"            # Name (Editor Only)
+ftip string = "TRIGSTR_4948"            # Tooltip
+fube string = "TRIGSTR_4949"            # Tooltip - Extended
+ftat string = "Abilities\\Spells\\NightElf\\FaerieDragonInvis\\FaerieDragon_Invis.mdl" # Target
+fta0 string = "head"                    # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTNCharm.blp" # Icon
+
+[B027 : Binf]
+ftip string = "TRIGSTR_10886"           # Tooltip
+fube string = "TRIGSTR_10904"           # Tooltip - Extended
+ftat string = ""                        # Target
+fta0 string = ""                        # Target Attachment Point 1
+fart string = "ReplaceableTextures\\CommandButtons\\BTNFrostArmor.blp" # Icon
+fnsf string = "TRIGSTR_10906"           # Editor Suffix
+
+[B028 : BNsq]
+ftip string = "TRIGSTR_11838"           # Tooltip
+fart string = "ReplaceableTextures\\CommandButtons\\BTNTentacles.blp" # Icon
+
+[B029 : BEer]
+ftip string = "TRIGSTR_5689"            # Tooltip
+ftat string = "EntanglingRootsNorthrend.mdx" # Target
+fart string = "ReplaceableTextures\\CommandButtons\\BTNBinding.blp" # Icon
+
+[B02A : BNsg]
+fart string = "ReplaceableTextures\\CommandButtons\\BTNNetherDragon.blp" # Icon
+ftip string = "TRIGSTR_13594"           # Tooltip
+fube string = "TRIGSTR_5085"            # Tooltip - Extended

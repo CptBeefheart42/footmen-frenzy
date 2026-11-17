@@ -44,6 +44,9 @@ class BinariesTest(unittest.TestCase):
                 self.assertRegex(blob['sha256'], '^[0-9a-f]{64}$', name)
                 self.assertGreater(blob['size'], 0, name)
                 self.assertFalse((project.src / name).exists(), f'{name} is both listed and in src/')
+            object_files = {p.name.removesuffix('.txt') for p in project.objects.glob('*.txt')}
+            self.assertEqual(len(object_files), 14, project.name)
+            self.assertEqual(object_files & set(listed), set(), 'object data is text, never a listed binary')
 
     def test_repository_holds_no_binary_files(self):
         tracked = subprocess.run(['git', 'ls-files', '-z'], cwd=REPO, capture_output=True, check=True).stdout

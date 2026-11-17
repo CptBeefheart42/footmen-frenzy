@@ -51,6 +51,11 @@ class Project:
         return self.folder / 'addons'
 
     @property
+    def objects(self) -> Path:
+        """The map's object data (units, items, abilities ...) as text, one file per object-data file."""
+        return self.folder / 'objects'
+
+    @property
     def binaries(self) -> Path:
         """The list of the map's binary files: name -> SHA-256 and size."""
         return self.folder / 'binaries.json'

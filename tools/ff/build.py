@@ -2,8 +2,9 @@
 
 Steps, all under build/<map>/:
 1. the starting map and the binary files that differ from it are downloaded by checksum (tools/ff/blobs.py);
-2. the map script is assembled from src/war3map.j and shared/ (tools/shared_code.py);
-3. the runner packs the starting map with src/ and binaries.json (`pack`);
+2. the map script is assembled from src/war3map.j and shared/ (tools/shared_code.py), and the object data is turned
+   from text (objects/) into the map's binary files (runner `objects to-binary`);
+3. the runner packs the starting map with those sources and binaries.json (`pack`);
 4. the runner injects the league addons (league/ for every map, projects/<map>/addons/ for this one, with its anchor
    hooks and stubbed functions), applies the level fill, the map fixes (data/object_overrides.csv), the 3.0 file-name
    fix and the map name, then verifies the result (`verify-map`);
@@ -59,8 +60,9 @@ def build(project: Project, name: str) -> Path:
     script = out / 'assembled.j'
     script.write_bytes(assemble((project.src / 'war3map.j').read_bytes()))
 
+    sources = stage_sources(project, out / 'sources')
     packed = out / 'packed.w3x'
-    pack(project, start, script, packed, out / 'missing.txt')
+    pack(project, sources, start, script, packed, out / 'missing.txt')
 
     finished = out / name
     anchors = project.addons / 'anchors.txt'
@@ -79,6 +81,16 @@ def build(project: Project, name: str) -> Path:
     check_reachable(project, finished)
     check_script(out / 'war3map.j')
     return finished
+
+
+def stage_sources(project: Project, folder: Path) -> Path:
+    """Copies src/ into `folder` and adds the object-data files made from objects/; returns `folder`."""
+    shutil.rmtree(folder, ignore_errors=True)
+    shutil.copytree(project.src, folder)
+    if project.objects.is_dir():
+        step('turn the object data into the map\'s files', toolchain.run_dotnet_tool(
+            'tools/runner', ['objects', 'to-binary', str(project.objects), str(folder)]))
+    return folder
 
 
 def stage_map_addons(project: Project, folder: Path) -> Path | None:
@@ -117,9 +129,9 @@ def settings_addon(project: Project) -> str:
             'globals\n' + '\n'.join(lines) + '\nendglobals\n')
 
 
-def pack(project: Project, start: Path, script: Path, packed: Path, missing: Path) -> None:
+def pack(project: Project, sources: Path, start: Path, script: Path, packed: Path, missing: Path) -> None:
     """Runs the runner's `pack`, downloading the binary files it reports missing and trying once more."""
-    args = ['pack', str(start), str(project.src), str(packed), '--script', str(script), '--binaries', str(project.binaries),
+    args = ['pack', str(start), str(sources), str(packed), '--script', str(script), '--binaries', str(project.binaries),
             '--blobs', str(blobs.CACHE), '--missing', str(missing)]
     if project.drop_entries:
         args += ['--drop', ','.join(project.drop_entries)]
@@ -135,6 +147,7 @@ def check_reachable(project: Project, map_file: Path) -> None:
     """Checks that the game finds every file of the project in the built map."""
     names = list(json.loads(project.binaries.read_text(encoding='utf-8')))
     names += [p.relative_to(project.src).as_posix() for p in project.src.rglob('*') if p.is_file()]
+    names += [p.name.removesuffix('.txt') for p in project.objects.glob('*.txt')]
     lost = lookup.unreachable(map_file, names)
     if lost:
         raise BuildError('the game would not find these files in the built map: ' + ', '.join(lost[:10]))

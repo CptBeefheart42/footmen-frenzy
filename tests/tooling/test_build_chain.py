@@ -171,6 +171,31 @@ class LevelFillTest(Work):
         self.assertNotEqual(output.returncode, 0)
 
 
+class ObjectTextTest(unittest.TestCase):
+    """Object data lives as text (projects/<map>/objects/): text -> binary -> text gives back every file as it is."""
+
+    def test_round_trip_of_both_maps(self):
+        for name, project in projects().items():
+            with tempfile.TemporaryDirectory() as work:
+                binary, text = Path(work) / 'binary', Path(work) / 'text'
+                self.assertEqual(runner('objects', 'to-binary', str(project.objects), str(binary)).returncode, 0)
+                self.assertEqual(runner('objects', 'to-text', str(binary), str(text)).returncode, 0)
+                files = sorted(p.name for p in project.objects.glob('*.txt'))
+                self.assertEqual(len(files), 14, name)
+                for file in files:
+                    self.assertEqual((text / file).read_text(encoding='utf-8'), (project.objects / file).read_text(encoding='utf-8'),
+                                     f'{name}/{file}')
+
+    def test_a_broken_line_names_file_and_line(self):
+        with tempfile.TemporaryDirectory() as work:
+            source = Path(work) / 'objects'
+            source.mkdir()
+            (source / 'war3map.w3u.txt').write_text('format v3\n\n[h000 : hfoo]\nuhpm int 420\n', encoding='utf-8')
+            result = runner('objects', 'to-binary', str(source), str(Path(work) / 'out'))
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('war3map.w3u:4', result.stdout + result.stderr)
+
+
 class AnchorTest(unittest.TestCase):
     """T6: the anchor hooks apply to the maps' scripts, and fail loudly when they would not."""
 

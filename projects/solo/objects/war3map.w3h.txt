@@ -1,0 +1,409 @@
+# war3map.w3h: buff data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[B001 : BUst]
+
+[B000 : BHab]
+
+[B002 : BUau]
+
+[B003 : AEsd]
+frac string = "other"                   # Race
+
+[B004 : BOae]
+frac string = "other"                   # Race
+
+[B005 : BOae]
+frac string = "other"                   # Race
+
+[B006 : BOae]
+frac string = "other"                   # Race
+
+[B007 : BOae]
+frac string = "other"                   # Race
+
+[B008 : BEme]
+
+[B009 : BOsf]
+
+[B00A : Bfae]
+
+[B00B : BNef]
+
+[B00C : Bslo]
+
+[B00D : BOsf]
+
+[B00E : BOsf]
+
+[B00F : BUav]
+
+[B00G : BHad]
+
+[B00H : BHab]
+
+[B00I : BOac]
+frac string = "human"                   # Race
+
+[B00J : BUau]
+frac string = "human"                   # Race
+
+[B00K : BHab]
+
+[B00L : Bfro]
+
+[B00M : BUfa]
+
+[B00N : BOsf]
+
+[B00O : BEim]
+
+[B00P : Bstt]
+
+[B00Q : BNsw]
+
+[B00R : BNef]
+
+[B00S : BUsl]
+
+[B00T : BNab]
+
+[B00U : BUfa]
+frac string = "other"                   # Race
+
+[B00V : BIcf]
+
+[B00W : BNin]
+
+[B00X : BNsw]
+
+[B00Y : BHad]
+
+[B00Z : BOac]
+
+[B010 : BOae]
+
+[B011 : BUau]
+
+[B012 : Bhwd]
+
+[B013 : BNsq]
+
+[X000 : XHbz]
+
+[B014 : BNab]
+
+[X001 : XEsf]
+
+[B015 : BEim]
+
+[B016 : BUav]
+
+[B017 : BNin]
+
+[B018 : BEim]
+
+[B019 : BHad]
+
+[X002 : XHbz]
+
+[B01A : BHtc]
+
+[B01B : Bhwd]
+
+[B01C : Boar]
+
+[B01D : BNsw]
+
+[B01E : BUau]
+
+[B01F : BOwk]
+
+[B01G : BNin]
+
+[B01H : Bslo]
+
+[B01I : Bcsd]
+
+[BTSS : Bcri]
+
+[BTSD : Bcri]
+
+[BCRA : BHad]
+
+[BSEI : BNdh]
+
+[BSHC : Bbsk]
+
+[BSHP : Bpxf]
+
+[BHSS : BHtc]
+
+[BREA : BNsi]
+
+[BBLA : BUav]
+
+[BGLS : Bslo]
+
+[BRES : Bblo]
+
+[BREI : Binv]
+
+[BBER : Bbsk]
+
+[BENC : BHab]
+
+[BINC : Bcri]
+
+[BDEV : BHad]
+
+[REPO : BOwk]
+
+[BKOH : BHad]
+
+[B01K : BUau]
+
+[B01J : Basl]
+
+[B01L : BHbd]
+feff int = 1                            # Is an Effect
+
+[B01M : AEsd]
+
+[B01N : Bpig]
+
+[B01O : BUfa]
+frac string = "other"                   # Race
+
+[B01P : BNsw]
+
+[B01Q : Binf]
+frac string = "undead"                  # Race
+
+[B01R : Bslo]
+
+[B01S : Bcrs]
+
+[Bfer : Bfro]
+
+[B01T : Bdvv]
+
+[B01U : Bdig]
+
+[B01V : BEim]
+
+[BTOR : BPSE]
+
+[B01W : BOae]
+
+[B01X : Bbsk]
+
+[B022 : BHwe]
+
+[B01Y : Bfro]
+
+[X003 : XNmo]
+
+[B01Z : ANmd]
+
+[X004 : XNmo]
+
+[X005 : XHbz]
+
+[B020 : Bfro]
+
+[B021 : BHav]
+
+[B023 : Bfro]
+
+[B024 : BUim]
+
+[B025 : BNsq]
+
+[B026 : Bcrs]
+
+[B027 : Binf]
+frac string = "undead"                  # Race
+
+[B028 : BNsq]
+
+[B029 : BEer]
+
+[B02A : BNsg]
+
+[BGf1 : BHad]
+end = new
+fnam string = "Drunken Fortitude"       # Name (Editor Only)
+ftip string = "Drunken Fortitude (+5 armor)" # Tooltip
+fube string = "+5 armor, 10% magic damage reduction, and 20 HP per second. Lasts 5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRxGragasFortitude.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGf2 : BHad]
+end = new
+fnam string = "Drunken Fortitude"       # Name (Editor Only)
+ftip string = "Drunken Fortitude (+7 armor)" # Tooltip
+fube string = "+7 armor, 15% magic damage reduction, and 30 HP per second. Lasts 5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRxGragasFortitude.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGf3 : BHad]
+end = new
+fnam string = "Drunken Fortitude"       # Name (Editor Only)
+ftip string = "Drunken Fortitude (+9 armor)" # Tooltip
+fube string = "+9 armor, 20% magic damage reduction, and 40 HP per second. Lasts 5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRxGragasFortitude.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGf4 : BHad]
+end = new
+fnam string = "Drunken Fortitude"       # Name (Editor Only)
+ftip string = "Drunken Fortitude (+11 armor)" # Tooltip
+fube string = "+11 armor, 25% magic damage reduction, and 50 HP per second. Lasts 5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRxGragasFortitude.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGf5 : BHad]
+end = new
+fnam string = "Drunken Fortitude"       # Name (Editor Only)
+ftip string = "Drunken Fortitude (+13 armor)" # Tooltip
+fube string = "+13 armor, 30% magic damage reduction, and 60 HP per second. Lasts 5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRxGragasFortitude.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGf6 : BHad]
+end = new
+fnam string = "Drunken Fortitude"       # Name (Editor Only)
+ftip string = "Drunken Fortitude (+15 armor)" # Tooltip
+fube string = "+15 armor, 35% magic damage reduction, and 70 HP per second. Lasts 5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRxGragasFortitude.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGr1 : Bslo]
+end = new
+fnam string = "Frenzy Slow"             # Name (Editor Only)
+ftip string = "Frenzy Slow"             # Tooltip
+fube string = "Movement slowed by 25%." # Tooltip - Extended
+
+[BGr2 : BPSE]
+end = new
+fnam string = "Frenzy Stun"             # Name (Editor Only)
+ftip string = "Frenzy Stun"             # Tooltip
+fube string = "Stunned briefly."        # Tooltip - Extended
+
+[BOr4 : BOae]
+end = new
+fnam string = "Protect Arrival"         # Name (Editor Only)
+ftip string = "Protect Arrival"         # Tooltip
+fube string = "Movement speed increased by 10%. Protect target: 5 seconds on arrival. Other allies: 2 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\PassiveButtons\\PASQuickMobility.blp" # Icon
+ftat string = ""                        # Target
+fta0 string = "origin"                  # Target Attachment Point 1
+fta1 string = ""                        # Target Attachment Point 2
+ftac int = 1                            # Target Attachments
+
+[BOr5 : Bslo]
+end = new
+fnam string = "Orianna Slow"            # Name (Editor Only)
+ftip string = "Command: Slow"           # Tooltip
+fube string = "Movement speed reduced by 25%." # Tooltip - Extended
+ftat string = "Abilities\\Spells\\Human\\slow\\slowtarget.mdl" # Target
+fta0 string = "origin"                  # Target Attachment Point 1
+
+[BMuv : BOae]
+end = new
+fnam string = "Sadism"                  # Name (Editor Only)
+ftip string = "Sadism"                  # Tooltip
+fube string = "Mundo is regenerating health and moving faster." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerate.blp" # Icon
+
+[BGbn : Bslo]
+end = new
+fnam string = "Guardian Disruption"     # Name (Editor Only)
+ftip string = "Guardian Disruption"     # Tooltip
+fube string = "Struck by Guardian. Movement speed reduced by 15% for 1.5 seconds." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNGuardianGuardianShield.blp" # Icon
+ftat string = ""                        # Target
+
+[BMqh : BOae]
+end = new
+fnam string = "Cleaver pickup"          # Name (Editor Only)
+ftip string = "Cleaver pickup"          # Tooltip
+fube string = "Movement speed increased." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerate.blp" # Icon
+
+[BDrh : BOae]
+end = new
+fnam string = "Demon Ascension"         # Name (Editor Only)
+ftip string = "Demon Ascension"         # Tooltip
+fube string = "Movement and attack speed increased." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerate.blp" # Icon
+
+[BMuh : BOae]
+end = new
+fnam string = "Undying"                 # Name (Editor Only)
+ftip string = "Undying"                 # Tooltip
+fube string = "Movement and attack speed increased." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerate.blp" # Icon
+
+[BMwR : Beng]
+end = new
+fnam string = "Cleaver Wound"           # Name (Editor Only)
+ftip string = "Cleaver Wound"           # Tooltip
+fube string = "Movement impaired. Speed Scroll cannot grant haste while wounded." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNMundoCleaver.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+fmat string = ""                        # Missile Art
+flig string = ""                        # Lightning
+ftac int = 0                            # Target Attachments
+
+[BMwS : Bslo]
+end = new
+fnam string = "Cleaver Wound"           # Name (Editor Only)
+ftip string = "Cleaver Wound"           # Tooltip
+fube string = "Movement impaired. Speed Scroll cannot grant haste while wounded." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNMundoCleaver.blp" # Icon
+ftat string = ""                        # Target
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+fmat string = ""                        # Missile Art
+flig string = ""                        # Lightning
+ftac int = 0                            # Target Attachments
+
+[BGs1 : BNsi]
+end = new
+fnam string = "Global Silence"          # Name (Editor Only)
+ftip string = "Global Silence"          # Tooltip
+fube string = "Global Silence is active. Enemy spellcasting is suppressed and reapplied after dispels until the 120-second field expires." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNSilence.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\Silence\\SilenceTarget.mdl" # Target
+fta0 string = "overhead"                # Target Attachment Point 1
+ftac int = 1                            # Target Attachments
+feat string = ""                        # Effect
+fsat string = ""                        # Special
+
+[BGs2 : Basl]
+end = new
+fnam string = "Global Silence"          # Name (Editor Only)
+ftip string = "Global Silence"          # Tooltip
+fube string = "Global Silence is active. Enemy spellcasting is suppressed and reapplied after dispels until the 120-second field expires." # Tooltip - Extended
+fart string = "ReplaceableTextures\\CommandButtons\\BTNSilence.blp" # Icon
+ftat string = "Abilities\\Spells\\Other\\Silence\\SilenceTarget.mdl" # Target
+fta0 string = "overhead"                # Target Attachment Point 1
+ftac int = 1                            # Target Attachments
+feat string = ""                        # Effect
+fsat string = ""                        # Special

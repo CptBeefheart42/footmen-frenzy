@@ -41,6 +41,7 @@ using FootmenFrenzy.Shared;
 //   `check-anchors <w3x | war3map.j> <anchors.txt>`  dry-runs the anchor hooks on a map's script (exit 1 if one doesn't apply)
 //   `pack <start.w3x> <src dir> <out.w3x> [--script j] [--lfs-cache dir] [--missing file]`  a project's starting map
 //                  plus its source files -> a complete map (see Pack)
+//   `objects export|check <w3x> <dir>`, `objects to-binary <dir> <out dir>`  object data as text and back (ObjectText)
 //                  Every build applies the WC3 3.0 level fill (tools/shared/AbilityLevelFill.cs) to war3map.w3a.
 //
 // When FF_BASEMAP is a .w3x file it is first extracted to a temp folder, so the same proven
@@ -85,6 +86,8 @@ if (args.Length > 0 && args[0] == "jass-to-lua")
     return JassToLua(args.Skip(1).ToArray(), commonJ, blizzardJ);
 if (args.Length > 0 && args[0] == "pack")
     return Pack.Run(args.Skip(1).ToArray());
+if (args.Length > 0 && args[0] == "objects")
+    return ObjectText.Run(args.Skip(1).ToArray());
 
 string jassAddonsDir = Environment.GetEnvironmentVariable("FF_JASS_ADDONS");
 if (!string.IsNullOrEmpty(jassAddonsDir))

@@ -4483,37 +4483,17 @@
   "sha256": "7063b2e23e49d274cb452c520ed68c0a7679febbc2f5531bc18f65882c632c88",
   "size": 65536
  },
- "war3map.w3a": {
-  "sha256": "ec50200c7a02c3f5ed0dbb27322a0f98adb297f9af6df17ed9bf7fec65257b7f",
-  "size": 1059706
- },
- "war3map.w3b": {
-  "sha256": "1b4f6324bcbd27783dedc9fe0cce9d303765f9bbb15da6282b9b2cd7163e4910",
-  "size": 48
- },
  "war3map.w3c": {
   "sha256": "6d234d2fc1266c3a8740031bb3b4deb933ae2494e0f3dc513d2c914db47ccb4c",
   "size": 134
- },
- "war3map.w3d": {
-  "sha256": "c91b36c31013aa9a78696cd7c1a6d305c0baa8941a83e169811e672dc6f6e733",
-  "size": 56
  },
  "war3map.w3e": {
   "sha256": "4ceb56f2fb5d0e8c6484bfc639c2bcd9f3c1a1eda4b8120121a395db3617bc22",
   "size": 33885
  },
- "war3map.w3h": {
-  "sha256": "2b020cdf47c8277a93bd1b7e22a851f3ef413e4a71a51ef23fb0140264122ce1",
-  "size": 7225
- },
  "war3map.w3i": {
   "sha256": "18a98b2eda408aa166a9a8c9755ca116e034f83eee09c63527deb3b2ea39174d",
   "size": 1338
- },
- "war3map.w3q": {
-  "sha256": "b040dba18aba947e2991b2eb6a5fd62f12f273cda1036939b8f02f1c40f6994f",
-  "size": 20023
  },
  "war3map.w3r": {
   "sha256": "dd188d1520654ed7bbcf27952cb13f53282a0de6c35dab6fc422077f7e6aea82",
@@ -4522,14 +4502,6 @@
  "war3map.w3s": {
   "sha256": "3a4ad9bf246d455c67c99f9f16dd4f0ca5aedfd124d24214c6bfb281bd7650dc",
   "size": 7225
- },
- "war3map.w3t": {
-  "sha256": "5ed18be5064b9b78dfa293136ed5344de4f9a0336e2655730b71eee79c7bc9c9",
-  "size": 18363
- },
- "war3map.w3u": {
-  "sha256": "453ee6cd0fe1c099d769ce910be364ff177631372efd5e5b7bc0480da2340148",
-  "size": 292638
  },
  "war3map.wct": {
   "sha256": "c5cae594a9b6a13bf463a795342ea631c8767b8fed1e85c586042299374882ac",
@@ -5586,34 +5558,6 @@
  "war3mapMap_ingame.blp": {
   "sha256": "3ebeb205a3a149a6df6433fda2f8f478080bd42d21860fe55d581ff8bd8ae0d7",
   "size": 15143
- },
- "war3mapSkin.w3a": {
-  "sha256": "57075f799a8086bdf471162d8e0ba0bf1b8a17fdc7a88f6234541b601c767366",
-  "size": 511199
- },
- "war3mapSkin.w3b": {
-  "sha256": "b063cf6aac0b409ecd607dada77c5fdd25f3fcbbd8b6525b27e349a76cc7382d",
-  "size": 104
- },
- "war3mapSkin.w3d": {
-  "sha256": "b929ce3fea38844aeaf95e3de6c0224ba11be4ab9ac634816a083df5c00ff06c",
-  "size": 32
- },
- "war3mapSkin.w3h": {
-  "sha256": "2483fafd9065e1f61bf9516e733a070751331bf749162242ad8a0dbb2b8b36d5",
-  "size": 16415
- },
- "war3mapSkin.w3q": {
-  "sha256": "7b25d75bed20b5a9810beff14ce2616cbdc42c8a028738d0483380bb7278c534",
-  "size": 84552
- },
- "war3mapSkin.w3t": {
-  "sha256": "1ee9458510551c3869f2c3adef21768c1809834e66e05dee5b624c05029601a8",
-  "size": 33015
- },
- "war3mapSkin.w3u": {
-  "sha256": "a686626c11ab974de1a709b15bb0b796b3bf72ba52ab29dff9af9a6e2f8f6902",
-  "size": 187090
  },
  "war3mapUnits.doo": {
   "sha256": "5bb609ad8a90e4b39a71467bd8dba143f1a45615bdb59debb4f6cb1fdd123e9d",
