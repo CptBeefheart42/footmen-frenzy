@@ -1,5 +1,6 @@
 {
   "map_type": "Solo Foots",
+  "release_name": "Solo_Foots_v{version}.w3x",
   "start_map": {
     "name": "Solo Foots UPDATE25.w3x",
     "sha256": "af791df061685774e7ce78d54f6233d390e5f71619da6dcbab6c270346910a69",

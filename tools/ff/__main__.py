@@ -9,15 +9,18 @@
     ff blobs upload               upload listed binary files the release store lacks (maintainers)
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
+    ff release <version>          build every map with its release name (project.json) into build/release/ and zip them
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -160,6 +163,26 @@ def docker(command: list[str]) -> int:
                            'python3', 'tools/ff', *command]).returncode
 
 
+def release(version: str) -> Path:
+    """Builds every map with its release name for `version` and zips them into build/release/; returns the zip."""
+    if not re.fullmatch(r'[0-9A-Za-z][0-9A-Za-z._-]*', version):
+        raise RuntimeError(f'not a version: "{version}" (letters, digits, . _ -)')
+    folder = BUILD / 'release'
+    shutil.rmtree(folder, ignore_errors=True)
+    folder.mkdir(parents=True)
+    built = []
+    for name, proj in projects().items():
+        file_name = proj.release_name.format(version=version, map=name)
+        built.append(build(proj, file_name))
+        shutil.copy2(built[-1], folder / file_name)
+    archive = folder / f'Footmen_Frenzy_{version}.zip'
+    with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as z:
+        for path in built:
+            z.write(folder / path.name, path.name)
+    print(f'release {version}: ' + ', '.join(p.name for p in built) + f' -> {archive}')
+    return archive
+
+
 def blob_command(args) -> int:
     """ff blobs add <map> <entry> <file> | ff blobs upload."""
     if args.action == 'add':
@@ -199,6 +222,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('map', nargs='?', choices=list(projects()))
     p.add_argument('entry', nargs='?', help='add: the path inside the map, e.g. war3mapImported/Hero.mdx')
     p.add_argument('file', nargs='?', type=Path, help='add: the file on disk')
+    p = commands.add_parser('release', help='build every map with its release name and zip them')
+    p.add_argument('version')
     p = commands.add_parser('docker', help='run an ff command in a container built from Dockerfile')
     p.add_argument('rest', nargs=argparse.REMAINDER, help='the ff command, e.g. check')
     p = commands.add_parser('test', help='run a test suite')
@@ -219,6 +244,9 @@ def main(argv: list[str] | None = None) -> int:
             return blob_command(args)
         if args.command == 'docker':
             return docker(args.rest or ['check'])
+        if args.command == 'release':
+            release(args.version)
+            return 0
         proj = project(args.map)
         built = build(proj, args.name or f'{proj.name}-dev.w3x')
         print(f'built {built}')

@@ -1,0 +1,43 @@
+# A release: pushing a tag v<version> builds every map with its release name (projects/<map>/project.json
+# release_name) and publishes them, zipped, as a release of this repository on the CI's own forge. Runs in the image of
+# Dockerfile, like check.yml; secrets.RELEASE_TOKEN may create releases (write:repository).
+name: release
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release:
+    if: vars.REGISTRY != ''
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_USER }}/footmen-frenzy-check:latest
+      credentials:
+        username: ${{ vars.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Check
+        env:
+          FF_BLOB_URL: ${{ vars.BLOB_URL }}
+          FF_BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
+        run: python3 tools/ff check
+      - name: Build the release
+        env:
+          FF_BLOB_URL: ${{ vars.BLOB_URL }}
+          FF_BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
+        run: python3 tools/ff release "${GITHUB_REF_NAME#v}"
+      - name: Publish
+        env:
+          TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          API: ${{ github.server_url }}/api/v1/repos/${{ github.repository }}
+        run: |
+          zip=$(ls build/release/*.zip)
+          id=$(python3 -c 'import json,sys; print(json.dumps({"tag_name": sys.argv[1], "name": sys.argv[1]}))' "$GITHUB_REF_NAME" \
+            | curl -sSf -X POST "$API/releases" -H "Authorization: token $TOKEN" -H 'Content-Type: application/json' -d @- \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')
+          curl -sSf -X POST "$API/releases/$id/assets?name=$(basename "$zip")" -H "Authorization: token $TOKEN" \
+            -F "attachment=@$zip" > /dev/null
+          echo "published $(basename "$zip")"

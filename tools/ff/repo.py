@@ -25,6 +25,7 @@ class Project:
             the league addons write).
         drop_entries: Files of the starting map the built map leaves out.
         settings: The map's game settings; the build hands them to the map script as FF_CFG_* constants.
+        release_name: The file name of a released map, with {version} for the release's version.
     """
     name: str
     family: str
@@ -34,6 +35,7 @@ class Project:
     stub_functions: tuple[str, ...] = ()
     drop_entries: tuple[str, ...] = ()
     settings: dict = field(default_factory=dict, hash=False, compare=False)
+    release_name: str = '{map}-{version}.w3x'
 
     @property
     def folder(self) -> Path:
@@ -80,7 +82,8 @@ def projects() -> dict[str, Project]:
         start = data['start_map']
         found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'], start['sha256'],
                                           start['size'], tuple(data.get('stub_functions', ())),
-                                          tuple(data.get('drop_entries', ())), data.get('settings', {}))
+                                          tuple(data.get('drop_entries', ())), data.get('settings', {}),
+                                          data.get('release_name', '{map}-{version}.w3x'))
     return found
 
 
