@@ -6,7 +6,7 @@ T.lobby(lobby, 13)
 T.boot()
 T.advance(2)
 
-local want = T.map == "main" and 4 or 2           -- main: Pub / Pro / In-house / Pub custom; Solo: Normal / 4k
+local want = T.map == "799x" and 4 or 2           -- main: Pub / Pro / In-house / Pub custom; Solo: Normal / 4k
 T.check("only a watching bot: the host still gets the dialog", function()
     T.eq(#T.buttons(1), want, "buttons shown to the host")
     T.ok(not udg_Host_Picked_A_Game_Mode, "no mode picked yet")

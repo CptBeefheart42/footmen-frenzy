@@ -4,7 +4,7 @@
 -- side, an `afk` record instead. A computer without a hero and a player who picks before the kick stay.
 --   main (Pub, the AFK host's default): the pool opens 230 s after the game started, long after the mass, so the
 --     kick waits for it. Slot 2 AFK (slot 1's ally), slot 3 a computer without a hero, slot 4 picks 30 s after
---     the mass. Pro opens the pool at once: main_afk_kick_pro.
+--     the mass. Pro opens the pool at once: 799x_afk_kick_pro.
 --   Solo (no pool): the kick 15 s after the mass. Slot 5 AFK, slot 12 a computer without a hero, slot 8 picks
 --     between the warning and the kick.
 local afk, late, cpu = 2, 4, 3
@@ -59,7 +59,7 @@ end
 local function checkKicked()
     T.check("the player without a hero is removed by the map's own kick", function()
         T.eq(T.result(afk), "defeat", "the map's verdict for the AFK slot")
-        if T.map == "main" then
+        if T.map == "799x" then
             T.eq(udg_leave_or_votekick[afk], true, "the map's leaver handling ran (leave_or_votekick)")
         else
             T.eq(udg_player_active[afk], false, "player_active of the AFK slot")

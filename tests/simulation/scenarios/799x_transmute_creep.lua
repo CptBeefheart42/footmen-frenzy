@@ -10,8 +10,8 @@ T.advance(1)
 local caster = T.unit(4, "H005")
 T.learn(caster, "ANtm")
 T.cast(caster, "ANtm", creep); T.kill(creep, caster)
-local foot = T.unit(1, "hfoo"); T.cast(caster, "ANtm", foot); T.kill(foot, caster)
-T.kill(spare, T.unit(5, "hfoo"))               -- a hired creep killed without a Transmute
+local foot = T.unit(1, T.footman()); T.cast(caster, "ANtm", foot); T.kill(foot, caster)
+T.kill(spare, T.unit(5, T.footman()))               -- a hired creep killed without a Transmute
 T.flush()
 
 T.check("a Transmute landed on a hired creep is a hit and a tm_creeps", function()

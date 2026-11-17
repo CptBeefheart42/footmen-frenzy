@@ -86,14 +86,14 @@ local function lastTick(dummy, victim, secs)
     T.kill(victim, dummy)
 end
 
-case("control: a living killer's hero kill counts", function() T.kill(T.unit(enemy, "H005"), T.unit(me, "hfoo")) end,
+case("control: a living killer's hero kill counts", function() T.kill(T.unit(enemy, "H005"), T.unit(me, T.footman())) end,
     heroKill)
 
 for _, bag in ipairs({ "n02W", "n02X", "n02Y" }) do
     case("coin factory: " .. bag .. " Kaboom kills an enemy hero", function() kaboom(bag, T.unit(enemy, "H005")) end,
         heroKill)
 end
-case("coin factory: Kaboom kills an enemy footman", function() kaboom("n02W", T.unit(enemy, "hfoo")) end,
+case("coin factory: Kaboom kills an enemy footman", function() kaboom("n02W", T.unit(enemy, T.footman())) end,
     { [me] = { uk = 1 }, [enemy] = { ud = 1 } })
 
 case("objection: the last Soul Burn tick kills the enemy hero", function()

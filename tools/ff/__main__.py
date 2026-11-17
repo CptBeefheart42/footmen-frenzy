@@ -4,6 +4,7 @@
     ff setup                      install pjass and Lua into .tools/
     ff build <map> [--name F]     build a map into build/<map>/ (default name: <map>-dev.w3x)
     ff install <map> [--name F]   build, then put it into the Warcraft III Tests folder
+    ff test sim [scenario ...]    build both maps and play the simulation scenarios against them
     ff check                      every check a change passes before it is committed
 """
 from __future__ import annotations
@@ -20,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
-from repo import ROOT, project, projects, setting  # noqa: E402
+from repo import BUILD, ROOT, project, projects, setting  # noqa: E402
 
 
 def doctor() -> int:
@@ -54,8 +55,31 @@ def setup() -> int:
     return doctor()
 
 
+def simulate(scenarios: list[str] | None = None, build_maps: bool = True) -> int:
+    """Plays the simulation scenarios against both maps' built scripts, then checks the files they wrote against
+    efl-bot's parser (skipped without an efl-bot checkout)."""
+    sim = BUILD / 'simulation'
+    lua_dir, out = sim / 'lua', sim / 'out'
+    shutil.rmtree(sim, ignore_errors=True)
+    lua_dir.mkdir(parents=True)
+    pairs = [str(ROOT / 'data' / 'common.j'), str(lua_dir / 'common.lua'), str(ROOT / 'data' / 'Blizzard.j'), str(lua_dir / 'Blizzard.lua')]
+    for name, proj in projects().items():
+        if build_maps:
+            build(proj, f'{name}-sim.w3x')
+        pairs += [str(BUILD / name / 'war3map.j'), str(lua_dir / f'{name}.lua')]
+    if toolchain.run_dotnet_tool('tools/runner', ['jass-to-lua', *pairs]) != 0:
+        print('could not turn the map scripts into Lua')
+        return 1
+    sys.path.insert(0, str(ROOT))
+    from tests.simulation.run import run  # noqa: E402 (the tests are a package of the repository)
+    chosen = [ROOT / 'tests' / 'simulation' / 'scenarios' / f'{s}.lua' for s in scenarios] if scenarios else None
+    summary = run(lua_dir, out, toolchain.lua(), chosen)
+    contract = subprocess.run([sys.executable, '-m', 'tests.simulation.contract', str(out)], cwd=ROOT, env=test_environment())
+    return 1 if summary.broken or contract.returncode != 0 else 0
+
+
 def check() -> int:
-    """Runs every check: shared code, tool tests, and a full build of every map."""
+    """Runs every check: shared code, tool tests, a full build of every map, and the simulation."""
     failed = []
     for label, command in [('shared code', [sys.executable, str(ROOT / 'tools' / 'shared_code.py'), 'check']),
                            ('tool tests', [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-t', '.'])]:
@@ -69,6 +93,10 @@ def check() -> int:
         except (BuildError, toolchain.MissingTool) as error:
             print(error)
             failed.append(f'build {name}')
+    if not any(f.startswith('build') for f in failed):
+        print('== simulation')
+        if simulate(build_maps=False) != 0:
+            failed.append('simulation')
     print('all checks passed' if not failed else 'FAILED: ' + ', '.join(failed))
     return 1 if failed else 0
 
@@ -92,6 +120,9 @@ def main(argv: list[str] | None = None) -> int:
         p = commands.add_parser(name, help=text)
         p.add_argument('map', choices=list(projects()))
         p.add_argument('--name', help='file name of the map, ending in .w3x (default: <map>-dev.w3x)')
+    p = commands.add_parser('test', help='run a test suite')
+    p.add_argument('suite', choices=['sim'])
+    p.add_argument('scenarios', nargs='*', help='scenario names (default: all)')
     commands.add_parser('check', help='every check a change passes before it is committed')
     args = parser.parse_args(argv)
     try:
@@ -101,6 +132,8 @@ def main(argv: list[str] | None = None) -> int:
             return setup()
         if args.command == 'check':
             return check()
+        if args.command == 'test':
+            return simulate(args.scenarios)
         proj = project(args.map)
         built = build(proj, args.name or f'{proj.name}-dev.w3x')
         print(f'built {built}')

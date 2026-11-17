@@ -39,21 +39,21 @@ local function case(name, run, want)
     end)
 end
 
-local foot = T.unit(me, "hfoo")
-case("enemy footman killed: a kill and a death", function() T.kill(T.unit(enemy, "hfoo"), foot) end,
+local foot = T.unit(me, T.footman())
+case("enemy footman killed: a kill and a death", function() T.kill(T.unit(enemy, T.footman()), foot) end,
     { [me] = { uk = 1 }, [enemy] = { ud = 1 } })
-case("own footman killed: not counted", function() T.kill(T.unit(me, "hfoo"), foot) end, {})
-case("allied footman killed: not counted", function() T.kill(T.unit(ally, "hfoo"), foot) end, {})
-case("illusion killed: not counted", function() T.kill(T.illusion(enemy, "hfoo"), foot) end, {})
+case("own footman killed: not counted", function() T.kill(T.unit(me, T.footman()), foot) end, {})
+case("allied footman killed: not counted", function() T.kill(T.unit(ally, T.footman()), foot) end, {})
+case("illusion killed: not counted", function() T.kill(T.illusion(enemy, T.footman()), foot) end, {})
 case("killer already dead: counted for its owner", function()
-    local dead = T.unit(me, "hfoo")
+    local dead = T.unit(me, T.footman())
     dead.alive, dead.life = false, 0                 -- e.g. its missile lands after it died
-    T.kill(T.unit(enemy, "hfoo"), dead)
+    T.kill(T.unit(enemy, T.footman()), dead)
 end, { [me] = { uk = 1 }, [enemy] = { ud = 1 } })
-case("creep killer: counted for nobody", function() T.kill(T.unit(me, "hfoo"), T.unit(25, "n00Q")) end, {})
-case("no killer: counted for nobody", function() T.kill(T.unit(me, "hfoo"), nil) end, {})
+case("creep killer: counted for nobody", function() T.kill(T.unit(me, T.footman()), T.unit(25, "n00Q")) end, {})
+case("no killer: counted for nobody", function() T.kill(T.unit(me, T.footman()), nil) end, {})
 case("enemy cannon tower kills a footman: kill for the tower owner, death for the footman owner",
-    function() T.kill(T.unit(me, "hfoo"), T.unit(enemy, "hctw")) end,
+    function() T.kill(T.unit(me, T.footman()), T.unit(enemy, "hctw")) end,
     { [enemy] = { uk = 1 }, [me] = { ud = 1 } })
 case("enemy hero killed: a hero kill and a hero death", function() T.kill(T.unit(enemy, "H005"), foot) end,
     { [me] = { hk = 1 }, [enemy] = { hd = 1 } })

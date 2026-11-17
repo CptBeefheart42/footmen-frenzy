@@ -8,7 +8,7 @@ local P, s2id = W.P, W.s2id
 
 -- The standard lobbies: three players (two allies and an enemy) on the main map, four sides on Solo.
 local DEFAULT_LOBBY = {
-    main = { [1] = { name = "Alpha#1111" }, [2] = { name = "Bravo#2222" }, [4] = { name = "Delta#4444" } },
+    ["799x"] = { [1] = { name = "Alpha#1111" }, [2] = { name = "Bravo#2222" }, [4] = { name = "Delta#4444" } },
     solo = { [1] = { name = "Alpha#1111" }, [5] = { name = "Bravo#2222" }, [8] = { name = "Charlie#3333" },
              [12] = { name = "Delta#4444" } },
 }
@@ -57,6 +57,8 @@ function T.player(slot) return P(slot - 1) end
 
 --- A new unit of type `code` for `slot` at x, y (default 0, 0).
 function T.unit(slot, code, x, y) return W.newUnit(P(slot - 1), s2id(code), x or 0, y or 0, 0) end
+--- The map's footman, the tier-0 unit every base sends (udg_spawn_unit[0]: h060 on 799X, hfoo on Solo).
+function T.footman() return T.str(udg_spawn_unit[0]) end
 
 --- A new illusion of type `code` for `slot` (what Wand of Illusion or Mirror Image creates).
 function T.illusion(slot, code, x, y)
@@ -153,7 +155,7 @@ end
 --- Slot `slot` picks hero `code` (default H005) the way a player does: bought at the tavern (main: the shared one,
 --- Solo: the slot's own), so the map's TP_hero makes it the slot's hero (udg_herO). Returns the hero, or nil.
 function T.pickHero(slot, code)
-    local tavern = T.map == "main" and T.shop("n02I") or T.unitsOf(slot, "n02I")[1]
+    local tavern = T.map == "799x" and T.shop("n02I") or T.unitsOf(slot, "n02I")[1]
     return T.buyUnit(T.unitsOf(slot)[1], tavern, code or "H005")
 end
 

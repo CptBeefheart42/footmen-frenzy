@@ -12,7 +12,7 @@ the map's own `-kd` counter *and* our stats handler, exactly as a game would.
 ```
 make test-sim        # build both maps, transpile, run every scenario, then the bot-parser contract
 make sim-run         # re-run on the last transpiled scripts (fast loop while writing a scenario)
-FF_SIM_VERBOSE=1 tests/simulation/run.sh bin/simulation tests/simulation/scenarios/main_combat.lua
+FF_SIM_VERBOSE=1 tests/simulation/run.sh bin/simulation tests/simulation/scenarios/799x_combat.lua
 ```
 
 Both maps start in well under a second, and the whole suite takes a few seconds. CI
@@ -158,12 +158,12 @@ It is skipped when there is no bot checkout or no Python.
 
 | scenario | what happens | expected file |
 |----------|--------------|---------------|
-| `main_gameend`, `solo_game` | bases fall | the file names the winner and placements; `gameend` is the last row |
-| `main_forfeit`, `solo_forfeit` | the other sides leave | the side left standing wins, and the map's own END agrees |
-| `main_dissolve`, `solo_dissolve` | everybody leaves while several sides still stand | no `winner`, `placement` or `gameend` |
-| `main_leave_after_end` | units die and players leave after `gameend` | no result row changes |
-| `main_observer` | an observer watches the whole game | the observer never appears in the result |
-| `main_kd_gameend` | units die after `gameend` | the kill log keeps the final stats' kill counts |
+| `799x_gameend`, `solo_game` | bases fall | the file names the winner and placements; `gameend` is the last row |
+| `799x_forfeit`, `solo_forfeit` | the other sides leave | the side left standing wins, and the map's own END agrees |
+| `799x_dissolve`, `solo_dissolve` | everybody leaves while several sides still stand | no `winner`, `placement` or `gameend` |
+| `799x_leave_after_end` | units die and players leave after `gameend` | no result row changes |
+| `799x_observer` | an observer watches the whole game | the observer never appears in the result |
+| `799x_kd_gameend` | units die after `gameend` | the kill log keeps the final stats' kill counts |
 
 On the main map, a team is out only once all of its players have left.
 

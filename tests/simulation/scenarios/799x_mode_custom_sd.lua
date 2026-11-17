@@ -1,6 +1,6 @@
 -- Pub custom, the host's fourth button, with Single Draft voted: a Pub game whose host may buy extra modes at the
 -- mode shop while everybody votes the hero mode. Single Draft brings the four shared taverns as in Pub, and
--- Pub's gold rules apply (main_mode_pub.lua).
+-- Pub's gold rules apply (799x_mode_pub.lua).
 local M = require("modes")
 M.boot()
 M.pick("custom")

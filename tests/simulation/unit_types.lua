@@ -1,6 +1,6 @@
 -- Unit type facts for the simulation engine, from the repo's generated CSVs (the map's object data has
 -- no flags the script could read back). Heroes need nothing here: a capital first letter is a hero.
-local root = (arg[0]:match("^(.*)/tests/simulation/[^/]*$")) or "."
+local root = ((arg[0]:match("^(.*)[/\\]tests[/\\]simulation[/\\][^/\\]*$")) or ".") .. "/data"
 
 local function rows(file)
     local out, header = {}, nil

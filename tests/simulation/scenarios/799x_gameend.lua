@@ -3,8 +3,8 @@
 T.lobby()
 T.boot()
 T.advance(60)
-local foot = T.unitsOf(1, "hfoo")[1]
-T.kill(T.unit(4, "hfoo"), foot)
+local foot = T.unitsOf(1, T.footman())[1]
+T.kill(T.unit(4, T.footman()), foot)
 T.kill(T.unitsOf(4, "hbar")[1], foot)
 T.advance(5)
 

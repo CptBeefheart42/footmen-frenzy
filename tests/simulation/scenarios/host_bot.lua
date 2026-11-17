@@ -1,7 +1,7 @@
 -- A lobby hosted by one of our bots (the bot watches from observer slot 13): the map picks Pub mode itself at 1s,
 -- the human host never gets the game-type dialog, and the 8s "host was AFK" default has nothing left to do.
 local lobby = T.defaultLobby()
-local bot = T.map == "main" and "CoralShark#113567" or "OhNaahs#1537"
+local bot = T.map == "799x" and "CoralShark#113567" or "OhNaahs#1537"
 lobby[13] = { name = bot, observer = true }
 T.lobby(lobby, 13)
 T.boot()

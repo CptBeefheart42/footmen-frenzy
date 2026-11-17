@@ -6,7 +6,7 @@ T.lobby(lobby)
 T.boot()
 T.advance(60)
 T.chat(13, "-kd")
-local foot = T.unitsOf(1, "hfoo")[1]
+local foot = T.unitsOf(1, T.footman())[1]
 T.kill(T.unitsOf(4, "hbar")[1], foot)
 T.advance(5)
 

@@ -5,14 +5,14 @@
 -- food cap is the only guard. Main map control: in admin debug mode a second hero IS sold, so the refusals above come
 -- from the limit.
 local lobby = T.defaultLobby()
-if T.map == "main" then lobby[1] = { name = "CptBeefheart#21297" } end   -- an admin, for the debug-mode control
+if T.map == "799x" then lobby[1] = { name = "CptBeefheart#21297" } end   -- an admin, for the debug-mode control
 T.lobby(lobby)
 T.boot()
 T.advance(20)
 
-local active = T.map == "main" and { 1, 2, 4 } or { 1, 5, 8, 12 }
+local active = T.map == "799x" and { 1, 2, 4 } or { 1, 5, 8, 12 }
 -- the shared tavern (main) or the player's own (Solo, gone once the player has picked: kept from before)
-local tavern = T.map == "main" and T.shop("n02I") or T.unitsOf(1, "n02I")[1]
+local tavern = T.map == "799x" and T.shop("n02I") or T.unitsOf(1, "n02I")[1]
 local function heroCount()
     local n = 0
     for _, u in ipairs(T.unitsOf(1)) do if IsUnitType(u, UNIT_TYPE_HERO) then n = n + 1 end end
@@ -41,13 +41,13 @@ T.check("a second hero is never sold (another hero or the same one)", function()
     T.eq(heroCount(), 1, "heroes of slot 1")
 end)
 
-T.kill(first, T.unit(4, "hfoo"))
+T.kill(first, T.unit(4, T.footman()))
 T.advance(1)
 T.check("not even while the first hero is dead (it can be revived)", function()
     T.ok(T.buyUnit(T.unitsOf(1)[1], tavern, "H00T") == nil, "purchase with a dead hero refused")
 end)
 
-if T.map == "main" then
+if T.map == "799x" then
     -- a hero that reaches the tavern area by other means (a trigger, a bug) is not taken as the player's hero
     local stray = T.unit(1, "H00T", tavern.x, tavern.y)
     T.flush()

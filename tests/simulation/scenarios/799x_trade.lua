@@ -46,7 +46,7 @@ end)
 
 -- Script gold moves (SetPlayerState, a fallen ally's gold) never reach the score screen's keys.
 T.gold(3, 900)
-T.kill(T.unitsOf(3, "hbar")[1], T.unit(4, "hfoo"))
+T.kill(T.unitsOf(3, "hbar")[1], T.unit(4, T.footman()))
 T.advance(1)
 T.flush()
 T.check("a fallen ally's gold is inh_out / inh_in, never given / recv", function()

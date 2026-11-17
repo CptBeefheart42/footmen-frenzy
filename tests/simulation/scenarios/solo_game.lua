@@ -4,10 +4,10 @@ T.lobby()
 T.boot()
 T.advance(40)
 
-local foot = T.unit(1, "hfoo")
-T.kill(T.unit(5, "hfoo"), foot)
-T.kill(T.unit(8, "hfoo"), foot)
-T.kill(T.unit(1, "hfoo"), foot)                    -- own footman: a deny, not a kill
+local foot = T.unit(1, T.footman())
+T.kill(T.unit(5, T.footman()), foot)
+T.kill(T.unit(8, T.footman()), foot)
+T.kill(T.unit(1, T.footman()), foot)                    -- own footman: a deny, not a kill
 local hero = T.buyUnit(T.unitsOf(1)[1], T.unitsOf(1, "n02I")[1], "H005")   -- each player has an own tavern on Solo
 T.buyUnit(hero, T.shop("n00R"), "n00Q")
 T.buyItem(hero, T.shop("n01B"), "ratc")

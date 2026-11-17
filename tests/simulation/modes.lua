@@ -9,7 +9,7 @@ local M = {}
 
 -- The host's game-type dialog, in the order the buttons are shown.
 local BUTTONS = {
-    main = { pub = 1, pro = 2, inhouse = 3, custom = 4 },
+    ["799x"] = { pub = 1, pro = 2, inhouse = 3, custom = 4 },
     solo = { normal = 1, ["4k"] = 2 },
 }
 -- The vote spells of the hero-mode vote (In-house and Pub custom).
@@ -50,7 +50,7 @@ end
 --- `slot` votes for hero mode `kind` ("SD", "AP", "AR") by casting the vote spell. A vote of the host (slot 1)
 --- decides the vote for everyone and ends it after 1 s.
 function M.vote(slot, kind)
-    local caster = T.unitsOf(slot)[1] or T.unit(slot, "hfoo")
+    local caster = T.unitsOf(slot)[1] or T.unit(slot, T.footman())
     T.cast(caster, VOTE_SPELL[kind])
     T.advance(0)
 end

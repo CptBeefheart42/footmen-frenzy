@@ -4,17 +4,17 @@ T.lobby()
 T.boot()
 T.advance(20)
 
-local foot = T.unitsOf(1, "hfoo")[1]
-T.kill(T.unit(4, "hfoo"), foot)                -- enemy footman: a kill
-T.kill(T.unit(1, "hfoo"), foot)                -- own footman: deny
+local foot = T.unitsOf(1, T.footman())[1]
+T.kill(T.unit(4, T.footman()), foot)                -- enemy footman: a kill
+T.kill(T.unit(1, T.footman()), foot)                -- own footman: deny
 T.kill(T.unit(2, "earc"), foot)                -- allied archer (tier 1): deny
 T.kill(T.unit(2, "hkni"), foot)                -- allied knight (not a feed unit): neither
 
 local hero = T.unit(1, "H005")
 T.learn(hero, "ANtm")
-local hit = T.unit(4, "hfoo"); T.cast(hero, "ANtm", hit); T.kill(hit, hero)
-local saved = T.unit(4, "hfoo"); T.cast(hero, "ANtm", saved); T.kill(saved, T.unitsOf(4, "hfoo")[1])
-local dodged = T.unit(4, "hfoo"); T.cast(hero, "ANtm", dodged)
+local hit = T.unit(4, T.footman()); T.cast(hero, "ANtm", hit); T.kill(hit, hero)
+local saved = T.unit(4, T.footman()); T.cast(hero, "ANtm", saved); T.kill(saved, T.unitsOf(4, T.footman())[1])
+local dodged = T.unit(4, T.footman()); T.cast(hero, "ANtm", dodged)
 T.flush()
 
 T.check("kills come from the map's -kd counters", function()

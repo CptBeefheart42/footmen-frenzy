@@ -1,5 +1,5 @@
 -- The host picks no game type: after 8 s the map starts a Pub game by itself, with everything Pub has
--- (main_mode_pub.lua).
+-- (799x_mode_pub.lua).
 local M = require("modes")
 M.boot()
 T.check("no game before the AFK default", function() T.eq(M.starts(), 0, "game starts") end)

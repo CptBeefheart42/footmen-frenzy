@@ -1,11 +1,11 @@
 -- Runs one simulation scenario against a transpiled map script.
---   texlua tests/simulation/run.lua <common.j> <lua dir> <map: main|solo> <scenario.lua>
+--   lua tests/simulation/run.lua <common.j> <lua dir> <map: 799x|solo> <scenario.lua>
 -- <lua dir> holds common.lua, Blizzard.lua and <map>.lua from the runner's `jass-to-lua`.
 -- Prints one `PASS|FAIL <scenario> :: <check>` line per check, then any script errors and the
 -- natives the run called without a model; exits non-zero on any failure or script error.
 
 local commonJ, luaDir, map, scenario = arg[1], arg[2], arg[3], arg[4]
-local here = arg[0]:match("^(.*)/[^/]*$") or "."
+local here = arg[0]:match("^(.*)[/\\][^/\\]*$") or "."
 package.path = here .. "/?.lua;" .. package.path
 
 local W = assert(loadfile(here .. "/wc3.lua"))(here)
@@ -37,7 +37,7 @@ load_jass_lua(luaDir .. "/" .. map .. ".lua")
 W.nameConstants()
 
 T.map = map
-local name = scenario:match("([^/]+)%.lua$")
+local name = scenario:match("([^/\\]+)%.lua$")
 local ok, err = xpcall(function() dofile(scenario) end, debug.traceback)
 
 local failed = 0
@@ -84,8 +84,7 @@ end
 -- for the bot's parser (map <-> bot contract check).
 local outDir = os.getenv("FF_SIM_OUT")
 if outDir then
-    local dir = outDir .. "/" .. map .. "/" .. name
-    os.execute("mkdir -p '" .. dir .. "'")
+    local dir = outDir .. "/" .. map .. "/" .. name   -- made by the runner (tests/simulation/run.py)
     for fname, lines in pairs(W.files) do
         local f = assert(io.open(dir .. "/" .. fname, "w"))
         f:write("function PreloadFiles takes nothing returns nothing\n\n\tcall PreloadStart()\n")

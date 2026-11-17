@@ -1,6 +1,6 @@
 -- A hosting bot in a playing slot (not observing) makes the game bot-hosted too: Pub mode without the dialog.
 local lobby = T.defaultLobby()
-if T.map == "main" then
+if T.map == "799x" then
     lobby[3] = { name = "(EFL)CoralShark#113567" }      -- a leading clan tag still matches
 else
     lobby[12] = { name = "LustyPuppy#1929" }

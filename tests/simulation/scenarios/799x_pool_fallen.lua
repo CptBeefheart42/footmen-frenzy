@@ -15,7 +15,7 @@ T.advance(3)
 T.flush()
 local start = { [1] = T.stats(1), [2] = T.stats(2), [3] = T.stats(3) }
 
-local enemy = T.unitsOf(4, "hfoo")[1]
+local enemy = T.unitsOf(4, T.footman())[1]
 T.kill(T.unitsOf(3, "hbar")[1], enemy)
 T.advance(3)
 T.gold(3, 600)

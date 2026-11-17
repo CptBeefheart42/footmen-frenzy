@@ -6,15 +6,15 @@ T.lobby(lobby, 13)
 T.boot()
 T.advance(60)
 
-local foot = T.unitsOf(1, "hfoo")[1]
-T.kill(T.unit(4, "hfoo"), foot)
+local foot = T.unitsOf(1, T.footman())[1]
+T.kill(T.unit(4, T.footman()), foot)
 T.kill(T.unit(4, "H005"), foot)
 T.kill(T.unitsOf(4, "hbar")[1], foot)
 T.advance(5)
 local killsAtEnd = udg_unit_kills[1]
 
-T.kill(T.unit(4, "hfoo"), foot)
-T.kill(T.unit(4, "hfoo"), foot)
+T.kill(T.unit(4, T.footman()), foot)
+T.kill(T.unit(4, T.footman()), foot)
 T.kill(T.unit(4, "H005"), foot)
 T.flush()
 T.advance(60)
