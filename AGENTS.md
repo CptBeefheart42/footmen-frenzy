@@ -29,6 +29,7 @@ is not yours. Never push to `main`, never create tags or releases, never deploy.
 | `projects/<map>/objects/*.txt` | the map's object data (units, abilities, items, upgrades, buffs, ...) as text, one line per field |
 | `projects/<map>/base.w3x` | the starting map: terrain, placed objects, imports as the World Editor last saved them (the only binary files in git) |
 | `projects/<map>/project.json` | where the starting map came from, its **settings** (pooling, modes, -sub ...), functions the build switches off |
+| `projects/<map>/hotkeys.csv` | every hotkey and button position the map's object data stores; `ff check` fails when one changes |
 | `projects/<map>/binaries.json` | binary files newer than the starting map (models, textures), by checksum, in the release store |
 | `projects/<map>/addons/` | league code for this map only, and `anchors.txt` (lines the build inserts into the map's functions) |
 | `league/` | league code both maps get: the result file the bot scores, stats, kill log, observer camera, AFK rule |
@@ -47,6 +48,7 @@ ff setup                  install pjass and Lua, link the skills, turn on the pr
 ff build <map>            build a map into build/<map>/
 ff install <map> --name "Solo Foots test1.w3x"   build it and put it into Warcraft III's Tests folder
 ff test sim [scenario]    play the simulation scenarios
+ff hotkeys <map>          rewrite projects/<map>/hotkeys.csv after an intended hotkey or button change
 ff check                  every check; it must pass before every commit
 ```
 

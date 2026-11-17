@@ -27,6 +27,9 @@ set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
 
 - `projects/<map>/src/`: every text file of the map: the script (`war3map.j`), the string table (`war3map.wts`), the
   text configuration files.
+- `projects/<map>/hotkeys.csv`: every hotkey and command-card position the map's object data stores, and the clashes
+  on a unit's command card. `ff check` fails when the object data no longer matches; `ff hotkeys <map>` rewrites the
+  list after an intended change, so the change shows in review.
 - `projects/<map>/binaries.json`: every binary file of the map (models, textures, sounds, object data, terrain) by
   name, SHA-256 and size. The files themselves are released, not kept here (see [Binary files](#binary-files)).
 - `projects/<map>/base.w3x`: the starting map, the complete map as the World Editor last saved it (terrain, placed

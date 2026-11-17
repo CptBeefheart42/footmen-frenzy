@@ -7,6 +7,7 @@
     ff test sim [scenario ...]    build both maps and play the simulation scenarios against them
     ff blobs add <map> <entry> <file>   list a new binary file (model, texture) of a map
     ff blobs upload               upload listed binary files the release store lacks (maintainers)
+    ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
     ff release <version>          build every map with its release name (project.json) into build/release/ and zip them
@@ -26,6 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import blobs  # noqa: E402
+import hotkeys  # noqa: E402
 import leaks  # noqa: E402
 import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
@@ -122,6 +124,15 @@ def check() -> int:
     print('\n'.join(found) if found else 'none found')
     if found:
         failed.append('private details')
+    print('== hotkeys')
+    for name, proj in projects().items():
+        changed = hotkeys.differences(proj)
+        if changed:
+            print(f'{name}: the hotkeys differ from projects/{name}/hotkeys.csv (`ff hotkeys {name}` after an intended change):')
+            print('\n'.join(changed[:40]) + (f'\n... {len(changed) - 40} more' if len(changed) > 40 else ''))
+            failed.append(f'hotkeys {name}')
+        else:
+            print(f'{name}: as listed')
     for label, command in [('shared code', [sys.executable, str(ROOT / 'tools' / 'shared_code.py'), 'check']),
                            ('tool tests', [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-t', '.'])]:
         print(f'== {label}')
@@ -229,6 +240,8 @@ def main(argv: list[str] | None = None) -> int:
     p = commands.add_parser('test', help='run a test suite')
     p.add_argument('suite', choices=['sim'])
     p.add_argument('scenarios', nargs='*', help='scenario names (default: all)')
+    p = commands.add_parser('hotkeys', help="rewrite a map's hotkey list after an intended change")
+    p.add_argument('map', choices=list(projects()))
     commands.add_parser('check', help='every check a change passes before it is committed')
     args = parser.parse_args(argv)
     try:
@@ -244,6 +257,9 @@ def main(argv: list[str] | None = None) -> int:
             return blob_command(args)
         if args.command == 'docker':
             return docker(args.rest or ['check'])
+        if args.command == 'hotkeys':
+            print(f'wrote {hotkeys.write(project(args.map))}')
+            return 0
         if args.command == 'release':
             release(args.version)
             return 0
