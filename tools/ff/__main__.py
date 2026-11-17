@@ -8,6 +8,7 @@
     ff blobs add <map> <entry> <file>   list a new binary file (model, texture) of a map
     ff blobs upload               upload listed binary files the release store lacks (maintainers)
     ff check                      every check a change passes before it is committed
+    ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
 """
 from __future__ import annotations
 
@@ -138,6 +139,27 @@ def check() -> int:
     return 1 if failed else 0
 
 
+DOCKER_IMAGE = 'footmen-frenzy-check'
+
+
+def docker(command: list[str]) -> int:
+    """Builds the image of Dockerfile locally and runs `ff <command>` in it, with the repository mounted and the
+    caller's user, so every file it writes belongs to them. NuGet packages are kept in .tools/nuget."""
+    if not shutil.which('docker'):
+        raise toolchain.MissingTool('Docker is missing: install Docker (Linux) or Docker Desktop with WSL')
+    with (ROOT / 'Dockerfile').open('rb') as dockerfile:
+        if subprocess.run(['docker', 'build', '-q', '-t', DOCKER_IMAGE, '-'], stdin=dockerfile).returncode != 0:
+            return 1
+    user = ['--user', f'{os.getuid()}:{os.getgid()}'] if hasattr(os, 'getuid') else []
+    # A git worktree's .git points to its main clone: mount that at the same path so git works inside.
+    common = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=ROOT,
+                            capture_output=True, text=True).stdout.strip()
+    mounts = ['-v', f'{common}:{common}'] if common and not Path(common).is_relative_to(ROOT) else []
+    return subprocess.run(['docker', 'run', '--rm', *user, '-v', f'{ROOT}:/repo', *mounts, '-w', '/repo',
+                           '-e', 'NUGET_PACKAGES=/repo/.tools/nuget', DOCKER_IMAGE,
+                           'python3', 'tools/ff', *command]).returncode
+
+
 def blob_command(args) -> int:
     """ff blobs add <map> <entry> <file> | ff blobs upload."""
     if args.action == 'add':
@@ -177,6 +199,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('map', nargs='?', choices=list(projects()))
     p.add_argument('entry', nargs='?', help='add: the path inside the map, e.g. war3mapImported/Hero.mdx')
     p.add_argument('file', nargs='?', type=Path, help='add: the file on disk')
+    p = commands.add_parser('docker', help='run an ff command in a container built from Dockerfile')
+    p.add_argument('rest', nargs=argparse.REMAINDER, help='the ff command, e.g. check')
     p = commands.add_parser('test', help='run a test suite')
     p.add_argument('suite', choices=['sim'])
     p.add_argument('scenarios', nargs='*', help='scenario names (default: all)')
@@ -193,6 +217,8 @@ def main(argv: list[str] | None = None) -> int:
             return simulate(args.scenarios)
         if args.command == 'blobs':
             return blob_command(args)
+        if args.command == 'docker':
+            return docker(args.rest or ['check'])
         proj = project(args.map)
         built = build(proj, args.name or f'{proj.name}-dev.w3x')
         print(f'built {built}')
