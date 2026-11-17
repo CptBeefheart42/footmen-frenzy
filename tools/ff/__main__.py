@@ -30,7 +30,8 @@ def doctor() -> int:
               ('.NET SDK', True, lambda: toolchain.dotnet()[0]),
               ('pjass', True, toolchain.pjass),
               ('Lua 5.3', True, toolchain.lua),
-              ('Warcraft III maps folder (for ff install)', False, lambda: str(maps_folder()))]
+              ('Warcraft III maps folder (for ff install)', False, lambda: str(maps_folder())),
+              ('openpyxl (for the workbook tests: pip install openpyxl)', False, lambda: __import__('openpyxl').__version__)]
     missing = 0
     for label, required, find in checks:
         try:

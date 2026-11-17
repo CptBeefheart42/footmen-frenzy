@@ -38,7 +38,7 @@ using FootmenFrenzy.Shared;
 //
 //   `verify-map <w3x> [--name S] [--author S] [--loading-title S] [--credits S] [--funcs a,b] [--stubs a,b] [--imports a,b] [--overrides csv] [--anchors txt]`
 //                  release gate for a BUILT map (see VerifyMap)
-//   `check-anchors <w3x> <anchors.txt>`  dry-runs the anchor hooks on a base map's script (exit 1 if one doesn't apply)
+//   `check-anchors <w3x | war3map.j> <anchors.txt>`  dry-runs the anchor hooks on a map's script (exit 1 if one doesn't apply)
 //   `pack <start.w3x> <src dir> <out.w3x> [--script j] [--lfs-cache dir] [--missing file]`  a project's starting map
 //                  plus its source files -> a complete map (see Pack)
 //                  Every build applies the WC3 3.0 level fill (tools/shared/AbilityLevelFill.cs) to war3map.w3a.
@@ -170,7 +170,7 @@ AddFolderAsMpqFiles(builder, baseMapFolder);
 
 // Bake the configurable admin list (scripting/admins.txt) into Admins.g.cs before compiling, so
 // admins are managed from a plain text file in the repo instead of hardcoded battletags.
-GenerateAdmins(Path.Combine(repoRoot, "lua", "admins.txt"), Path.Combine(sourceFolder, "Admins.g.cs"));
+GenerateAdmins(Repo.Data("admins.txt"), Path.Combine(sourceFolder, "Admins.g.cs"));
 
 string csc = null;
 var csproj = Directory.EnumerateFiles(sourceFolder, "*.csproj", SearchOption.TopDirectoryOnly).Single();
@@ -961,19 +961,24 @@ static int CheckAnchors(string[] a)
 {
     if (a.Length != 2)
     {
-        Console.WriteLine("usage: check-anchors <map.w3x> <anchors.txt>");
+        Console.WriteLine("usage: check-anchors <map.w3x | war3map.j> <anchors.txt>");
         return 2;
     }
-    using var archive = MpqArchive.Open(a[0], true);
-    if (!archive.TryOpenFile("war3map.j", out var st))
-    {
-        Console.WriteLine($"JASS: war3map.j not found in {a[0]}");
-        return 1;
-    }
     string jass;
-    using (st)
-    using (var reader = new StreamReader(st, new UTF8Encoding(false)))
-        jass = reader.ReadToEnd();
+    if (a[0].EndsWith(".j", StringComparison.OrdinalIgnoreCase))
+        jass = File.ReadAllText(a[0], new UTF8Encoding(false));
+    else
+    {
+        using var archive = MpqArchive.Open(a[0], true);
+        if (!archive.TryOpenFile("war3map.j", out var st))
+        {
+            Console.WriteLine($"JASS: war3map.j not found in {a[0]}");
+            return 1;
+        }
+        using (st)
+        using (var reader = new StreamReader(st, new UTF8Encoding(false)))
+            jass = reader.ReadToEnd();
+    }
     var hooks = ReadAnchors(a[1]);
     if (hooks == null || ApplyJassAnchors(jass, hooks) == null)
         return 1;
