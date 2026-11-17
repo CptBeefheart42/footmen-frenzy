@@ -37,10 +37,5 @@ jobs:
         env:
           FF_EFL_BOT: ${{ vars.EFL_BOT_REPO != '' && format('{0}/.tools/efl-bot', github.workspace) || '' }}
           FF_BLOB_URL: ${{ vars.BLOB_URL }}
-          BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
-        run: |
-          if [ -n "$BLOB_TOKEN" ]; then
-            printf '%s' "$BLOB_TOKEN" > "$RUNNER_TEMP/blob-token"
-            export FF_BLOB_TOKEN_FILE="$RUNNER_TEMP/blob-token"
-          fi
-          python3 tools/ff check
+          FF_BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
+        run: python3 tools/ff check

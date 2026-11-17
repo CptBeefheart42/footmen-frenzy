@@ -75,9 +75,11 @@ The repository holds text only; a test fails when a binary file is committed. A 
 needs into `.tools/blobs/` (named by SHA-256, every checksum checked) from the release store set in `ff.local.json`:
 
 ```json
-{ "blob_url": "https://<host>/<owner>/<repo>/releases/download/blobs/{sha256}",
-  "blob_token_file": "<file holding a read token, for a private store>" }
+{ "blob_url": "https://<host>/<owner>/<repo>/releases/download/blobs/{sha256}" }
 ```
+
+A private store's read token goes into the environment variable `FF_BLOB_TOKEN` (secrets live only in the environment,
+never in a file of the repository; `ff.local.json` holds the other local settings and is ignored by git).
 
 Without a release store, the files of the imported maps come from the Git LFS storage of `origin`.
 

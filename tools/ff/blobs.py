@@ -5,14 +5,16 @@ starting map the same way. The contents are released files; this module download
 local cache `.tools/blobs/<sha256>`, checking every checksum. Download sources, first match wins:
 1. the cache;
 2. `blob_url` in ff.local.json (or the FF_BLOB_URL environment variable): an address with `{sha256}` in it, e.g. a
-   release whose files are named by their SHA-256; a private store's token is read from the file `blob_token_file`
-   names (or FF_BLOB_TOKEN_FILE) and sent as `Authorization: token ...`;
+   release whose files are named by their SHA-256; a private store's token comes from the environment variable
+   FF_BLOB_TOKEN (secrets live in the environment, never in a file of the repository) and is sent as
+   `Authorization: token ...`;
 3. the Git LFS storage of the `origin` remote (public, no login), which holds the files of the imported maps.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 import urllib.error
 import urllib.request
@@ -60,9 +62,9 @@ def download(url: str, blob: Blob, check_only: bool = False) -> bool:
     """Downloads one blob into the cache; returns False when the address has no such file. With `check_only`, only
     asks whether the address has it."""
     headers = {}
-    token_file = setting('blob_token_file', 'FF_BLOB_TOKEN_FILE')
-    if token_file:
-        headers['Authorization'] = 'token ' + Path(token_file).expanduser().read_text(encoding='utf-8').strip()
+    token = os.environ.get('FF_BLOB_TOKEN', '').strip()
+    if token:
+        headers['Authorization'] = f'token {token}'
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=headers, method='HEAD' if check_only else 'GET')) as response:
             if check_only:
@@ -139,16 +141,16 @@ def add(project_binaries: Path, entry: str, file: Path) -> Blob:
 
 def upload(blobs: list[Blob]) -> list[Blob]:
     """Uploads the blobs the release store lacks (a Gitea release: blob_upload_url in ff.local.json, the release's
-    asset API, with the token from blob_token_file). Returns the uploaded ones.
+    asset API, with the token in the environment variable FF_BLOB_TOKEN). Returns the uploaded ones.
 
     Raises:
-        RuntimeError: No upload address is set, or a blob is not in the cache.
+        RuntimeError: No upload address or token is set, or a blob is not in the cache.
     """
     url = setting('blob_upload_url', 'FF_BLOB_UPLOAD_URL')
-    token_file = setting('blob_token_file', 'FF_BLOB_TOKEN_FILE')
-    if not url or not token_file:
-        raise RuntimeError('uploading needs blob_upload_url and blob_token_file in ff.local.json (maintainers only)')
-    token = Path(token_file).expanduser().read_text(encoding='utf-8').strip()
+    token = os.environ.get('FF_BLOB_TOKEN', '').strip()
+    if not url or not token:
+        raise RuntimeError('uploading needs blob_upload_url in ff.local.json and the token in FF_BLOB_TOKEN '
+                           '(maintainers only)')
     uploaded = []
     for blob in blobs:
         if download(setting('blob_url', 'FF_BLOB_URL').format(sha256=blob.sha256), blob, check_only=True):
