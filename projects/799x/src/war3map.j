@@ -28103,6 +28103,8 @@ function Trig_Vote_Timer_Expires_Actions takes nothing returns nothing
                 call ConditionalTriggerExecute(gg_trg_Start_game)
             else
                 if ( Trig_Vote_Timer_Expires_Func002Func008Func001Func002C() ) then
+                    call EnableTrigger(gg_trg_Start_SD)
+                    call ConditionalTriggerExecute(gg_trg_Start_SD)
                     call ConditionalTriggerExecute(gg_trg_Start_game)
                 else
                     if FFModePrivateVote then
