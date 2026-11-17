@@ -22,7 +22,7 @@ other client writes the plain name. Only the name differs: the content is the sa
 | `format,<n>` | always, the first record | the file's format: 2 (a file without this row is format 1). Bumped only when a key's meaning changes, and that key also gets a new name; otherwise records and keys are only added, an existing row is never widened |
 | `mode,ffa` / `mode,6v6` | always, after `format` | how slots form sides: FFA = 1-3, 4-6, 7-9, 10-12; 6v6 = West / East |
 | `roster,<slot>:<name>;...` + `roster_more,...` | from the first second | every participant (never an observer); more rows when one would pass the length limit |
-| `afk,<t>,<slot>,<name>` | a player is removed for having no hero 15 s after the mass began and once the gold pool is open (`league/25-afk.j`) | the game doesn't count for them: from then on the slot is in no roster, stats, usage row or side |
+| `afk,<t>,<slot>,<name>` | a player is removed for having no hero, or having done nothing since the game started, 15 s after the mass began and once the gold pool is open (`league/25-afk.j`) | the game doesn't count for them: from then on the slot is in no roster, stats, usage row or side |
 | `out,<t>,<slot>,<side>,<name>` | a player is out | the map cleared `udg_player_active`: base destroyed, or a whole team left |
 | `sidedead,<t>,<side>` | a side is out | its last player is out |
 | `winner,<t>,<side>,<members>` | exactly one side left | the map's own END condition |
