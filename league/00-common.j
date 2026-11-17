@@ -92,9 +92,9 @@ function FF_IsHostBotName takes string name returns boolean
 endfunction
 
 // Every bot: the hosts above plus the ones that only watch. These are the only clients that write
-// the bot's files under per-game names (and the kill log at all), and the only observers that get
-// true-sight detection (40-botvision.j). The watchers also join other people's games, so they never
-// change how a game is played.
+// the bot's files under per-game names (and the kill log at all). As observers they get true-sight
+// detection (40-botvision.j, which also grants it to a few human accounts). The watchers also join
+// other people's games, so they never change how a game is played.
 function FF_IsBotName takes string name returns boolean
     if name == null then
         return false

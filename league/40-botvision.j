@@ -1,4 +1,5 @@
-// FF addons — BotVision: true-sight detection over the whole map for the fleet's bot clients.
+// FF addons — BotVision: true-sight detection over the whole map for the fleet's bot clients and a
+// few named human observers.
 // The map already gives every team-4 ("observer") slot a whole-map fog reveal (its own
 // Observer Vision Fix trigger), but a fog reveal never shows invisible units: WC3 renders those
 // only to the owner, to the owner's allies, or to a player whose true-sight detection covers
@@ -18,15 +19,16 @@
 //     real sight (1400 day / 800 night) — flying, so cliffs don't block it. The grid is dense
 //     enough for the night value. It also inherits -10 HP/s regen, hence the keep-alive.
 // Detection reveals to the detector's OWNER and to whoever the owner SHARES VISION with — and the
-// observer force (lobby slots 12-23, both maps) shares vision among all its members, so a bot's
-// true sight showed up on every human observer's screen too (reported 2026-09-21). Each bot
-// therefore stops sharing its vision with everyone else (FF_bv_Unshare): a one-way, vision-only
+// observer force (lobby slots 12-23, both maps) shares vision among all its members, so the true
+// sight would show on every observer's screen. Each detector owner therefore stops sharing its vision with everyone else (FF_bv_Unshare): a one-way, vision-only
 // change — alliances, "Allies" chat and the humans' own whole-map fog reveal stay as they are,
-// and the bot keeps receiving the others' shared vision. Players in the game see nothing
+// and the owner keeps receiving the others' shared vision. Players in the game see nothing
 // different. Locust units are skipped by unit-group enumeration, untargetable and
 // collision-free, so spells, bounces, spawns and counts never meet them — the same guarantee
 // the map's spell dummies rely on.
-// Bot identity is decided from GetPlayerName (synced), so the units are created identically on
+// A few human accounts (FF_bv_IsTrueSightName) get the same grid when they observe; every other
+// human observer keeps only the map's fog reveal.
+// Identity is decided from GetPlayerName (synced), so the units are created identically on
 // every client: nothing in here branches on GetLocalPlayer.
 
 globals
@@ -40,13 +42,22 @@ globals
     group FF_bv_units = null
 endglobals
 
-// A playing, user-controlled slot on the observer team (4) whose name is on the fleet list.
-// Never a bot that somehow sits in a player slot: a detector grid there would be a cheat.
-function FF_bv_IsBotObserver takes player p returns boolean
+// The human accounts that observe with the bots' true sight.
+function FF_bv_IsTrueSightName takes string name returns boolean
+    if name == null then
+        return false
+    endif
+    return FF_EndsWith(name, "CptBeefheart#21297") or FF_EndsWith(name, "RJE#2927") or FF_EndsWith(name, "RJE#11113")
+endfunction
+
+// A playing, user-controlled slot on the observer team (4) whose name is on the fleet list or the
+// true-sight list. Never someone in a player slot: a detector grid there would be a cheat.
+function FF_bv_IsTrueSightObserver takes player p returns boolean
+    local string name = GetPlayerName(p)
     if GetPlayerSlotState(p) != PLAYER_SLOT_STATE_PLAYING or GetPlayerController(p) != MAP_CONTROL_USER then
         return false
     endif
-    return GetPlayerTeam(p) == 4 and FF_IsBotName(GetPlayerName(p))
+    return GetPlayerTeam(p) == 4 and (FF_IsBotName(name) or FF_bv_IsTrueSightName(name))
 endfunction
 
 function FF_bv_Place takes player owner, real x, real y returns nothing
@@ -85,7 +96,7 @@ function FF_bv_Grid takes player owner returns nothing
     set r = null
 endfunction
 
-// Keep the detection with the bot: revoke its outgoing shared vision to every other slot. The
+// Keep the detection with its owner: revoke the owner's outgoing shared vision to every other slot. The
 // map's own triggers only ever touch alliances among the 12 participants (udg_ally1/2), never the
 // observer force, so once at init is enough; a human observer cannot make the bot share again.
 function FF_bv_Unshare takes player bot returns nothing
@@ -118,7 +129,7 @@ function FF_BotVision_Init takes nothing returns nothing
     set FF_bv_units = CreateGroup()
     loop
         exitwhen i >= bj_MAX_PLAYER_SLOTS
-        if FF_bv_IsBotObserver(Player(i)) then
+        if FF_bv_IsTrueSightObserver(Player(i)) then
             call FF_bv_Unshare(Player(i))
             call FF_bv_Grid(Player(i))
             set any = true

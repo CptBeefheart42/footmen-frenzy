@@ -242,10 +242,12 @@ class LeagueRulesTest(unittest.TestCase):
         for tag in admins:
             self.assertIn(f'"{tag}"', debug)
 
-    def test_bot_vision_stays_with_the_bots(self):
+    def test_true_sight_stays_with_the_bots_and_the_named_observers(self):
         vision = (LEAGUE / '40-botvision.j').read_text()
         self.assertIn('SetPlayerAlliance(bot, Player(i), ALLIANCE_SHARED_VISION, false)', vision)
         self.assertIn('call FF_bv_Unshare(Player(i))', vision)
+        self.assertIn('GetPlayerTeam(p) == 4 and (FF_IsBotName(name) or FF_bv_IsTrueSightName(name))',
+                      function_body(LEAGUE / '40-botvision.j', 'FF_bv_IsTrueSightObserver'))
         self.assertNotRegex(vision, 'ALLIANCE_PASSIVE|SetPlayerAllianceState')
 
     def test_stats_rows(self):
