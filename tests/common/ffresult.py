@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from tests.common.kv import as_int, parse_kv
 
 STATS_KEYS = ("given recv pool_out pool_in inh_out inh_in mined tech ukills hkills razed food deny_own deny_ally "
-              "tm_casts tm_hits tm_creeps tm_denied tm_saves creeps creep_gold atk_lvl def_lvl race_lvl team_res koth_gold "
+              "deny_tower tm_casts tm_hits tm_creeps tm_denied tm_saves creeps creep_gold atk_lvl def_lvl race_lvl team_res koth_gold "
               "dmg_out dmg_bld dmg_in hero_lvl").split()
 RESULT_EVENTS = ("afk", "sub", "out", "sidedead", "winner", "placement", "gameend")
 MAP_EVENTS = ("pick", "baseup", "buy", "used")

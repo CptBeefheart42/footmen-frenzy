@@ -18,6 +18,8 @@
 //     script, so they can't call one. Each hook credits the real sender/receiver slot of that very call.
 //   * deny_own / deny_ally: footmen and tier-1 spawns (the units a base sends) of the slot's OWN / an ALLY's base
 //     killed by the slot — the team tactic of getting rid of feed units.
+//   * deny_tower: the slot's OWN feed units killed by an ally's building (a cannon tower in a teammate's base) —
+//     credited to the slot that brought them there, while the tower's owner still gets its deny_ally.
 //   * tm_casts / tm_hits / tm_denied / tm_saves: Transmute (a projectile). A cast is a hit when the target dies to
 //     the caster, denied when it dies to anyone else first (its owner or an ally killing it is the standard
 //     counter — that counter is tm_saves for the slot that did it); a target still alive after FF_ST_TM_WAIT
@@ -45,6 +47,7 @@ globals
     integer array FF_st_kothGold
     integer array FF_st_denyOwn
     integer array FF_st_denyAlly
+    integer array FF_st_denyTower
     integer array FF_st_tmCasts
     integer array FF_st_tmHits
     integer array FF_st_tmDenied
@@ -183,6 +186,7 @@ function FF_st_Collect takes integer slot returns nothing
     set FF_st_split = FF_st_n
     call FF_st_V(",deny_own=", FF_st_denyOwn[slot])
     call FF_st_V(",deny_ally=", FF_st_denyAlly[slot])
+    call FF_st_V(",deny_tower=", FF_st_denyTower[slot])
     call FF_st_V(",tm_casts=", FF_st_tmCasts[slot])
     call FF_st_V(",tm_hits=", FF_st_tmHits[slot])
     call FF_st_V(",tm_creeps=", FF_st_tmCreeps[slot])
@@ -339,6 +343,9 @@ function FF_st_OnDeath takes nothing returns nothing
             set FF_st_denyOwn[ks] = FF_st_denyOwn[ks] + 1
         elseif IsPlayerAlly(kp, vp) then
             set FF_st_denyAlly[ks] = FF_st_denyAlly[ks] + 1
+            if IsUnitType(killer, UNIT_TYPE_STRUCTURE) and FF_st_Slot(vp) > 0 then
+                set FF_st_denyTower[FF_st_Slot(vp)] = FF_st_denyTower[FF_st_Slot(vp)] + 1
+            endif
         endif
     endif
     set victim = null

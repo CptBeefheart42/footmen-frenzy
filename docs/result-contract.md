@@ -62,6 +62,7 @@ go away; a key whose meaning changes gets a new name instead.
 | `mined` | gold "mined". It includes pooled, inherited, KotH and start gold (e2e 799x-ffa: slot 2 `mined` 25763 = 136 + `pool_in` 25627) | score screen | probation |
 | `tech` | the score screen's tech score; may credit allies' research | score screen | probation |
 | `hero_lvl` | highest hero level: a running maximum while alive, frozen at `out` / `left` | hero | stable |
+| `deny_tower` | own spawns killed by an ally's building (the slot brought them to a teammate's tower); the tower's owner also counts them as `deny_ally` | map events | probation |
 | `dmg_out` / `dmg_bld` / `dmg_in` | damage to non-structures / structures / taken, between non-allies, overkill included | damage events | probation |
 
 `modes,<k>=<v>,...` (written once, when the modes are final): `sel`, `pub`, `inhouse`, `koth`, `club777`, `madness`,

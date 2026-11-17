@@ -254,8 +254,8 @@ class LeagueRulesTest(unittest.TestCase):
         stats = (LEAGUE / '15-stats.j').read_text()
         keys = re.findall(r'FF_st_V\(",([a-z_]+)=', stats)
         self.assertEqual(keys, ['given', 'recv', 'pool_out', 'pool_in', 'inh_out', 'inh_in', 'mined', 'tech', 'ukills',
-                                'hkills', 'razed', 'food', 'koth_gold', 'hero_lvl', 'deny_own', 'deny_ally', 'tm_casts',
-                                'tm_hits', 'tm_creeps', 'tm_denied', 'tm_saves', 'creeps', 'creep_gold', 'atk_lvl',
+                                'hkills', 'razed', 'food', 'koth_gold', 'hero_lvl', 'deny_own', 'deny_ally', 'deny_tower',
+                                'tm_casts', 'tm_hits', 'tm_creeps', 'tm_denied', 'tm_saves', 'creeps', 'creep_gold', 'atk_lvl',
                                 'def_lvl', 'race_lvl', 'team_res', 'dmg_out', 'dmg_bld', 'dmg_in'])
         self.assertIn('call FF_st_V(",ukills=", udg_unit_kills[slot])', stats)
         self.assertIn('",state=left,left_t=" + FF_st_leftT[slot]', stats)
