@@ -1,7 +1,7 @@
 # ff check on every push, inside the image of Dockerfile (image.yml keeps it in the CI's registry). The contract with
 # the bot's parser runs against an efl-bot checkout when the CI names one (vars.EFL_BOT_REPO at vars.EFL_BOT_REF, read
-# with secrets.EFL_BOT_TOKEN); without one it is skipped and says so. Binary files come from the release store
-# vars.BLOB_URL (with {sha256}), read with secrets.BLOB_TOKEN.
+# with secrets.EFL_BOT_TOKEN); without one it is skipped and says so. Binary files come from this repository's
+# release `blobs` on the CI's forge, read with the job's own token.
 name: check
 on:
   push:
@@ -36,6 +36,6 @@ jobs:
       - name: ff check
         env:
           FF_EFL_BOT: ${{ vars.EFL_BOT_REPO != '' && format('{0}/.tools/efl-bot', github.workspace) || '' }}
-          FF_BLOB_URL: ${{ vars.BLOB_URL }}
-          FF_BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
+          FF_BLOB_URL: ${{ github.server_url }}/${{ github.repository }}/releases/download/blobs/{sha256}
+          FF_BLOB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 tools/ff check

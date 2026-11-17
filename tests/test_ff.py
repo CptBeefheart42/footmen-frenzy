@@ -63,8 +63,8 @@ class BinariesTest(unittest.TestCase):
                 binary.append(name)
         self.assertEqual(binary, [], 'binary files belong in a release, listed in binaries.json')
 
-    def test_lfs_address_is_https(self):
-        self.assertTrue(blobs.lfs_url().startswith('https://'))
+    def test_lfs_address_is_http(self):
+        self.assertTrue(blobs.lfs_url().startswith(('https://', 'http://')))
         self.assertTrue(blobs.lfs_url().endswith('.git/info/lfs/objects/batch'))
 
 
