@@ -199,6 +199,12 @@ function T.cast(caster, code, target)
     end
 end
 
+--- A projectile of `caster`'s (Transmute, cast with T.cast) reaches `target`: it dies, `caster` the killer. A target
+--- that died or was removed while the projectile flew is not hit.
+function T.land(caster, target)
+    if target and target.alive and not target.removed then T.kill(target, caster) end
+end
+
 --- `source` deals `amount` damage to `target` (the damage events only; life is not reduced).
 function T.damage(source, target, amount)
     W.fireUnit("EVENT_PLAYER_UNIT_DAMAGED", target, { source = source, damage = amount })
