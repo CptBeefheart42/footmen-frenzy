@@ -1,7 +1,8 @@
-// FF addons, main (9v3) map only (FF_JASS_MAP_ADDONS) — an admin debug switch for testing heroes quickly.
+// FF addons, main (9v3) map only (FF_JASS_MAP_ADDONS) — a debug switch for testing heroes quickly.
 //
-//   -debug     admins only: the battletags below (scripting/admins.txt) and the map's own admins
-//              (udg_admin_level >= 90). Switches debug mode on for EVERYONE in this game, announced to all:
+//   -debug     anyone, except in a game a hosting bot is in (FF_hostBotGame: the games the EFL bots score). Switches
+//              debug mode on for EVERYONE in this game, announced to all, and marks the game in the result file's
+//              modes row (ffdebug=1, 45-modes.j):
 //   -lvl N     sets your selected heroes (or, with none selected, your picked hero) to level N (1-100);
 //              plain "-lvl" adds one level.
 //   -gold N    adds N gold (1-1000000) to you; plain "-gold" adds 10000.
@@ -9,7 +10,7 @@
 //              init gives each player exactly 5), and the tavern's "already picked" flag (udg_tp_kill, set by the
 //              map's TP hero trigger) is cleared every 0.25s, so every hero you buy is teleported out and becomes
 //              your hero.
-// Until an admin types -debug nothing changes; the map's own -lvl (admin level 105, unit level) and -debug stay as they are.
+// Until someone types -debug nothing changes; the map's own -lvl (admin level 105, unit level) and -debug stay as they are.
 
 globals
     boolean FF_DBG_on = false
@@ -17,16 +18,9 @@ globals
     integer FF_DBG_count = 0
 endglobals
 
-function FF_DBG_IsAdmin takes player p returns boolean
-    local integer pn = GetPlayerId(p) + 1
-    local string name = udg_orig_player_name[pn]
-    if name == null or name == "" then
-        set name = GetPlayerName(p)
-    endif
-    if name == "CptBeefheart#21297" or name == "miRaculix#1853" then
-        return true
-    endif
-    return udg_admin_level[pn] >= 90
+// Debug mode is for test lobbies: never in a game a hosting bot is in.
+function FF_DBG_Allowed takes nothing returns boolean
+    return not FF_hostBotGame
 endfunction
 
 function FF_DBG_Keep takes nothing returns nothing
@@ -114,8 +108,8 @@ endfunction
 
 function FF_DBG_Cmd takes nothing returns nothing
     local player p = GetTriggerPlayer()
-    if not FF_DBG_IsAdmin(p) then
-        call DisplayTimedTextToPlayer(p, 0, 0, 5.0, "-debug: admins only.")
+    if not FF_DBG_Allowed() then
+        call DisplayTimedTextToPlayer(p, 0, 0, 5.0, "-debug: not in games hosted by the EFL bots.")
         return
     endif
     if FF_DBG_on then
@@ -126,6 +120,10 @@ function FF_DBG_Cmd takes nothing returns nothing
     call FF_DBG_Keep()
     call TimerStart(CreateTimer(), 0.25, true, function FF_DBG_Keep)
     call DisplayTimedTextToForce(GetPlayersAll(), 20.0, "|cffffcc00DEBUG MODE|r enabled by " + udg_orig_player_name[GetPlayerId(p) + 1] + ": everyone can now use |cffffcc00-lvl <level>|r (selected hero), |cffffcc00-gold <amount>|r and pick unlimited heroes.")
+    // a modes row already written (the modes are final) is rebuilt with ffdebug=1
+    if FF_us_modes != null then
+        call FF_us_OnModesFinal()
+    endif
 endfunction
 
 // Injected by the build runner right after `call FF_Init()` (FF_JASS_MAP_ADDONS).

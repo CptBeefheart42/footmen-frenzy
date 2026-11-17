@@ -12,7 +12,7 @@ function FF_MM_Extra takes nothing returns nothing
         endif
         set x = x + 1
     endloop
-    set FF_us_modeExtra = ",pro=" + FF_us_Bit(FFR4Pro or udg_mode_promode) + ",notransmute=" + FF_us_Bit(not transmute) + ",4k=" + FF_us_Bit(FFMode4K)
+    set FF_us_modeExtra = ",pro=" + FF_us_Bit(FFR4Pro or udg_mode_promode) + ",notransmute=" + FF_us_Bit(not transmute) + ",4k=" + FF_us_Bit(FFMode4K) + ",ffdebug=" + FF_us_Bit(FF_DBG_on)
 endfunction
 
 function FF_MM_Init takes nothing returns nothing

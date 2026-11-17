@@ -5,7 +5,7 @@ Pins the behaviour of:
 2. reconcile: a workbook moved to another version of the map keeps its edits, fills rows for new objects and flags
    the ones that are gone (Solo UPDATE25 and UPDATE38, two releases from the map's history);
 3. the WC3 3.0 level fill: only adds cells, only at levels 5+, with the 2.0.4 defaults, once;
-4. the 799X debug mode's admin list, bot vision, the anchor hooks, the stats and usage rows and the bot-hosted games:
+4. the 799X debug mode (anyone, never in a bot-hosted game), bot vision, the anchor hooks, the stats and usage rows and the bot-hosted games:
    the rules the league addons keep (docs/result-contract.md).
 
 The map files come from the release store (tools/ff/blobs.py); the .NET tools are built once.
@@ -234,13 +234,12 @@ class AnchorTest(unittest.TestCase):
 class LeagueRulesTest(unittest.TestCase):
     """T4, T5, T7, T9: rules of the league addons that are visible in their source."""
 
-    def test_debug_mode_knows_every_admin(self):
-        debug = (ADDONS['799x'] / '50-debug.j').read_text()
-        admins = [line.strip() for line in (REPO / 'data' / 'admins.txt').read_text().splitlines()
-                  if line.strip() and not line.startswith('#')]
-        self.assertTrue(admins)
-        for tag in admins:
-            self.assertIn(f'"{tag}"', debug)
+    def test_debug_mode_for_anyone_but_never_in_a_bot_hosted_game(self):
+        debug = ADDONS['799x'] / '50-debug.j'
+        self.assertIn('return not FF_hostBotGame', function_body(debug, 'FF_DBG_Allowed'))
+        self.assertNotRegex(debug.read_text(), r'admin_level|#[0-9]', 'no admin list')
+        self.assertIn('",ffdebug=" + FF_us_Bit(FF_DBG_on)', (ADDONS['799x'] / '45-modes.j').read_text())
+        self.assertIn('call FF_us_OnModesFinal()', function_body(debug, 'FF_DBG_Cmd'), 'an early modes row is rebuilt')
 
     def test_true_sight_stays_with_the_bots_and_the_named_observers(self):
         vision = (LEAGUE / '40-botvision.j').read_text()

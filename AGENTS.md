@@ -33,7 +33,7 @@ is not yours. Never push to `main`, never create tags or releases, never deploy.
 | `projects/<map>/addons/` | league code for this map only, and `anchors.txt` (lines the build inserts into the map's functions) |
 | `league/` | league code both maps get: the result file the bot scores, stats, kill log, observer camera, AFK rule |
 | `shared/` | game code both maps use, written once; a map's script holds a marker line where it goes |
-| `data/` | Warcraft III's `common.j`/`Blizzard.j`, field names, the 3.0 level-fill defaults, map fixes, admins |
+| `data/` | Warcraft III's `common.j`/`Blizzard.j`, field names, the 3.0 level-fill defaults, map fixes |
 | `tests/` | simulation scenarios (whole games, no client), tool tests, the real-client e2e suite |
 | `tools/ff/` | the `ff` command; `tools/runner/` and `tools/BalanceTool/` (.NET) do the map work |
 
