@@ -1,4 +1,4 @@
-81b962d75fad8a2d3ded9b42db8004bf77f62144
+c7323b8b162a97f05def9b748e4e77fe488ef7a5
 # ^ the efl-bot-2.0 commit the fleet runs: `make test-e2e-ladder` scores the e2e games with exactly this code.
 # Taken from the bot's deploy worktree (../efl-bot-2.0-deploy, checked out detached by its `make deploy-*`):
 #   git -C ../efl-bot-2.0-deploy rev-parse HEAD

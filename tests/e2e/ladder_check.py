@@ -10,8 +10,9 @@ ff_result*.txt with gameend) it does what the bot's host does after a game, with
   1. parse the result file (efl_league.ff_result): finished and complete enough to score;
   2. read the kill log: kills and deaths per player (efl_league.killlog, as the host's kd_for does);
   3. post the report to the league API's /report_match (FastAPI's TestClient, a throwaway sqlite DB);
-  4. check the stored match: the map's placements, every roster player on it, Elo moved (winners up, last place
-     down), and the per-player stats / telemetry where this bot version stores them.
+  4. check the stored match: the map's placements, every roster player on it, the rating (winners up, last place
+     down; a game the bot's remake / early-leaver rule counts for nothing moves no rating for those seats), and the
+     per-player stats / telemetry where this bot version stores them.
 
 An out dir after `--unscored` holds a game nobody won (everybody left: no gameend). The bot must parse it and refuse
 to score it, never rank it some other way.
@@ -93,7 +94,28 @@ def run_tag(out):
     return f"{out.parent.name}/{out.name}" if out.parent.name in ("799x", "solo") else out.name
 
 
-def check_stored_match(checks, tag, bot, engine, result, kills):
+def rating_changes(links, client):
+    """Each player's rating change in the one stored match.
+
+    Older bots store the change on the match's player links (`elo_change`); newer ones replay the season's rating
+    from the scored matches and report it per player in GET /matches, with the seats their remake / early-leaver
+    rule counts for nothing marked `uncounted` (their change is None).
+
+    Returns:
+        [(placement, change, uncounted)], one per player.
+    """
+    if links and hasattr(links[0], "elo_change"):
+        return [(x.placement, x.elo_change, False) for x in links]
+    body = client.get("/matches").json()
+    matches = body if isinstance(body, list) else body.get("matches", [])
+    if not matches:
+        return []
+    match = matches[0]
+    return [(t["placement"], p.get("elo_change"), bool(match.get("uncounted") or p.get("uncounted")))
+            for t in match["teams"].values() for p in t["players"]]
+
+
+def check_stored_match(checks, tag, bot, engine, result, kills, client):
     """Checks the match the league stored: placements, players, Elo, kills.
 
     Returns:
@@ -108,11 +130,20 @@ def check_stored_match(checks, tag, bot, engine, result, kills):
                      f"{match.placements} vs {result.ranked_teams}")
         checks.check(f"{tag}: every roster player is on the match", len(links) == len(result.roster),
                      f"{len(links)} links, {len(result.roster)} roster")
-        first = [x.elo_change for x in links if x.placement == 1]
-        last = [x.elo_change for x in links if x.placement == max(y.placement for y in links)]
-        checks.check(f"{tag}: Elo: the winners gain, the last place loses",
-                     first and all(c > 0 for c in first) and last and all(c < 0 for c in last),
-                     f"first {first}, last {last}")
+        changes = rating_changes(links, client)
+        uncounted = [c for _, c, u in changes if u]
+        if uncounted:
+            # a remake (9v3 over early) or early leavers (1v1): the bot's own rule; the result still stands
+            checks.check(f"{tag}: the bot counts {len(uncounted)} seat(s) for no rating (remake / early leavers), "
+                         "and moves no rating for them", all(c is None for c in uncounted), f"{uncounted}")
+        else:
+            worst = max((place for place, _, _ in changes), default=0)
+            first = [c for place, c, _ in changes if place == 1]
+            last = [c for place, c, _ in changes if place == worst]
+            checks.check(f"{tag}: Elo: the winners gain, the last place loses",
+                         first and all(c is not None and c > 0 for c in first)
+                         and last and all(c is not None and c < 0 for c in last),
+                         f"first {first}, last {last}")
         if kills:
             checks.check(f"{tag}: kills stored on the match", [x for x in links if getattr(x, "kills", None)],
                          "no link has kills")
@@ -137,7 +168,7 @@ def check_report(checks, tag, bot, result, kills):
                          f"{resp.status_code} {resp.text[:300]}")
             if resp.status_code != 200:
                 return
-            mid = check_stored_match(checks, tag, bot, engine, result, kills)
+            mid = check_stored_match(checks, tag, bot, engine, result, kills, client)
             if "/matches/{match_id}/telemetry" in {getattr(r, "path", "") for r in bot.api.app.routes}:
                 t = client.get(f"/matches/{mid}/telemetry")
                 body = t.json() if t.status_code == 200 else {}

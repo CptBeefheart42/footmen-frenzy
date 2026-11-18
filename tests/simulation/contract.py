@@ -9,7 +9,8 @@ Two groups of checks, each file on its own line:
   * contract-doc: every stats / modes key a file holds is documented in docs/result-contract.md, and every
     documented stats key is written. Needs nothing else, so it runs in CI too.
   * contract: the bot's parser reads the file and keeps every stats, usage, skills, event and modes value. The
-    checkout defaults to $FF_EFL_BOT or ../efl-bot-2.0 next to this repo; without one this group is skipped (said
+    checkout defaults to $FF_EFL_BOT (ff sets it from the local setting `efl_bot`) or ../efl-bot-2.0 next to this
+    repo; without one this group is skipped (said
     so, not a failure): the map repo's CI has no bot checkout.
 
 Exits 1 if any check failed.
