@@ -24,6 +24,7 @@ from tests.e2e import stage as e2e_stage  # noqa: E402
 
 ADDONS = ROOT / 'tests' / 'e2e' / 'addons'
 PROBE = ROOT / 'tests' / 'e2e' / 'probe'
+PROBE_LOBBY = 'FF 3.0 Probe [probe]'
 OUT = BUILD / 'e2e'
 CLIENT = '(E2E)Tester#100000'
 TIMEOUT = 1200
@@ -72,8 +73,13 @@ def build_scenario(proj: Project, scenario: str, bot: str = CLIENT) -> Path:
     if (folder / 'object_overrides.csv').is_file():
         overrides.append(folder / 'object_overrides.csv')
     parts = TestParts(staged / 'jass', staged / 'map', tuple(p for p in overrides if p.is_file()), slots(proj, scenario))
-    return build(proj, f'ff-e2e-{run_name(proj, scenario)}.w3x', out=OUT, test=parts,
-                 title=f'FF e2e {proj.name} {scenario}')
+    return build(proj, f'ff-e2e-{run_name(proj, scenario)}.w3x', out=OUT, test=parts, title=lobby_name(proj, scenario))
+
+
+def lobby_name(proj: Project, scenario: str) -> str:
+    """The test map's lobby name; the runner finds it by this name in the menus (the closing bracket keeps one name
+    from matching another in the filter)."""
+    return f'FF e2e [{proj.name} {scenario}]'
 
 
 def skills_data(proj: Project, staged: Path) -> None:
@@ -122,7 +128,7 @@ def build_probe(proj: Project) -> Path:
         shutil.copy2(f, folder / f.name)
     parts = TestParts(ROOT / 'league', folder, (PROBE / 'object_overrides.csv',),
                       stub_functions=('InitCustomTriggers',), anchors=False)
-    return build(proj, 'ff-probe.w3x', out=OUT, test=parts, title='FF 3.0 Probe')
+    return build(proj, 'ff-probe.w3x', out=OUT, test=parts, title=PROBE_LOBBY)
 
 
 def probe() -> int:
@@ -130,7 +136,7 @@ def probe() -> int:
     built = build_probe(project('799x'))
     out = OUT / 'probe'
     played = subprocess.run([sys.executable, str(ROOT / 'tests' / 'e2e' / 'run.py'), str(built), str(out),
-                             '--done', 'ff_probe.txt', '--timeout', '900', '--collect', 'ff_probe.txt'], cwd=ROOT).returncode
+                             '--lobby', PROBE_LOBBY, '--done', 'ff_probe.txt', '--timeout', '900', '--collect', 'ff_probe.txt'], cwd=ROOT).returncode
     judged = subprocess.run([sys.executable, str(ROOT / 'tests' / 'e2e' / 'check_probe.py'), str(out / 'ff_probe.txt')],
                             cwd=ROOT).returncode
     return 0 if played == 0 and judged == 0 else 1
@@ -139,7 +145,7 @@ def probe() -> int:
 def play(proj: Project, scenario: str, built: Path) -> int:
     """Plays a built scenario on the test client; the files land in build/e2e/<map>-<scenario>/. Returns run.py's code."""
     return subprocess.run([sys.executable, str(ROOT / 'tests' / 'e2e' / 'run.py'), str(built),
-                           str(OUT / run_name(proj, scenario)), '--done', 'ff_e2e.txt', '--timeout', str(TIMEOUT),
+                           str(OUT / run_name(proj, scenario)), '--lobby', lobby_name(proj, scenario), '--done', 'ff_e2e.txt', '--timeout', str(TIMEOUT),
                            '--collect', 'ff_result*.txt', 'ff_killlog*.txt', 'ff_e2e*.txt'], cwd=ROOT).returncode
 
 

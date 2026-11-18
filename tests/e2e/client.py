@@ -7,6 +7,7 @@ import glob
 import json
 import os
 import re
+import shutil
 import signal
 import subprocess
 import sys
@@ -24,7 +25,27 @@ CRASH_PROC = re.compile(r"BlizzardError\.exe")
 BNET_PROC = re.compile(r"Battle\.net\.exe")
 BNET_MAIN_PROC = re.compile(r"Battle\.net\.exe --in-process")
 AUTO_LOGIN_WAIT_S = 25
+# The memory cap of every program started in the prefix (a systemd user scope): a map WC3 misreads makes it allocate
+# without end, and the cap makes the kernel stop WC3 there instead of the rest of the PC. "0" turns it off.
+MEMORY_MAX = os.environ.get("FF_WC3_MEMORY_MAX", "9G")
 TYPE_DELAY_MS = "40"
+
+
+def scoped(cmd, memory_max=MEMORY_MAX, systemd_run=None):
+    """A command line that runs `cmd` in its own systemd user scope, its memory capped at `memory_max`.
+
+    Args:
+        cmd: The command line.
+        memory_max: systemd's MemoryMax (e.g. `9G`); empty or `0` runs `cmd` as it is.
+        systemd_run: The systemd-run program (default: found on PATH; none found runs `cmd` as it is).
+
+    Returns:
+        The command line to start.
+    """
+    systemd_run = systemd_run or shutil.which("systemd-run")
+    if not systemd_run or memory_max in ("", "0"):
+        return list(cmd)
+    return [systemd_run, "--user", "--scope", "--quiet", "--collect", "-p", f"MemoryMax={memory_max}", "--", *cmd]
 
 
 def log(msg):
@@ -100,9 +121,10 @@ class Client:
     # processes
 
     def run_bg(self, exe, *args, logname="wc3.log"):
-        """Starts a Windows program in the prefix, detached, its output appended to logs/<logname>."""
+        """Starts a Windows program in the prefix, detached and memory-capped (`scoped`), its output appended to
+        logs/<logname>. A program it starts (WC3, started by Battle.net) shares the cap."""
         with open(self.logs / logname, "a") as out:
-            return subprocess.Popen([str(self.proton), "run", exe, *args], env=self.env, stdout=out,
+            return subprocess.Popen(scoped([str(self.proton), "run", exe, *args]), env=self.env, stdout=out,
                                     stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
 
     @staticmethod
@@ -119,6 +141,21 @@ class Client:
             if pattern.search(args) and "steam.exe" not in args.split(" ")[0]:
                 res.append(int(d.name))
         return res
+
+    @staticmethod
+    def rss_kb(pid, proc=Path("/proc")):
+        """A process's resident memory in kB (VmRSS), or None when it no longer runs."""
+        try:
+            status = (proc / str(pid) / "status").read_text()
+        except OSError:
+            return None
+        m = re.search(r"^VmRSS:\s+(\d+) kB", status, re.M)
+        return int(m.group(1)) if m else None
+
+    def wc3_rss_kb(self):
+        """The resident memory of the game's processes in kB, or None when the game doesn't run."""
+        sizes = [kb for kb in (self.rss_kb(p) for p in self.pids(WC3_PROC)) if kb is not None]
+        return sum(sizes) if sizes else None
 
     @staticmethod
     def terminate(pids, sig=signal.SIGTERM):
@@ -167,6 +204,17 @@ class Client:
         """Saves a screenshot of a window."""
         subprocess.run(["import", "-window", str(win), str(path)], env=self.env, capture_output=True)
 
+    def pixel(self, win, x, y):
+        """The colour of a window pixel, as a screenshot of the window shows it.
+
+        Returns:
+            (r, g, b) with 8 bits each, or None when the window can't be read.
+        """
+        r = subprocess.run(["import", "-window", str(win), "-crop", f"1x1+{x}+{y}", "-depth", "8", "txt:-"],
+                           env=self.env, capture_output=True, text=True)
+        m = re.search(r"\((\d+),(\d+),(\d+)", r.stdout)
+        return tuple(int(v) for v in m.groups()) if m else None
+
     def press(self, win, *keys):
         """Focuses a window and presses keys in it."""
         self.xdo("windowactivate", "--sync", str(win))
@@ -179,7 +227,10 @@ class Client:
     def click(self, win, fx, fy):
         """A left click at (fx, fy), as fractions of the game's UI area (see ui_point)."""
         g = self.geometry(win)
-        x, y = ui_point(int(g["WIDTH"]), int(g["HEIGHT"]), fx, fy)
+        self.click_px(win, *ui_point(int(g["WIDTH"]), int(g["HEIGHT"]), fx, fy))
+
+    def click_px(self, win, x, y):
+        """A left click at a window pixel, as a screenshot of the window shows it."""
         self.xdo("windowactivate", "--sync", str(win))
         self.xdo("mousemove", "--window", str(win), str(x), str(y))
         # a click right after the move is sometimes lost: let the game see the pointer there first

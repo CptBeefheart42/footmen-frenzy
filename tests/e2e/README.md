@@ -31,19 +31,29 @@ python3 tests/e2e/selftest.py build/e2e/799x-ffa build/e2e/probe   # doctored co
 
 1. Battle.net closed (its main window closed; when it only hides in the tray, the runner launches WC3 once so it
    exits by itself, then closes the game).
-2. `-loadfile "<map>" -nowfpause -windowmode windowed` into `Battle.net.config`'s WC3 launch arguments, Battle.net
-   started, asked to launch WC3, the arguments removed again (always, also on failure).
-3. "Press any key": space until the map writes its first file. A map that hasn't started after 300 s (a loading
-   screen that sits at ~85%) is taken for a hang, closed and launched once more.
-4. The map's test addon asks for input through `CustomMapData/ff_e2e_phase.txt`: `WAIT <n> chat <text>` (the runner
+2. The map copied to `Maps/Test`; `-nowfpause -windowmode windowed` into `Battle.net.config`'s WC3 launch arguments,
+   Battle.net started, asked to launch WC3, the arguments removed again (always, also on failure).
+3. The runner clicks through the menus like a player (`run.py` `start_from_menu`): Single Player, Custom Games, Quick
+   Filter "Test", Open Folder, Quick Filter with the map's lobby name (`--lobby`: `FF e2e [<map> <scenario>]`, the
+   probe's `FF 3.0 Probe [probe]`; the closing bracket keeps one name from matching another), Create, Start Game. The
+   lobby seats the map's own Computer slots and the client in the first User slot, an observer slot when every seat
+   is a computer. The clicks are window pixels of the client's 1402x824 game window, scaled to another size. When WC3
+   shows its own Battle.net login instead of the main menu, the run stops with exit code 2 (`wc3-login.png`): log in
+   once by hand. `-loadfile` isn't used: since 3.0.1 a game started with it ignores the Battle.net login and, logged
+   in on its own screen, never loads the map.
+4. "Press any key": space until the map writes its first file. A map that hasn't started after 300 s (a loading
+   screen that sits at ~85%) is taken for a hang, closed and launched once more. While it loads, the game's memory is
+   watched: above `FF_WC3_LOAD_RSS_MAX_GB` (default 7), or when the game exits before the map writes a file, the run
+   stops at once with exit code 3.
+5. The map's test addon asks for input through `CustomMapData/ff_e2e_phase.txt`: `WAIT <n> chat <text>` (the runner
    types it into the chat and takes a screenshot, `chat-<n>.png`), `WAIT <n> key <key>` (one key press) or
    `WAIT <n> click <x> <y>` (a click into a dialog, see below) or `WAIT <n> seq <step>;...` (keys and single clicks
    in a row, for a menu that pauses the game: `key <key>`, `tap <x> <y>`, `wait <s>`, `shot`; a screenshot after each key, tap and shot). Click and tap positions are fractions of the game's 4:3 UI area (as tall as
    the window, centred in it: `client.ui_point`), so they hold at any window size. Input goes to the focused game window as real key and
    mouse events — WC3 under Wine ignores xdotool's `--window` events.
-5. Done when `ff_e2e.txt` ends with `END`; the outputs (`ff_result*`, `ff_killlog*`, `ff_e2e*`) and the screenshots
+6. Done when `ff_e2e.txt` ends with `END`; the outputs (`ff_result*`, `ff_killlog*`, `ff_e2e*`) and the screenshots
    land in `build/e2e/<map>-<scenario>/`; WC3 is closed (window, then the process).
-6. A crash ends the run at once: when the WC3 process is gone or its crash reporter (`BlizzardError.exe`) is up, the
+7. A crash ends the run at once: when the WC3 process is gone or its crash reporter (`BlizzardError.exe`) is up, the
    runner writes `crash.txt` (seconds into the game, the last `ff_e2e.txt` record) and copies WC3's new crash reports (a
    folder each: `Crash.txt`, `War3Log.txt`, `War3.dmp`) to `Errors/`. Every scenario's check then fails "the client did not crash".
 
