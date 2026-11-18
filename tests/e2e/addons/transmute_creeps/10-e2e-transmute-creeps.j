@@ -256,6 +256,7 @@ function FF_E2E_Scenario takes nothing returns nothing
     local integer i = 1
     local trigger t
     call FF_E2E_Begin("transmute_creeps")
+    call FF_E2E_Active()
     // main: slots 4 and 7 (teams 2 and 3); Solo (seats 1, 5, 8, 12): slots 5 and 8
     if GetPlayerSlotState(Player(3)) == PLAYER_SLOT_STATE_PLAYING then
         set FF_E2E_tcA = 4

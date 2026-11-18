@@ -361,5 +361,6 @@ function FF_E2E_Scenario takes nothing returns nothing
     call FF_E2E_Row("e2e,scenario=skills,local=" + I2S(GetPlayerId(GetLocalPlayer())) + ",bot=" + FF_E2E_Bool(FF_LocalClientIsBot()))
     // a hero for the client (the map's tavern-area pick), or the AFK kick removes it after the mass
     call CreateUnit(Player(0), 'H005', -2600.0, -300.0, 0.0)
+    call FF_E2E_Active()
     call TimerStart(CreateTimer(), 0.01, false, function FF_SK_LoadNext)
 endfunction

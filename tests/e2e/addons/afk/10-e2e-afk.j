@@ -11,6 +11,7 @@
 globals
     integer FF_E2E_afkWaited = 0
     integer FF_E2E_afkMass = 0
+    integer FF_E2E_afkMassPoolIn = 0
 endglobals
 
 // player_active of the computer seats (slots 2-12 in the game), one 0/1 per seat.
@@ -40,6 +41,10 @@ function FF_E2E_AfkWarned takes nothing returns nothing
     call FF_E2E_PhaseFile("WAIT " + I2S(FF_E2E_phase) + " seq shot")
 endfunction
 
+function FF_E2E_AfkMassRow takes nothing returns nothing
+    call FF_E2E_Row("mass,t=" + I2S(FF_E2E_afkMass) + ",hero=" + FF_E2E_Bool(udg_herO[1] != null) + ",poolin=" + I2S(FF_E2E_afkMassPoolIn))
+endfunction
+
 function FF_E2E_AfkWaitMass takes nothing returns nothing
     if not udg_mass_active then
         set FF_E2E_afkWaited = FF_E2E_afkWaited + 1
@@ -52,7 +57,10 @@ function FF_E2E_AfkWaitMass takes nothing returns nothing
         return
     endif
     set FF_E2E_afkMass = FF_E2E_Now()
-    call FF_E2E_Row("mass,t=" + I2S(FF_E2E_afkMass) + ",hero=" + FF_E2E_Bool(udg_herO[1] != null) + ",poolin=" + I2S(FF_afk_PoolIn()))
+    set FF_E2E_afkMassPoolIn = FF_afk_PoolIn()
+    // the auto hero is created at the tavern when the mass starts; the map's tavern trigger makes it the slot's hero
+    // a moment later, so the hero is read 3 s after the mass (t and poolin stay those of the mass itself)
+    call FF_E2E_After(3.0, function FF_E2E_AfkMassRow)
     call FF_E2E_After(FF_AFK_WARN + 1.0, function FF_E2E_AfkWarned)
 endfunction
 

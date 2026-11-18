@@ -141,6 +141,17 @@ function FF_E2E_Key takes string key returns nothing
     call FF_E2E_PhaseFile("WAIT " + I2S(FF_E2E_phase) + " key " + key)
 endfunction
 
+function FF_E2E_ActiveKey takes nothing returns nothing
+    call FF_E2E_Key("Up")
+endfunction
+
+// Makes the client a present player: 5 s in, one real arrow key press through the runner (it only moves the camera).
+// The AFK kick also removes a player who has done nothing since the game started; scripted orders aren't the
+// player's. For the scenarios without real input of their own before the pool opens (the afk scenario stays idle on purpose).
+function FF_E2E_Active takes nothing returns nothing
+    call FF_E2E_After(5.0, function FF_E2E_ActiveKey)
+endfunction
+
 function FF_E2E_Ok takes nothing returns nothing
     call FF_E2E_PhaseFile("OK " + I2S(FF_E2E_phase))
 endfunction

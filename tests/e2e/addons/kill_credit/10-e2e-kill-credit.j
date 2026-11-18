@@ -240,6 +240,7 @@ function FF_E2E_Scenario takes nothing returns nothing
     local integer i = 0
     local trigger t = CreateTrigger()
     call FF_E2E_Begin("kill_credit")
+    call FF_E2E_Active()
     call TriggerRegisterAnyUnitEventBJ(t, EVENT_PLAYER_UNIT_DEATH)
     call TriggerAddAction(t, function FF_E2E_KcOnDeath)
     // every player gets the hero the map expects (udg_herO): created in the tavern area, like the kd scenario

@@ -139,6 +139,7 @@ endfunction
 
 function FF_E2E_Scenario takes nothing returns nothing
     call FF_E2E_Begin("trade")
+    call FF_E2E_Active()
     // a hero for the client (the map's tavern-area pick), or the AFK kick removes it after the mass
     call CreateUnit(Player(0), 'H005', -2600.0, -300.0, 0.0)
     call FF_E2E_After(2.0, function FF_E2E_TrWait)
