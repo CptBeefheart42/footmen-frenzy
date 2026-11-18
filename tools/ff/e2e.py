@@ -82,6 +82,12 @@ def lobby_name(proj: Project, scenario: str) -> str:
     return f'FF e2e [{proj.name} {scenario}]'
 
 
+def menu_name(proj: Project, scenario: str) -> str:
+    """The name the runner searches the menu's map list for: the lobby name, or empty for Solo, whose older map info
+    (format 33) the 3.0.1 list shows without a name; the runner then takes the only map in Maps/Test."""
+    return '' if proj.name == 'solo' else lobby_name(proj, scenario)
+
+
 def skills_data(proj: Project, staged: Path) -> None:
     """Writes the skills scenario's data: every hero skill of the map as released, with its numbers and base order."""
     released = build(proj, f'{proj.name}-skills-source.w3x', out=OUT / 'skills-source')
@@ -145,7 +151,7 @@ def probe() -> int:
 def play(proj: Project, scenario: str, built: Path) -> int:
     """Plays a built scenario on the test client; the files land in build/e2e/<map>-<scenario>/. Returns run.py's code."""
     return subprocess.run([sys.executable, str(ROOT / 'tests' / 'e2e' / 'run.py'), str(built),
-                           str(OUT / run_name(proj, scenario)), '--lobby', lobby_name(proj, scenario), '--done', 'ff_e2e.txt', '--timeout', str(TIMEOUT),
+                           str(OUT / run_name(proj, scenario)), '--lobby', menu_name(proj, scenario), '--done', 'ff_e2e.txt', '--timeout', str(TIMEOUT),
                            '--collect', 'ff_result*.txt', 'ff_killlog*.txt', 'ff_e2e*.txt'], cwd=ROOT).returncode
 
 

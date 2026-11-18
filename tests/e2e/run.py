@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Plays one map in the real WC3 client (the ~/wc3-test Proton prefix) and collects what it wrote.
 
-    tests/e2e/run.py <map.w3x> <out dir> --lobby <name> --done <file>[:<marker>] [--timeout s] [--collect glob ...]
+    tests/e2e/run.py <map.w3x> <out dir> [--lobby <name>] --done <file>[:<marker>] [--timeout s] [--collect glob ...]
 
 How a map is started: the map is copied to Maps/Test, Battle.net (auto-login) is started and asked to launch WC3
 (`-nowfpause -windowmode windowed` in Battle.net.config's launch arguments, removed again in every case), and the
@@ -384,13 +384,16 @@ def launch(c, src, out, patterns, lobby):
 
 
 def prepare(c, src, out, patterns):
-    """Empties the out dir, removes stale outputs (they would pass a check the game never reached), copies the map."""
+    """Empties the out dir, removes stale outputs (they would pass a check the game never reached), and makes the map
+    the only one in Maps/Test (the runner's folder): a map whose name the list can't show is then still the one row."""
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir(parents=True)
     for f in data_files(c, patterns):
         f.unlink()
     maps = c.docs / "Maps" / "Test"
     maps.mkdir(parents=True, exist_ok=True)
+    for old in maps.glob("*.w3x"):
+        old.unlink()
     shutil.copy2(src, maps / src.name)
 
 
@@ -406,7 +409,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("map", type=Path)
     ap.add_argument("out", type=Path)
-    ap.add_argument("--lobby", required=True, help="the map's lobby name (its FF_MAP_NAME), to find it in the menu")
+    ap.add_argument("--lobby", default="", help="the map's lobby name (its FF_MAP_NAME), to find it in the menu; "
+                    "empty: the only map in Maps/Test (for a map the list shows without a name)")
     ap.add_argument("--done", required=True, help="CustomMapData file[:marker] that ends the run")
     ap.add_argument("--timeout", type=int, default=600)
     ap.add_argument("--collect", nargs="*", default=[], help="CustomMapData globs to copy out")

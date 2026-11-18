@@ -10,6 +10,7 @@
     ff e2e build|run|check <map> <scenario>   an e2e scenario: build its test map / also play it on the test
                                   client and judge it / judge the last run (tests/e2e/README.md)
     ff e2e suite | ladder         every scenario, played and judged, then the ladder check / only the ladder check
+                                  (suite --runs 799x:ffa solo:solo ... --no-probe: only these, without the probe)
     ff e2e probe | probe-build    the WC3 3.0 probe map: build, play and judge it / only build it
     ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
@@ -202,7 +203,7 @@ def release(version: str) -> Path:
 def e2e_command(args) -> int:
     """Runs `ff e2e <action> [map scenario]`; returns the exit code."""
     if args.action == 'suite':
-        return e2e.suite()
+        return e2e.suite(tuple(args.runs) if args.runs else e2e.SUITE, with_probe=not args.no_probe)
     if args.action == 'ladder':
         return e2e.ladder()
     if args.action == 'probe':
@@ -267,6 +268,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('action', choices=['build', 'run', 'check', 'suite', 'ladder', 'probe', 'probe-build'])
     p.add_argument('map', nargs='?', choices=list(projects()))
     p.add_argument('scenario', nargs='?')
+    p.add_argument('--runs', nargs='+', metavar='MAP:SCENARIO', help='suite: only these runs (default: all)')
+    p.add_argument('--no-probe', action='store_true', help='suite: without the probe map')
     p = commands.add_parser('hotkeys', help="rewrite a map's hotkey list after an intended change")
     p.add_argument('map', choices=list(projects()))
     commands.add_parser('check', help='every check a change passes before it is committed')
