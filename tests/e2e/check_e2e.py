@@ -282,8 +282,9 @@ def check_observer(run, bot):
         run.check("the observer is in no placement", observer and all(observer not in p for p in placed), f"{placed}")
     if bot:
         after = run.first_with("vision", "after_end")
-        run.eq("BotVision after the game end: a fresh invisible unit seen by the bot, not by an enemy",
-               (after.get("bot"), after.get("slot4"), after.get("ghost_alive")), ("1", "0", "1"))
+        # an eliminated player gets the map's revealer (n02G, true sight over the whole map) and may see it
+        run.eq("BotVision after the game end: a fresh invisible unit seen by the bot, by an enemy only with the map's revealer",
+               (after.get("bot"), after.get("slot4"), after.get("ghost_alive")), ("1", after.get("slot4_revealer", "0"), "1"))
         run.check("BotVision after the game end: every detector alive",
                   after.get("detectors") and after.get("det_alive") == after.get("detectors"), f"{after}")
 

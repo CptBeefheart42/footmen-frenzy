@@ -93,7 +93,7 @@ function FF_E2E_ObsFinishRead takes nothing returns nothing
     endloop
     call DestroyGroup(g)
     set g = null
-    call FF_E2E_Row("vision,after_end=1,t=" + I2S(FF_E2E_Now()) + ",bot=" + FF_E2E_Bool(IsUnitVisible(FF_E2E_ghost, Player(12))) + ",slot4=" + FF_E2E_Bool(IsUnitVisible(FF_E2E_ghost, Player(3))) + ",ghost_alive=" + FF_E2E_Bool(FF_UnitAlive(FF_E2E_ghost)) + ",twin_bot=" + FF_E2E_Bool(IsUnitVisible(FF_E2E_plain, Player(12))) + ",detectors=" + I2S(CountUnitsInGroup(FF_bv_units)) + ",det_alive=" + I2S(alive))
+    call FF_E2E_Row("vision,after_end=1,t=" + I2S(FF_E2E_Now()) + ",bot=" + FF_E2E_Bool(IsUnitVisible(FF_E2E_ghost, Player(12))) + ",slot4=" + FF_E2E_Bool(IsUnitVisible(FF_E2E_ghost, Player(3))) + ",slot4_revealer=" + FF_E2E_Bool(CountLivingPlayerUnitsOfTypeId('n02G', Player(3)) > 0) + ",ghost_alive=" + FF_E2E_Bool(FF_UnitAlive(FF_E2E_ghost)) + ",twin_bot=" + FF_E2E_Bool(IsUnitVisible(FF_E2E_plain, Player(12))) + ",detectors=" + I2S(CountUnitsInGroup(FF_bv_units)) + ",det_alive=" + I2S(alive))
     call FF_E2E_Done()
 endfunction
 

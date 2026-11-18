@@ -6,7 +6,8 @@ function FF_E2E_Start takes nothing returns nothing
     call FF_E2E_Scenario()
 endfunction
 
-// Runs from main() before the map's initialization triggers (which record the names: udg_orig_player_name).
+// Runs from main() after the map's own init. A map whose initialization trigger runs inside InitCustomTriggers
+// (799X) has recorded the players' names (udg_orig_player_name) by then; the names set here replace those records.
 function FF_E2E_Init takes nothing returns nothing
     local integer i = 0
     // The client (the one User slot): the e2e build's E2E_BOT name, also on its bot list (stage.py)
@@ -30,6 +31,9 @@ function FF_E2E_Init takes nothing returns nothing
             else
                 call SetPlayerName(Player(i), "(E2E)LongBattleTag" + I2S(i + 1) + "#1000" + I2S(i + 1))
             endif
+        endif
+        if udg_orig_player_name[i + 1] != null and udg_orig_player_name[i + 1] != "" then
+            set udg_orig_player_name[i + 1] = GetPlayerName(Player(i))
         endif
         set i = i + 1
     endloop
