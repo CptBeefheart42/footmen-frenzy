@@ -1,4 +1,4 @@
-# Known deviations of the WC3 3.0 probe (bin/ff-probe.w3x, CustomMapData\ff_probe.txt) that check_probe.py accepts.
+# Known deviations of the WC3 3.0 probe (build/e2e/ff-probe.w3x, CustomMapData\ff_probe.txt) that check_probe.py accepts.
 # kind,a,b,c,note
 #   readback,<ability>,<field>,<level>: a control cell that reads 0 instead of the stored value (an R line).
 #   unreadable,<class>,<max>,,        : fields natives can't read (string/target fields), at most <max> per class.
@@ -14,4 +14,6 @@ readback,ANtm,Ntm4,1,
 readback,AOwk,Owk4,1,
 readback,AREW,Owk4,1,
 unreadable,FILL,14,,
+# 799X's data: 20 negative cells sit in fields the natives can't read back (which ones is not broken down yet).
+unreadable,NEG,20,,
 unreadable,GAP,11,,
