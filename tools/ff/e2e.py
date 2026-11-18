@@ -157,15 +157,26 @@ def judge(proj: Project, scenario: str, bot: bool = True) -> int:
 
 
 def ladder(runs: tuple[str, ...] = LADDER_RUNS) -> int:
-    """Scores finished games with the efl-bot checkout (setting `efl_bot`) and its Python; returns the exit code."""
-    bot = setting('efl_bot', 'FF_EFL_BOT')
-    if not bot:
-        print('ladder: no efl-bot checkout (set efl_bot in ff.local.json): skipped')
+    """Scores finished games with the efl-bot commit the fleet runs (tests/e2e/efl-bot.ref) and that repository's
+    Python (.venv); returns the exit code.
+
+    The commit is checked out as a worktree of the efl-bot repository (setting `efl_bot_repo`) into build/e2e/efl-bot.
+    """
+    repo = setting('efl_bot_repo', 'FF_EFL_BOT_REPO')
+    if not repo:
+        print('ladder: no efl-bot repository (set efl_bot_repo in ff.local.json): skipped')
         return 1
-    bot = Path(os.path.expanduser(bot))
-    python = bot / '.venv' / 'bin' / 'python'
+    repo = Path(os.path.expanduser(repo))
+    ref = (ROOT / 'tests' / 'e2e' / 'efl-bot.ref').read_text(encoding='utf-8').split()[0]
+    checkout = OUT / 'efl-bot'
+    head = subprocess.run(['git', '-C', str(checkout), 'rev-parse', 'HEAD'], capture_output=True, text=True).stdout.strip()
+    if head != ref:
+        subprocess.run(['git', '-C', str(repo), 'worktree', 'remove', '--force', str(checkout)], capture_output=True)
+        subprocess.run(['git', '-C', str(repo), 'worktree', 'prune'], check=True)
+        subprocess.run(['git', '-C', str(repo), 'worktree', 'add', '-q', '--detach', str(checkout), ref], check=True)
+    python = repo / '.venv' / 'bin' / 'python'
     return subprocess.run([str(python if python.is_file() else sys.executable), str(ROOT / 'tests' / 'e2e' / 'ladder_check.py'),
-                           str(bot), *(str(OUT / r) for r in runs)], cwd=ROOT).returncode
+                           str(checkout), *(str(OUT / r) for r in runs)], cwd=ROOT).returncode
 
 
 def test_env() -> dict:

@@ -12,7 +12,7 @@ ff e2e run 799x ffa             # one scenario: build, play, judge (build/e2e/79
 ff e2e build 799x ffa           # only its test map (build/e2e/ff-e2e-799x-ffa.w3x)
 ff e2e check 799x ffa           # judge the last run again
 ff e2e probe                    # the WC3 3.0 probe map: build (needs the pre-3.0 install, setting wc3_stage), play, judge
-ff e2e ladder                   # score the finished games with the efl-bot checkout (setting efl_bot)
+ff e2e ladder                   # score the finished games with the bot the fleet runs (tests/e2e/efl-bot.ref)
 python3 tests/e2e/selftest.py build/e2e/799x-ffa build/e2e/probe   # doctored copies of the last real runs must FAIL
 ```
 
@@ -118,8 +118,9 @@ first ally); the addon asks for the click from inside the event that opens the d
 
 ## The ladder check (`ladder_check.py`)
 
-`ff e2e ladder` runs `ladder_check.py` with the efl-bot checkout of the setting `efl_bot` (and its `.venv` Python)
-on the finished games (`799x-observer`, `799x-ffa`, `solo-solo`, `solo-solo-observer`): the bot's parser, the kill-log attribution, `to_report_payload`,
+`ff e2e ladder` checks out `tests/e2e/efl-bot.ref` (the commit the fleet runs; bump it after each fleet deploy) as a
+worktree of the efl-bot repository (setting `efl_bot_repo`) into `build/e2e/efl-bot` and runs `ladder_check.py` with
+that repository's `.venv` Python on the finished games (`799x-observer`, `799x-ffa`, `solo-solo`, `solo-solo-observer`): the bot's parser, the kill-log attribution, `to_report_payload`,
 `POST /report_match` on the league API into a throwaway sqlite DB, then the stored match: placements, every roster
 player, Elo (winners up, last place down), kills, the stats / telemetry if that bot version knows them. Records the
 bot version doesn't know are listed, never an error. `FF_EFL_BOT=<checkout>` scores with another checkout (a bot PR).
