@@ -205,10 +205,22 @@ function T.land(caster, target)
     if target and target.alive and not target.removed then T.kill(target, caster) end
 end
 
---- `source` deals `amount` damage to `target` (the damage events only; life is not reduced).
+--- `source` deals `amount` damage to `target` (the damage events only, "damaging" before "damaged" as in the game;
+--- life is not reduced). A "damaging" trigger may change the amount (BlzSetEventDamage); the "damaged" events see the
+--- changed amount. Returns the amount dealt.
 function T.damage(source, target, amount)
-    W.fireUnit("EVENT_PLAYER_UNIT_DAMAGED", target, { source = source, damage = amount })
-    W.fireUnit("EVENT_UNIT_DAMAGED", target, { source = source, damage = amount })
+    local hit = { amount = amount }
+    W.fireUnit("EVENT_PLAYER_UNIT_DAMAGING", target, { source = source, hit = hit })
+    W.fireUnit("EVENT_UNIT_DAMAGING", target, { source = source, hit = hit })
+    W.fireUnit("EVENT_PLAYER_UNIT_DAMAGED", target, { source = source, hit = hit })
+    W.fireUnit("EVENT_UNIT_DAMAGED", target, { source = source, hit = hit })
+    return hit.amount
+end
+
+--- `attacker` starts an attack on `target` (the "is attacked" events).
+function T.attack(attacker, target)
+    W.fireUnit("EVENT_PLAYER_UNIT_ATTACKED", target, { attacker = attacker })
+    W.fireUnit("EVENT_UNIT_ATTACKED", target, { attacker = attacker })
 end
 
 --- `slot` leaves the game.

@@ -151,7 +151,8 @@ GetSpellTargetUnit = field("target")
 GetSpellTargetX = field("tx", 0.0)
 GetSpellTargetY = field("ty", 0.0)
 function GetSpellTargetLoc() return Location(GetSpellTargetX(), GetSpellTargetY()) end
-GetEventDamage = field("damage", 0.0)
+function GetEventDamage() local h = W.ctx().hit return h and h.amount or 0.0 end
+function BlzSetEventDamage(amount) local h = W.ctx().hit if h then h.amount = amount end end
 GetEventDamageSource = field("source")
 GetExpiredTimer = field("timer")
 GetLevelingUnit = field("unit")

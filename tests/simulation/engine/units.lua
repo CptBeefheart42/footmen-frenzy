@@ -63,6 +63,13 @@ function ShowUnit(u, show) if u then u.hidden = not show end end
 function IsUnitHidden(u) return u and u.hidden or false end
 function GetUnitTypeId(u) return u and u.typeId or 0 end
 function GetOwningPlayer(u) return u and u.owner or nil end
+-- immediate orders are recorded, in order, as `u.orders`
+function IssueImmediateOrder(u, order)
+    if not u then return false end
+    u.orders = u.orders or {}
+    u.orders[#u.orders + 1] = order
+    return true
+end
 function SetUnitOwner(u, p, color) if u then u.owner = p end end
 function GetUnitX(u) return u and u.x or 0.0 end
 function GetUnitY(u) return u and u.y or 0.0 end
@@ -72,6 +79,10 @@ function SetUnitPosition(u, x, y) if u then u.x, u.y = x, y; moved(u) end end
 function GetUnitLoc(u) return Location(GetUnitX(u), GetUnitY(u)) end
 function SetUnitPositionLoc(u, l) if u and l then u.x, u.y = l.x, l.y; moved(u) end end
 function GetUnitFacing(u) return u and u.face or 0.0 end
+-- Move speed: unit types carry no speed here, so every unit starts at 270 (a footman's default); scripts may change it.
+function GetUnitDefaultMoveSpeed(u) return u and 270.0 or 0.0 end
+function GetUnitMoveSpeed(u) return u and (u.moveSpeed or 270.0) or 0.0 end
+function SetUnitMoveSpeed(u, v) if u then u.moveSpeed = v end end
 function GetUnitName(u) return u and (typeInfo(u.typeId).name or id2s(u.typeId)) or "" end
 function GetObjectName(id) return typeInfo(id).name or id2s(id) end
 function GetUnitLevel(u) return u and u.level or 0 end
@@ -231,10 +242,17 @@ function RemoveItemFromStock(u, id) unstock(u, id) end
 -- ---------------------------------------------------------------------------------------------
 -- groups
 -- ---------------------------------------------------------------------------------------------
-function CreateGroup() return H("group", { list = {} }) end
-function DestroyGroup() end
+-- Every group and location ever made, so a test can count the ones still alive (leaks: T.live).
+W.allGroups, W.allLocations = {}, {}
+function CreateGroup()
+    local g = H("group", { list = {} })
+    W.allGroups[#W.allGroups + 1] = g
+    return g
+end
+-- A destroyed group stays empty: adding to it or filling it does nothing, as with a dead handle in the game.
+function DestroyGroup(g) if g then g.destroyed = true; g.list = {} end end
 function GroupAddUnit(g, u)
-    if not (g and u) then return false end
+    if not (g and u) or g.destroyed then return false end
     for _, v in ipairs(g.list) do if v == u then return false end end
     g.list[#g.list + 1] = u
     return true
@@ -264,7 +282,7 @@ end
 
 -- Adds every unit that passes `pred` and the boolexpr `filter` to group `g`.
 local function groupEnum(g, filter, pred)
-    if not g then return end
+    if not g or g.destroyed then return end
     for _, u in ipairs(W.allUnits) do
         if not u.removed and pred(u) then
             local keep = true
@@ -291,8 +309,13 @@ function GetFilterUnit() return W.ctx().filterUnit end
 -- ---------------------------------------------------------------------------------------------
 -- geometry
 -- ---------------------------------------------------------------------------------------------
-function Location(x, y) return H("location", { x = x, y = y }) end
-function RemoveLocation() end
+function Location(x, y)
+    local l = H("location", { x = x, y = y })
+    W.allLocations[#W.allLocations + 1] = l
+    return l
+end
+-- A removed location reads as (0, 0), as a dead handle does in the game; `removed` lets a test see it.
+function RemoveLocation(l) if l then l.removed = true; l.x, l.y = 0.0, 0.0 end end
 function MoveLocation(l, x, y) l.x, l.y = x, y end
 function GetLocationX(l) return l and l.x or 0.0 end
 function GetLocationY(l) return l and l.y or 0.0 end
