@@ -16,7 +16,7 @@ from build import check_reachable, check_script, stage_sources
 from repo import BUILD, Project
 import toolchain
 
-REVISION = "e40cb50fd2394500a4d60ff9b6797bbc8c5061c0"
+REVISION = "9a17b6eefc929f85d4e3f594f2577c2f89633181"
 MEDIA = "https://media.githubusercontent.com/media/NorthStarEnergy/Footmen-Frenzy"
 
 
@@ -52,7 +52,7 @@ def build_port(slug, local):
     project = Port(slug, meta["map_type"], start["name"])
     out = BUILD / "northstar" / slug
     out.mkdir(parents=True, exist_ok=True)
-    base = checked_base(project, start["sha256"], local, out / "base.w3x")
+    base = checked_base(project, start["sha256"], local, out / (start["sha256"] + ".w3x"))
     final = out / project.start_name
     if final.resolve() == base:
         raise ValueError("Choose an input outside the output path")

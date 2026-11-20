@@ -2,9 +2,9 @@
 
 | Family | Starting map | Editable project |
 |---|---|---|
-| 799X | RC53 Tavern Page | [799X](799x/) |
-| Solo Foots | RC24 Tavern Page | [Solo](solo/) |
-| FFA Foots | v93 Tavern Page | [FFA](ffa/) |
+| 799X | RC54 Hero Rotation | [799X](799x/) |
+| Solo Foots | RC25 Hero Rotation | [Solo](solo/) |
+| FFA Foots | v94 Hero Rotation | [FFA](ffa/) |
 
 With Python 3.10+, the .NET 6 SDK and pjass installed as described in the repository README, run a build from the repository root.
 
@@ -20,4 +20,6 @@ Edit gameplay scripts and strings in `src/` and units, abilities, items and othe
 
 These builds use the standalone maps' gameplay. The league builds continue to use `ff build 799x` and `ff build solo`. League scoring and observer integration for a standalone port would require a separate integration and gameplay test.
 
-[NorthStar source and complete starting maps](https://github.com/NorthStarEnergy/Footmen-Frenzy/tree/e40cb50fd2394500a4d60ff9b6797bbc8c5061c0)
+[NorthStar source and complete starting maps](https://github.com/NorthStarEnergy/Footmen-Frenzy/tree/9a17b6eefc929f85d4e3f594f2577c2f89633181)
+
+Info opens match stats for everyone. Hotkeys opens the spell and item key editor. Twisted Fate can be chosen with `-tf` in All Pick and can be dealt at the start of All Random.

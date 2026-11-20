@@ -127,10 +127,6 @@
   "sha256": "03293479124392f6244afc41837c8398310d1e11341755c97da90b113a76c9b8",
   "size": 21145
  },
- "CasinoUI/WatchEye.tga": {
-  "sha256": "ef6e45646a07388853dcedc67fcfd7689fb9ad005c7c9ab60f41d18044738e5b",
-  "size": 16402
- },
  "CelestialAssault.mdx": {
   "sha256": "5bb7fd4d3329157631852672d6c0f150559c6901ac02e44198dbff62a0dd27e7",
   "size": 88538
@@ -186,10 +182,6 @@
  "DeathWings.blp": {
   "sha256": "3f92433685c33314337656692c5a265ed657fdaaff99815d887451d86bed77c8",
   "size": 124313
- },
- "DemonKnight.blp": {
-  "sha256": "c8ea898655491dc0a7bf9b371410196918ca66c99142988b3dda1153bb89ede8",
-  "size": 175942
  },
  "dragonpriest.blp": {
   "sha256": "d4c61f023cc6e7ea26b129ed5155e774b7b6c73d260a7724efdb33a4ef66105c",
@@ -322,10 +314,6 @@
  "Hero_FelOrc_General_Portrait.mdx": {
   "sha256": "d386e3e6d697de23ecc3b70cd60e54fdef30236a1399d5c2faf3817e6c8b8d1a",
   "size": 61881
- },
- "HeroAbomination.blp": {
-  "sha256": "2e2501bcc2ef134d0c2dc030d04274337654bf43ee800346bbc5e26ea27b424c",
-  "size": 186409
  },
  "HeroArchangel.mdx": {
   "sha256": "ffa86461f143e8c617d62a9b27a3bceeeb235708d9708913bfecdb48147468d0",
@@ -1487,18 +1475,6 @@
   "sha256": "c6445a820f1436e2038372b921183171b51cc1e746a524e9ccc20e2c0a564459",
   "size": 4987
  },
- "ReplaceableTextures/CommandButtons/BTNMundoCleaver.blp": {
-  "sha256": "157ef1509138c389c86f2a012c6009c38ff1da24f4c8ec1ed81c0ad0b82c23bf",
-  "size": 12102
- },
- "ReplaceableTextures/CommandButtons/BTNMundoMaul.blp": {
-  "sha256": "e603fb231c1da11f8b8ef2d474cab5ad25604a0c30477946d2cd59d7d4802843",
-  "size": 12102
- },
- "ReplaceableTextures/CommandButtons/BTNMundoUndying.blp": {
-  "sha256": "851176b56cec42a3aec16331058baac648c77384923ff587a2cc41c5c4492119",
-  "size": 12102
- },
  "ReplaceableTextures/CommandButtons/BTNNatureRestore.blp": {
   "sha256": "588778670d14b22a745a78b5e8f81171394f79c816ff729688a4c1bdd6358540",
   "size": 5777
@@ -1954,26 +1930,6 @@
  "ReplaceableTextures/CommandButtons/BTNUnholyfrenzy1.blp": {
   "sha256": "5faa3a67bdae6eeb62af6430318bb83ababfc4dd5d10e15d7bb75f34edb91bb0",
   "size": 6300
- },
- "ReplaceableTextures/CommandButtons/BTNVeigarE.blp": {
-  "sha256": "6afa940257fa630231892bd69b5c6ff68142ea6eaf85acbb842e6c7667d4d1fd",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtons/BTNVeigarHero.blp": {
-  "sha256": "1a22ef6abf6a5c22ed0d2e2b2908e16d075d5ebbb2034ac02e63b1b3328b9d4d",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtons/BTNVeigarQ.blp": {
-  "sha256": "aec56fb8fa049450e68379f51178986ad525e46ecc284f326c09fdb0e18f7a9d",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtons/BTNVeigarR.blp": {
-  "sha256": "193c354de3a9d7fe4c55683f96b33bdcf7aee5fca927fd9374fc739c03bcd69c",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtons/BTNVeigarW.blp": {
-  "sha256": "749fed67dc961b0e266ec544b89b0237afbaed345ea56323e90460e76aa532d0",
-  "size": 4194004
  },
  "ReplaceableTextures/CommandButtons/BTNVR.blp": {
   "sha256": "9fdd114b178fc40a8c26637f82ac9d6e8cd631940a3381a2c252ef79bb563249",
@@ -2931,18 +2887,6 @@
   "sha256": "49be7c31beec792a36fed4f9ea6bc70428016c1bafbb5427752b52b71b4504f6",
   "size": 2756
  },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNMundoCleaver.blp": {
-  "sha256": "ec3407ba66d480b083b0cd7d6b50ed83ca2809025a461f5bf88321ba6d0c6b6b",
-  "size": 12102
- },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNMundoMaul.blp": {
-  "sha256": "7ec3f21f41aad5d6dfe9dddf6d4f64f1ba6e8d3a72b0637811fda8d55be36168",
-  "size": 12102
- },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNMundoUndying.blp": {
-  "sha256": "228493548be238dd29340b8fbeee87474acbede9a7b66879b17e7cfbf1ca1b7d",
-  "size": 12102
- },
  "ReplaceableTextures/CommandButtonsDisabled/DISBTNNatureRestore.blp": {
   "sha256": "74a57052bf98bdbd8a51b4943e9ad43d10c3b4eadba51a104f8314c421aa132f",
   "size": 6300
@@ -3399,26 +3343,6 @@
   "sha256": "155514672d49d13b1a98d1ea142d3288b1f2644c11b4f7095e58d1372379256a",
   "size": 6300
  },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNVeigarE.blp": {
-  "sha256": "531df355e2b6be9436c31d48fdabcd36599bf35c5ee79c72a643f983f98aa9cc",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNVeigarHero.blp": {
-  "sha256": "b5649acd2ba735c473793311e4655146204b829b6ac955a124244e8dbaa3a0be",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNVeigarQ.blp": {
-  "sha256": "d17bbaf8cd1d7c35e67caabf4cc51987e64966bb447063514392e90b8fb11443",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNVeigarR.blp": {
-  "sha256": "e45e03d1e40c094f0d4a32cbf455f01c88d1d3c101136dc8139a1bbad2992b5c",
-  "size": 6641
- },
- "ReplaceableTextures/CommandButtonsDisabled/DISBTNVeigarW.blp": {
-  "sha256": "63285709505f65c97d617380ad6def2c8d5425f1e86731d05b5bb78020ff3499",
-  "size": 4194004
- },
  "ReplaceableTextures/CommandButtonsDisabled/DISBTNVR.blp": {
   "sha256": "768ccafbc71709ca2934f0b91354adacd94b4d1faf0d6091d393591913495285",
   "size": 3786
@@ -3659,10 +3583,6 @@
   "sha256": "36c5c4573fb707e6ba50957a8eb847015e19ad5aef6e04000cfcece23786db32",
   "size": 4822
  },
- "ReplaceableTextures/CommandButtonsDisabled/DISPASVeigarHero.blp": {
-  "sha256": "35b71752af9747d2fb3d05eb2191a10110235f562deedea86736a4452024b06c",
-  "size": 6641
- },
  "ReplaceableTextures/CommandButtonsDisabled/DISPASVR.blp": {
   "sha256": "768ccafbc71709ca2934f0b91354adacd94b4d1faf0d6091d393591913495285",
   "size": 3786
@@ -3866,10 +3786,6 @@
  "ReplaceableTextures/PassiveButtons/PASThunderfury2.blp": {
   "sha256": "b57dd00c8b3d6035ad0783885bbf52418ef455bc5436da10c23039be2b0e8ca3",
   "size": 6133
- },
- "ReplaceableTextures/PassiveButtons/PASVeigarHero.blp": {
-  "sha256": "3ce00b71e07156f051c9c1429c96bd1d19a51facab5ef52edd4a6025e498920d",
-  "size": 6641
  },
  "ReplaceableTextures/PassiveButtons/PASVR.blp": {
   "sha256": "c2e2636c36fcd284cf468dd28c132617d79653c7b03f1025467bb00729fcc8da",
@@ -4627,90 +4543,6 @@
   "sha256": "dec1bf24ed2890befe4aa3091c1db0a5895fdf6540c45624132a908507ae02c4",
   "size": 1856
  },
- "Spells/Mundo/Cloud0.mdx": {
-  "sha256": "6f2b0446455363a48026e6a06b34d13ed226a1ba5bb8f4856fcd79d8d47a91a9",
-  "size": 1423
- },
- "Spells/Mundo/Cloud1.mdx": {
-  "sha256": "5437af17a94f2686053f94d9f00e16507fdbb862d5bf8672643f06deed261820",
-  "size": 1423
- },
- "Spells/Mundo/Cloud10.mdx": {
-  "sha256": "b8b330f4383f2dd78b0fe1347800bbf796c8122ca1f84865a8baae8a4b579163",
-  "size": 1423
- },
- "Spells/Mundo/Cloud11.mdx": {
-  "sha256": "c5fcd5be9660d5a28c168c3a6313e82e9caaa0e86f98d48f4bd01db57764e6b2",
-  "size": 1423
- },
- "Spells/Mundo/Cloud12.mdx": {
-  "sha256": "17d619fb797c1232c7927df1de3b434dc1cbed3f0bc83b7bb5939e0f1a9db6be",
-  "size": 1423
- },
- "Spells/Mundo/Cloud13.mdx": {
-  "sha256": "39746fd7463c968d4c136343b735835951ab371200f98eaed5eea5bef61a1ac2",
-  "size": 1423
- },
- "Spells/Mundo/Cloud14.mdx": {
-  "sha256": "1960c044599e155b3ceadbe05857850ca282988106a9bd6c12048cfa392b5203",
-  "size": 1423
- },
- "Spells/Mundo/Cloud15.mdx": {
-  "sha256": "2a12f153c42869ec5c6a4dee40723c767014a06e353565da7d15500667995439",
-  "size": 1423
- },
- "Spells/Mundo/Cloud16.mdx": {
-  "sha256": "c3055e06f3cc64068be89f14f87f426e3b9c726c9f19dac31298814d6ee7f41e",
-  "size": 1423
- },
- "Spells/Mundo/Cloud17.mdx": {
-  "sha256": "ee9d582a49405d49ba7a872531ca4b817565ed0b7ee636a586fdde5260f77441",
-  "size": 1423
- },
- "Spells/Mundo/Cloud18.mdx": {
-  "sha256": "0371b05cf3cca05f82ccf0448573adcc1bfa52761ed8952d9cf32643a2039801",
-  "size": 1423
- },
- "Spells/Mundo/Cloud19.mdx": {
-  "sha256": "9d25133a4c9181921b8aec2af24375ea121d7899b7b714661808c140169f0da3",
-  "size": 1423
- },
- "Spells/Mundo/Cloud2.mdx": {
-  "sha256": "5c47a3d53334450a7acfabfe12ac64fe61cd45c6ec075f4de433d90ff1981fe2",
-  "size": 1423
- },
- "Spells/Mundo/Cloud20.mdx": {
-  "sha256": "643b900afac87c32ce49c663242ea90ba8d14aedb3692f176bb243ed411b3f46",
-  "size": 1423
- },
- "Spells/Mundo/Cloud3.mdx": {
-  "sha256": "3a121fef4a4035b8b66defa73319d6d4b3fa0b5dbbe14e615d680e60bd345a46",
-  "size": 1423
- },
- "Spells/Mundo/Cloud4.mdx": {
-  "sha256": "9989e9735df02358890d2b81ffd0d6d1ba70ec065335aff712c87cf8eee84c65",
-  "size": 1423
- },
- "Spells/Mundo/Cloud5.mdx": {
-  "sha256": "bcf12a36fa48a77f16172e89d9331f71f6ef5ff14f32860b28bbd596c48e7075",
-  "size": 1423
- },
- "Spells/Mundo/Cloud6.mdx": {
-  "sha256": "991196084510a13ef23158a324e1ea280a60951bbb5600da6d67d60f8b30c48f",
-  "size": 1423
- },
- "Spells/Mundo/Cloud7.mdx": {
-  "sha256": "06b81e10949f4050995cc52e86cb71437a4252ee22f96a8f83c6102f63209992",
-  "size": 1423
- },
- "Spells/Mundo/Cloud8.mdx": {
-  "sha256": "82c8cf30182f5b591e220185262b7965cbbf7c13efbee6040fb4ae59824b4c34",
-  "size": 1423
- },
- "Spells/Mundo/Cloud9.mdx": {
-  "sha256": "2c1cf9a77fb19f281605518e842e407711d6a3b31326dae803c9152303fd4241",
-  "size": 1423
- },
  "Spells/Orianna/BallTextures/Blue_Star.blp": {
   "sha256": "e0ab416359f3f39c07a564c26f9c72b2d7299645628eb65e4d10dadd79b12ead",
   "size": 12102
@@ -4851,25 +4683,9 @@
   "sha256": "0a3b19b8cdd49dee06f1aa142f3dbb23ba35886a498311f202783e173a7988e3",
   "size": 23027
  },
- "Spells/Veigar/QuietImpact.mdx": {
-  "sha256": "095cf119e91353a9a4bccb3801269945dc63ba7dda4d8b001008d9da4dfe6ab8",
-  "size": 3140
- },
- "Spells/Veigar69/BalefulOrb.mdx": {
-  "sha256": "0ada7240ad64c3a44841b238c2c10522d14de965d03dcb173c15fa0c1959ec5a",
-  "size": 2441
- },
  "Spells/Veigar69/Meteor.mdx": {
   "sha256": "f1c6921b30aff87358d8b4599a4abbcfca9eadd464e3293e27f49e725fca2e11",
   "size": 6368
- },
- "Spells/Veigar69/MeteorImpact.mdx": {
-  "sha256": "710ca70e222e7bfb874ebd353c3b5cb11cd80e30833c895b1885b01267c146a8",
-  "size": 19018
- },
- "Spells/Veigar69/PrimordialOrb.mdx": {
-  "sha256": "a061559b9a1d45f4a93ba41175435b727d2744861c57204abeeb9bab8759734a",
-  "size": 2441
  },
  "Storm Bolt.mdx": {
   "sha256": "cacc0b2e092e940d6be7c835cae84a44c47de523f303a83195e94f9007878db0",
@@ -4991,10 +4807,6 @@
   "sha256": "1bc0e2816fb74af04329fd38bd515b811b3c1231f118b0fb1689d9c6e91fe401",
   "size": 171459
  },
- "VeigarPalette.tga": {
-  "sha256": "0a421ba6a754efc02893ae921bd0a434dbc687d7545c7594a01a3961821c5e29",
-  "size": 3145772
- },
  "Void Disc.mdx": {
   "sha256": "4ed25e9cdfe6fd0c87bb6bd24088a1bdba75a95b64fa6b0fd15f79b05e6acbcc",
   "size": 10653
@@ -5008,8 +4820,8 @@
   "size": 92256
  },
  "war3map.imp": {
-  "sha256": "153036f2b4ac17bd42c41c64aedef3acb0e16397c904767dac0c7a6ab435f21b",
-  "size": 71355
+  "sha256": "63c5ac3d2fee53b2c458867a018c5b9d33312f3f23976a3059338b97dc5174d2",
+  "size": 69377
  },
  "war3map.mmp": {
   "sha256": "96e164c97e11563609ae02090827c94e4d930ca049fa016787cb9e5b713a14a9",
@@ -5028,8 +4840,8 @@
   "size": 50525
  },
  "war3map.w3i": {
-  "sha256": "7f1672218e553846151a3d054daf262d83ae7b5dcf3f7cd23eb01fdc29e60d96",
-  "size": 1417
+  "sha256": "a53cfc0bfb3eda8b18db6ddeb0c9c8d1d88b1ddf3d7694b54126fed227e96818",
+  "size": 1419
  },
  "war3map.w3r": {
   "sha256": "dd188d1520654ed7bbcf27952cb13f53282a0de6c35dab6fc422077f7e6aea82",
@@ -5040,8 +4852,8 @@
   "size": 7225
  },
  "war3map.wct": {
-  "sha256": "f96720b2b80efbd38d84eaf1fca761cab4a96de033a78221e0ec1083e995df9d",
-  "size": 435938
+  "sha256": "8481b89d5edec55000599564bc465fbf3801ac8e9eb902cce5e3734dd6433d34",
+  "size": 436347
  },
  "war3map.wpm": {
   "sha256": "a3a708e219811d3b65a0a2d96bcd7f58bba693b4c12e61538f4bd30a466b1ed3",
@@ -5267,14 +5079,6 @@
   "sha256": "72294ca30f9e6fb6414d374a6214a65ab3c7cb22b57f7f8388e16e2cd5471263",
   "size": 227499
  },
- "war3mapImported/DemonKnight.mdx": {
-  "sha256": "fbff37206cdbdc20b6f0359d5bcfa61a2f11bc3006481d2ac22257d356e481b7",
-  "size": 186303
- },
- "war3mapImported/DemonKnight_Portrait.mdx": {
-  "sha256": "7621aa6a0feb8a92787e2c2a402a6843a0cf00c15f7c1eb3513b34858658576a",
-  "size": 33863
- },
  "war3mapImported/DISATCWightScythe.blp": {
   "sha256": "9cba22fde7963b8589562152be062bba1c9e24e0ddb9be085fcc60adb7c55d84",
   "size": 12102
@@ -5438,10 +5242,6 @@
  "war3mapImported/HealthStone.mdx": {
   "sha256": "862a13ae8364494b031a24596508bf308fbd2c8fa9be0a2f68760021a16ce7ed",
   "size": 18692
- },
- "war3mapImported/HeroAbomination.mdx": {
-  "sha256": "7e8d61c8c433e2b08c4733a191aedca64975dd2eff7c5ccc3febcc343490c2f5",
-  "size": 235598
  },
  "war3mapImported/HeroNerubianWidow.mdx": {
   "sha256": "e97e22fe0a7e2159240c097ddf1d8e8ace8f26fdd53d0eb4f93ab5b48430ad37",
@@ -6022,14 +5822,6 @@
  "war3mapImported/UPGZergling.blp": {
   "sha256": "4ec9fe8c2c46db8924e0428bdcb931ea7c507b8b7582fa2ee1292d909b3d61be",
   "size": 11420
- },
- "war3mapImported/Veigar.mdx": {
-  "sha256": "ea32229c9ffc1caefb5ae96e0197d382d9d1d7c1cfd41016776a8f6e9bec1dd9",
-  "size": 265170
- },
- "war3mapImported/Veigar_Portrait.mdx": {
-  "sha256": "d1bd620912508e5f091403a9108907fc15c626e0fa5c78b2077c63a4d16e6ea6",
-  "size": 261186
  },
  "war3mapImported/VengeanceNoSpin.mdx": {
   "sha256": "de4a90338cb7bda017f02b65ade18e1a4793f3d7c278fa95f1bcc9d8bf3db81d",
