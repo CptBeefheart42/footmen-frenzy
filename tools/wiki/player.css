@@ -1,0 +1,50 @@
+:root { --forest:#14392e; --gold:#a47938; --soft:#f2f3eb; }
+header { min-height:4rem; border-bottom:3px solid #b19a64; }
+header .mode { color:white; display:flex; align-items:center; gap:.45rem; margin:0; cursor:pointer; }
+.mode input { accent-color:#d5b977; width:1.15rem; height:1.15rem; }
+#playerNav { display:none; }
+.player #drafts,.player aside { display:none; }
+.player main { grid-template-columns:13rem minmax(0,1fr); max-width:96rem; }
+.player #playerNav { display:block; padding:2rem 1rem; border-right:1px solid var(--line); min-height:calc(100vh - 4rem); }
+#playerNav a { display:block; padding:.5rem .8rem; margin:.1rem 0; border-radius:.3rem; text-decoration:none; font-weight:550; color:var(--forest); }
+#playerNav a[aria-current] { background:#dfe8db; box-shadow:inset 3px 0 var(--gold); }
+.player article { max-width:78rem; padding:2.1rem clamp(1rem,3vw,3rem) 5rem; }
+.player h1 { color:var(--forest); font:500 clamp(2.25rem,4vw,3.5rem)/1.06 Georgia,serif; margin:.3rem 0 .95rem; }
+.player h2 { margin:1.8rem 0 .8rem; }
+.player .directory-head { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+.directory-head input { width:min(100%,19rem); border:1px solid #a8b7a9; background:white; border-radius:.4rem; padding:.6rem .8rem; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,13.4rem),1fr)); gap:.52rem; margin:.55rem 0; }
+.portrait-link { background:#fff; border:1px solid #d2dbce; border-radius:.4rem; padding:.46rem; text-decoration:none; display:flex; align-items:center; gap:.75rem; min-height:3.7rem; color:var(--ink); line-height:1.2; }
+.portrait-link:hover,.portrait-link:focus-visible { border-color:#899c7d; background:#f0f4ec; }
+.portrait-link strong { font-weight:600; overflow-wrap:anywhere; }
+.portrait-link small { display:block; margin-top:.24rem; }
+.portrait { width:2.85rem; height:2.85rem; border-radius:.24rem; object-fit:cover; flex-shrink:0; background:#273e34; }
+span.portrait { display:grid; place-items:center; color:#e8ddba; font:600 1.35rem Georgia,serif; }
+.profile { display:flex; align-items:center; gap:1rem; margin:.9rem 0; }
+.profile .portrait { width:5rem; height:5rem; box-shadow:0 2px 9px #102c2726; }
+.profile h1 { margin:0; }
+.crumb { color:#456451; font-size:.92rem; }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr)); border:1px solid var(--line); border-radius:.4rem; padding:.4rem; background:#f1f4ec; gap:.3rem; }
+.stat-grid div { padding:.45rem .55rem; }
+.stat-grid b { display:block; font-size:1.12rem; }
+.player table { background:white; width:auto; min-width:min(100%,32rem); }
+.player .deck { max-width:49rem; color:#41554a; margin:.9rem 0 1.3rem; white-space:pre-line; }
+.player .scroll td,.player .scroll th { white-space:nowrap; }
+.pencil { border:0; background:transparent; font-size:1.1rem; padding:.15rem .4rem; line-height:1.2; }
+.directory-foot { display:flex; gap:.8rem; align-items:center; margin-top:.85rem; }
+.player details[open] > summary { margin-bottom:.55rem; }
+#guideTrail { display:flex; flex-wrap:wrap; gap:.35rem; align-items:baseline; color:var(--muted); font-size:.86rem; margin:0 0 .9rem; }
+#guideTrail [aria-current] { color:var(--ink); }
+.form-links { display:flex; flex-wrap:wrap; gap:.35rem; margin:.5rem 0 1rem; }
+.form-links a { border:1px solid var(--line); border-radius:.3rem; background:white; padding:.16rem .44rem; font-size:.8rem; text-decoration:none; }
+.form-links [aria-current] { background:var(--forest); color:white; }
+.portrait-link kbd { margin-left:auto; }
+.player kbd { padding:.12rem .36rem; border:1px solid #bdc7b5; border-bottom-width:2px; background:#f1f4eb; border-radius:.25rem; color:var(--forest); font:600 .9rem monospace; white-space:nowrap; }
+.command-line { color:var(--muted); font-size:.9rem; }
+@media(max-width:760px) {
+  .player main { display:block; }
+  .player #playerNav { display:flex; overflow-x:auto; min-height:auto; padding:.5rem; border-bottom:1px solid var(--line); }
+  #playerNav a { white-space:nowrap; }
+  .player article { padding:1.15rem 1rem 3rem; }
+  .player header small { width:auto; font-size:.77rem; }
+}
