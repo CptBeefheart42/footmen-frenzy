@@ -2,6 +2,12 @@
 
 The wiki opens in a browser and works offline. Select a hero to follow their abilities, summoned units, items and upgrades. Each generated page identifies its input map and SHA256.
 
+## Download the NorthStar Tavern Page guides
+
+Each download contains the installed test, editable-source and release snapshots. Extract one ZIP and open **Open Balance Wiki.html** to choose an edition. These numbers describe the map named on each page.
+
+[799X ZIP](https://github.com/user-attachments/files/35171269/Balance-Wiki-799x.zip) · [Solo Foots ZIP](https://github.com/user-attachments/files/35171270/Balance-Wiki-solo.zip) · [FFA Foots ZIP](https://github.com/user-attachments/files/35171271/Balance-Wiki-ffa.zip)
+
 ## Generate a guide
 
 Use Python 3.10+ and a matching StormLib shared library. On Windows set `STORMLIB_DLL` to the full path of the 64-bit StormLib DLL when using 64-bit Python. On Linux install the system StormLib shared library or set the same variable to its path. Install Pillow to decode imported portraits. An extracted map directory can be read with Python alone.
