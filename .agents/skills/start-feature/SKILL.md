@@ -8,7 +8,7 @@ description: Start a new change to the maps (a fix, a feature, a balance change)
 1. **Agree on one goal.** Restate in one plain sentence what will change in the game, and ask the person how they will
    tell it worked when they play the test map (e.g. "Footman costs 120 gold in the shop"). If the request holds several
    changes, list them and ask which one comes first; the others become later changes.
-2. **Check it isn't already being done.** `gh pr list --state open` (and `gh pr list --search "<keywords>"`). If an open
+2. **Check it isn't already being done.** `gh pr list --repo CptBeefheart42/footmen-frenzy --state open` (and `--search "<keywords>"`). If an open
    pull request is about the same thing, tell the person and continue on that branch instead (`gh pr checkout <n>`).
 3. **Start from the newest main.** `git fetch origin && git switch -c <type>/<short-topic> origin/main` with type
    `fix`, `feat`, `balance` or `docs` (e.g. `balance/footman-cost`).

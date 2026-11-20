@@ -59,7 +59,7 @@ On Linux `./ff`, on Windows `ff`. `ff docker check` runs the same checks in a co
 - **Code first.** `src/war3map.j` and `objects/*.txt` are the sources. The World Editor's trigger files inside a map
   are out of date: never save the map in the World Editor and copy its script back. The World Editor is only for
   terrain, doodads, placed units, regions and imports (the `world-editor-change` skill).
-- **One change, one branch, one pull request.** Before starting, look at the open pull requests (`gh pr list`); if one
+- **One change, one branch, one pull request.** Before starting, look at the open pull requests (`gh pr list --repo CptBeefheart42/footmen-frenzy`); if one
   is about the same thing, continue there instead of starting another. If a change grows into several topics, stop and
   ask which one to do first.
 - **Every new feature and every bug fix comes with a test**: a simulation scenario (`tests/simulation/scenarios/`), a

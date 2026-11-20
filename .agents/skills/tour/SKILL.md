@@ -19,7 +19,8 @@ Explain briefly, then ask if anything is unclear:
   value). The map file is built from them; the World Editor is only for terrain and placement.
 - **Settings** (`project.json`) switch features on and off (pooling, 4K, -sub) without editing code.
 - **The league code** (`league/`) is what the EFL bot scores; it is shared by both maps and has its own rules.
-- **Every change is a small pull request** that CI checks and two maintainers review.
+- **Every change is a small pull request** from their fork on GitHub, which a maintainer reads, tests in the
+  project's CI and merges.
 
 ## 2. Install and check the tools
 
