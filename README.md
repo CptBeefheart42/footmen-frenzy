@@ -25,7 +25,7 @@ set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
 
 ## Balance wiki
 
-Generate a searchable offline guide to the heroes, abilities, items and triggers in either map. The [balance wiki guide](tools/wiki/README.md) has setup instructions, examples and the edit proposal workflow. Open **Open Balance Wiki.html** in the checkout to choose between the generated starting-map guides.
+Generate a searchable offline guide to the heroes, abilities, items and triggers in either map. The [balance wiki guide](tools/wiki/README.md) includes ready-to-open NorthStar downloads for 799X, Solo and FFA, plus setup instructions, examples and the edit proposal workflow. Open **Open Balance Wiki.html** in the checkout to choose between the generated starting-map guides.
 
 ## Layout
 
