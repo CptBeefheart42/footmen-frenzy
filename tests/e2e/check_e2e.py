@@ -470,7 +470,7 @@ def check_trade(run, bot):
     """Gold between allies: -pool there and back in pool_*, the Allies menu in the score screen's given / recv."""
     res = check_files(run, bot, need_end=False)
     step = {r.get("step"): {k: as_int(v) for k, v in r.items() if k not in ("_", "step")} for r in run.rec("trade")}
-    run.eq("the map allowed autopool and trading in time", run.rec("wait"), [])
+    run.eq("the map allowed autopool in time", run.rec("wait"), [])
     run.eq("-pool: the dialog click chose slot 2", run.one("pool").get("to"), "2")
     start, there, back = step.get("start", {}), step.get("there", {}), step.get("back", {})
     t0, t1, end = step.get("tribute0", {}), step.get("tribute", {}), step.get("end", {})
@@ -489,12 +489,16 @@ def check_trade(run, bot):
           f"slot 2 {t0['gold2']} -> {t1['gold2']}; {run.rec('frames')}")
     run.eq("Allies menu: the menu opened (its button is off in single player, clicked by script)",
            run.one("frames", when="clicked").get("dvisible"), "1")
-    run.eq("Allies menu: three clicks on slot 2's gold icon gave 300 (score screen's gold given)", given, 300)
-    run.eq("Allies menu: slot 2 received what slot 1 gave (no trading tax)", recv, given)
-    # both slots earn income meanwhile; in the 0.05s poll where the trade landed, gold moved by the trade alone
-    tick = run.one("tradetick")
-    run.eq("Allies menu: in the poll the trade landed, slot 1 lost and slot 2 got exactly the trade",
-           (as_int(tick.get("dgold1")), as_int(tick.get("dgold2"))), (-given, recv))
+    if run.one("allies").get("locked") == "1":
+        # 799X locks the Allies menu's resource trading for the whole game: gold moves only by -pool, F3, autopool
+        run.eq("Allies menu: trading is locked, three clicks on slot 2's gold icon gave nothing", (given, recv), (0, 0))
+    else:
+        run.eq("Allies menu: three clicks on slot 2's gold icon gave 300 (score screen's gold given)", given, 300)
+        run.eq("Allies menu: slot 2 received what slot 1 gave (no trading tax)", recv, given)
+        # both slots earn income meanwhile; in the 0.05s poll where the trade landed, gold moved by the trade alone
+        tick = run.one("tradetick")
+        run.eq("Allies menu: in the poll the trade landed, slot 1 lost and slot 2 got exactly the trade",
+               (as_int(tick.get("dgold1")), as_int(tick.get("dgold2"))), (-given, recv))
     run.eq("Allies menu: no pool counter moved", [t1[k] - t0[k] for k in ("out1", "in1", "out2", "in2")], [0, 0, 0, 0])
     if res:
         run.eq("stats rows carry both routes (given, recv, pool_out, pool_in of slots 1 and 2)",
@@ -836,14 +840,18 @@ def check_kill_credit(run, bot):
 
 
 def check_afk(run, bot):
-    """The AFK kick: the client (slot 1) never picks a hero and is removed by the map's own kick 15 s after the mass
-    began, or when the gold pool opens if that is later (main Pub: the trading timer; Solo has no pool); the result
-    file drops it (an `afk` record, no roster entry, stats or usage rows)."""
+    """The AFK kick: the client (slot 1) never picks a hero and does nothing, and is removed by the map's own kick 15 s
+    after the mass began, or when the gold pool opens if that is later (799X Pub: the trading timer; Solo has no pool);
+    the result file drops it (an `afk` record, no roster entry, stats or usage rows). On 799X the map's auto-pick has
+    given it a hero at the mass, so there the kick is for doing nothing."""
     res = check_files(run, bot, need_end=False)
     run.eq("client seated in slot 1 (Player 0)", run.one("e2e").get("local"), "0")
     mass = run.one("mass")
     run.check("the mass began", "t" in mass, f"{mass}")
-    run.eq("the client has no hero at the mass", mass.get("hero"), "0")
+    if run.map == "799x":
+        run.eq("799X: the map's auto-pick gave the client a hero at the mass", mass.get("hero"), "1")
+    else:
+        run.eq("Solo: the client has no hero at the mass", mass.get("hero"), "0")
     warned = run.one("warned")
     run.eq("after the warning: AFK, still in the game (afk, dropped, active)",
            [warned.get(k) for k in ("afk", "dropped", "active")], ["1", "0", "1"])
@@ -973,9 +981,9 @@ def check_transmute(run, bot):
         run.eq("after the loss: the side's slot has left", after.get(f"state{side}"), "left")
     run.eq("after the loss: the target is dead, the hero alive (alive, hero)",
            [after.get(k) for k in ("alive", "hero")], ["0", "1"])
-    # A destroyed side's units are killed at once (no killer: the Transmute is denied). A leaver's are removed at once
-    # on main (dodged); Solo removes them ~20 s later, so the projectile lands (a hit).
-    hit = case == "left" and run.map == "solo"
+    # A destroyed side's units are killed at once (no killer: the Transmute is denied). A leaver's stay ~20 s on both
+    # maps (799X: SafeRemoval's grace) before they are removed, so the projectile lands (a hit).
+    hit = case == "left"
     run.eq("after the loss: Transmute counters (casts, hits, denied)", [after.get(k) for k in ("casts", "hits", "denied")],
            ["2", "1" if hit else "0", "2" if case == "destroyed" else "1"])
     if not res:

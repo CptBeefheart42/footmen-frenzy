@@ -117,8 +117,10 @@ function FF_E2E_TrPool takes nothing returns nothing
     call FF_E2E_After(3.0, function FF_E2E_TrBack)
 endfunction
 
+// Waits for the map to allow pooling. 799X keeps the Allies menu's resource trading locked for the whole game (gold
+// moves only by -pool, F3 and autopool), so the lock is recorded (`allies,locked=`), not waited for.
 function FF_E2E_TrWait takes nothing returns nothing
-    if not udg_autopoool_allowed or IsMapFlagSet(MAP_LOCK_RESOURCE_TRADING) then
+    if not udg_autopoool_allowed then
         set FF_E2E_trWaited = FF_E2E_trWaited + 2
         if FF_E2E_trWaited <= 400 then
             call FF_E2E_After(2.0, function FF_E2E_TrWait)
