@@ -31,3 +31,17 @@ rb:Ocr2,A0RG,*,as A0CT
 # effect / order often doesn't register within the 2.5 s window. Other Serpent Ward copies vary less.
 cast,A0IH,*,Serpent Ward copy (AOsw): see above
 effect,A0IH,*,Serpent Ward copy (AOsw): see above
+# 799X / Solo UPDATE38 heroes whose spells the map scripts (explained):
+cast,ADk2,*,Dragon Knight's crushing attacks (based on Attribute Bonus Aamk): a passive
+cast,AGr3,*,Gragas: a point-target channel (Ncl2 = 2) whose base order is stomp; the scenario issues stomp without a target
+mana,AMu1,*,Mundo pays with health: the map sets his mana to 0, so the test caster's mana is gone
+mana,AMu2,*,Mundo pays with health: the map sets his mana to 0, so the test caster's mana is gone
+mana,AMu3,*,Mundo pays with health: the map sets his mana to 0, so the test caster's mana is gone
+mana,AMu4,*,Mundo pays with health: the map sets his mana to 0, so the test caster's mana is gone
+cd,AFg1,*,the map starts the cooldown itself (BlzStartUnitAbilityCooldown 0.1 s or 30 s)
+cd,ATf2,*,Twisted Fate's card choice: the map starts the cooldown when the card is thrown
+# Measured on 3.0.1.24371 (799X T19 / Solo UPDATE38, 2026-11-20), cause not explained yet; listed so a NEW
+# deviation stands out. Remove a row once explained or fixed.
+cd,A0AF,*,Purge copy (Aprg): no cooldown started after the cast (unexplained)
+mana,A08Z,*,Silence copy (ACsi): no mana spent (unexplained)
+cast,A0DL,*,799X only: the channel order is refused at every level (Solo accepts it; unexplained)
