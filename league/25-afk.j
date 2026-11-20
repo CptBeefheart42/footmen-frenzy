@@ -2,8 +2,8 @@
 // FF_AFK_KICK seconds have passed since the mass began AND the gold pool is open is removed from the game, like the
 // map's own kick. When the mass begins, a map addon may first give every player without a hero a random one
 // (FF_afk_autoHeroHook; 799X does), so there a player who is not there is recognised by having done nothing.
-// "Done something" counts only what players do themselves: selecting a unit (not the selections the map makes: a
-// player's mode selector at the start, a freshly picked hero), chatting, buying an item or unit, starting research,
+// "Done something" counts only what players do themselves: selecting one of their own units (not the selections the
+// map makes: a player's mode selector at the start, a freshly picked hero, a shop such as 799X's draft tavern), chatting, buying an item or unit, starting research,
 // an upgrade or training, the arrow keys, Esc and the F keys. Orders don't count: the map orders units itself
 // (autosend). Removing a player hands their base
 // and gold to the allies, a pool in all but name, so the kick waits until pooling is allowed: in a main-map Pub game
@@ -30,6 +30,8 @@ globals
     integer FF_afk_t = 0
     // the slot did something itself since the game started
     boolean array FF_afk_present
+    // what first counted the slot as present (e.g. `select:hfoo`, `event:17`, `sell`), for tests and complaints
+    string array FF_afk_presentBy
 endglobals
 
 function FF_afk_NoHero takes integer slot returns boolean
@@ -48,11 +50,19 @@ function FF_afk_IsAfk takes integer slot returns boolean
     return FF_afk_NoHero(slot) or not FF_afk_present[slot]
 endfunction
 
-function FF_afk_Present takes player p returns nothing
+// Counts the player as present; `by` says what they did (kept for the first time only).
+function FF_afk_PresentBy takes player p, string by returns nothing
     local integer slot = GetPlayerId(p) + 1
     if slot >= 1 and slot <= 12 then
+        if not FF_afk_present[slot] then
+            set FF_afk_presentBy[slot] = by
+        endif
         set FF_afk_present[slot] = true
     endif
+endfunction
+
+function FF_afk_Present takes player p returns nothing
+    call FF_afk_PresentBy(p, "event:" + I2S(GetHandleId(GetTriggerEventId())))
 endfunction
 
 function FF_afk_OnPlayerSignal takes nothing returns nothing
@@ -63,14 +73,14 @@ endfunction
 function FF_afk_OnSelect takes nothing returns nothing
     local integer slot = GetPlayerId(GetTriggerPlayer()) + 1
     local unit u = GetTriggerUnit()
-    if slot >= 1 and slot <= 12 and u != udg_herO[slot] and u != udg_mode_selector[slot] then
-        set FF_afk_present[slot] = true
+    if slot >= 1 and slot <= 12 and GetOwningPlayer(u) == GetTriggerPlayer() and u != udg_herO[slot] and u != udg_mode_selector[slot] then
+        call FF_afk_PresentBy(GetTriggerPlayer(), "select:" + FF_us_Id2S(GetUnitTypeId(u)))
     endif
     set u = null
 endfunction
 
 function FF_afk_OnSell takes nothing returns nothing
-    call FF_afk_Present(GetOwningPlayer(GetBuyingUnit()))
+    call FF_afk_PresentBy(GetOwningPlayer(GetBuyingUnit()), "sell")
 endfunction
 
 // Whole seconds until the gold pool opens; 0 once it is open.

@@ -12,7 +12,27 @@ globals
     integer FF_E2E_afkWaited = 0
     integer FF_E2E_afkMass = 0
     integer FF_E2E_afkMassPoolIn = 0
+    // the first time the AFK rule counts the client as present, and the selections the client gets
+    boolean FF_E2E_afkSawPresent = false
+    integer FF_E2E_afkSelections = 0
 endglobals
+
+// Records when the AFK rule first counts the client as present (`present,t=`): the client does nothing, so a
+// present client means something the map did is taken for the player's own action.
+function FF_E2E_AfkWatchPresent takes nothing returns nothing
+    if FF_afk_present[1] and not FF_E2E_afkSawPresent then
+        set FF_E2E_afkSawPresent = true
+        call FF_E2E_Row("present,t=" + I2S(FF_E2E_Now()) + ",by=" + FF_afk_presentBy[1])
+    endif
+endfunction
+
+// The client's first selections (`select,t=,unit=,hero=`): the map's own selections must not count as activity.
+function FF_E2E_AfkOnSelect takes nothing returns nothing
+    if FF_E2E_afkSelections < 8 then
+        set FF_E2E_afkSelections = FF_E2E_afkSelections + 1
+        call FF_E2E_Row("select,t=" + I2S(FF_E2E_Now()) + ",unit=" + FF_us_Id2S(GetUnitTypeId(GetTriggerUnit())) + ",hero=" + FF_E2E_Bool(GetTriggerUnit() == udg_herO[1]))
+    endif
+endfunction
 
 // player_active of the computer seats (slots 2-12 in the game), one 0/1 per seat.
 function FF_E2E_AfkOthers takes nothing returns string
@@ -69,7 +89,13 @@ function FF_E2E_HostClick takes nothing returns string
 endfunction
 
 function FF_E2E_Scenario takes nothing returns nothing
+    local trigger t = CreateTrigger()
     call FF_E2E_Begin("afk")
+    call TriggerRegisterPlayerUnitEvent(t, Player(0), EVENT_PLAYER_UNIT_SELECTED, null)
+    call TriggerAddAction(t, function FF_E2E_AfkOnSelect)
+    call FF_E2E_AfkWatchPresent()
+    call TimerStart(CreateTimer(), 0.5, true, function FF_E2E_AfkWatchPresent)
+    set t = null
     call TriggerAddAction(FF_afk_kickHook, function FF_E2E_AfkKicked)
     call FF_E2E_After(1.0, function FF_E2E_AfkWaitMass)
 endfunction

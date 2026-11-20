@@ -152,6 +152,16 @@ function T.buyUnit(buyer, shop, code)
     return u
 end
 
+--- Slot `slot` selects `unit` (any owner's): the selection event goes to the selecting player, as in the game.
+function T.select(slot, unit)
+    local p = P(slot - 1)
+    W.fire("EVENT_PLAYER_UNIT_SELECTED", { unit = unit, player = p }, function(r)
+        if r.unit then return r.unit == unit end
+        if r.player then return r.player == p end
+        return true
+    end)
+end
+
 --- Slot `slot` picks hero `code` (default H005) the way a player does: bought at the tavern (main: the shared one,
 --- Solo: the slot's own), so the map's TP_hero makes it the slot's hero (udg_herO). Returns the hero, or nil.
 function T.pickHero(slot, code)
