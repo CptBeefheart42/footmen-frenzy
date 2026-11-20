@@ -1,0 +1,4 @@
+# war3mapSkin.w3d: doodad data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[IOst]

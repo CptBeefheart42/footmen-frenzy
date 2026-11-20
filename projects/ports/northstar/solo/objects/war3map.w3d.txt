@@ -1,0 +1,6 @@
+# war3map.w3d: doodad data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[IOst]
+end = base
+dmas.0.0 unreal = 1.5                   # Maximum Scale
