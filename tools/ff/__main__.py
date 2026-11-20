@@ -12,6 +12,8 @@
     ff e2e suite | ladder         every scenario, played and judged, then the ladder check / only the ladder check
                                   (suite --runs 799x:ffa solo:solo ... --no-probe: only these, without the probe)
     ff e2e probe | probe-build    the WC3 3.0 probe map: build, play and judge it / only build it
+    ff pr fetch|check <N>         a contributor's pull request: copy it into a throwaway clone and list its changes /
+                                  run ff check on it in an offline container (maintainers; the import-pr skill)
     ff objects fix-types <map>    store every object-data cell with its field's type (WC3 reads a wrong one as 0)
     ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
@@ -37,6 +39,7 @@ import e2e  # noqa: E402
 import hotkeys  # noqa: E402
 import leaks  # noqa: E402
 import objecttypes  # noqa: E402
+import pr  # noqa: E402
 import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
@@ -282,6 +285,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('scenario', nargs='?')
     p.add_argument('--runs', nargs='+', metavar='MAP:SCENARIO', help='suite: only these runs (default: all)')
     p.add_argument('--no-probe', action='store_true', help='suite: without the probe map')
+    p = commands.add_parser('pr', help="a contributor's pull request, safely (maintainers; the import-pr skill)")
+    p.add_argument('action', choices=['fetch', 'check'])
+    p.add_argument('number', type=int)
     p = commands.add_parser('objects', help="a map's object data (objects/*.txt)")
     p.add_argument('action', choices=['fix-types'])
     p.add_argument('map', choices=list(projects()))
@@ -304,6 +310,14 @@ def main(argv: list[str] | None = None) -> int:
             return docker(args.rest or ['check'])
         if args.command == 'e2e':
             return e2e_command(args)
+        if args.command == 'pr':
+            if args.action == 'fetch':
+                changed = pr.fetch(args.number)
+                print(f'pull request {args.number} -> {pr.folder(args.number)} (nothing of it was run)')
+                for line in changed:
+                    print(('RISKY  ' if pr.is_risky(line.split(chr(9))[-1]) else '       ') + line)
+                return 0
+            return pr.check(args.number)
         if args.command == 'objects':
             print(f'fixed {objecttypes.fix(project(args.map).objects)} cell type(s) in projects/{args.map}/objects')
             return 0
