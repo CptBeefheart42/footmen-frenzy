@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open the Footmen Frenzy balance wiki</title>
+  <style>
+    :root { font: 18px/1.5 system-ui, sans-serif; color: #20372f; background: #fbfbf6; }
+    main { max-width: 36rem; margin: 8vh auto; padding: 1rem; }
+    h1 { font: 2.3rem/1.15 Georgia, serif; }
+    ul { list-style: none; padding: 0; }
+    a { display: block; padding: .8rem 1rem; margin: .6rem 0; color: #184e3b; border: 1px solid #bacbbf; background: white; }
+    a:hover, a:focus-visible { background: #e6eee5; }
+    summary { cursor: pointer; }
+    table { width: 100%; margin: .6rem 0; border-collapse: collapse; }
+    th, td { padding: .4rem; text-align: left; border-bottom: 1px solid #d5ded7; }
+    td a { display: inline; margin: 0; padding: .15rem; border: 0; background: transparent; }
+  </style>
+</head>
+<body><main>
+  <h1>Footmen Frenzy balance wiki</h1>
+  <h2>NorthStar Tavern Page snapshots</h2>
+  <p>Each ZIP includes three editions. Extract it and open <strong>Open Balance Wiki.html</strong> to browse offline.</p>
+  <ul>
+    <li><a href="https://github.com/user-attachments/files/35171269/Balance-Wiki-799x.zip">799X ZIP</a></li>
+    <li><a href="https://github.com/user-attachments/files/35171270/Balance-Wiki-solo.zip">Solo Foots ZIP</a></li>
+    <li><a href="https://github.com/user-attachments/files/35171271/Balance-Wiki-ffa.zip">FFA Foots ZIP</a></li>
+  </ul>
+  <h2>This repository’s starting maps</h2>
+  <p>Generate the two starting-map guides from the repository folder, then choose a map below.</p>
+  <pre>python tools/export_wiki.py 799x
+python tools/export_wiki.py solo</pre>
+  <ul>
+    <li><a href="build/wiki-exports/799x/base/wiki.html">799X</a></li>
+    <li><a href="build/wiki-exports/solo/base/wiki.html">Solo Foots</a></li>
+  </ul>
+  <p>Each guide shows the archive fingerprint. See the balance wiki guide in tools/wiki/README.md for setup, built maps and edit proposals.</p>
+</main></body>
+</html>

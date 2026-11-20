@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Footmen Frenzy · Balance wiki</title>
+<style>
+:root{--ink:#202d29;--pine:#183f34;--line:#d9ded6;--paper:#fbfbf6;--muted:#55665e;font:16px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+*{box-sizing:border-box}body{margin:0}header{background:var(--pine);color:#fff;padding:1rem 3vw;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}header a{color:#fff;font:600 1.35rem Georgia,serif;text-decoration:none}header small{margin-right:auto;color:#d2e3d8}
+main{display:grid;grid-template-columns:minmax(17rem,24rem) minmax(0,1fr);max-width:115rem;margin:auto}aside{padding:1.3rem;border-right:1px solid var(--line);height:calc(100vh - 4.3rem);position:sticky;top:0;overflow:auto}article{padding:1.5rem clamp(1rem,3vw,4rem);min-width:0}h1,h2,h3{font-family:Georgia,serif;line-height:1.15}h1{font-size:clamp(1.8rem,3vw,3.2rem);margin:.35em 0}h2{font-size:1.45rem;margin:1.3em 0 .55em}h3{font-size:1.16rem}
+label,small,.meta{font-size:.85rem;color:var(--muted)}label{display:block;margin-bottom:.2rem}input,select,button,textarea{font:inherit;color:inherit}aside input,aside select{width:100%;margin-bottom:.75rem;padding:.5rem;background:white;border:1px solid #aab9af;border-radius:.25rem}button{cursor:pointer;background:#fff;border:1px solid #aab9af;border-radius:.25rem;padding:.25rem .6rem}button:hover,a:hover{background:#e7eee6;color:#153d30}a{color:#1f624a;text-underline-offset:.15em}#list{list-style:none;margin:.4rem 0;padding:0}#list a{display:block;text-decoration:none;padding:.32rem .2rem;border-bottom:1px solid #e1e6df;overflow-wrap:anywhere}#list a[aria-current]{background:#dce9dd;font-weight:600}#list code{color:var(--muted);font-size:.78rem}
+.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:.91rem}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:.42rem .6rem;overflow-wrap:anywhere}th{background:#e6eee5}th[scope=row]{background:transparent;font-weight:500}
+pre{background:#eef2ec;padding:.75rem;max-height:65vh;overflow:auto;font-size:.84rem}code{overflow-wrap:anywhere}details{margin:.65rem 0}summary{cursor:pointer;color:var(--pine);font-weight:600}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.65rem}.tile{border:1px solid var(--line);padding:.8rem;text-decoration:none;background:white}.tile b{display:block;font-size:1.45rem;color:var(--pine)}dd{margin:0 0 .55rem}dialog{width:min(90vw,40rem);border:1px solid var(--line);padding:1.5rem}dialog input,textarea{width:100%;padding:.5rem;margin:.5rem 0}dialog pre{white-space:pre-wrap}.buttons{display:flex;gap:.5rem;flex-wrap:wrap}.note{color:var(--muted)}[hidden]{display:none!important}
+@media(max-width:760px){main{display:block}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}#list{max-height:12rem;overflow:auto}header small{width:100%}}
+/* PLAYER_STYLES */
+</style></head><body>
+<header><a href="#">Footmen Frenzy</a><small id="build"></small><label class="mode"><input id="advanced" type="checkbox"> Advanced</label><button id="drafts">Edit list (0)</button></header>
+<main><aside><label for="group">Browse</label><select id="group"></select><label for="query">Search name, ID, field or script text</label>
+<input id="query" type="search" placeholder="e.g. Water Elemental" autocomplete="off"><div id="count" class="meta"></div><ul id="list"></ul><div class="buttons"><button id="prev">Previous</button><button id="next">Next</button></div></aside><nav id="playerNav" aria-label="Field guide"></nav><article id="detail"></article></main>
+<dialog id="editor"><form method="dialog"><h2 id="editTitle"></h2><div id="editBody"></div><div class="buttons"><button value="cancel">Close</button><button id="save" type="button"></button></div></form></dialog>
+<script type="application/json" id="payload"><!--WIKI_DATA--></script>
+<script>
+"use strict";
+if (document.getElementById("payload").textContent.trimStart().startsWith("<!--")) {
+  location.replace("../../Open%20Balance%20Wiki.html");
+} else {
+const db=JSON.parse(document.getElementById("payload").textContent), $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const link=(key,label)=>'<a href="#'+esc(encodeURIComponent(key))+'">'+esc(label)+'</a>';
+const titleCase=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const names={objects:"All objects",heroes:"Heroes",units:"Units",buildings:"Buildings",abilities:"Abilities & spells",effects:"Buffs & effects",models:"Models, projectiles & visual effects",items:"Items",upgrades:"Upgrades",destructibles:"Destructibles",doodads:"Doodads",functions:"Trigger functions",config:"Gameplay & profile files",tables:"Initialization tables"};
+const byID=new Map(),reverse=new Map(),callers=new Map(),modelUses=new Map(),rows=[],entries=new Map();
+const add=(map,k,v)=>{if(!map.has(k))map.set(k,[]);map.get(k).push(v)};
+const register=(key,group,name,id,search)=>{const row={key,group,name,id,search};rows.push(row);entries.set(key,row)};
+for(const [key,o] of Object.entries(db.objects)){
+  add(byID,o.id,key);
+  const meta=db.metadata[key.split("/")[0]]||{};
+  register(key,o.group,o.name,o.id,(o.name+" "+o.id+" "+o.fields.map(f=>f[0]+" "+(meta[f[0]]?.label||"")).join(" ")).toLowerCase());
+  for(const ref of Object.keys(o.refs))add(reverse,ref,key);
+}
+for(const [name,f] of Object.entries(db.functions)){
+  register("fn/"+name,"functions",name,"",null);
+  for(const other of f.calls)add(callers,other,name);
+}
+for(const name of Object.keys(db.config))register("cfg/"+name,"config",name,"",null);
+for(const [path,m] of Object.entries(db.models)){
+  register("model/"+path,"models",m.path.split("\\").pop(),"",path);
+  for(const owner of new Set(m.uses.map(u=>u[0])))add(modelUses,owner,path);
+}
+for(const table of db.tables)register("table/"+table.key,"tables",table.title,"",table.title.toLowerCase());
+register("globals","config","JASS globals and top-level source","","globals");
+register("wts","config","Map string table (WTS)","","wts");
+register("unresolved","config","Unresolved script object IDs","","unresolved");
+register("review","config","Reachability and asset review","","unlinked unused imports assets candidates unresolved");
+register("settings","config","Map settings, technology and random tables","","map rules players upgrades tech restrictions random tables");
+register("placements","config","Placed units, items and doodads","","placement inventory loot drops positions");
+register("creation","config","Scripted unit creation sites","","summons timers spawns dynamic scripted unit creation");
+register("recipes","config","Scripted item combinations","","recipes crafted items ingredients");
+rows.sort((a,b)=>a.name.localeCompare(b.name)||a.key.localeCompare(b.key));
+const objectLinks=id=>(byID.get(id)||[]).map(k=>link(k,db.objects[k].name+" · "+id)).join(", ")||esc(id);
+const fnLink=n=>link("fn/"+n,n);
+const details=(label,body,open=false)=>'<details'+(open?' open':'')+'><summary>'+esc(label)+'</summary>'+body+'</details>';
+const table=(heads,body)=>'<div class="scroll"><table><thead><tr>'+heads.map(s=>'<th scope="col">'+esc(s)+'</th>').join("")+'</tr></thead><tbody>'+body.map(cells=>'<tr>'+cells.map(c=>'<td>'+c+'</td>').join("")+'</tr>').join("")+'</tbody></table></div>';
+const groups=$("group"), query=$("query"), detail=$("detail"), limit=55;
+groups.innerHTML=Object.entries(names).map(([k,v])=>'<option value="'+k+'">'+v+'</option>').join("");
+$("build").textContent=db.source.input;
+let page=0,matches=[],active="",editing=[],changes=[];
+const changeKey="footmen-wiki/"+(db.source.sha256||JSON.stringify(db.source.entries));
+try{changes=JSON.parse(localStorage.getItem(changeKey)||"[]")}catch{}
+function sync(){try{localStorage.setItem(changeKey,JSON.stringify(changes))}catch{}$("drafts").textContent="Edit list ("+changes.length+")"}
+sync();
+function selectGroup(g){groups.value=g;query.value="";page=0;find()}
+function find(){
+  const g=groups.value,q=query.value.trim().toLowerCase();
+  matches=rows.filter(r=>(g==="objects"?Boolean(db.objects[r.key]):r.group===g)&&(!q||(r.search||r.name.toLowerCase()).includes(q)||
+    (g==="functions"&&db.functions[r.name].body.toLowerCase().includes(q))||(g==="config"&&db.config[r.name]?.toLowerCase().includes(q))));
+  page=0;list();
+}
+function list(){
+  $("count").textContent=matches.length?(page*limit+1)+"–"+Math.min((page+1)*limit,matches.length)+" of "+matches.length:"No matches";
+  $("list").innerHTML=matches.slice(page*limit,(page+1)*limit).map(r=>'<li><a '+(r.key===active?'aria-current="page" ':'')+'href="#'+esc(encodeURIComponent(r.key))+'">'+esc(r.name)+(r.id?' <code>'+esc(r.id)+'</code>':'')+'</a></li>').join("");
+  $("prev").disabled=page===0;$("next").disabled=(page+1)*limit>=matches.length;
+}
+$("prev").onclick=()=>{page--;list()};$("next").onclick=()=>{page++;list()};groups.onchange=find;query.oninput=find;
+function home(){
+  const counts={};for(const r of rows)counts[r.group]=(counts[r.group]||0)+1;
+  const tiles=Object.entries(names).filter(([k])=>k!=="objects").map(([k,v])=>'<a class="tile" href="#'+encodeURIComponent("browse/"+k)+'"><b>'+esc(counts[k]||0)+'</b>'+v+'</a>').join("");
+  const game=db.game?db.game.versions.map(v=>esc(v.version)).join(", "):"Stock cache absent";
+  return '<p class="meta">'+esc(db.family)+'</p><h1>Balance wiki</h1><p>'+esc(db.source.input)+'</p><div class="grid">'+tiles+'</div><h2>Source coverage</h2><p>Every stored field in the seven object-editor tables, their skin layers, the map string table, gameplay configuration and the full map JASS are available here. Referenced stock objects and their parent records are included when game data is loaded.</p><p>Relationships identify stored references and script call sites. Conditions, mode modifiers, timers and dynamically selected IDs can change the result in play. Source tables show their own layer and version.</p><p>Warcraft data version · '+game+'<br>Unresolved script IDs · '+link("unresolved",db.unresolved.length)+'</p>'+
+    details("Input fingerprints","<pre>"+esc(JSON.stringify(db.source,null,2))+"</pre>")+
+    (Object.keys(db.table_errors).length?details("Initialization report issues","<pre>"+esc(JSON.stringify(db.table_errors,null,2))+"</pre>",true):"");
+}
+function changeButton(c){editing.push(c);return '<button type="button" class="pencil" data-edit="'+(editing.length-1)+'" aria-label="Edit value" title="Edit value">✎</button>'}
+function summaryTable(t,subset){
+  const cols=Object.keys(t.columns);
+  const arrays=cols.filter(c=>c.startsWith("udg_"));
+  return '<p class="note">'+esc(t.note)+'</p>'+details("Find trigger code using these settings",arrays.map(k=>link("search/"+k,t.columns[k]+" · "+k)).join(" · "))+table(Object.values(t.columns),(subset||t.rows).map(r=>cols.map(k=>r[k]?
+    '<span title="'+esc(r[k].source)+'">'+((k==="id"||k==="udg_base_type")?objectLinks(r[k].value):esc(r[k].value))+'</span>':"—")));
+}
+function relationships(o){
+  const refs=Object.entries(o.refs).map(([id,why])=>[objectLinks(id),esc(why.join(" · "))]);
+  return refs.length?table(["Referenced object","Evidence"],refs):"<p>No direct object links recorded.</p>";
+}
+function modelsFor(key){
+  const paths=modelUses.get(key)||[];return paths.length?details("Model and effect paths ("+paths.length+")",paths.map(p=>link("model/"+p,db.models[p].path)).join(" · ")):"";
+}
+function recipeTable(rs){
+  return '<p>Direct item removals and grants found in the same function. Open the source for branches and helper-selected ingredients.</p>'+table(["Items removed","Items granted","Function"],rs.map(r=>[r.consumes.map(objectLinks).join(" + "),r.grants.map(objectLinks).join(" · "),fnLink(r.fn)]));
+}
+function objectPage(key,o){
+  const group=key.split("/")[0],meta=db.metadata[group]||{};
+  let out='<p class="meta">'+esc(names[o.group])+' · <code>'+esc(o.id)+'</code> · '+(o.defined?"Map record":"Stock reference")+'</p><h1>'+esc(o.name)+'</h1>';
+  if(o.parent!==o.id)out+='<p>Parent · '+objectLinks(o.parent)+'</p>';
+  if(o.stats.length)out+=details("Object stats",table(["Field","ID","Level","Value","Value source"],o.stats.map(s=>[esc(s.label),esc(s.field),s.level||"—",esc(s.value),esc(s.source)])),true);
+  if(o.linked_fields?.length)out+='<h2>Abilities and dependencies</h2>'+table(["Field","Level","Objects","Value source"],o.linked_fields.map(f=>[esc(f.label),f.level||"—",f.ids.map(objectLinks).join(" · "),esc(f.source)]));
+  for(const t of db.tables){const subset=t.rows.filter(r=>r.id?.value===o.id||r.udg_base_type?.value===o.id);if(subset.length)out+=details(t.title,summaryTable(t,subset),true)}
+  out+='<h2>Relationships</h2>'+relationships(o);
+  const parent=db.objects[group+"/"+o.parent];
+  if(parent&&parent!==o)out+=details("Parent record references · "+parent.name,relationships(parent));
+  const paths=db.creation_paths[o.id]||[];
+  if(paths.length)out+=details("Possible scripted creation paths ("+paths.length+")",'<p>Each path starts at a spell-ID test and reaches a creation call. Branch conditions determine which calls execute.</p>'+table(["Unit created","Trigger call path"],paths.map(p=>[objectLinks(p.unit),p.path.map(fnLink).join(" → ")])),true);
+  if(o.group==="items"){const rs=db.recipes.filter(r=>r.consumes.includes(o.id)||r.grants.includes(o.id));if(rs.length)out+=details("Scripted item combinations",recipeTable(rs),true)}
+  const placed=db.placements.filter(p=>p.id===o.id);
+  if(placed.length)out+=details("Placed instances ("+placed.length+")",placementTable(placed));
+  const incoming=reverse.get(o.id)||[];
+  if(incoming.length)out+=details("Referenced by ("+incoming.length+")",incoming.map(k=>link(k,db.objects[k].name+" · "+db.objects[k].id)).join(" · "));
+  if(o.functions.length)out+=details("Trigger functions using "+o.id+" ("+o.functions.length+")",o.functions.map(fnLink).join(" · "),true);
+  out+=modelsFor(key);
+  if(o.fields.length){
+    const body=o.fields.map(([field,level,pointer,value,entry,kind,offset,token])=>[esc(meta[field]?.label||field),'<code>'+esc(field)+'</code>',level,pointer,esc(value),esc(entry)+(token?" · "+esc(token):""),
+      changeButton(token?{type:"wts",entry:"war3map.wts",id:Number(token.slice(8)),original:value}:{type:"object",entry,id:o.id,field,level,pointer,kind,offset,original:value})]);
+    out+='<h2 id="mapFields" tabindex="-1">Map fields</h2>'+table(["Field","ID","Level","Data","Value","Source",""],body);
+  }
+  const defaults=Object.entries(o.stock);
+  if(defaults.length){out+='<h2>Stock and imported tables</h2>';for(const [src,row] of defaults)out+=details(src,table(["Column","Stored value"],Object.entries(row).map(([k,v])=>[esc(k),esc(v)])))}
+  return out;
+}
+function codeView(lines,entry){
+  return table(["Line","Source",""],lines.map(([n,line])=>[n,'<code style="white-space:pre-wrap">'+esc(line)+'</code>',
+    entry==='war3map.j'||entry.startsWith("war3map")?changeButton({type:"line",entry,line:n,original:line}):""]));
+}
+function fnPage(name){
+  const f=db.functions[name],line=f.line,back=callers.get(name)||[];
+  let out='<p class="meta">JASS · war3map.j · line '+line+'</p><h1>'+esc(name)+'</h1>';
+  if(f.ids.length)out+='<p>Object IDs · '+f.ids.map(objectLinks).join(" · ")+'</p>';
+  if(f.creates.length)out+='<p>Literal unit creation targets · '+f.creates.map(objectLinks).join(" · ")+'</p>';
+  if(back.length)out+=details("Callers and trigger registrations ("+back.length+")",back.map(fnLink).join(" · "),true);
+  if(f.calls.length)out+=details("Called functions and callbacks ("+f.calls.length+")",f.calls.map(fnLink).join(" · "),true);
+  return out+modelsFor("fn/"+name)+codeView(f.body.split("\n").map((l,i)=>[line+i,l]),"war3map.j");
+}
+function placementTable(records){
+  return table(["Object","Owner","Position","Stored instance data"],records.map(r=>[objectLinks(r.id),esc(r.owner??""),esc((r.position||r.terrain_position).map(v=>Number(v.toFixed(1))).join(", ")),details(r.entry+" · byte "+r.offset,"<pre>"+esc(JSON.stringify(r,null,2))+"</pre>")]));
+}
+function route(){
+  const previous=active;
+  try{active=decodeURIComponent(location.hash.slice(1))}catch{active=""}editing=[];
+  if(previous!==active)window.scrollTo(0,0);
+  document.body.classList.toggle("player",!$("advanced").checked);
+  if(!$("advanced").checked){playerRoute();return}
+  if(active.startsWith("browse/")&&names[active.slice(7)])selectGroup(active.slice(7));
+  if(active.startsWith("search/")){groups.value="functions";query.value=active.slice(7);find()}
+  const modelKey=active.startsWith("visual/")?"model/"+active.slice(7):active;
+  const r=entries.get(modelKey);
+  if(r&&groups.value!==r.group&&!(groups.value==="objects"&&db.objects[active]))selectGroup(r.group);
+  let html;
+  if(db.objects[active])html=advancedTrace(active)+objectPage(active,db.objects[active]);
+  else if(active==="review")html=reviewPage();
+  else if(active.startsWith("fn/")&&r)html=fnPage(r.name);
+  else if(modelKey.startsWith("model/")&&r){const m=db.models[modelKey.slice(6)];html="<h1>"+esc(r.name)+"</h1><p>"+esc(m.path)+"</p>"+table(["Used by","Source"],m.uses.map(([owner,src])=>[link(owner,entries.get(owner)?.name||owner),esc(src)]))}
+  else if(active.startsWith("table/")&&r){const t=db.tables.find(x=>"table/"+x.key===active);html="<h1>"+esc(t.title)+"</h1>"+summaryTable(t)}
+  else if(active.startsWith("cfg/")&&r)html="<h1>"+esc(r.name)+"</h1>"+codeView(db.config[r.name].split(/\r?\n/).map((s,i)=>[i+1,s]),r.name);
+  else if(active==="globals")html="<h1>JASS globals and top-level source</h1>"+codeView(db.globals,"war3map.j");
+  else if(active==="wts")html="<h1>Map string table</h1>"+table(["Trigger string","Resolved text",""],Object.entries(db.wts).map(([k,v])=>[k,esc(v),changeButton({type:"wts",entry:"war3map.wts",id:Number(k),original:v})]));
+  else if(active==="settings")html="<h1>Map rules and random tables</h1><p>war3map.w3i</p>"+table(["Field","Value"],Object.entries(db.settings).map(([k,v])=>[esc(k),"<pre>"+esc(JSON.stringify(v,null,2))+"</pre>"]));
+  else if(active==="placements")html="<h1>Placed units, items and doodads</h1>"+placementTable(db.placements);
+  else if(active==="creation")html="<h1>Scripted unit creation sites</h1>"+table(["Function","Line","Unit argument","Resolved ID"],Object.entries(db.functions).flatMap(([n,f])=>f.creation_sites.map(([line,arg,id])=>[fnLink(n),line,esc(arg),id?objectLinks(id):"Runtime expression"])));
+  else if(active==="recipes")html="<h1>Scripted item combinations</h1>"+recipeTable(db.recipes);
+  else if(active.startsWith("search/"))html="<h1>Trigger references</h1><p><code>"+esc(query.value)+"</code></p>"+matches.map(r=>link(r.key,r.name)).join(" · ");
+  else if(active==="unresolved")html="<h1>Unresolved script IDs</h1><p>Literal references without an indexed object definition.</p>"+table(["ID","Referenced in"],db.unresolved.map(id=>[esc(id),Object.entries(db.functions).filter(([,f])=>f.ids.includes(id)).map(([n])=>fnLink(n)).join(" · ")]));
+  else html='<p>'+link("review","Reachability and asset review")+'</p>'+home();
+  detail.innerHTML=html;list();
+}
+detail.onclick=e=>{
+  const b=e.target.closest("[data-edit]");if(!b)return;
+  const target=editing[Number(b.dataset.edit)],modal=$("editor");
+  $("editTitle").textContent="Propose a balance edit";$("editBody").innerHTML='<p>'+esc(target.entry)+' · '+esc(target.field||(target.type==="wts"?"STRING "+target.id+" (shared by every reference)":"line "+target.line))+'</p><label for="newValue">Proposed value</label><textarea id="newValue" rows="3"></textarea><p id="error" role="alert"></p>';
+  const existing=changes.find(c=>sameTarget(c,target));
+  $("newValue").value=existing?.value??target.original;$("save").textContent="Save proposal";$("save").hidden=false;
+  $("save").onclick=()=>{
+    let v=$("newValue").value;
+    if(target.type==="object"&&target.kind<3){const n=Number(v);if(!v.trim()||!Number.isFinite(n)||(target.kind===0&&(!Number.isInteger(n)||n< -2147483648||n>2147483647))||(target.kind>0&&!Number.isFinite(Math.fround(n)))){$("error").textContent="Enter a number within the field’s storage range.";return}v=n}
+    else if(target.type==="line"&&/[\r\n]/.test(v)){$("error").textContent="Source edits replace one line at a time.";return}
+    changes=changes.filter(c=>!sameTarget(c,target));if(v!==target.original)changes.push({...target,value:v});sync();modal.close();
+  };modal.showModal();
+};
+function sameTarget(a,b){return a.type===b.type&&a.entry===b.entry&&(a.type==="line"?a.line===b.line:a.type==="wts"?a.id===b.id:a.offset===b.offset)}
+$("drafts").onclick=()=>{
+  $("editTitle").textContent="Proposed edits";$("editBody").innerHTML=changes.length?table(["Target","Original","Proposed",""],changes.map((c,i)=>[esc(c.entry+" · "+(c.field?c.id+" / "+c.field:c.type==="wts"?"STRING "+c.id:"line "+c.line)),esc(c.original),esc(c.value),'<button type="button" data-remove="'+i+'">Remove</button>'])):"<p>No proposed edits yet.</p>";
+  $("editBody").onclick=e=>{if(e.target.dataset.remove!==undefined){changes.splice(Number(e.target.dataset.remove),1);sync();$("editor").close();$("drafts").click()}};
+  $("save").hidden=!changes.length;$("save").textContent="Download change list";
+  $("save").onclick=()=>{const blob=new Blob([JSON.stringify({schema:1,family:db.family,source:db.source,changes},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="balance-changes.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+  $("editor").showModal();
+};
+/* PLAYER_SCRIPT */
+window.addEventListener("hashchange",route);find();route();
+}
+</script></body></html>
