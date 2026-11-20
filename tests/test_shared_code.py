@@ -74,7 +74,7 @@ class ExtractTest(unittest.TestCase):
 
     def test_functions_that_are_spread_out_are_refused(self):
         with self.assertRaisesRegex(SharedCodeError, 'not next to each other'):
-            extract('apart', ['TFP_TF_Alive', 'MU_Heal'], [], scripts(), self.shared)
+            extract('apart', ['TFP_TF_Alive', 'TFP_TF_CardDebuff'], [], scripts(), self.shared)
 
     def test_existing_module_is_not_overwritten(self):
         with self.assertRaisesRegex(SharedCodeError, 'already exists'):
