@@ -1,0 +1,7 @@
+# war3mapSkin.w3b: destructable data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[B000 : YTfc]
+bsuf string = "TRIGSTR_5897"            # Editor Suffix
+bnam string = "TRIGSTR_11182"           # Name
+bfil string = "none.mdl"                # Model File

@@ -1,0 +1,3102 @@
+# war3map.w3t: item data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[stwp]
+end = base
+igol int = 0                            # Gold Cost
+iuse int = 2                            # Number of Charges
+ilev int = 0                            # Level
+ista int = 2                            # Max Stacks
+istr int = 1                            # Stock Replenish Interval
+isto int = 5                            # Stock Maximum
+
+[shas]
+end = base
+iuse int = 3                            # Number of Charges
+isto int = 10                           # Stock Maximum
+istr int = 2                            # Stock Replenish Interval
+ista int = 6                            # Max Stacks
+icid string = "AIsa"                    # Cooldown Group
+igol int = 45 @0                        # Gold Cost
+
+[pgma]
+end = base
+igol int = 100                          # Gold Cost
+isto int = 4                            # Stock Maximum
+istr int = 60                           # Stock Replenish Interval
+ista int = 1                            # Max Stacks
+
+[pghe]
+end = base
+igol int = 100                          # Gold Cost
+isto int = 4                            # Stock Maximum
+istr int = 60                           # Stock Replenish Interval
+ista int = 1                            # Max Stacks
+
+[whwd]
+end = base
+igol int = 250                          # Gold Cost
+ihtp int = 5                            # Hit Points
+istr int = 1                            # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+icid string = "Aoar"                    # Cooldown Group
+iuse int = 4                            # Number of Charges
+
+[dust]
+end = base
+iuse int = 6                            # Number of Charges
+igol int = 0                            # Gold Cost
+istr int = 6                            # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+
+[sror]
+end = base
+isst int = 0                            # Stock Start Delay
+istr int = 5                            # Stock Replenish Interval
+iabi string = "Aroa"                    # Abilities
+ista int = 6                            # Max Stacks
+isto int = 2                            # Stock Maximum
+iuse int = 3                            # Number of Charges
+igol int = 360 @0                       # Gold Cost
+
+[frhg]
+end = base
+igol int = 800                          # Gold Cost
+iabi string = "AId5,AIs2,A0EX"          # Abilities
+
+[tret]
+end = base
+isst int = 0                            # Stock Start Delay
+isto int = 3                            # Stock Maximum
+istr int = 60                           # Stock Replenish Interval
+igol int = 100                          # Gold Cost
+
+[pinv]
+end = base
+igol int = 0                            # Gold Cost
+isst int = 0                            # Stock Start Delay
+istr int = 70                           # Stock Replenish Interval
+
+[ankh]
+end = base
+igol int = 700                          # Gold Cost
+
+[pnvu]
+end = base
+isst int = 0                            # Stock Start Delay
+igol int = 250                          # Gold Cost
+istr int = 190                          # Stock Replenish Interval
+
+[brac]
+end = base
+igol int = 1000                         # Gold Cost
+
+[clsd]
+end = base
+istr int = 3600                         # Stock Replenish Interval
+igol int = 25                           # Gold Cost
+ihtp int = 50                           # Hit Points
+
+[crys]
+end = base
+iabi string = "ACba,AImz"               # Abilities
+igol int = 200                          # Gold Cost
+
+[ssil]
+end = base
+igol int = 75                           # Gold Cost
+iuse int = 1                            # Number of Charges
+iper int = 1                            # Perishable
+
+[cnob]
+end = base
+igol int = 3250                         # Gold Cost
+iabi string = "A089,AIx2"               # Abilities
+istr int = 600                          # Stock Replenish Interval
+
+[rin1]
+end = base
+iabi string = "A06U,A03E"               # Abilities
+igol int = 1200                         # Gold Cost
+
+[rst1]
+end = base
+iabi string = "A073,A03C"               # Abilities
+igol int = 2000                         # Gold Cost
+istr int = 600                          # Stock Replenish Interval
+
+[prvt]
+end = base
+iabi string = "A01P"                    # Abilities
+igol int = 500                          # Gold Cost
+isto int = 2                            # Stock Maximum
+isit int = 2                            # Stock Initial After Start Delay
+
+[rag1]
+end = base
+iabi string = "A070,A06Z,A03D"          # Abilities
+igol int = 2750                         # Gold Cost
+istr int = 600                          # Stock Replenish Interval
+
+[nspi]
+end = base
+igol int = 12000                        # Gold Cost
+istr int = 0                            # Stock Replenish Interval
+
+[clfm]
+end = base
+igol int = 800                          # Gold Cost
+isst int = 200                          # Stock Start Delay
+iabi string = "Arel,AId4,A0JS,AIcf"     # Abilities
+istr int = 1800                         # Stock Replenish Interval
+
+[hval]
+end = base
+iabi string = "ACev,AIbx"               # Abilities
+isit int = 2 @0                         # Stock Initial After Start Delay
+isto int = 2 @0                         # Stock Maximum
+igol int = 400                          # Gold Cost
+istr int = 2                            # Stock Replenish Interval
+
+[ckng]
+end = base
+igol int = 500                          # Gold Cost
+isit int = 2                            # Stock Initial After Start Delay
+isto int = 2                            # Stock Maximum
+iabi string = "A01M"                    # Abilities
+istr int = 2                            # Stock Replenish Interval
+
+[bgst]
+igol int = 250 @base                    # Gold Cost
+isto int = 2                            # Stock Maximum
+isit int = 2                            # Stock Initial After Start Delay
+
+[belv]
+end = base
+igol int = 300                          # Gold Cost
+isto int = 2                            # Stock Maximum
+isit int = 2                            # Stock Initial After Start Delay
+iabi string = "A0GD"                    # Abilities
+istr int = 2                            # Stock Replenish Interval
+
+[ciri]
+end = base
+igol int = 100                          # Gold Cost
+iabi string = "AIi4,AIi6"               # Abilities
+isit int = 2 @0                         # Stock Initial After Start Delay
+isto int = 2 @0                         # Stock Maximum
+istr int = 2                            # Stock Replenish Interval
+
+[rlif]
+end = base
+igol int = 100                          # Gold Cost
+isto int = 2                            # Stock Maximum
+istr int = 2                            # Stock Replenish Interval
+
+[pmna]
+end = base
+igol int = 300                          # Gold Cost
+iabi string = "A01O"                    # Abilities
+isit int = 2 @0                         # Stock Initial After Start Delay
+isto int = 2 @0                         # Stock Maximum
+istr int = 2                            # Stock Replenish Interval
+
+[rwiz]
+end = base
+igol int = 100                          # Gold Cost
+isto int = 2 @0                         # Stock Maximum
+isit int = 2 @0                         # Stock Initial After Start Delay
+iabi string = "AIrn,A0H2"               # Abilities
+istr int = 2                            # Stock Replenish Interval
+
+[rde3]
+end = base
+iabi string = "AIs4,A05S"               # Abilities
+igol int = 200                          # Gold Cost
+isto int = 2 @0                         # Stock Maximum
+isit int = 2 @0                         # Stock Initial After Start Delay
+istr int = 2                            # Stock Replenish Interval
+
+[evtl]
+isit int = 2                            # Stock Initial After Start Delay
+isto int = 2                            # Stock Maximum
+igol int = 350 @base                    # Gold Cost
+istr int = 2 @base                      # Stock Replenish Interval
+
+[mcou]
+end = base
+iabi string = "AId4,AImz"               # Abilities
+igol int = 150                          # Gold Cost
+isit int = 2                            # Stock Initial After Start Delay
+isto int = 2                            # Stock Maximum
+
+[mnst]
+end = base
+isto int = 3                            # Stock Maximum
+igol int = 150                          # Gold Cost
+istr int = 45                           # Stock Replenish Interval
+iabi string = "AIm2"                    # Abilities
+
+[hlst]
+end = base
+igol int = 150                          # Gold Cost
+isto int = 3                            # Stock Maximum
+istr int = 45                           # Stock Replenish Interval
+
+[pres]
+end = base
+istr int = 30                           # Stock Replenish Interval
+isst int = 0                            # Stock Start Delay
+igol int = 200                          # Gold Cost
+ista int = 1                            # Max Stacks
+
+[wneg]
+end = base
+igol int = 450                          # Gold Cost
+istr int = 5                            # Stock Replenish Interval
+iuse int = 2                            # Number of Charges
+
+[will]
+end = base
+igol int = 40                           # Gold Cost
+iuse int = 1                            # Number of Charges
+ista int = 1                            # Max Stacks
+istr int = 10                           # Stock Replenish Interval
+
+[modt]
+end = base
+igol int = 300                          # Gold Cost
+
+[ofro]
+end = base
+igol int = 200                          # Gold Cost
+istr int = 2                            # Stock Replenish Interval
+
+[olig]
+end = base
+istr int = 2                            # Stock Replenish Interval
+igol int = 400                          # Gold Cost
+
+[ratf]
+end = base
+igol int = 300                          # Gold Cost
+iabi string = "A02Y"                    # Abilities
+istr int = 2                            # Stock Replenish Interval
+
+[sbch]
+end = base
+igol int = 500                          # Gold Cost
+istr int = 15                           # Stock Replenish Interval
+
+[tmmt]
+end = base
+igol int = 600                          # Gold Cost
+iabi string = "AIaz,AItj"               # Abilities
+isst int = 30                           # Stock Start Delay
+istr int = 2                            # Stock Replenish Interval
+
+[ward]
+end = base
+istr int = 15                           # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+igol int = 450 @0                       # Gold Cost
+
+[spro]
+end = base
+igol int = 400                          # Gold Cost
+iuse int = 2                            # Number of Charges
+isst int = 900                          # Stock Start Delay
+isto int = 1                            # Stock Maximum
+istr int = 300                          # Stock Replenish Interval
+ista int = 2                            # Max Stacks
+
+[mort]
+end = base
+isto int = 0                            # Stock Maximum
+igol int = 180 @0                       # Gold Cost
+
+[spre]
+end = base
+igol int = 900                          # Gold Cost
+istr int = 1                            # Stock Replenish Interval
+isst int = 1                            # Stock Start Delay
+
+[desc]
+end = base
+igol int = 1500                         # Gold Cost
+iabi string = "A076"                    # Abilities
+
+[wswd]
+end = base
+istr int = 180                          # Stock Replenish Interval
+igol int = 75                           # Gold Cost
+isst int = 300                          # Stock Start Delay
+ista int = 2                            # Max Stacks
+
+[stwa]
+end = base
+iabi string = "A07G"                    # Abilities
+igol int = 800                          # Gold Cost
+istr int = 600                          # Stock Replenish Interval
+
+[tcas]
+end = base
+ureq string = ""                        # Requirements
+ista int = 4                            # Max Stacks
+ilum int = 0                            # Lumber Cost
+igol int = 125                          # Gold Cost
+istr int = 600                          # Stock Replenish Interval
+isst int = 600                          # Stock Start Delay
+iuse int = 2                            # Number of Charges
+
+[rat9]
+end = base
+igol int = 800                          # Gold Cost
+iabi string = "A089,A06N"               # Abilities
+istr int = 600                          # Stock Replenish Interval
+
+[rat6]
+end = base
+iabi string = "A0DT,AIsx"               # Abilities
+igol int = 1500                         # Gold Cost
+istr int = 3600                         # Stock Replenish Interval
+isst int = 120                          # Stock Start Delay
+icid string = "A0DT"                    # Cooldown Group
+
+[gobm]
+end = base
+igol int = 125                          # Gold Cost
+isto int = 1                            # Stock Maximum
+istr int = 30                           # Stock Replenish Interval
+iabi string = "Asta"                    # Abilities
+isst int = 600                          # Stock Start Delay
+
+[hslv]
+end = base
+igol int = 0                            # Gold Cost
+ista int = 3                            # Max Stacks
+
+[tgrh]
+end = base
+icid string = "AIbg"                    # Cooldown Group
+ista int = 4                            # Max Stacks
+ilum int = 0                            # Lumber Cost
+igol int = 125                          # Gold Cost
+ureq string = ""                        # Requirements
+isst int = 600                          # Stock Start Delay
+istr int = 600                          # Stock Replenish Interval
+iuse int = 2                            # Number of Charges
+ilev int = 0                            # Level
+
+[stel]
+end = base
+isst int = 30                           # Stock Start Delay
+igol int = 250                          # Gold Cost
+
+[oven]
+end = base
+igol int = 300                          # Gold Cost
+ureq string = ""                        # Requirements
+istr int = 2                            # Stock Replenish Interval
+
+[sres]
+end = base
+isst int = 460                          # Stock Start Delay
+igol int = 225                          # Gold Cost
+ista int = 2                            # Max Stacks
+istr int = 180                          # Stock Replenish Interval
+iabi string = "A0MM"                    # Abilities
+iuse int = 2                            # Number of Charges
+icid string = "A0MM"                    # Cooldown Group
+
+[pams]
+end = base
+iabi string = "A0A7"                    # Abilities
+isto int = 1                            # Stock Maximum
+istr int = 130                          # Stock Replenish Interval
+igol int = 50                           # Gold Cost
+
+[srrc]
+end = base
+igol int = 2500                         # Gold Cost
+ista int = 3                            # Max Stacks
+istr int = 300                          # Stock Replenish Interval
+
+[spsh]
+end = base
+igol int = 540                          # Gold Cost
+
+[sand]
+end = base
+iabi string = "A02F"                    # Abilities
+igol int = 2500                         # Gold Cost
+istr int = 600                          # Stock Replenish Interval
+
+[oli2]
+igol int = 360                          # Gold Cost
+
+[gold]
+end = base
+igol int = 100                          # Gold Cost
+
+[rhe2]
+end = base
+igol int = 0                            # Gold Cost
+
+[rre2]
+end = base
+igol int = 0                            # Gold Cost
+
+[lgdh]
+igol int = 450                          # Gold Cost
+
+[sreg]
+end = base
+istr int = 30                           # Stock Replenish Interval
+isto int = 1                            # Stock Maximum
+igol int = 50                           # Gold Cost
+isst int = 240                          # Stock Start Delay
+iuse int = 3                            # Number of Charges
+
+[pnvl]
+end = base
+istr int = 30                           # Stock Replenish Interval
+isst int = 120                          # Stock Start Delay
+isto int = 2                            # Stock Maximum
+isit int = 2                            # Stock Initial After Start Delay
+igol int = 135 @0                       # Gold Cost
+
+[sman]
+end = base
+iuse int = 2                            # Number of Charges
+ista int = 2                            # Max Stacks
+isit int = 2                            # Stock Initial After Start Delay
+isto int = 1                            # Stock Maximum
+istr int = 5                            # Stock Replenish Interval
+isst int = 240                          # Stock Start Delay
+igol int = 75                           # Gold Cost
+
+[amrc]
+end = base
+isto int = 1                            # Stock Maximum
+igol int = 158                          # Gold Cost
+
+[rhe1]
+igol int = 90                           # Gold Cost
+
+[rhe3]
+igol int = 270                          # Gold Cost
+
+[rspl]
+end = base
+iabi string = "A0J3"                    # Abilities
+igol int = 135 @0                       # Gold Cost
+
+[rspd]
+end = base
+iabi string = "A0IL,APsa"               # Abilities
+igol int = 180 @0                       # Gold Cost
+
+[infs]
+end = base
+igol int = 1000                         # Gold Cost
+
+[lhst]
+end = base
+igol int = 500                          # Gold Cost
+ureq string = "R00J"                    # Requirements
+istr int = 1                            # Stock Replenish Interval
+isst int = 220                          # Stock Start Delay
+
+[rhth]
+end = base
+igol int = 1200                         # Gold Cost
+isst int = 240                          # Stock Start Delay
+istr int = 1                            # Stock Replenish Interval
+
+[pclr]
+end = base
+igol int = 50                           # Gold Cost
+iuse int = 2                            # Number of Charges
+ista int = 2                            # Max Stacks
+isto int = 1                            # Stock Maximum
+istr int = 120                          # Stock Replenish Interval
+isst int = 120                          # Stock Start Delay
+ureq string = ""                        # Requirements
+
+[lmbr]
+end = base
+igol int = 2000                         # Gold Cost
+icla string = "Permanent"               # Classification
+
+[ches]
+end = base
+igol int = 0                            # Gold Cost
+
+[penr]
+end = base
+igol int = 350                          # Gold Cost
+
+[gcel]
+end = base
+igol int = 225                          # Gold Cost
+istr int = 1                            # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+
+[afac]
+igol int = 360                          # Gold Cost
+
+[ajen]
+igol int = 450                          # Gold Cost
+
+[anfg]
+igol int = 135                          # Gold Cost
+
+[arsc]
+igol int = 900                          # Gold Cost
+
+[arsh]
+igol int = 3150                         # Gold Cost
+
+[asbl]
+igol int = 1800                         # Gold Cost
+
+[axas]
+igol int = 2700                         # Gold Cost
+
+[azhr]
+igol int = 180                          # Gold Cost
+
+[bfhr]
+igol int = 2250                         # Gold Cost
+
+[blba]
+igol int = 3150                         # Gold Cost
+
+[brag]
+igol int = 45                           # Gold Cost
+
+[brpb]
+igol int = 252                          # Gold Cost
+
+[bspd]
+igol int = 135                          # Gold Cost
+
+[btst]
+igol int = 900                          # Gold Cost
+
+[bzbe]
+igol int = 180                          # Gold Cost
+
+[bzbf]
+igol int = 180                          # Gold Cost
+
+[cabl]
+igol int = 180                          # Gold Cost
+
+[cagh]
+igol int = 180                          # Gold Cost
+
+[cbmv]
+igol int = 180                          # Gold Cost
+
+[cccg]
+igol int = 180                          # Gold Cost
+
+[cccm]
+igol int = 3240                         # Gold Cost
+
+[ccec]
+igol int = 1800                         # Gold Cost
+
+[ccem]
+igol int = 1800                         # Gold Cost
+
+[ccmd]
+igol int = 900                          # Gold Cost
+
+[ccvw]
+igol int = 180                          # Gold Cost
+
+[cdhb]
+igol int = 180                          # Gold Cost
+
+[cegi]
+igol int = 2700                         # Gold Cost
+
+[celi]
+igol int = 1800                         # Gold Cost
+
+[cese]
+igol int = 180                          # Gold Cost
+
+[cexp]
+igol int = 180                          # Gold Cost
+
+[cgah]
+igol int = 180                          # Gold Cost
+
+[ckcm]
+igol int = 180                          # Gold Cost
+
+[ckdk]
+igol int = 180                          # Gold Cost
+
+[clom]
+igol int = 180                          # Gold Cost
+
+[cmag]
+igol int = 180                          # Gold Cost
+
+[cnhn]
+igol int = 180                          # Gold Cost
+
+[cpor]
+igol int = 180                          # Gold Cost
+
+[cprk]
+igol int = 180                          # Gold Cost
+
+[cptz]
+igol int = 180                          # Gold Cost
+
+[crdt]
+igol int = 5760                         # Gold Cost
+
+[ctat]
+igol int = 180                          # Gold Cost
+
+[ctoa]
+igol int = 4500                         # Gold Cost
+
+[ctoi]
+igol int = 4500                         # Gold Cost
+
+[ctos]
+igol int = 4500                         # Gold Cost
+
+[cvdt]
+igol int = 180                          # Gold Cost
+
+[cvfs]
+igol int = 180                          # Gold Cost
+
+[cvpe]
+igol int = 180                          # Gold Cost
+
+[cvvb]
+igol int = 180                          # Gold Cost
+
+[dkfw]
+igol int = 180                          # Gold Cost
+
+[dphe]
+igol int = 180                          # Gold Cost
+
+[drph]
+igol int = 45                           # Gold Cost
+
+[dsum]
+igol int = 360                          # Gold Cost
+
+[dthb]
+igol int = 180                          # Gold Cost
+
+[dtsb]
+igol int = 3015                         # Gold Cost
+
+[eaaa]
+igol int = 1026                         # Gold Cost
+
+[eaba]
+igol int = 1548                         # Gold Cost
+
+[eabh]
+igol int = 720                          # Gold Cost
+
+[eagt]
+igol int = 1440                         # Gold Cost
+
+[eame]
+igol int = 414                          # Gold Cost
+
+[eaor]
+igol int = 2700                         # Gold Cost
+
+[earr]
+igol int = 3375                         # Gold Cost
+
+[easb]
+igol int = 2520                         # Gold Cost
+
+[easc]
+igol int = 1350                         # Gold Cost
+
+[eash]
+igol int = 747                          # Gold Cost
+
+[eauc]
+igol int = 90                           # Gold Cost
+
+[eavr]
+igol int = 2160                         # Gold Cost
+
+[ebac]
+igol int = 540                          # Gold Cost
+
+[ebcb]
+igol int = 1458                         # Gold Cost
+
+[ebcs]
+igol int = 2025                         # Gold Cost
+
+[ebdf]
+igol int = 756                          # Gold Cost
+
+[ebdg]
+igol int = 540                          # Gold Cost
+
+[ebdw]
+igol int = 1134                         # Gold Cost
+
+[ebfh]
+igol int = 2970                         # Gold Cost
+
+[ebhb]
+igol int = 351                          # Gold Cost
+
+[ebhg]
+igol int = 540                          # Gold Cost
+
+[ebhi]
+igol int = 540                          # Gold Cost
+
+[ebhl]
+igol int = 540                          # Gold Cost
+
+[ebnp]
+igol int = 540                          # Gold Cost
+
+[eboc]
+igol int = 2592                         # Gold Cost
+
+[ebof]
+igol int = 738                          # Gold Cost
+
+[eboh]
+igol int = 1980                         # Gold Cost
+
+[eboi]
+igol int = 1260                         # Gold Cost
+
+[ebom]
+igol int = 1800                         # Gold Cost
+
+[ebos]
+igol int = 648                          # Gold Cost
+
+[ebr1]
+igol int = 2295                         # Gold Cost
+
+[ebr2]
+igol int = 2700                         # Gold Cost
+
+[ebrp]
+igol int = 2520                         # Gold Cost
+
+[ebsc]
+igol int = 1044                         # Gold Cost
+
+[ebsd]
+igol int = 1656                         # Gold Cost
+
+[ebsk]
+igol int = 288                          # Gold Cost
+
+[ebsm]
+igol int = 540                          # Gold Cost
+
+[ebsp]
+igol int = 2610                         # Gold Cost
+
+[ebsw]
+igol int = 2250                         # Gold Cost
+
+[ebtb]
+igol int = 756                          # Gold Cost
+
+[ebtf]
+igol int = 360                          # Gold Cost
+
+[ebtv]
+igol int = 1242                         # Gold Cost
+
+[ebua]
+igol int = 540                          # Gold Cost
+
+[ebug]
+igol int = 540                          # Gold Cost
+
+[ebul]
+igol int = 540                          # Gold Cost
+
+[ebut]
+igol int = 2124                         # Gold Cost
+
+[ebwb]
+igol int = 522                          # Gold Cost
+
+[ebwg]
+igol int = 594                          # Gold Cost
+
+[ebwh]
+igol int = 774                          # Gold Cost
+
+[ebws]
+igol int = 270                          # Gold Cost
+
+[ecab]
+igol int = 567                          # Gold Cost
+
+[ecap]
+igol int = 225                          # Gold Cost
+
+[ecav]
+igol int = 450                          # Gold Cost
+
+[ecba]
+igol int = 2745                         # Gold Cost
+
+[ecbr]
+igol int = 1404                         # Gold Cost
+
+[eccc]
+igol int = 432                          # Gold Cost
+
+[ecdc]
+igol int = 1440                         # Gold Cost
+
+[ecdl]
+igol int = 2340                         # Gold Cost
+
+[ecgb]
+igol int = 252                          # Gold Cost
+
+[ecgc]
+igol int = 495                          # Gold Cost
+
+[ecgh]
+igol int = 270                          # Gold Cost
+
+[ecgr]
+igol int = 1260                         # Gold Cost
+
+[ech1]
+igol int = 3825                         # Gold Cost
+
+[ech2]
+igol int = 2448                         # Gold Cost
+
+[ech3]
+igol int = 3816                         # Gold Cost
+
+[ecig]
+igol int = 2160                         # Gold Cost
+
+[eclc]
+igol int = 738                          # Gold Cost
+
+[eclg]
+igol int = 261                          # Gold Cost
+
+[ecmg]
+igol int = 1980                         # Gold Cost
+
+[ecnr]
+igol int = 504                          # Gold Cost
+
+[ecof]
+igol int = 1800                         # Gold Cost
+
+[ecrm]
+igol int = 1584                         # Gold Cost
+
+[ecrn]
+igol int = 2385                         # Gold Cost
+
+[ecrr]
+igol int = 180                          # Gold Cost
+
+[ecss]
+igol int = 405                          # Gold Cost
+
+[edac]
+igol int = 3240                         # Gold Cost
+
+[edbb]
+igol int = 1440                         # Gold Cost
+
+[edbl]
+igol int = 1710                         # Gold Cost
+
+[edbs]
+igol int = 990                          # Gold Cost
+
+[edbw]
+igol int = 1620                         # Gold Cost
+
+[edds]
+igol int = 1467                         # Gold Cost
+
+[edib]
+igol int = 1980                         # Gold Cost
+
+[edif]
+igol int = 1206                         # Gold Cost
+
+[edig]
+igol int = 1206                         # Gold Cost
+
+[edih]
+igol int = 1314                         # Gold Cost
+
+[edis]
+igol int = 1440                         # Gold Cost
+
+[edrb]
+igol int = 1350                         # Gold Cost
+
+[edrc]
+igol int = 2430                         # Gold Cost
+
+[edrh]
+igol int = 1800                         # Gold Cost
+
+[edri]
+igol int = 1800                         # Gold Cost
+
+[edrs]
+igol int = 1350                         # Gold Cost
+
+[edsh]
+igol int = 378                          # Gold Cost
+
+[edsm]
+igol int = 594                          # Gold Cost
+
+[edsr]
+igol int = 1368                         # Gold Cost
+
+[edts]
+igol int = 1080                         # Gold Cost
+
+[edwg]
+igol int = 2250                         # Gold Cost
+
+[eefr]
+igol int = 1350                         # Gold Cost
+
+[eege]
+igol int = 3600                         # Gold Cost
+
+[eeh1]
+igol int = 1107                         # Gold Cost
+
+[eeh2]
+igol int = 1746                         # Gold Cost
+
+[eeh3]
+igol int = 2700                         # Gold Cost
+
+[eeit]
+igol int = 1386                         # Gold Cost
+
+[eerc]
+igol int = 3780                         # Gold Cost
+
+[eesq]
+igol int = 648                          # Gold Cost
+
+[efch]
+igol int = 540                          # Gold Cost
+
+[effl]
+igol int = 2250                         # Gold Cost
+
+[efgc]
+igol int = 1152                         # Gold Cost
+
+[efgh]
+igol int = 1260                         # Gold Cost
+
+[efhm]
+igol int = 351                          # Gold Cost
+
+[efla]
+igol int = 594                          # Gold Cost
+
+[efoa]
+igol int = 2880                         # Gold Cost
+
+[efpb]
+igol int = 1638                         # Gold Cost
+
+[efrg]
+igol int = 540                          # Gold Cost
+
+[efsh]
+igol int = 288                          # Gold Cost
+
+[egat]
+igol int = 1935                         # Gold Cost
+
+[egcg]
+igol int = 630                          # Gold Cost
+
+[egdb]
+igol int = 1296                         # Gold Cost
+
+[egef]
+igol int = 3600                         # Gold Cost
+
+[egfg]
+igol int = 612                          # Gold Cost
+
+[egfw]
+igol int = 1620                         # Gold Cost
+
+[eggn]
+igol int = 828                          # Gold Cost
+
+[eggp]
+igol int = 675                          # Gold Cost
+
+[eglc]
+igol int = 396                          # Gold Cost
+
+[egns]
+igol int = 2160                         # Gold Cost
+
+[egob]
+igol int = 666                          # Gold Cost
+
+[egop]
+igol int = 1152                         # Gold Cost
+
+[egos]
+igol int = 693                          # Gold Cost
+
+[egow]
+igol int = 1008                         # Gold Cost
+
+[egsb]
+igol int = 1260                         # Gold Cost
+
+[egsc]
+igol int = 648                          # Gold Cost
+
+[egse]
+igol int = 5220                         # Gold Cost
+
+[egsg]
+igol int = 1152                         # Gold Cost
+
+[egsh]
+igol int = 2250                         # Gold Cost
+
+[eguv]
+igol int = 1728                         # Gold Cost
+
+[egwh]
+igol int = 1044                         # Gold Cost
+
+[egzx]
+igol int = 1728                         # Gold Cost
+
+[ehbm]
+igol int = 756                          # Gold Cost
+
+[ehcc]
+igol int = 1728                         # Gold Cost
+
+[ehcf]
+igol int = 1728                         # Gold Cost
+
+[ehco]
+igol int = 1512                         # Gold Cost
+
+[ehdr]
+igol int = 2610                         # Gold Cost
+
+[ehdt]
+igol int = 2268                         # Gold Cost
+
+[ehfi]
+igol int = 2160                         # Gold Cost
+
+[ehgh]
+igol int = 1035                         # Gold Cost
+
+[ehhi]
+igol int = 2178                         # Gold Cost
+
+[ehig]
+igol int = 1485                         # Gold Cost
+
+[ehls]
+igol int = 1080                         # Gold Cost
+
+[ehmc]
+igol int = 918                          # Gold Cost
+
+[ehol]
+igol int = 1584                         # Gold Cost
+
+[ehph]
+igol int = 1287                         # Gold Cost
+
+[ehrl]
+igol int = 1800                         # Gold Cost
+
+[ehsc]
+igol int = 1485                         # Gold Cost
+
+[ehsh]
+igol int = 1800                         # Gold Cost
+
+[ehtc]
+igol int = 3780                         # Gold Cost
+
+[ehtf]
+igol int = 1800                         # Gold Cost
+
+[ehtj]
+igol int = 3960                         # Gold Cost
+
+[ehtk]
+igol int = 405                          # Gold Cost
+
+[ehtm]
+igol int = 1620                         # Gold Cost
+
+[ehtv]
+igol int = 2250                         # Gold Cost
+
+[eicc]
+igol int = 2520                         # Gold Cost
+
+[eicd]
+igol int = 1494                         # Gold Cost
+
+[eiep]
+igol int = 900                          # Gold Cost
+
+[eigc]
+igol int = 1368                         # Gold Cost
+
+[eigg]
+igol int = 324                          # Gold Cost
+
+[einf]
+igol int = 2475                         # Gold Cost
+
+[ejjr]
+igol int = 1260                         # Gold Cost
+
+[ekmg]
+igol int = 3420                         # Gold Cost
+
+[ekmh]
+igol int = 810                          # Gold Cost
+
+[elae]
+igol int = 1260                         # Gold Cost
+
+[elbc]
+igol int = 720                          # Gold Cost
+
+[elbp]
+igol int = 549                          # Gold Cost
+
+[elfp]
+igol int = 2970                         # Gold Cost
+
+[elfq]
+igol int = 1260                         # Gold Cost
+
+[elhp]
+igol int = 765                          # Gold Cost
+
+[elmf]
+igol int = 450                          # Gold Cost
+
+[elmt]
+igol int = 360                          # Gold Cost
+
+[elod]
+igol int = 2070                         # Gold Cost
+
+[elvl]
+igol int = 1620                         # Gold Cost
+
+[emcg]
+igol int = 540                          # Gold Cost
+
+[emof]
+igol int = 1800                         # Gold Cost
+
+[emoh]
+igol int = 1485                         # Gold Cost
+
+[emrw]
+igol int = 909                          # Gold Cost
+
+[emto]
+igol int = 1386                         # Gold Cost
+
+[engr]
+igol int = 630                          # Gold Cost
+
+[engs]
+igol int = 180                          # Gold Cost
+
+[enmi]
+igol int = 936                          # Gold Cost
+
+[envl]
+igol int = 405                          # Gold Cost
+
+[eobb]
+igol int = 522                          # Gold Cost
+
+[eocs]
+igol int = 423                          # Gold Cost
+
+[eodp]
+igol int = 2358                         # Gold Cost
+
+[eofs]
+igol int = 396                          # Gold Cost
+
+[eogb]
+igol int = 1008                         # Gold Cost
+
+[eoid]
+igol int = 936                          # Gold Cost
+
+[eoms]
+igol int = 963                          # Gold Cost
+
+[eops]
+igol int = 1080                         # Gold Cost
+
+[eosc]
+igol int = 2340                         # Gold Cost
+
+[epac]
+igol int = 2745                         # Gold Cost
+
+[epah]
+igol int = 1350                         # Gold Cost
+
+[epbc]
+igol int = 990                          # Gold Cost
+
+[epbs]
+igol int = 1197                         # Gold Cost
+
+[epcg]
+igol int = 2025                         # Gold Cost
+
+[epcs]
+igol int = 2700                         # Gold Cost
+
+[epdb]
+igol int = 3240                         # Gold Cost
+
+[epdw]
+igol int = 2160                         # Gold Cost
+
+[epfc]
+igol int = 1620                         # Gold Cost
+
+[epgb]
+igol int = 1260                         # Gold Cost
+
+[epgd]
+igol int = 477                          # Gold Cost
+
+[epgl]
+igol int = 621                          # Gold Cost
+
+[ephf]
+igol int = 1170                         # Gold Cost
+
+[eplr]
+igol int = 2250                         # Gold Cost
+
+[epmb]
+igol int = 1980                         # Gold Cost
+
+[epmm]
+igol int = 2250                         # Gold Cost
+
+[epmw]
+igol int = 693                          # Gold Cost
+
+[epnf]
+igol int = 2970                         # Gold Cost
+
+[epoa]
+igol int = 396                          # Gold Cost
+
+[epow]
+igol int = 2520                         # Gold Cost
+
+[epqp]
+igol int = 1305                         # Gold Cost
+
+[eprm]
+igol int = 720                          # Gold Cost
+
+[epsb]
+igol int = 1845                         # Gold Cost
+
+[epsc]
+igol int = 1944                         # Gold Cost
+
+[epsg]
+igol int = 2340                         # Gold Cost
+
+[epsh]
+igol int = 1530                         # Gold Cost
+
+[epsj]
+igol int = 3960                         # Gold Cost
+
+[epss]
+igol int = 3420                         # Gold Cost
+
+[eptk]
+igol int = 3240                         # Gold Cost
+
+[eptr]
+igol int = 2448                         # Gold Cost
+
+[epwb]
+igol int = 3780                         # Gold Cost
+
+[epws]
+igol int = 378                          # Gold Cost
+
+[erad]
+igol int = 2322                         # Gold Cost
+
+[eraf]
+igol int = 405                          # Gold Cost
+
+[erbg]
+igol int = 270                          # Gold Cost
+
+[erbm]
+igol int = 2313                         # Gold Cost
+
+[ercs]
+igol int = 576                          # Gold Cost
+
+[erdr]
+igol int = 2520                         # Gold Cost
+
+[ereb]
+igol int = 1440                         # Gold Cost
+
+[eref]
+igol int = 1350                         # Gold Cost
+
+[eres]
+igol int = 2430                         # Gold Cost
+
+[erfa]
+igol int = 450                          # Gold Cost
+
+[erfl]
+igol int = 1737                         # Gold Cost
+
+[ergg]
+igol int = 900                          # Gold Cost
+
+[ergm]
+igol int = 1620                         # Gold Cost
+
+[ergp]
+igol int = 2520                         # Gold Cost
+
+[ergs]
+igol int = 1260                         # Gold Cost
+
+[ergw]
+igol int = 1755                         # Gold Cost
+
+[erhe]
+igol int = 1197                         # Gold Cost
+
+[erhf]
+igol int = 1107                         # Gold Cost
+
+[erho]
+igol int = 4140                         # Gold Cost
+
+[erhw]
+igol int = 3690                         # Gold Cost
+
+[erkt]
+igol int = 1422                         # Gold Cost
+
+[erlr]
+igol int = 324                          # Gold Cost
+
+[ernn]
+igol int = 1710                         # Gold Cost
+
+[ernp]
+igol int = 648                          # Gold Cost
+
+[eroa]
+igol int = 1350                         # Gold Cost
+
+[eroe]
+igol int = 720                          # Gold Cost
+
+[erof]
+igol int = 810                          # Gold Cost
+
+[erog]
+igol int = 855                          # Gold Cost
+
+[erpb]
+igol int = 1980                         # Gold Cost
+
+[errw]
+igol int = 855                          # Gold Cost
+
+[ersb]
+igol int = 1656                         # Gold Cost
+
+[ersd]
+igol int = 1062                         # Gold Cost
+
+[erse]
+igol int = 1260                         # Gold Cost
+
+[ersf]
+igol int = 1080                         # Gold Cost
+
+[ersg]
+igol int = 1305                         # Gold Cost
+
+[ersk]
+igol int = 1440                         # Gold Cost
+
+[ersm]
+igol int = 1296                         # Gold Cost
+
+[ersn]
+igol int = 756                          # Gold Cost
+
+[erug]
+igol int = 927                          # Gold Cost
+
+[esa1]
+igol int = 3420                         # Gold Cost
+
+[esa2]
+igol int = 1800                         # Gold Cost
+
+[esah]
+igol int = 1242                         # Gold Cost
+
+[esaz]
+igol int = 540                          # Gold Cost
+
+[esbs]
+igol int = 1440                         # Gold Cost
+
+[esbt]
+igol int = 702                          # Gold Cost
+
+[escl]
+igol int = 1512                         # Gold Cost
+
+[escr]
+igol int = 2520                         # Gold Cost
+
+[escs]
+igol int = 288                          # Gold Cost
+
+[esfs]
+igol int = 1305                         # Gold Cost
+
+[eshc]
+igol int = 1575                         # Gold Cost
+
+[esib]
+igol int = 1512                         # Gold Cost
+
+[eske]
+igol int = 1440                         # Gold Cost
+
+[esla]
+igol int = 1674                         # Gold Cost
+
+[eslc]
+igol int = 432                          # Gold Cost
+
+[eslo]
+igol int = 1485                         # Gold Cost
+
+[esls]
+igol int = 1260                         # Gold Cost
+
+[esnm]
+igol int = 1620                         # Gold Cost
+
+[esns]
+igol int = 1800                         # Gold Cost
+
+[esod]
+igol int = 2340                         # Gold Cost
+
+[esof]
+igol int = 2475                         # Gold Cost
+
+[esos]
+igol int = 1098                         # Gold Cost
+
+[esot]
+igol int = 2250                         # Gold Cost
+
+[espb]
+igol int = 630                          # Gold Cost
+
+[espg]
+igol int = 747                          # Gold Cost
+
+[espn]
+igol int = 1314                         # Gold Cost
+
+[esrc]
+igol int = 2160                         # Gold Cost
+
+[essc]
+igol int = 3060                         # Gold Cost
+
+[essi]
+igol int = 2700                         # Gold Cost
+
+[essr]
+igol int = 918                          # Gold Cost
+
+[etbd]
+igol int = 360                          # Gold Cost
+
+[etbh]
+igol int = 918                          # Gold Cost
+
+[etbs]
+igol int = 1530                         # Gold Cost
+
+[etee]
+igol int = 360                          # Gold Cost
+
+[etff]
+igol int = 720                          # Gold Cost
+
+[etif]
+igol int = 2160                         # Gold Cost
+
+[etkj]
+igol int = 1350                         # Gold Cost
+
+[etkt]
+igol int = 1260                         # Gold Cost
+
+[etmb]
+igol int = 630                          # Gold Cost
+
+[etmi]
+igol int = 522                          # Gold Cost
+
+[etmp]
+igol int = 810                          # Gold Cost
+
+[etnw]
+igol int = 405                          # Gold Cost
+
+[etom]
+igol int = 3150                         # Gold Cost
+
+[eton]
+igol int = 882                          # Gold Cost
+
+[etoo]
+igol int = 972                          # Gold Cost
+
+[etow]
+igol int = 810                          # Gold Cost
+
+[etrb]
+igol int = 1800                         # Gold Cost
+
+[eucr]
+igol int = 1530                         # Gold Cost
+
+[evgm]
+igol int = 2376                         # Gold Cost
+
+[evow]
+igol int = 2025                         # Gold Cost
+
+[evsk]
+igol int = 3600                         # Gold Cost
+
+[ewao]
+igol int = 549                          # Gold Cost
+
+[ewbl]
+igol int = 1962                         # Gold Cost
+
+[ewfb]
+igol int = 1575                         # Gold Cost
+
+[ewoa]
+igol int = 360                          # Gold Cost
+
+[ewob]
+igol int = 801                          # Gold Cost
+
+[ews1]
+igol int = 540                          # Gold Cost
+
+[ewtb]
+igol int = 270                          # Gold Cost
+
+[ewwg]
+igol int = 630                          # Gold Cost
+
+[eymo]
+igol int = 4320                         # Gold Cost
+
+[ezba]
+igol int = 468                          # Gold Cost
+
+[ezgc]
+igol int = 3240                         # Gold Cost
+
+[fgbd]
+igol int = 495                          # Gold Cost
+
+[fgdg]
+igol int = 675                          # Gold Cost
+
+[fgfh]
+igol int = 405                          # Gold Cost
+
+[fgrd]
+igol int = 405                          # Gold Cost
+
+[fgrg]
+igol int = 405                          # Gold Cost
+
+[fgsk]
+igol int = 405                          # Gold Cost
+
+[fgun]
+igol int = 113                          # Gold Cost
+
+[flag]
+igol int = 900                          # Gold Cost
+
+[frgd]
+igol int = 1260                         # Gold Cost
+
+[fwss]
+igol int = 675                          # Gold Cost
+
+[gemt]
+igol int = 180                          # Gold Cost
+
+[gfor]
+igol int = 180                          # Gold Cost
+
+[gldo]
+igol int = 405                          # Gold Cost
+
+[glsk]
+igol int = 180                          # Gold Cost
+
+[glxb]
+igol int = 270                          # Gold Cost
+
+[gmfr]
+igol int = 180                          # Gold Cost
+
+[gomn]
+igol int = 270                          # Gold Cost
+
+[gopr]
+igol int = 225                          # Gold Cost
+
+[grsl]
+igol int = 1215                         # Gold Cost
+
+[gsou]
+igol int = 900                          # Gold Cost
+
+[guvi]
+igol int = 113                          # Gold Cost
+
+[gvsm]
+igol int = 1260                         # Gold Cost
+
+[hbth]
+igol int = 3780                         # Gold Cost
+
+[hcun]
+igol int = 450                          # Gold Cost
+
+[horl]
+igol int = 855                          # Gold Cost
+
+[hsmm]
+igol int = 405                          # Gold Cost
+
+[iotw]
+igol int = 495                          # Gold Cost
+
+[iwbr]
+igol int = 45                           # Gold Cost
+
+[jdrn]
+igol int = 45                           # Gold Cost
+
+[jpnt]
+igol int = 180                          # Gold Cost
+
+[k3m1]
+igol int = 180                          # Gold Cost
+
+[k3m2]
+igol int = 180                          # Gold Cost
+
+[k3m3]
+igol int = 180                          # Gold Cost
+
+[kgal]
+igol int = 765                          # Gold Cost
+
+[kpin]
+igol int = 450                          # Gold Cost
+
+[ktrm]
+igol int = 180                          # Gold Cost
+
+[kybl]
+igol int = 180                          # Gold Cost
+
+[kygh]
+igol int = 180                          # Gold Cost
+
+[kymn]
+igol int = 180                          # Gold Cost
+
+[kysn]
+igol int = 180                          # Gold Cost
+
+[ledg]
+igol int = 180                          # Gold Cost
+
+[lnrn]
+igol int = 45                           # Gold Cost
+
+[lure]
+igol int = 180                          # Gold Cost
+
+[manh]
+igol int = 180                          # Gold Cost
+
+[mcri]
+igol int = 45                           # Gold Cost
+
+[mgtk]
+igol int = 180                          # Gold Cost
+
+[mlst]
+igol int = 45                           # Gold Cost
+
+[mnsf]
+igol int = 1620                         # Gold Cost
+
+[moon]
+igol int = 45                           # Gold Cost
+
+[nflg]
+igol int = 900                          # Gold Cost
+
+[ocor]
+igol int = 360                          # Gold Cost
+
+[odef]
+igol int = 450                          # Gold Cost
+
+[ofir]
+igol int = 360                          # Gold Cost
+
+[oflg]
+igol int = 900                          # Gold Cost
+
+[ofr2]
+igol int = 293                          # Gold Cost
+
+[oslo]
+igol int = 495                          # Gold Cost
+
+[pdi2]
+igol int = 495                          # Gold Cost
+
+[pdiv]
+igol int = 540                          # Gold Cost
+
+[peou]
+igol int = 1800                         # Gold Cost
+
+[pgin]
+igol int = 180                          # Gold Cost
+
+[phea]
+igol int = 135                          # Gold Cost
+
+[phlt]
+igol int = 450                          # Gold Cost
+
+[plcl]
+igol int = 63                           # Gold Cost
+
+[pman]
+igol int = 180                          # Gold Cost
+
+[pomn]
+igol int = 360                          # Gold Cost
+
+[pspd]
+igol int = 68                           # Gold Cost
+
+[puhe]
+igol int = 1350                         # Gold Cost
+
+[puma]
+igol int = 1350                         # Gold Cost
+
+[ram1]
+igol int = 113                          # Gold Cost
+
+[ram2]
+igol int = 270                          # Gold Cost
+
+[ram3]
+igol int = 495                          # Gold Cost
+
+[ram4]
+igol int = 675                          # Gold Cost
+
+[rat3]
+igol int = 45                           # Gold Cost
+
+[ratc]
+igol int = 450                          # Gold Cost
+
+[rcdr]
+igol int = 720                          # Gold Cost
+
+[rde0]
+igol int = 45                           # Gold Cost
+
+[rde1]
+igol int = 135                          # Gold Cost
+
+[rde2]
+igol int = 360                          # Gold Cost
+
+[rde4]
+igol int = 720                          # Gold Cost
+
+[rdis]
+igol int = 68                           # Gold Cost
+
+[rej1]
+igol int = 90                           # Gold Cost
+
+[rej2]
+igol int = 135                          # Gold Cost
+
+[rej3]
+igol int = 360                          # Gold Cost
+
+[rej4]
+igol int = 405                          # Gold Cost
+
+[rej5]
+igol int = 360                          # Gold Cost
+
+[rej6]
+igol int = 450                          # Gold Cost
+
+[ritd]
+igol int = 113                          # Gold Cost
+
+[rma2]
+igol int = 270                          # Gold Cost
+
+[rman]
+igol int = 90                           # Gold Cost
+
+[rmef]
+igol int = 720                          # Gold Cost
+
+[rnec]
+igol int = 135                          # Gold Cost
+
+[rnsp]
+igol int = 90                           # Gold Cost
+
+[rots]
+igol int = 900                          # Gold Cost
+
+[rre1]
+igol int = 90                           # Gold Cost
+
+[rreb]
+igol int = 225                          # Gold Cost
+
+[rres]
+igol int = 225                          # Gold Cost
+
+[rrsl]
+igol int = 1440                         # Gold Cost
+
+[rspa]
+igol int = 990                          # Gold Cost
+
+[rsps]
+igol int = 270                          # Gold Cost
+
+[rspv]
+igol int = 1008                         # Gold Cost
+
+[rugt]
+igol int = 653                          # Gold Cost
+
+[rump]
+igol int = 90                           # Gold Cost
+
+[rwat]
+igol int = 68                           # Gold Cost
+
+[sbok]
+igol int = 293                          # Gold Cost
+
+[scav]
+igol int = 630                          # Gold Cost
+
+[schl]
+igol int = 3780                         # Gold Cost
+
+[sclp]
+igol int = 68                           # Gold Cost
+
+[scul]
+igol int = 855                          # Gold Cost
+
+[sehr]
+igol int = 180                          # Gold Cost
+
+[sfog]
+igol int = 180                          # Gold Cost
+
+[shar]
+igol int = 675                          # Gold Cost
+
+[shcw]
+igol int = 855                          # Gold Cost
+
+[shea]
+igol int = 225                          # Gold Cost
+
+[shen]
+igol int = 585                          # Gold Cost
+
+[shhn]
+igol int = 3015                         # Gold Cost
+
+[shrs]
+igol int = 135                          # Gold Cost
+
+[shtm]
+igol int = 540                          # Gold Cost
+
+[shwd]
+igol int = 180                          # Gold Cost
+
+[silk]
+igol int = 45                           # Gold Cost
+
+[skrt]
+igol int = 225                          # Gold Cost
+
+[sksh]
+igol int = 180                          # Gold Cost
+
+[skul]
+igol int = 45                           # Gold Cost
+
+[sneg]
+igol int = 180                          # Gold Cost
+
+[sor1]
+igol int = 45                           # Gold Cost
+
+[sor2]
+igol int = 90                           # Gold Cost
+
+[sor3]
+igol int = 180                          # Gold Cost
+
+[sor4]
+igol int = 270                          # Gold Cost
+
+[sor5]
+igol int = 315                          # Gold Cost
+
+[sor6]
+igol int = 360                          # Gold Cost
+
+[sor7]
+igol int = 495                          # Gold Cost
+
+[sor8]
+igol int = 630                          # Gold Cost
+
+[sor9]
+igol int = 810                          # Gold Cost
+
+[sora]
+igol int = 1125                         # Gold Cost
+
+[sorf]
+igol int = 180                          # Gold Cost
+
+[soul]
+igol int = 900                          # Gold Cost
+
+[sprn]
+igol int = 45                           # Gold Cost
+
+[srbd]
+igol int = 1485                         # Gold Cost
+
+[srtl]
+igol int = 4950                         # Gold Cost
+
+[ssan]
+igol int = 225                          # Gold Cost
+
+[stpg]
+igol int = 405                          # Gold Cost
+
+[stre]
+igol int = 180                          # Gold Cost
+
+[sxpl]
+igol int = 180                          # Gold Cost
+
+[tbak]
+igol int = 162                          # Gold Cost
+
+[tbar]
+igol int = 144                          # Gold Cost
+
+[tbsm]
+igol int = 180                          # Gold Cost
+
+[tdex]
+igol int = 135                          # Gold Cost
+
+[tdx2]
+igol int = 270                          # Gold Cost
+
+[tels]
+igol int = 180                          # Gold Cost
+
+[texp]
+igol int = 450                          # Gold Cost
+
+[tfar]
+igol int = 68                           # Gold Cost
+
+[tgxp]
+igol int = 900                          # Gold Cost
+
+[thdm]
+igol int = 1071                         # Gold Cost
+
+[thle]
+igol int = 180                          # Gold Cost
+
+[tin2]
+igol int = 270                          # Gold Cost
+
+[tint]
+igol int = 135                          # Gold Cost
+
+[tkno]
+igol int = 1125                         # Gold Cost
+
+[tlum]
+igol int = 135                          # Gold Cost
+
+[tmsc]
+igol int = 1125                         # Gold Cost
+
+[totw]
+igol int = 405                          # Gold Cost
+
+[tpow]
+igol int = 270                          # Gold Cost
+
+[tsct]
+igol int = 27                           # Gold Cost
+
+[tst2]
+igol int = 270                          # Gold Cost
+
+[tstr]
+igol int = 135                          # Gold Cost
+
+[ttal]
+igol int = 900                          # Gold Cost
+
+[uflg]
+igol int = 900                          # Gold Cost
+
+[vamp]
+igol int = 68                           # Gold Cost
+
+[vddl]
+igol int = 45                           # Gold Cost
+
+[vpur]
+igol int = 180                          # Gold Cost
+
+[war2]
+igol int = 450                          # Gold Cost
+
+[wcyc]
+igol int = 405                          # Gold Cost
+
+[wild]
+igol int = 675                          # Gold Cost
+
+[wlsd]
+igol int = 135                          # Gold Cost
+
+[wneu]
+igol int = 135                          # Gold Cost
+
+[wolg]
+igol int = 180                          # Gold Cost
+
+[woms]
+igol int = 360                          # Gold Cost
+
+[wshs]
+igol int = 135                          # Gold Cost
+
+[wtlg]
+igol int = 180                          # Gold Cost
+
+[I000 : stwp]
+igol int = 150 @base                    # Gold Cost
+isst int = 0                            # Stock Start Delay
+istr int = 0                            # Stock Replenish Interval
+ista int = 2                            # Max Stacks
+isto int = 8                            # Stock Maximum
+
+[I001 : evtl]
+iabi string = "AIms,A023,A02O"          # Abilities
+igol int = 0                            # Gold Cost
+icla string = "Miscellaneous"           # Classification
+istr int = 360                          # Stock Replenish Interval
+
+[I002 : ram4]
+iabi string = "A02E,AImz,A01G"          # Abilities
+igol int = 30000                        # Gold Cost
+istr int = 0                            # Stock Replenish Interval
+
+[I003 : ratf]
+iabi string = "A01E"                    # Abilities
+igol int = 2500                         # Gold Cost
+istr int = 600                          # Stock Replenish Interval
+icla string = "Miscellaneous"           # Classification
+
+[I004 : wneg]
+iabi string = "A02Z"                    # Abilities
+iuse int = 1                            # Number of Charges
+igol int = 1500                         # Gold Cost
+isto int = 1                            # Stock Maximum
+isst int = 1500                         # Stock Start Delay
+icla string = "Miscellaneous"           # Classification
+istr int = 600                          # Stock Replenish Interval
+ista int = 3                            # Max Stacks
+
+[I005 : whwd]
+icla string = "Miscellaneous"           # Classification
+iabi string = "A0GB"                    # Abilities
+igol int = 7500                         # Gold Cost
+istr int = 900                          # Stock Replenish Interval
+ihtp int = 200                          # Hit Points
+isst int = 900                          # Stock Start Delay
+icid string = "A0GB"                    # Cooldown Group
+
+[I006 : klmm]
+iabi string = "A02L,A02J,A02H"          # Abilities
+igol int = 1500                         # Gold Cost
+istr int = 120                          # Stock Replenish Interval
+
+[I007 : sand]
+iabi string = "A02F"                    # Abilities
+igol int = 2500                         # Gold Cost
+iuse int = 2                            # Number of Charges
+
+[I008 : sror]
+icla string = "Miscellaneous"           # Classification
+iuse int = 2                            # Number of Charges
+igol int = 1200                         # Gold Cost
+iabi string = "A02R"                    # Abilities
+ista int = 6                            # Max Stacks
+
+[I009 : woms]
+iabi string = "A014"                    # Abilities
+iuse int = 1                            # Number of Charges
+isst int = 560                          # Stock Start Delay
+istr int = 360                          # Stock Replenish Interval
+igol int = 500                          # Gold Cost
+
+[I00A : rnsp]
+iabi string = "A0RR,AIcd,A0SW,AIar"     # Abilities
+icla string = "Campaign"                # Classification
+igol int = 2500                         # Gold Cost
+
+[I00B : anfg]
+iabi string = ""                        # Abilities
+igol int = 1650                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+istr int = 120                          # Stock Replenish Interval
+ubpx int = 0 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I00C : ward]
+iabi string = "A04I"                    # Abilities
+istr int = 15                           # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+igol int = 450 @new                     # Gold Cost
+
+[I00D : shhn]
+iabi string = "A0VO,AId8"               # Abilities
+igol int = 600                          # Gold Cost
+istr int = 360                          # Stock Replenish Interval
+
+[I00E : mlst]
+iabi string = "AIcb"                    # Abilities
+igol int = 600                          # Gold Cost
+
+[I00F : spsh]
+igol int = 650                          # Gold Cost
+icla string = "Miscellaneous"           # Classification
+
+[I00G : totw]
+igol int = 900                          # Gold Cost
+iabi string = "A025"                    # Abilities
+iuse int = 1                            # Number of Charges
+istr int = 600                          # Stock Replenish Interval
+isst int = 900                          # Stock Start Delay
+
+[I00H : wneg]
+iabi string = "A01Z"                    # Abilities
+iuse int = 1                            # Number of Charges
+igol int = 1250                         # Gold Cost
+isto int = 1                            # Stock Maximum
+icla string = "Miscellaneous"           # Classification
+istr int = 400                          # Stock Replenish Interval
+isst int = 600                          # Stock Start Delay
+
+[I00I : totw]
+iabi string = "A056"                    # Abilities
+igol int = 13000                        # Gold Cost
+iuse int = 1                            # Number of Charges
+istr int = 1200                         # Stock Replenish Interval
+
+[I00K : anfg]
+iabi string = ""                        # Abilities
+igol int = 950                          # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+istr int = 120                          # Stock Replenish Interval
+ubpx int = 0 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I00L : anfg]
+iabi string = ""                        # Abilities
+icla string = "Campaign"                # Classification
+igol int = 1500                         # Gold Cost
+isst int = 160                          # Stock Start Delay
+istr int = 120                          # Stock Replenish Interval
+ubpx int = 3 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I00M : anfg]
+iabi string = ""                        # Abilities
+igol int = 1350                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+ubpx int = 0 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I00N : anfg]
+iabi string = ""                        # Abilities
+igol int = 600                          # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+ubpx int = 3 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I00O : anfg]
+iabi string = ""                        # Abilities
+igol int = 1000                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 120                          # Stock Start Delay
+ubpx int = 2 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I00P : anfg]
+iabi string = ""                        # Abilities
+igol int = 2475                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+
+[I00Q : anfg]
+iabi string = ""                        # Abilities
+igol int = 950                          # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+istr int = 120                          # Stock Replenish Interval
+ubpx int = 1 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I00S : anfg]
+iabi string = "AId1"                    # Abilities
+igol int = 950                          # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+ubpx int = 3 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I00R : frgd]
+icla string = "Campaign"                # Classification
+igol int = 5500                         # Gold Cost
+iabi string = "Apiv,A089,AIx2"          # Abilities
+
+[I00T : frgd]
+icla string = "Campaign"                # Classification
+igol int = 2750                         # Gold Cost
+iabi string = "AIsr,A04L,A04M"          # Abilities
+
+[I00U : frgd]
+icla string = "Campaign"                # Classification
+igol int = 2850                         # Gold Cost
+iabi string = "A032,A02Y,AIcb"          # Abilities
+
+[I00V : frgd]
+icla string = "Campaign"                # Classification
+igol int = 2300                         # Gold Cost
+iabi string = "A073,A04J,A031"          # Abilities
+
+[I00W : frgd]
+icla string = "Campaign"                # Classification
+igol int = 4000                         # Gold Cost
+iabi string = "AIsx,AFv1,A0KF,AIob"     # Abilities
+
+[I00X : frgd]
+icla string = "Campaign"                # Classification
+igol int = 2500                         # Gold Cost
+iabi string = "A0JR,A026,A02Y,AId7,A0U8" # Abilities
+
+[I00Y : frgd]
+icla string = "Campaign"                # Classification
+igol int = 1000                         # Gold Cost
+iabi string = "AIrm,AIba,A04R,A03L"     # Abilities
+
+[I010 : frgd]
+icla string = "Campaign"                # Classification
+igol int = 3000                         # Gold Cost
+iabi string = "A04T,A04O"               # Abilities
+
+[I011 : stwp]
+end = base
+igol int = 0                            # Gold Cost
+iuse int = 2                            # Number of Charges
+ista int = 2 @0                         # Max Stacks
+
+[I00Z : anfg]
+iabi string = ""                        # Abilities
+igol int = 300                          # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 10                           # Stock Start Delay
+isto int = 3                            # Stock Maximum
+istr int = 10                           # Stock Replenish Interval
+ubpx int = 2 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I012 : frgd]
+icla string = "Campaign"                # Classification
+igol int = 1050                         # Gold Cost
+iabi string = "A05J,A05I,AIms"          # Abilities
+
+[I013 : mort]
+end = base
+isto int = 0                            # Stock Maximum
+igol int = 0 @0                         # Gold Cost
+
+[I014 : mort]
+end = base
+isto int = 0                            # Stock Maximum
+igol int = 0 @0                         # Gold Cost
+
+[I016 : mort]
+end = base
+isto int = 0                            # Stock Maximum
+igol int = 0 @0                         # Gold Cost
+
+[I017 : spro]
+end = base
+igol int = 500                          # Gold Cost
+isst int = 1200                         # Stock Start Delay
+isto int = 1                            # Stock Maximum
+ista int = 3 @0                         # Max Stacks
+iabi string = "A06E" @0                 # Abilities
+istr int = 800 @0                       # Stock Replenish Interval
+
+[I018 : shas]
+end = base
+isto int = 3                            # Stock Maximum
+istr int = 5                            # Stock Replenish Interval
+igol int = 0 @0                         # Gold Cost
+iabi string = "A06I" @0                 # Abilities
+
+[I019 : shas]
+end = base
+isto int = 3                            # Stock Maximum
+istr int = 5                            # Stock Replenish Interval
+igol int = 0 @0                         # Gold Cost
+iabi string = "A06G" @0                 # Abilities
+
+[I01A : rsps]
+igol int = 0                            # Gold Cost
+iabi string = "A06J"                    # Abilities
+iicd int = 1                            # Ignore Cooldown
+
+[I01B : shas]
+isto int = 3 @base                      # Stock Maximum
+istr int = 5 @base                      # Stock Replenish Interval
+ista int = 6                            # Max Stacks
+igol int = 0                            # Gold Cost
+iuse int = 2                            # Number of Charges
+
+[I01C : sror]
+end = base
+isst int = 0                            # Stock Start Delay
+istr int = 0                            # Stock Replenish Interval
+iabi string = "A0EH"                    # Abilities
+igol int = 0                            # Gold Cost
+ista int = 6                            # Max Stacks
+isto int = 0                            # Stock Maximum
+
+[I01E : pghe]
+end = base
+igol int = 1800                         # Gold Cost
+istr int = 1200                         # Stock Replenish Interval
+iabi string = "A07V" @0                 # Abilities
+
+[I01F : shas]
+end = base
+isto int = 3                            # Stock Maximum
+istr int = 5                            # Stock Replenish Interval
+igol int = 0 @0                         # Gold Cost
+iabi string = "A08A" @0                 # Abilities
+
+[I01G : sror]
+end = base
+isst int = 600                          # Stock Start Delay
+istr int = 60                           # Stock Replenish Interval
+iabi string = "A08C"                    # Abilities
+ista int = 3                            # Max Stacks
+icid string = "A08C" @0                 # Cooldown Group
+igol int = 75 @0                        # Gold Cost
+isto int = 3 @0                         # Stock Maximum
+isit int = 3 @0                         # Stock Initial After Start Delay
+
+[I01H : frgd]
+icla string = "Campaign"                # Classification
+igol int = 2750                         # Gold Cost
+iabi string = "A08I,A081"               # Abilities
+icid string = "A08I"                    # Cooldown Group
+iusa int = 1                            # Actively Used
+
+[I01I : anfg]
+iabi string = ""                        # Abilities
+igol int = 1000                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 220                          # Stock Start Delay
+istr int = 3600                         # Stock Replenish Interval
+ubpx int = 1 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I01L : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A091"                    # Abilities
+
+[I01M : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A093"                    # Abilities
+
+[I01N : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A094"                    # Abilities
+
+[I01O : hslv]
+igol int = 15 @base                     # Gold Cost
+istr int = 0                            # Stock Replenish Interval
+isto int = 99                           # Stock Maximum
+iuse int = 1                            # Number of Charges
+ista int = 3                            # Max Stacks
+
+[I01P : spro]
+end = base
+igol int = 275                          # Gold Cost
+isst int = 600                          # Stock Start Delay
+isto int = 1                            # Stock Maximum
+ista int = 6 @0                         # Max Stacks
+iabi string = "A07T" @0                 # Abilities
+iuse int = 3 @0                         # Number of Charges
+
+[I01Q : woms]
+iabi string = "A09G"                    # Abilities
+iuse int = 1                            # Number of Charges
+isst int = 1200                         # Stock Start Delay
+istr int = 1800                         # Stock Replenish Interval
+igol int = 1500                         # Gold Cost
+
+[I01R : clfm]
+end = base
+igol int = 3500                         # Gold Cost
+iabi string = "A073,A03C,AId0,A09I"     # Abilities
+icla string = "Campaign" @0             # Classification
+
+[I01S : anfg]
+iabi string = ""                        # Abilities
+igol int = 550                          # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+istr int = 300                          # Stock Replenish Interval
+ubpx int = 2 @new                       # Button Position (X)
+ubpy int = 1 @new                       # Button Position (Y)
+
+[I01T : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A09U"                    # Abilities
+
+[I01U : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A09V"                    # Abilities
+
+[I01V : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A09W"                    # Abilities
+
+[I01W : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A0B0"                    # Abilities
+
+[I01X : sres]
+igol int = 0                            # Gold Cost
+iabi string = "A0B3"                    # Abilities
+
+[I01Y : will]
+iabi string = "A0BG"                    # Abilities
+iuse int = 2                            # Number of Charges
+igol int = 90                           # Gold Cost
+
+[I01Z : rde3]
+end = base
+iabi string = "A0U7,A0BT"               # Abilities
+igol int = 10000                        # Gold Cost
+istr int = 1 @0                         # Stock Replenish Interval
+
+[I020 : stwp]
+igol int = 200 @base                    # Gold Cost
+ilev int = 0 @base                      # Level
+iabi string = "A0HH"                    # Abilities
+isst int = 900                          # Stock Start Delay
+isto int = 1                            # Stock Maximum
+istr int = 1200                         # Stock Replenish Interval
+ista int = 1                            # Max Stacks
+ureq string = ""                        # Requirements
+
+[I021 : spro]
+end = base
+igol int = 200                          # Gold Cost
+isst int = 600                          # Stock Start Delay
+isto int = 1                            # Stock Maximum
+ista int = 6 @0                         # Max Stacks
+iabi string = "A0CM" @0                 # Abilities
+iuse int = 2 @0                         # Number of Charges
+
+[I022 : spro]
+end = base
+igol int = 450                          # Gold Cost
+isst int = 60                           # Stock Start Delay
+isto int = 1                            # Stock Maximum
+ista int = 3 @0                         # Max Stacks
+iabi string = "A0D8" @0                 # Abilities
+
+[I023 : will]
+end = base
+igol int = 0                            # Gold Cost
+iuse int = 1                            # Number of Charges
+
+[I026 : mort]
+end = base
+isto int = 0                            # Stock Maximum
+igol int = 0 @0                         # Gold Cost
+
+[I00J : hslv]
+igol int = 0 @base                      # Gold Cost
+iuse int = 1                            # Number of Charges
+isto int = 1                            # Stock Maximum
+ista int = 9                            # Max Stacks
+
+[I027 : pinv]
+end = base
+igol int = 0                            # Gold Cost
+isst int = 0                            # Stock Start Delay
+istr int = 60 @0                        # Stock Replenish Interval
+
+[I028 : shas]
+ista int = 6                            # Max Stacks
+igol int = 0                            # Gold Cost
+
+[I029 : will]
+end = base
+igol int = 0                            # Gold Cost
+iuse int = 1                            # Number of Charges
+istr int = 80 @0                        # Stock Replenish Interval
+
+[I02A : pams]
+end = base
+iabi string = "A0A7"                    # Abilities
+isto int = 1                            # Stock Maximum
+igol int = 0                            # Gold Cost
+ureq string = "" @0                     # Requirements
+
+[I02B : whwd]
+end = base
+igol int = 0                            # Gold Cost
+iuse int = 1                            # Number of Charges
+istr int = 180                          # Stock Replenish Interval
+
+[I02C : gobm]
+end = base
+igol int = 0                            # Gold Cost
+isto int = 1                            # Stock Maximum
+istr int = 200                          # Stock Replenish Interval
+iabi string = "Asta"                    # Abilities
+iuse int = 1 @0                         # Number of Charges
+
+[I01J : rhe3]
+iabi string = "A0H1"                    # Abilities
+igol int = 0                            # Gold Cost
+
+[I02D : whwd]
+end = base
+igol int = 0                            # Gold Cost
+iuse int = 1                            # Number of Charges
+istr int = 180                          # Stock Replenish Interval
+
+[I02E : shas]
+isto int = 3 @base                      # Stock Maximum
+istr int = 5 @base                      # Stock Replenish Interval
+ista int = 1                            # Max Stacks
+igol int = 0                            # Gold Cost
+iabi string = "A0H6"                    # Abilities
+
+[I02F : will]
+end = base
+igol int = 40                           # Gold Cost
+iuse int = 1                            # Number of Charges
+ista int = 1                            # Max Stacks
+istr int = 10                           # Stock Replenish Interval
+
+[I02G : dust]
+end = base
+iuse int = 6                            # Number of Charges
+igol int = 0                            # Gold Cost
+istr int = 6                            # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+
+[nams : pams]
+iabi string = "A0A7" @base              # Abilities
+istr int = 10 @base                     # Stock Replenish Interval
+igol int = 50                           # Gold Cost
+isit int = 2                            # Stock Initial After Start Delay
+icid string = "Avul"                    # Cooldown Group
+
+[ICPP : wtlg]
+igol int = 0                            # Gold Cost
+ihtp int = 500000                       # Hit Points
+
+[I025 : rspd]
+iabi string = "A0IL"                    # Abilities
+igol int = 180 @new                     # Gold Cost
+
+[I02H : rre1]
+iabi string = "A0J4"                    # Abilities
+igol int = 90 @new                      # Gold Cost
+
+[I02I : wswd]
+end = base
+istr int = 180                          # Stock Replenish Interval
+igol int = 50                           # Gold Cost
+
+[I02J : rde3]
+iabi string = "A0JT,A0IC" @base         # Abilities
+istr int = 1                            # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+igol int = 400                          # Gold Cost
+
+[I02L : anfg]
+iabi string = ""                        # Abilities
+igol int = 1100                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 160                          # Stock Start Delay
+istr int = 120                          # Stock Replenish Interval
+ubpx int = 1 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I02M : frgd]
+icla string = "Campaign"                # Classification
+igol int = 2100                         # Gold Cost
+iabi string = "A0VF,A0JU,A0RM,A0RN"     # Abilities
+
+[I02N : dust]
+end = base
+iuse int = 0                            # Number of Charges
+igol int = 200                          # Gold Cost
+istr int = 6                            # Stock Replenish Interval
+iper int = 0 @0                         # Perishable
+iabi string = "A0JY,AI2m,A0K1,A0RJ" @0  # Abilities
+ilev int = 2 @0                         # Level
+
+[I02K : hslv]
+igol int = 0 @base                      # Gold Cost
+istr int = 0                            # Stock Replenish Interval
+isto int = 99                           # Stock Maximum
+iabi string = "A0K9"                    # Abilities
+iuse int = 2                            # Number of Charges
+
+[I02P : spro]
+end = base
+igol int = 3000                         # Gold Cost
+isst int = 1000                         # Stock Start Delay
+isto int = 1                            # Stock Maximum
+ista int = 1 @0                         # Max Stacks
+iabi string = "A0KZ" @0                 # Abilities
+istr int = 1800 @0                      # Stock Replenish Interval
+
+[I02Q : pinv]
+end = base
+igol int = 0                            # Gold Cost
+isst int = 0                            # Stock Start Delay
+istr int = 90                           # Stock Replenish Interval
+
+[I02R : pinv]
+end = base
+igol int = 30                           # Gold Cost
+isst int = 0                            # Stock Start Delay
+istr int = 5                            # Stock Replenish Interval
+isto int = 5 @0                         # Stock Maximum
+icid string = "AIv2" @0                 # Cooldown Group
+iabi string = "AIv2" @0                 # Abilities
+
+[I02S : infs]
+ureq string = "R00J"                    # Requirements
+istr int = 600                          # Stock Replenish Interval
+igol int = 600                          # Gold Cost
+isst int = 800                          # Stock Start Delay
+
+[I02T : wneg]
+igol int = 800 @base                    # Gold Cost
+iuse int = 1 @base                      # Number of Charges
+istr int = 360 @base                    # Stock Replenish Interval
+iabi string = "A0O8"                    # Abilities
+ureq string = "R00J"                    # Requirements
+ista int = 1                            # Max Stacks
+isst int = 1                            # Stock Start Delay
+isto int = 1                            # Stock Maximum
+
+[I02X : dust]
+iuse int = 0 @base                      # Number of Charges
+igol int = 100 @base                    # Gold Cost
+istr int = 9999 @base                   # Stock Replenish Interval
+iper int = 0                            # Perishable
+iabi string = ""                        # Abilities
+isst int = 1                            # Stock Start Delay
+urqa string = "1"                       # Requirements - Levels
+ubpx int = 1 @new                       # Button Position (X)
+ubpy int = 2 @new                       # Button Position (Y)
+
+[I030 : frgd]
+icla string = "Campaign"                # Classification
+igol int = 300                          # Gold Cost
+iabi string = "A0QB,A0JS,AI2m,A0K1"     # Abilities
+icid string = "A0QB"                    # Cooldown Group
+iusa int = 1                            # Actively Used
+
+[I02O : frgd]
+icla string = "Campaign"                # Classification
+igol int = 100                          # Gold Cost
+iabi string = "AId1"                    # Abilities
+isst int = 1                            # Stock Start Delay
+istr int = 9999                         # Stock Replenish Interval
+ubpx int = 0 @new                       # Button Position (X)
+ubpy int = 2 @new                       # Button Position (Y)
+
+[I02W : frgd]
+icla string = "Campaign"                # Classification
+igol int = 350                          # Gold Cost
+iabi string = "_"                       # Abilities
+icid string = "AIi1"                    # Cooldown Group
+isst int = 1                            # Stock Start Delay
+istr int = 1                            # Stock Replenish Interval
+ureq string = "R00J"                    # Requirements
+urqa string = "1"                       # Requirements - Levels
+
+[I031 : frgd]
+icla string = "Campaign"                # Classification
+igol int = 1000                         # Gold Cost
+iabi string = "A0QC,A04M,A01O,AIms"     # Abilities
+icid string = "A0QC"                    # Cooldown Group
+ureq string = "R00J"                    # Requirements
+
+[I033 : totw]
+iabi string = "A0QK"                    # Abilities
+igol int = 5000                         # Gold Cost
+iuse int = 1                            # Number of Charges
+isst int = 1500                         # Stock Start Delay
+istr int = 900                          # Stock Replenish Interval
+ista int = 1                            # Max Stacks
+
+[I03A : woms]
+iabi string = "A0QP"                    # Abilities
+iuse int = 1                            # Number of Charges
+istr int = 600                          # Stock Replenish Interval
+ista int = 2                            # Max Stacks
+icid string = "A0QP"                    # Cooldown Group
+igol int = 600                          # Gold Cost
+isst int = 780                          # Stock Start Delay
+
+[I03H : shar]
+end = new
+igol int = 675                          # Gold Cost
+
+[I03M : wlsd]
+iabi string = "A0SJ"                    # Abilities
+icid string = "A0SJ"                    # Cooldown Group
+igol int = 50                           # Gold Cost
+iuse int = 1                            # Number of Charges
+ista int = 1                            # Max Stacks
+isst int = 300                          # Stock Start Delay
+istr int = 3                            # Stock Replenish Interval
+isto int = 2                            # Stock Maximum
+isit int = 2                            # Stock Initial After Start Delay
+
+[I03N : kpin]
+iusa int = 1                            # Actively Used
+iabi string = "A0SM,A01O,A0SN"          # Abilities
+icid string = "A0SM"                    # Cooldown Group
+igol int = 1300                         # Gold Cost
+istr int = 1                            # Stock Replenish Interval
+icla string = "Miscellaneous"           # Classification
+
+[I03P : bspd]
+end = base
+igol int = 200                          # Gold Cost
+iabi string = "A0TB" @0                 # Abilities
+
+[I03Q : manh]
+istr int = 0                            # Stock Replenish Interval
+igol int = 0                            # Gold Cost
+iabi string = ""                        # Abilities
+icid string = ""                        # Cooldown Group
+
+[I03S : manh]
+istr int = 0                            # Stock Replenish Interval
+igol int = 0                            # Gold Cost
+iabi string = ""                        # Abilities
+icid string = ""                        # Cooldown Group
+
+[I03T : manh]
+istr int = 0                            # Stock Replenish Interval
+igol int = 0                            # Gold Cost
+iabi string = ""                        # Abilities
+icid string = ""                        # Cooldown Group
+
+[I03U : manh]
+istr int = 0                            # Stock Replenish Interval
+igol int = 0                            # Gold Cost
+iabi string = ""                        # Abilities
+icid string = ""                        # Cooldown Group
+
+[I03V : pgin]
+end = new
+igol int = 180                          # Gold Cost
+
+[I03X : gold]
+end = base
+igol int = 300                          # Gold Cost
+icla string = "Charged" @0              # Classification
+
+[I03Y : frgd]
+icla string = "Campaign"                # Classification
+igol int = 500                          # Gold Cost
+iabi string = "A0V3,A0JS,A01O,A0TB,AId4" # Abilities
+icid string = "AIsa"                    # Cooldown Group
+iusa int = 1                            # Actively Used
+
+[I03Z : frgd]
+icla string = "Campaign"                # Classification
+igol int = 350                          # Gold Cost
+iabi string = "AId1"                    # Abilities
+isst int = 1                            # Stock Start Delay
+istr int = 9999                         # Stock Replenish Interval
+icid string = "AIi1"                    # Cooldown Group
+ubpx int = 0 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I040 : will]
+end = base
+igol int = 300                          # Gold Cost
+iuse int = 1                            # Number of Charges
+ista int = 1                            # Max Stacks
+istr int = 600                          # Stock Replenish Interval
+iabi string = "A0V4" @0                 # Abilities
+isst int = 600 @0                       # Stock Start Delay
+
+[I041 : scav]
+istr int = 360                          # Stock Replenish Interval
+igol int = 135                          # Gold Cost
+isst int = 120                          # Stock Start Delay
+ista int = 1                            # Max Stacks
+
+[I042 : rhth]
+end = base
+igol int = 1350                         # Gold Cost
+isst int = 1                            # Stock Start Delay
+istr int = 1                            # Stock Replenish Interval
+ilev int = 7 @0                         # Level
+
+[I046 : stwp]
+igol int = 150 @base                    # Gold Cost
+isst int = 0                            # Stock Start Delay
+istr int = 30                           # Stock Replenish Interval
+ista int = 2                            # Max Stacks
+
+[I034 : lmbr]
+end = new
+igol int = 135                          # Gold Cost
+
+[I048 : rde3]
+end = base
+iabi string = "A0U7,A0BT"               # Abilities
+igol int = 10000                        # Gold Cost
+istr int = 300 @0                       # Stock Replenish Interval
+
+[I049 : nspi]
+end = base
+igol int = 12000                        # Gold Cost
+istr int = 1                            # Stock Replenish Interval
+
+[I04A : dust]
+end = base
+iuse int = 0                            # Number of Charges
+igol int = 4000                         # Gold Cost
+istr int = 6                            # Stock Replenish Interval
+iper int = 0 @0                         # Perishable
+iabi string = "A0BL,A089,A0OJ,AI2m,A0K1,A0RJ" @0 # Abilities
+ilev int = 2 @0                         # Level
+
+[I04B : dust]
+iuse int = 0 @base                      # Number of Charges
+igol int = 750 @base                    # Gold Cost
+istr int = 360 @base                    # Stock Replenish Interval
+iper int = 0                            # Perishable
+iabi string = ""                        # Abilities
+isst int = 1                            # Stock Start Delay
+urqa string = "1"                       # Requirements - Levels
+icid string = "A072"                    # Cooldown Group
+ubpx int = 2 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[I015 : anfg]
+iabi string = ""                        # Abilities
+igol int = 2500                         # Gold Cost
+icla string = "Campaign"                # Classification
+isst int = 140                          # Stock Start Delay
+istr int = 3600                         # Stock Replenish Interval
+ubpx int = 1 @new                       # Button Position (X)
+ubpy int = 0 @new                       # Button Position (Y)
+
+[IGs1 : sror]
+end = new
+unam string = "Scroll of Global Silence" # Name
+utip string = "Purchase Scroll of Global Silence" # Tooltip - Basic
+utub string = "Silences enemy non-item spells across the map for 120 seconds. One charge. Only one scroll can be purchased per game, shared across all shops." # Tooltip - Extended
+ides string = "Silences enemy non-item spells across the map for 120 seconds. One charge. Only one scroll can be purchased per game, shared across all shops." # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSilence.blp" # Interface Icon
+iabi string = "AGs1"                    # Abilities
+iuse int = 1                            # Number of Charges
+iusa int = 1                            # Actively Used
+iper int = 1                            # Perishable
+iprn int = 1                            # Include As Random Choice
+igol int = 6000                         # Gold Cost
+ilum int = 0                            # Lumber Cost
+isst int = 1                            # Stock Start Delay
+isto int = 1                            # Stock Maximum
+istr int = 99999                        # Stock Replenish Interval
+icla string = "Purchasable"             # Classification
+uhot string = ""                        # Hotkey
+ureq string = ""                        # Requirements
+
+[IRb0 : bspd]
+end = new
+igol int = 42                           # Gold Cost
+unam string = "Boots of Speed"          # Name
+utub string = "Random hero reward. Increases movement speed. Sells for 25 gold.|nMay replace an amulet recipe component only while this hero carries a completed amulet upgrade. A normal miRaculix's Amulet is always consumed first." # Tooltip - Extended

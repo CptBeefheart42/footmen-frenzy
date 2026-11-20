@@ -1,0 +1,975 @@
+# war3map.w3q: upgrade data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[Rhme]
+end = base
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+greq.2.0 string = ""                    # Requirements
+greq.3.0 string = ""                    # Requirements
+gglm.0.0 int = 50                       # Gold Increment
+gtib.0.0 int = 4                        # Time Base
+gtim.0.0 int = 1                        # Time Increment
+glvl.0.0 int = 20                       # Levels
+greq.1.0 string = "R00E"                # Requirements
+grqc.1.0 string = "1"                   # Requirements - Levels
+
+[Rhar]
+end = base
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+gglm.0.0 int = 50                       # Gold Increment
+greq.2.0 string = ""                    # Requirements
+greq.3.0 string = ""                    # Requirements
+gtib.0.0 int = 4                        # Time Base
+gtim.0.0 int = 1                        # Time Increment
+glvl.0.0 int = 20                       # Levels
+greq.1.0 string = "R00E"                # Requirements
+grqc.1.0 string = "1"                   # Requirements - Levels
+
+[Robs]
+end = base
+glmb.0.0 int = 0                        # Lumber Base
+glvl.0.0 int = 6                        # Levels
+greq.1.0 string = ""                    # Requirements
+gglb.0.0 int = 150                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gmo1.0.0 unreal = 45                    # Effect 1 - %s
+gglm.0.0 int = 150                      # Gold Increment
+gmo2.0.0 unreal = 2                     # Effect 2 - %s
+gtim.0.0 int = 3                        # Time Increment
+gcls.0.0 string = "TRIGSTR_7793"        # Class
+
+[Rugf]
+end = base
+glvl.0.0 int = 6                        # Levels
+gtib.0.0 int = 7                        # Time Base
+glmb.0.0 int = 0                        # Lumber Base
+gmo1.0.0 unreal = 0.06                  # Effect 1 - %s
+gglm.0.0 int = 150                      # Gold Increment
+greq.1.0 string = ""                    # Requirements
+gglb.0.0 int = 150                      # Gold Base
+gba1.0.0 unreal = 0.15                  # Effect 1 - %s
+gba2.0.0 unreal = 10                    # Effect 2 - %s
+gmo2.0.0 unreal = 3                     # Effect 2 - %s
+gtim.0.0 int = 3                        # Time Increment
+gcls.0.0 string = "TRIGSTR_7794"        # Class
+
+[Rhan]
+end = base
+glvl.0.0 int = 6                        # Levels
+gglm.0.0 int = 150                      # Gold Increment
+gmo1.0.0 unreal = 45                    # Effect 1 - %s
+gef2.0.0 string = "TRIGSTR_902"         # Effect 2
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.03                  # Effect 2 - %s
+greq.1.0 string = ""                    # Requirements
+gtib.0.0 int = 7                        # Time Base
+glmb.0.0 int = 0                        # Lumber Base
+gtim.0.0 int = 3                        # Time Increment
+gcls.0.0 string = "TRIGSTR_10629"       # Class
+gba1.0.0 unreal = 100                   # Effect 1 - %s
+
+[Rhac]
+end = base
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+gglb.0.0 int = 500                      # Gold Base
+gglm.0.0 int = 150                      # Gold Increment
+greq.2.0 string = ""                    # Requirements
+greq.3.0 string = ""                    # Requirements
+gtib.0.0 int = 20                       # Time Base
+gtim.0.0 int = 0                        # Time Increment
+gmo2.0.0 unreal = 0.05                  # Effect 2 - %s
+
+[Rorb]
+end = base
+glmb.0.0 int = 0                        # Lumber Base
+gglb.0.0 int = 0                        # Gold Base
+
+[Rotr]
+end = base
+gmo1.0.0 unreal = 2.75                  # Effect 1 - %s
+gba1.0.0 unreal = 2                     # Effect 1 - %s
+
+[R004 : Reib]
+end = base
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 150                      # Gold Base
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+greq.1.0 string = ""                    # Requirements
+glvl.0.0 int = 6                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_16540" @0    # Class
+
+[R001 : Roar]
+greq.2.0 string = ""                    # Requirements
+greq.3.0 string = ""                    # Requirements
+gtim.0.0 int = 1                        # Time Increment
+gtib.0.0 int = 5                        # Time Base
+grac.0.0 string = "other"               # Race
+glmm.0.0 int = 0                        # Lumber Increment
+glmb.0.0 int = 0                        # Lumber Base
+gglm.0.0 int = 50                       # Gold Increment
+gglb.0.0 int = 100                      # Gold Base
+gba1.0.0 unreal = 2                     # Effect 1 - %s
+glvl.0.0 int = 5                        # Levels
+
+[R002 : Rowt]
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.05                  # Effect 2 - %s
+gmo3.0.0 unreal = 100                   # Effect 3 - %s
+gba3.0.0 unreal = 100                   # Effect 3 - %s
+glvl.0.0 int = 5                        # Levels
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 5                        # Time Base
+gtim.0.0 int = 1                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gmo1.0.0 unreal = 0.1                   # Effect 1 - %s
+gba1.0.0 unreal = 0.1                   # Effect 1 - %s
+gef1.0.0 string = "TRIGSTR_4156"        # Effect 1
+gef2.0.0 string = "TRIGSTR_4114"        # Effect 2
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gglm.0.0 int = 50                       # Gold Increment
+
+[R000 : Rowt]
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo3.0.0 unreal = 0                     # Effect 3 - %s
+gba3.0.0 unreal = 0                     # Effect 3 - %s
+glvl.0.0 int = 3                        # Levels
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 0                        # Time Base
+gtim.0.0 int = 0                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gef2.0.0 string = ""                    # Effect 2
+gef1.0.0 string = ""                    # Effect 1
+gglm.0.0 int = 150                      # Gold Increment
+gglb.0.0 int = 300                      # Gold Base
+
+[R003 : Rowt]
+gba2.0.0 unreal = 3                     # Effect 2 - %s
+gmo2.0.0 unreal = 3                     # Effect 2 - %s
+gmo3.0.0 unreal = 0                     # Effect 3 - %s
+gba3.0.0 unreal = 0                     # Effect 3 - %s
+glvl.0.0 int = 5                        # Levels
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 5                        # Time Base
+gtim.0.0 int = 1                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gmo1.0.0 unreal = 1                     # Effect 1 - %s
+gba1.0.0 unreal = 1                     # Effect 1 - %s
+gba4.0.0 unreal = 3                     # Effect 4 - %s
+gmo4.0.0 unreal = 3                     # Effect 4 - %s
+gef1.0.0 string = "TRIGSTR_4138"        # Effect 1
+gef2.0.0 string = "TRIGSTR_6159"        # Effect 2
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gglm.0.0 int = 50                       # Gold Increment
+
+[R005 : Rowt]
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.05                  # Effect 2 - %s
+gmo3.0.0 unreal = 0                     # Effect 3 - %s
+gba3.0.0 unreal = 0                     # Effect 3 - %s
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 5                        # Time Base
+gtim.0.0 int = 1                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gglm.0.0 int = 50                       # Gold Increment
+gef1.0.0 string = "TRIGSTR_4164"        # Effect 1
+gmo1.0.0 unreal = 0.1                   # Effect 1 - %s
+gba1.0.0 unreal = 0.1                   # Effect 1 - %s
+glvl.0.0 int = 5                        # Levels
+
+[R006 : Rowt]
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo3.0.0 unreal = 0                     # Effect 3 - %s
+gba3.0.0 unreal = 0                     # Effect 3 - %s
+glvl.0.0 int = 3                        # Levels
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 0                        # Time Base
+gtim.0.0 int = 0                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gef2.0.0 string = ""                    # Effect 2
+gef1.0.0 string = ""                    # Effect 1
+gglm.0.0 int = 50                       # Gold Increment
+gglb.0.0 int = 200                      # Gold Base
+
+[R007 : Rowt]
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo3.0.0 unreal = 0                     # Effect 3 - %s
+gba3.0.0 unreal = 0                     # Effect 3 - %s
+glvl.0.0 int = 3                        # Levels
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 0                        # Time Base
+gtim.0.0 int = 0                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gef2.0.0 string = ""                    # Effect 2
+gef1.0.0 string = ""                    # Effect 1
+gglm.0.0 int = 50                       # Gold Increment
+gglb.0.0 int = 200                      # Gold Base
+
+[R008 : Rowt]
+gba2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo2.0.0 unreal = 0.1                   # Effect 2 - %s
+gmo3.0.0 unreal = 0                     # Effect 3 - %s
+gba3.0.0 unreal = 0                     # Effect 3 - %s
+glvl.0.0 int = 3                        # Levels
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+grac.0.0 string = "other"               # Race
+gtib.0.0 int = 0                        # Time Base
+gtim.0.0 int = 0                        # Time Increment
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+greq.2.0 string = ""                    # Requirements
+gef3.0.0 string = ""                    # Effect 3
+gef4.0.0 string = ""                    # Effect 4
+gef2.0.0 string = ""                    # Effect 2
+gef1.0.0 string = ""                    # Effect 1
+gglm.0.0 int = 100                      # Gold Increment
+gglb.0.0 int = 200                      # Gold Base
+
+[R00A : Rhra]
+greq.2.0 string = ""                    # Requirements
+greq.3.0 string = ""                    # Requirements
+gglb.0.0 int = 400                      # Gold Base
+gglm.0.0 int = 100                      # Gold Increment
+gef1.0.0 string = ""                    # Effect 1
+glmb.0.0 int = 0                        # Lumber Base
+glmm.0.0 int = 0                        # Lumber Increment
+gtib.0.0 int = 2                        # Time Base
+gtim.0.0 int = 0                        # Time Increment
+glvl.0.0 int = 2                        # Levels
+gco1.0.0 string = "halt"                # Effect 1 - %s
+
+[R009 : Rhpm]
+gglb.0.0 int = 300                      # Gold Base
+greq.1.0 string = "R00F"                # Requirements
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 0                        # Time Base
+greq.2.0 string = "R00J"                # Requirements
+grqc.1.0 string = "1"                   # Requirements - Levels
+
+[R00C : Rhpm]
+gglb.0.0 int = 600                      # Gold Base
+greq.1.0 string = ""                    # Requirements
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 0                        # Time Base
+
+[R00D : Rhfl]
+
+[R00E : Rhfl]
+
+[R00F : Rhfl]
+
+[R00G : Rhfl]
+
+[R00P : Rugf]
+gtib.0.0 int = 2 @base                  # Time Base
+glmb.0.0 int = 0 @base                  # Lumber Base
+gglm.0.0 int = 300 @base                # Gold Increment
+greq.1.0 string = "" @base              # Requirements
+gba1.0.0 unreal = 0.15 @base            # Effect 1 - %s
+gba2.0.0 unreal = 50 @base              # Effect 2 - %s
+gtim.0.0 int = 1 @base                  # Time Increment
+gef1.0.0 string = "TRIGSTR_15849"       # Effect 1
+gef2.0.0 string = "TRIGSTR_15850"       # Effect 2
+grac.0.0 string = "creeps"              # Race
+glvl.0.0 int = 5                        # Levels
+gmo2.0.0 unreal = 50                    # Effect 2 - %s
+gmo1.0.0 unreal = 0.15                  # Effect 1 - %s
+gmo3.0.0 unreal = 1                     # Effect 3 - %s
+gmo4.0.0 unreal = 750                   # Effect 4 - %s
+gco4.0.0 string = "A0RU"                # Effect 4 - %s
+gcls.0.0 string = "TRIGSTR_17185"       # Class
+gba4.0.0 unreal = 750                   # Effect 4 - %s
+gba3.0.0 unreal = 1                     # Effect 3 - %s
+gef3.0.0 string = "TRIGSTR_17824"       # Effect 3
+gef4.0.0 string = "TRIGSTR_4955"        # Effect 4
+greq.4.0 string = "R00O"                # Requirements
+grqc.4.0 string = "1"                   # Requirements - Levels
+gglb.0.0 int = 500                      # Gold Base
+
+[R00O : Rhfl]
+greq.1.0 string = ""                    # Requirements
+
+[R00T : Rhpm]
+gglb.0.0 int = 0                        # Gold Base
+greq.1.0 string = ""                    # Requirements
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 0                        # Time Base
+grqc.1.0 string = "1"                   # Requirements - Levels
+grac.0.0 string = "creeps"              # Race
+gef1.0.0 string = "TRIGSTR_15314"       # Effect 1
+gmo1.0.0 unreal = 1                     # Effect 1 - %s
+gba1.0.0 unreal = 1                     # Effect 1 - %s
+gco1.0.0 string = "ANta"                # Effect 1 - %s
+glvl.0.0 int = 2                        # Levels
+
+[R00B : Rhfl]
+greq.1.0 string = ""                    # Requirements
+
+[R00U : Rhfl]
+gef1.0.0 string = "TRIGSTR_16292"       # Effect 1
+gmo1.0.0 unreal = 1                     # Effect 1 - %s
+gba1.0.0 unreal = 1                     # Effect 1 - %s
+gco1.0.0 string = "A0T8"                # Effect 1 - %s
+gef2.0.0 string = "TRIGSTR_16666"       # Effect 2
+gco2.0.0 string = "A0VV"                # Effect 2 - %s
+gba2.0.0 unreal = 1                     # Effect 2 - %s
+gmo2.0.0 unreal = 1                     # Effect 2 - %s
+greq.1.0 string = ""                    # Requirements
+ginh.0.0 int = 0                        # Transfer with Unit Ownership
+
+[R00H : Rhpm]
+gglb.0.0 int = 0                        # Gold Base
+greq.1.0 string = ""                    # Requirements
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 0                        # Time Base
+greq.2.0 string = "R00J"                # Requirements
+
+[R00I : Rhpm]
+gglb.0.0 int = 0                        # Gold Base
+greq.1.0 string = ""                    # Requirements
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 0                        # Time Base
+greq.2.0 string = "R00J"                # Requirements
+
+[R00J : Rhpm]
+gglb.0.0 int = 0                        # Gold Base
+greq.1.0 string = ""                    # Requirements
+glmb.0.0 int = 0                        # Lumber Base
+gtib.0.0 int = 0                        # Time Base
+greq.2.0 string = "R00J"                # Requirements
+
+[Rsl1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13548" @0    # Class
+
+[Rsl2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+greq.1.0 string = "Rsl1"                # Requirements
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13632" @0    # Class
+
+[Rcp1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13664" @0    # Class
+
+[Rcp2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+greq.1.0 string = "Rcp1"                # Requirements
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13677" @0    # Class
+
+[Rft1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13684" @0    # Class
+
+[Rft2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13699" @0    # Class
+
+[Rr01 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13705" @0    # Class
+gglb.1.0 int = 250                      # Gold Base
+gglb.2.0 int = 300                      # Gold Base
+
+[Rm01 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13766" @0    # Class
+
+[Rm02 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13834" @0    # Class
+
+[Rm03 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13863" @0    # Class
+
+[Rs01 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13871" @0    # Class
+
+[Rs02 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13894" @0    # Class
+
+[Rk01 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13911" @0    # Class
+
+[Rk02 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13923" @0    # Class
+
+[Rk03 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13954" @0    # Class
+
+[Rk04 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13960" @0    # Class
+
+[Rd01 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_13989" @0    # Class
+
+[Rd02 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14007" @0    # Class
+
+[Rd03 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14017" @0    # Class
+
+[Rd04 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14029" @0    # Class
+
+[Rar1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14034" @0    # Class
+
+[Rhu1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14065" @0    # Class
+
+[Rhu2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14069" @0    # Class
+
+[Rdr1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14180" @0    # Class
+
+[Rdy1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14222" @0    # Class
+
+[Rdd1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14226" @0    # Class
+
+[Rgh1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14230" @0    # Class
+
+[Rfi1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14259" @0    # Class
+
+[Rmg1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 3                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14264" @0    # Class
+
+[Rab1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14286" @0    # Class
+
+[Rda1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14298" @0    # Class
+
+[Rda2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14302" @0    # Class
+
+[Rgr1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14310" @0    # Class
+
+[Rrd1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14314" @0    # Class
+
+[Rrd2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14318" @0    # Class
+
+[Rot1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14323" @0    # Class
+
+[Rbz1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14327" @0    # Class
+
+[Rbz2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14338" @0    # Class
+
+[Rbz3 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14346" @0    # Class
+
+[Rbz4 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+greq.1.0 string = "Rbz3"                # Requirements
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14353" @0    # Class
+
+[Rot2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14361" @0    # Class
+
+[Rta1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14367" @0    # Class
+
+[Rta2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14371" @0    # Class
+
+[Rot3 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 300                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14375" @0    # Class
+
+[Rdt1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 300                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14381" @0    # Class
+
+[Rdt2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 300                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14385" @0    # Class
+
+[Rba1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14389" @0    # Class
+
+[Rba2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14393" @0    # Class
+
+[Rbn1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14397" @0    # Class
+
+[Rwr1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14401" @0    # Class
+
+[Rwl1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14418" @0    # Class
+
+[Rdm1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14423" @0    # Class
+
+[Rdm2 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 250                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14427" @0    # Class
+
+[Rmo1 : R004]
+end = Reib
+gmo1.0.0 unreal = 55                    # Effect 1 - %s
+gglb.0.0 int = 200                      # Gold Base
+gtib.0.0 int = 7                        # Time Base
+gglm.0.0 int = 150                      # Gold Increment
+glvl.0.0 int = 1                        # Levels
+gtim.0.0 int = 3 @0                     # Time Increment
+gba1.0.0 unreal = 100 @0                # Effect 1 - %s
+gcls.0.0 string = "TRIGSTR_14458" @0    # Class

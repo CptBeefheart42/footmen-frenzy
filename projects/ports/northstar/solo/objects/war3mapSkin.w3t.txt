@@ -1,0 +1,1580 @@
+# war3mapSkin.w3t: item data of the map. Edit values here; field names: data/object_fields.csv.
+format v3
+
+[stwp]
+end = base
+uhot string = "TRIGSTR_1061"            # Hotkey
+ifil string = "Items\\ScrollOfTownPortal.mdl" # Model Used
+ubpy int = 0                            # Button Position (Y)
+utub string = "TRIGSTR_8249"            # Tooltip - Extended
+
+[shas]
+end = base
+uhot string = "TRIGSTR_908"             # Hotkey
+ifil string = "Items\\ScrollOfHealing.mdl" # Model Used
+ubpx int = 1                            # Button Position (X)
+utub string = "TRIGSTR_11231"           # Tooltip - Extended
+
+[pgma]
+end = base
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_6648"            # Hotkey
+ifil string = "Items\\PotionBlue.mdl"   # Model Used
+
+[pghe]
+end = base
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2769"            # Hotkey
+ifil string = "Items\\PotionGreen.mdl"  # Model Used
+
+[whwd]
+end = base
+uhot string = "TRIGSTR_1051"            # Hotkey
+utub string = "TRIGSTR_15315"           # Tooltip - Extended
+
+[dust]
+end = base
+ubpx int = 0                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_851"             # Hotkey
+
+[sror]
+end = base
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2392"            # Hotkey
+utip string = "TRIGSTR_3397" @0         # Tooltip - Basic
+utub string = "TRIGSTR_11232"           # Tooltip - Extended
+
+[frhg]
+end = base
+uhot string = "TRIGSTR_2770"            # Hotkey
+utub string = "TRIGSTR_16515"           # Tooltip - Extended
+ides string = "TRIGSTR_16516" @0        # Description
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[tret]
+end = base
+uhot string = "TRIGSTR_2393"            # Hotkey
+utub string = "TRIGSTR_16517"           # Tooltip - Extended
+ubpy int = 1                            # Button Position (Y)
+ides string = "TRIGSTR_16532"           # Description
+
+[pinv]
+end = base
+uhot string = "TRIGSTR_1203"            # Hotkey
+ifil string = "Items\\PotionPurple.mdl" # Model Used
+
+[ankh]
+end = base
+uhot string = "TRIGSTR_1379"            # Hotkey
+ubpx int = 3                            # Button Position (X)
+utub string = "TRIGSTR_16912"           # Tooltip - Extended
+
+[pnvu]
+end = base
+uhot string = "TRIGSTR_950"             # Hotkey
+ubpx int = 1                            # Button Position (X)
+ifil string = "Items\\PotionOfInvulnerability.mdl" # Model Used
+
+[brac]
+end = base
+utub string = "TRIGSTR_6158"            # Tooltip - Extended
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1102"            # Hotkey
+
+[clsd]
+end = base
+uhot string = "TRIGSTR_2771"            # Hotkey
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[crys]
+end = base
+ides string = "TRIGSTR_16448"           # Description
+uhot string = "TRIGSTR_2394"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+utub string = "TRIGSTR_14687" @0        # Tooltip - Extended
+
+[ssil]
+end = base
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2586"            # Hotkey
+
+[cnob]
+end = base
+ides string = "TRIGSTR_6375"            # Description
+utub string = "TRIGSTR_8892" @0         # Tooltip - Extended
+ubpx int = 3                            # Button Position (X)
+uhot string = "TRIGSTR_1677"            # Hotkey
+
+[rin1]
+end = base
+unam string = "TRIGSTR_3453"            # Name
+utub string = "TRIGSTR_11113"           # Tooltip - Extended
+ubpx int = 1                            # Button Position (X)
+uhot string = "TRIGSTR_1071"            # Hotkey
+utip string = "TRIGSTR_1749"            # Tooltip - Basic
+ides string = "TRIGSTR_11114"           # Description
+
+[rst1]
+end = base
+utub string = "TRIGSTR_3512"            # Tooltip - Extended
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1112"            # Hotkey
+unam string = "TRIGSTR_3699"            # Name
+utip string = "TRIGSTR_3792"            # Tooltip - Basic
+ides string = "TRIGSTR_5044"            # Description
+
+[prvt]
+end = base
+ubpy int = 1                            # Button Position (Y)
+utub string = "TRIGSTR_3641"            # Tooltip - Extended
+uhot string = "TRIGSTR_2395"            # Hotkey
+ubpx int = 0                            # Button Position (X)
+
+[rag1]
+end = base
+utip string = "TRIGSTR_3642"            # Tooltip - Basic
+utub string = "TRIGSTR_16913"           # Tooltip - Extended
+uhot string = "TRIGSTR_1219"            # Hotkey
+ides string = "TRIGSTR_16914" @0        # Description
+unam string = "TRIGSTR_5074"            # Name
+
+[nspi]
+end = base
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_855"             # Hotkey
+utub string = "Renders the Hero invulnerable to magic.|n|n|cffff0000|cffff0000This item is banned on:|r\r\n|cffffdc00Blademaster" # Tooltip - Extended
+
+[clfm]
+end = base
+utub string = "TRIGSTR_895"             # Tooltip - Extended
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2587"            # Hotkey
+
+[hval]
+end = base
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+utip string = "TRIGSTR_6233"            # Tooltip - Basic
+unam string = "TRIGSTR_3693" @0         # Name
+ides string = "TRIGSTR_7393" @0         # Description
+uhot string = "TRIGSTR_1910"            # Hotkey
+utub string = "TRIGSTR_7394" @0         # Tooltip - Extended
+
+[ckng]
+end = base
+uhot string = "TRIGSTR_1250"            # Hotkey
+ides string = "TRIGSTR_4763"            # Description
+unam string = "TRIGSTR_5356"            # Name
+utub string = "TRIGSTR_16916"           # Tooltip - Extended
+
+[bgst]
+end = base
+ubpx int = 1                            # Button Position (X)
+utub string = "TRIGSTR_16453"           # Tooltip - Extended
+utip string = "TRIGSTR_3367" @0         # Tooltip - Basic
+uhot string = "TRIGSTR_1083"            # Hotkey
+unam string = "TRIGSTR_3674"            # Name
+
+[belv]
+end = base
+ubpx int = 2                            # Button Position (X)
+utub string = "TRIGSTR_16457"           # Tooltip - Extended
+utip string = "TRIGSTR_4685"            # Tooltip - Basic
+unam string = "TRIGSTR_8689"            # Name
+
+[ciri]
+end = base
+utub string = "TRIGSTR_16917"           # Tooltip - Extended
+ubpx int = 3                            # Button Position (X)
+utip string = "TRIGSTR_11030"           # Tooltip - Basic
+unam string = "TRIGSTR_1742"            # Name
+
+[rlif]
+end = base
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_6703"            # Hotkey
+utub string = "TRIGSTR_16918"           # Tooltip - Extended
+
+[pmna]
+end = base
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2772"            # Hotkey
+utub string = "TRIGSTR_11117"           # Tooltip - Extended
+
+[rwiz]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2588"            # Hotkey
+utub string = "TRIGSTR_16919"           # Tooltip - Extended
+ides string = "TRIGSTR_16920" @0        # Description
+
+[rde3]
+end = base
+utub string = "TRIGSTR_16921"           # Tooltip - Extended
+uhot string = "TRIGSTR_2396"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+unam string = "TRIGSTR_11111"           # Name
+ides string = "TRIGSTR_11112" @0        # Description
+utip string = "TRIGSTR_4200"            # Tooltip - Basic
+
+[evtl]
+end = base
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_858"             # Hotkey
+utub string = "TRIGSTR_4420"            # Tooltip - Extended
+ides string = "TRIGSTR_4421" @0         # Description
+
+[mcou]
+end = base
+uhot string = "TRIGSTR_949"             # Hotkey
+unam string = "TRIGSTR_3681"            # Name
+utip string = "TRIGSTR_3682" @0         # Tooltip - Basic
+utub string = "TRIGSTR_16459"           # Tooltip - Extended
+ides string = "TRIGSTR_11288" @0        # Description
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+
+[mnst]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2589"            # Hotkey
+utub string = "TRIGSTR_11053"           # Tooltip - Extended
+ides string = "TRIGSTR_11054"           # Description
+
+[hlst]
+end = base
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2397"            # Hotkey
+
+[pres]
+end = base
+ubpx int = 3                            # Button Position (X)
+
+[wneg]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1018"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNRodOfNecromancy.blp" # Interface Icon
+utub string = "TRIGSTR_11233"           # Tooltip - Extended
+
+[will]
+end = base
+uhot string = "TRIGSTR_1272"            # Hotkey
+utub string = "TRIGSTR_11234"           # Tooltip - Extended
+
+[modt]
+end = base
+uhot string = "TRIGSTR_885"             # Hotkey
+ubpy int = 2                            # Button Position (Y)
+ides string = "TRIGSTR_3913"            # Description
+utub string = "While wearing this mask, a Hero will recover hit points equal to <AIva,DataA1,%>% of the attack damage dealt to an enemy unit.|n |n|cffff0000Banned on|r:|n|cffffdc00Ranger|r" # Tooltip - Extended
+
+[ofro]
+end = base
+uhot string = "TRIGSTR_1127"            # Hotkey
+utub string = "TRIGSTR_16925"           # Tooltip - Extended
+ubpx int = 2                            # Button Position (X)
+
+[olig]
+end = base
+ubpx int = 3                            # Button Position (X)
+ubpy int = 0                            # Button Position (Y)
+uhot string = "TRIGSTR_1697"            # Hotkey
+utub string = "TRIGSTR_085"             # Tooltip - Extended
+ides string = "TRIGSTR_1111" @0         # Description
+
+[ratf]
+end = base
+uhot string = "TRIGSTR_6891"            # Hotkey
+unam string = "TRIGSTR_9670"            # Name
+ides string = "TRIGSTR_9778" @0         # Description
+utub string = "TRIGSTR_13947" @0        # Tooltip - Extended
+utip string = "TRIGSTR_9780" @0         # Tooltip - Basic
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[sbch]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2590"            # Hotkey
+utub string = "TRIGSTR_6777"            # Tooltip - Extended
+
+[tmmt]
+end = base
+uhot string = "TRIGSTR_886"             # Hotkey
+utip string = "TRIGSTR_3710"            # Tooltip - Basic
+unam string = "TRIGSTR_3711" @0         # Name
+ides string = "TRIGSTR_3712"            # Description
+utub string = "TRIGSTR_16926" @0        # Tooltip - Extended
+ubpy int = 2                            # Button Position (Y)
+
+[ward]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1072"            # Hotkey
+utub string = "TRIGSTR_6778"            # Tooltip - Extended
+
+[spro]
+end = base
+unam string = "TRIGSTR_4080"            # Name
+ifil string = "Items\\ScrolRed.mdl" @0  # Model Used
+
+[mort]
+
+[spre]
+end = base
+uhot string = "TRIGSTR_2591"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+
+[desc]
+end = base
+uhot string = "TRIGSTR_2592"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+ubpx int = 1                            # Button Position (X)
+ides string = "TRIGSTR_16928"           # Description
+utub string = "Teleports the Hero a distance of up to 1000. |n|n|cffff0000Banned on:|r\r\n|cffffdc00Jaina, Warden, Edge, Pirate, Craziest Cat Ever, Akama & Shadow Shifter|r" # Tooltip - Extended
+
+[wswd]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1084"            # Hotkey
+
+[stwa]
+end = base
+unam string = "TRIGSTR_5727"            # Name
+utip string = "TRIGSTR_5730" @0         # Tooltip - Basic
+uhot string = "TRIGSTR_2773"            # Hotkey
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+iico string = "ReplaceableTextures\\CommandButtons\\BTNHornedSword.blp" # Interface Icon
+utub string = "Grants the wearer 60% cleaving in an AoE of 250.|n|n|cffffdc00This item only works for Melee Heros.|r|n|n|cffff0000Banned on:|r\r\n|cffffdc00Blademaster|n|cffffdc00Shere-Khan" @0 # Tooltip - Extended
+ides string = "Grants the wearer 60% cleaving in an AoE of 250.|n|n|cffffdc00This item only works for Melee Heros.|r|n|n|cffff0000Banned on:|r\r\n|cffffdc00Blademaster|n|cffffdc00Shere-Khan" # Description
+
+[tcas]
+end = base
+iico string = "ReplaceableTextures\\CommandButtons\\BTNRWall.blp" @0 # Interface Icon
+utip string = "TRIGSTR_3668"            # Tooltip - Basic
+utub string = "TRIGSTR_5877"            # Tooltip - Extended
+ides string = "TRIGSTR_3669"            # Description
+uhot string = "TRIGSTR_2774"            # Hotkey
+unam string = "TRIGSTR_3670" @0         # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[rat9]
+end = base
+unam string = "TRIGSTR_3554"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNKatana.blp" # Interface Icon
+uhot string = "TRIGSTR_6892"            # Hotkey
+utip string = "TRIGSTR_5526"            # Tooltip - Basic
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+utub string = "Grants the wearer +20% attack speed and 15% to do 2x the damage.|n|n|cffff0000You may only carry 1|r\r\n\r\n|cffff0000Banned on:|r\r\n|cffffdc00Blademaster|n|cffffdc00Shere-Khan" @0 # Tooltip - Extended
+ides string = "Grants the wearer +20% attack speed and 15% to do 2x the damage.|n|n|cffff0000You may only carry 1|r\r\n\r\n|cffff0000Banned on:|r\r\n|cffffdc00Blademaster|n|cffffdc00Shere-Khan" # Description
+
+[rat6]
+end = base
+unam string = "TRIGSTR_5527"            # Name
+utip string = "TRIGSTR_5528"            # Tooltip - Basic
+iico string = "ReplaceableTextures\\CommandButtons\\BTNForkOfLightning.blp" # Interface Icon
+uhot string = "TRIGSTR_2593"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+ubpx int = 1                            # Button Position (X)
+utub string = "|cffffcc00Gives:|r\r\n+20% Attack Speed\r\n|cffffcc00Forked Lightning|r - Passive Ability|n|nGrants the wearer a |cffff000025%|r chance of their next auto attack casting a Forked Lightning on up to 8 targets for |cffff0000250|r damage. This ability may only trigger once every 10 seconds" @0 # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\n+20% Attack Speed\r\n|cffffcc00Forked Lightning|r - Passive Ability|n|nGrants the wearer a |cffff000025%|r chance of their next auto attack casting a Forked Lightning on up to 8 targets for |cffff0000250|r damage. This ability may only trigger once every 10 seconds" # Description
+
+[gobm]
+end = base
+uhot string = "TRIGSTR_6893"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNStasisTrap.blp" # Interface Icon
+ides string = "TRIGSTR_6815"            # Description
+unam string = "TRIGSTR_6816"            # Name
+utip string = "TRIGSTR_6817"            # Tooltip - Basic
+utub string = "TRIGSTR_936" @0          # Tooltip - Extended
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[hslv]
+end = base
+unam string = "TRIGSTR_5623"            # Name
+ides string = "TRIGSTR_5886"            # Description
+utub string = "TRIGSTR_7521"            # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNEnergyPotion.blp" # Interface Icon
+ifil string = "Items\\PotionBlue.mdl"   # Model Used
+utip string = "Purchase miRaculix' special brew" # Tooltip - Basic
+
+[tgrh]
+end = base
+ubpy int = 1                            # Button Position (Y)
+iico string = "ReplaceableTextures\\CommandButtons\\BTNLWall.blp" @0 # Interface Icon
+unam string = "TRIGSTR_3671" @0         # Name
+ides string = "TRIGSTR_4565" @0         # Description
+uhot string = "TRIGSTR_6937"            # Hotkey
+utip string = "TRIGSTR_5514"            # Tooltip - Basic
+utub string = "TRIGSTR_5878"            # Tooltip - Extended
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" @0 # Model Used
+
+[stel]
+end = base
+ubpy int = 0                            # Button Position (Y)
+uhot string = "TRIGSTR_1731"            # Hotkey
+
+[oven]
+end = base
+uhot string = "TRIGSTR_1942"            # Hotkey
+ubpx int = 2                            # Button Position (X)
+utub string = "TRIGSTR_6741"            # Tooltip - Extended
+
+[sres]
+end = base
+ides string = "TRIGSTR_6527"            # Description
+utub string = "TRIGSTR_5985"            # Tooltip - Extended
+ubpx int = 3                            # Button Position (X)
+utip string = "TRIGSTR_11362"           # Tooltip - Basic
+unam string = "TRIGSTR_11365"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNScrollOfTownPortal.blp" # Interface Icon
+
+[pams]
+end = base
+utub string = "TRIGSTR_11237"           # Tooltip - Extended
+ides string = "TRIGSTR_6898" @0         # Description
+uhot string = "TRIGSTR_6998"            # Hotkey
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[srrc]
+end = base
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_2775"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+utub string = "TRIGSTR_11238"           # Tooltip - Extended
+
+[spsh]
+end = base
+ubpx int = 1                            # Button Position (X)
+uhot string = "TRIGSTR_1234"            # Hotkey
+
+[sand]
+end = base
+uhot string = "TRIGSTR_7670"            # Hotkey
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+utub string = "TRIGSTR_11239"           # Tooltip - Extended
+
+[oli2]
+end = base
+unam string = "TRIGSTR_4506"            # Name
+
+[gold]
+
+[rhe2]
+end = base
+isca real = 1.3                         # Scaling Value
+
+[rre2]
+
+[lgdh]
+end = base
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_8558"            # Hotkey
+utub string = "TRIGSTR_11129"           # Tooltip - Extended
+ides string = "TRIGSTR_11475"           # Description
+
+[sreg]
+end = base
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2398"            # Hotkey
+ifil string = "Items\\ScrolRed.mdl" @0  # Model Used
+isca real = 1.1                         # Scaling Value
+utub string = "TRIGSTR_11240"           # Tooltip - Extended
+
+[pnvl]
+end = base
+ifil string = "Items\\PotionOfInvulnerability.mdl" @0 # Model Used
+uhot string = "TRIGSTR_2399"            # Hotkey
+ubpx int = 0                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[sman]
+end = base
+ifil string = "Items\\ScrolRed.mdl"     # Model Used
+uhot string = "TRIGSTR_1235"            # Hotkey
+ubpy int = 2                            # Button Position (Y)
+ubpx int = 1                            # Button Position (X)
+
+[amrc]
+end = base
+iico string = "ReplaceableTextures\\CommandButtons\\BTNMassTeleport.blp" # Interface Icon
+utub string = "Teleports 20 of the player's units to target allied main base after 1.25 seconds" # Tooltip - Extended
+
+[rhe1]
+iclb int = 0                            # Tinting Color 3 (Blue)
+iclr int = 0                            # Tinting Color 1 (Red)
+
+[rhe3]
+iclr int = 0                            # Tinting Color 1 (Red)
+iclb int = 0                            # Tinting Color 3 (Blue)
+
+[rspl]
+end = base
+iclg int = 0                            # Tinting Color 2 (Green)
+iclb int = 0                            # Tinting Color 3 (Blue)
+utub string = "TRIGSTR_12428"           # Tooltip - Extended
+
+[rspd]
+
+[infs]
+end = base
+unam string = "TRIGSTR_14019"           # Name
+
+[lhst]
+end = base
+utub string = "TRIGSTR_16484"           # Tooltip - Extended
+uhot string = "TRIGSTR_889"             # Hotkey
+ubpy int = 2                            # Button Position (Y)
+utip string = "TRIGSTR_17515"           # Tooltip - Basic
+
+[rhth]
+end = base
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1973"            # Hotkey
+ubpy int = 2                            # Button Position (Y)
+ides string = "TRIGSTR_6720"            # Description
+utub string = "TRIGSTR_15898"           # Tooltip - Extended
+utip string = "TRIGSTR_17516"           # Tooltip - Basic
+
+[pclr]
+end = base
+uhot string = "TRIGSTR_1328"            # Hotkey
+utub string = "TRIGSTR_7728"            # Tooltip - Extended
+ides string = "TRIGSTR_14414"           # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNLesserClarityPotion.blp" # Interface Icon
+utip string = "TRIGSTR_17554"           # Tooltip - Basic
+
+[lmbr]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1363"            # Hotkey
+
+[ches]
+end = base
+utub string = "TRIGSTR_957"             # Tooltip - Extended
+
+[penr]
+
+[gcel]
+end = base
+uhot string = "TRIGSTR_1281"            # Hotkey
+utub string = "TRIGSTR_16934"           # Tooltip - Extended
+ides string = "TRIGSTR_11505"           # Description
+
+[I000 : stwp]
+ubpy int = 0                            # Button Position (Y)
+unam string = "TRIGSTR_3698"            # Name
+uhot string = "TRIGSTR_1163"            # Hotkey
+
+[I001 : evtl]
+utub string = "TRIGSTR_6119"            # Tooltip - Extended
+unam string = "TRIGSTR_3448"            # Name
+ides string = ""                        # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNHeartAmulet.blp" # Interface Icon
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_2212"            # Hotkey
+utip string = "miRaculix' Amulet of Power" # Tooltip - Basic
+
+[I002 : ram4]
+unam string = "TRIGSTR_042"             # Name
+utip string = "TRIGSTR_8177"            # Tooltip - Basic
+utub string = "TRIGSTR_8542"            # Tooltip - Extended
+ides string = ""                        # Description
+uhot string = "TRIGSTR_1266"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+
+[I003 : ratf]
+unam string = "TRIGSTR_111"             # Name
+uhot string = "TRIGSTR_2400"            # Hotkey
+utip string = "TRIGSTR_17701"           # Tooltip - Basic
+utub string = "TRIGSTR_3371"            # Tooltip - Extended
+ides string = "TRIGSTR_3372"            # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGoldClaw.blp" # Interface Icon
+ubpy int = 1                            # Button Position (Y)
+
+[I004 : wneg]
+unam string = "TRIGSTR_3380"            # Name
+utip string = "TRIGSTR_8178"            # Tooltip - Basic
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_2776"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNRodofEnvy.blp" # Interface Icon
+utub string = "Puts a Hero into an uninterruptible sleep for two minutes." # Tooltip - Extended
+ides string = "Puts a Hero into an uninterruptible sleep for two minutes." # Description
+
+[I005 : whwd]
+unam string = "TRIGSTR_3413"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNStaffOfSanctuary.blp" # Interface Icon
+utip string = "TRIGSTR_6640"            # Tooltip - Basic
+uhot string = "TRIGSTR_1484"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+utub string = "TRIGSTR_9052"            # Tooltip - Extended
+ides string = "TRIGSTR_9053"            # Description
+ifil string = "Objects\\InventoryItems\\BattleStandard\\BattleStandard.mdl" # Model Used
+
+[I006 : klmm]
+unam string = "TRIGSTR_3417"            # Name
+utip string = "TRIGSTR_8179"            # Tooltip - Basic
+uhot string = "TRIGSTR_2594"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+ubpx int = 1                            # Button Position (X)
+utub string = "Increases your agility and strengh by +20, but drains your Health and Mana.|n|nYou may only carry 2 Cursed Axe of Slaying" # Tooltip - Extended
+ides string = "Increases your agility and strengh by +20, but drains your Health and Mana.|n|nYou may only carry 2 Cursed Axe of Slaying" # Description
+
+[I007 : sand]
+unam string = "TRIGSTR_3476"            # Name
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1485"            # Hotkey
+utub string = "TRIGSTR_3632"            # Tooltip - Extended
+
+[I008 : sror]
+unam string = "TRIGSTR_3477"            # Name
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2595"            # Hotkey
+utub string = "TRIGSTR_11242"           # Tooltip - Extended
+utip string = "TRIGSTR_4078"            # Tooltip - Basic
+
+[I009 : woms]
+unam string = "TRIGSTR_3484"            # Name
+uhot string = "TRIGSTR_1323"            # Hotkey
+utip string = "TRIGSTR_8180"            # Tooltip - Basic
+utub string = "TRIGSTR_3940"            # Tooltip - Extended
+ides string = "TRIGSTR_4583"            # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNScepterOfMastery.blp" # Interface Icon
+
+[I00A : rnsp]
+unam string = "TRIGSTR_3592"            # Name
+utub string = "TRIGSTR_16667"           # Tooltip - Extended
+utip string = "TRIGSTR_4217"            # Tooltip - Basic
+
+[I00B : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNImprovedUnholyStrength.blp" # Interface Icon
+unam string = "TRIGSTR_3539"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16251"           # Tooltip - Basic
+uhot string = "TRIGSTR_2307"            # Hotkey
+ubpy int = 2                            # Button Position (Y)
+ubpx int = 2                            # Button Position (X)
+utub string = "|cffffcc00Gives:|r\r\n+30 Strengh\r\n+20 Intelligence\r\n+7 Armor\r\n+20 Attack Damage\r\n+10HP/s Life Regeneration|n\r\n|cffffcc00Requires:|r\r\nBelt of Giant Strength\r\nRing of Regeneration\r\nCrown of Kings\r\n|cffffcc00Total Cost:|r 2500" # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\n+30 Strengh\r\n+20 Intelligence\r\n+7 Armor\r\n+20 Attack Damage\r\n+10HP/s Life Regeneration|n\r\n|cffffcc00Requires:|r\r\nBelt of Giant Strength\r\nRing of Regeneration\r\nCrown of Kings\r\n|cffffcc00Total Cost:|r 2500" # Description
+
+[I00C : ward]
+unam string = "TRIGSTR_3495"            # Name
+utip string = "TRIGSTR_3720"            # Tooltip - Basic
+ides string = "TRIGSTR_11186"           # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNUsedSoulGem.blp" # Interface Icon
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2777"            # Hotkey
+utub string = "TRIGSTR_11187"           # Tooltip - Extended
+
+[I00D : shhn]
+unam string = "TRIGSTR_3496"            # Name
+utip string = "TRIGSTR_8181"            # Tooltip - Basic
+utub string = "TRIGSTR_3639"            # Tooltip - Extended
+ides string = "TRIGSTR_16252"           # Description
+uhot string = "TRIGSTR_1412"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNThoriumArmor.blp" # Interface Icon
+
+[I00E : mlst]
+unam string = "TRIGSTR_3516"            # Name
+utip string = "TRIGSTR_8182"            # Tooltip - Basic
+uhot string = "TRIGSTR_2596"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+ubpx int = 1                            # Button Position (X)
+ides string = "TRIGSTR_1538"            # Description
+utub string = "TRIGSTR_1543"            # Tooltip - Extended
+
+[I00F : spsh]
+ubpx int = 1                            # Button Position (X)
+uhot string = "TRIGSTR_1294"            # Hotkey
+ifil string = "Items\\SpellShieldAmulet.mdl" # Model Used
+utub string = "Blocks a negative spell that an enemy casts on the Hero once every <ANss,Cool1> seconds|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+
+[I00G : totw]
+uhot string = "TRIGSTR_896"             # Hotkey
+unam string = "TRIGSTR_3520"            # Name
+ides string = "TRIGSTR_3521"            # Description
+utub string = "TRIGSTR_3522"            # Tooltip - Extended
+utip string = "TRIGSTR_7327"            # Tooltip - Basic
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSeigeEngineWithMissles.blp" # Interface Icon
+ubpy int = 2                            # Button Position (Y)
+
+[I00H : wneg]
+unam string = "TRIGSTR_3524"            # Name
+utip string = "TRIGSTR_8265"            # Tooltip - Basic
+utub string = "TRIGSTR_3526"            # Tooltip - Extended
+ides string = "TRIGSTR_3527"            # Description
+uhot string = "TRIGSTR_8598"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSkullWand.blp" # Interface Icon
+
+[I00I : totw]
+unam string = "TRIGSTR_3543"            # Name
+utip string = "TRIGSTR_3544"            # Tooltip - Basic
+ides string = "TRIGSTR_3545"            # Description
+utub string = "TRIGSTR_3546"            # Tooltip - Extended
+uhot string = "TRIGSTR_1456"            # Hotkey
+
+[I00K : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNShamanMaster.blp" # Interface Icon
+unam string = "TRIGSTR_3551"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16253"           # Tooltip - Basic
+uhot string = "TRIGSTR_2401"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+utub string = "|cffffcc00Gives:|r\r\n+150 Damage\r\n+20% Attack Speed\r\nFrost Attack|n50% Life Steal|n\r\n|cffffcc00Requires:|r\r\nClaws of Attack +25\r\nGloves of Haste\r\nClaws of Ultimate Devastation\r\n|cffffcc00Total Cost:|r 4000" # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\n+150 Damage\r\n+20% Attack Speed\r\nFrost Attack|n50% Life Steal|n\r\n|cffffcc00Requires:|r\r\nClaws of Attack +25\r\nGloves of Haste\r\nClaws of Ultimate Devastation\r\n|cffffcc00Total Cost:|r 4000" # Description
+
+[I00L : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGhostMage.blp" # Interface Icon
+unam string = "TRIGSTR_3555"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16254"           # Tooltip - Basic
+uhot string = "TRIGSTR_900"             # Hotkey
+ubpy int = 2                            # Button Position (Y)
+utub string = "|cffffcc00Grants:|r\r\n+750 HP\r\n+15 Armor\r\n15 HP/s Life Regeneration|n\r\n|cffffcc00Requires:|r\r\nRing of Protection +5\r\nRing of Regeneration\r\nPeriapt of Vitality\r\n|cffffcc00Total Cost:|r 2300" # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\n+750 HP\r\n+15 Armor\r\n15 HP/s Life Regeneration|n\r\n|cffffcc00Requires:|r\r\nRing of Protection +5\r\nRing of Regeneration\r\nPeriapt of Vitality\r\n|cffffcc00Total Cost:|r 2300" # Description
+
+[I00M : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNWirtsLeg.blp" # Interface Icon
+unam string = "TRIGSTR_1966"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16255"           # Tooltip - Basic
+ubpx int = 3                            # Button Position (X)
+uhot string = "TRIGSTR_1761"            # Hotkey
+utub string = "|cffffcc00Grants:|r\r\n+30 Agility\r\n+40 Damage\r\nOrb of Corruption attack -5 armor reduction\r\n\r\n|cffffcc00Requires:|r\r\nBoots of Quel'Thalas\r\nMaul of Corruption\r\nTotem of Might\r\n|cffffcc00Total Cost:|r 2850" # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\n+30 Agility\r\n+40 Damage\r\nOrb of Corruption attack -5 armor reduction\r\n\r\n|cffffcc00Requires:|r\r\nBoots of Quel'Thalas\r\nMaul of Corruption\r\nTotem of Might\r\n|cffffcc00Total Cost:|r 2850" # Description
+
+[I00N : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNPriestAdept.blp" # Interface Icon
+unam string = "TRIGSTR_13496"           # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16110"           # Tooltip - Basic
+utub string = "TRIGSTR_6464"            # Tooltip - Extended
+ides string = "TRIGSTR_12045"           # Description
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_8717"            # Hotkey
+
+[I00O : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGoldRing.blp" # Interface Icon
+unam string = "TRIGSTR_3568"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16257"           # Tooltip - Basic
+utub string = "TRIGSTR_17050"           # Tooltip - Extended
+ides string = "TRIGSTR_17076"           # Description
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2778"            # Hotkey
+
+[I00P : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNAmuletOftheWild.blp" # Interface Icon
+unam string = "TRIGSTR_3572"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16258"           # Tooltip - Basic
+utub string = "TRIGSTR_17102"           # Tooltip - Extended
+ides string = "TRIGSTR_17204"           # Description
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1309"            # Hotkey
+
+[I00Q : anfg]
+iico string = "ReplaceableTextures\\PassiveButtons\\PASBTNElunesBlessing.blp" # Interface Icon
+unam string = "TRIGSTR_3576"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2402"            # Hotkey
+utub string = "|cffffcc00Grants:|r\r\n+25 Armor\r\n+350 HP\r\n33% Spell Damage Reduction|n\r\n|cffffcc00Requires:|r\r\nRuned Bracers\r\nRing of Protection +5\r\nShield of the Gods\r\n|cffffcc00Total Cost:|r 2750" # Tooltip - Extended
+utip string = "Purchase Night Terror Armor Recipe" # Tooltip - Basic
+ides string = "|cffffcc00Grants:|r\r\n+25 Armor\r\n+350 HP\r\n33% Spell Damage Reduction|n\r\n|cffffcc00Requires:|r\r\nRuned Bracers\r\nRing of Protection +5\r\nShield of the Gods\r\n|cffffcc00Total Cost:|r 2750" # Description
+
+[I00S : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNStaffOfPreservation.blp" # Interface Icon
+unam string = "TRIGSTR_3580"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_3581"            # Tooltip - Basic
+uhot string = "TRIGSTR_1916"            # Hotkey
+ubpx int = 3                            # Button Position (X)
+utub string = "|cffffcc00Grants:|r\r\nSpell Shield (15s Cooldown)\r\n50% Spell Damage Reduction|n\r\n|cffffcc00Requires:|r\r\nAmulet of Spell Shield\r\nRuned Bracers\r\nRing of Resilience\r\n|cffffcc00Total Cost:|r 3000" # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\nSpell Shield (15s Cooldown)\r\n50% Spell Damage Reduction|n\r\n|cffffcc00Requires:|r\r\nAmulet of Spell Shield\r\nRuned Bracers\r\nRing of Resilience\r\n|cffffcc00Total Cost:|r 3000" # Description
+
+[I00R : frgd]
+utub string = "TRIGSTR_16716"           # Tooltip - Extended
+utip string = "TRIGSTR_4220"            # Tooltip - Basic
+ides string = ""                        # Description
+unam string = "TRIGSTR_3601"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNAmuletOftheWild.blp" # Interface Icon
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1350"            # Hotkey
+
+[I00T : frgd]
+utub string = "TRIGSTR_17011"           # Tooltip - Extended
+utip string = "TRIGSTR_4224"            # Tooltip - Basic
+ides string = "TRIGSTR_17012"           # Description
+unam string = "TRIGSTR_3603"            # Name
+iico string = "ReplaceableTextures\\PassiveButtons\\PASBTNElunesBlessing.blp" # Interface Icon
+
+[I00U : frgd]
+utub string = "TRIGSTR_16717"           # Tooltip - Extended
+utip string = "TRIGSTR_6475"            # Tooltip - Basic
+ides string = ""                        # Description
+unam string = "TRIGSTR_6658"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNWirtsLeg.blp" # Interface Icon
+
+[I00V : frgd]
+utub string = "TRIGSTR_17013"           # Tooltip - Extended
+utip string = "TRIGSTR_4232"            # Tooltip - Basic
+ides string = "TRIGSTR_17014"           # Description
+unam string = "TRIGSTR_3607"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGhostMage.blp" # Interface Icon
+
+[I00W : frgd]
+utip string = "TRIGSTR_4210"            # Tooltip - Basic
+unam string = "TRIGSTR_3609"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNShamanMaster.blp" # Interface Icon
+utub string = "|cffffcc00Gives:|r\r\n+150 Damage\r\n50% Life Steal\r\n+20% Attack Speed\r\nFrost Attack" # Tooltip - Extended
+ides string = ""                        # Description
+
+[I00X : frgd]
+utub string = "TRIGSTR_17015"           # Tooltip - Extended
+utip string = "TRIGSTR_4212"            # Tooltip - Basic
+ides string = "TRIGSTR_17016"           # Description
+unam string = "TRIGSTR_3611"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNImprovedUnholyStrength.blp" # Interface Icon
+
+[I00Y : frgd]
+utub string = "TRIGSTR_16718"           # Tooltip - Extended
+utip string = "TRIGSTR_4237"            # Tooltip - Basic
+ides string = "TRIGSTR_8651"            # Description
+unam string = "TRIGSTR_3613"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNPriestAdept.blp" # Interface Icon
+
+[I010 : frgd]
+utip string = "TRIGSTR_4245"            # Tooltip - Basic
+unam string = "TRIGSTR_3615"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNStaffOfPreservation.blp" # Interface Icon
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+utub string = "|cffffcc00Gives:|r\r\nSpell Shield (15s Cooldown)\r\n50% Spell Damage Reduction" # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\nSpell Shield (15s Cooldown)\r\n50% Spell Damage Reduction" # Description
+
+[I011 : stwp]
+uhot string = "TRIGSTR_1432"            # Hotkey
+
+[I00Z : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNOrbOfDeath.blp" # Interface Icon
+unam string = "TRIGSTR_6121"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1541"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+utub string = "|cffffcc00Gives:|r\r\n+600 HP\r\n+450 MP\r\n+Movement Speed\r\n|cffffcc00Requires:|r\r\nmiRaculix'  Amulet of Power\r\nPeriapt of Vitality\r\nPendant of Mana\r\n|cffffcc00Total Cost:|r 1050|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+utip string = "miRaculix' Amulet of Ultimate Power Recipe" # Tooltip - Basic
+ides string = "|cffffcc00Gives:|r\r\n+600 HP\r\n+450 MP\r\n+Movement Speed\r\n|cffffcc00Requires:|r\r\nmiRaculix'  Amulet of Power\r\nPeriapt of Vitality\r\nPendant of Mana\r\n|cffffcc00Total Cost:|r 1050" # Description
+
+[I012 : frgd]
+utub string = "TRIGSTR_13030"           # Tooltip - Extended
+ides string = ""                        # Description
+unam string = "TRIGSTR_6126"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNOrbOfDeath.blp" # Interface Icon
+utip string = "|cffffcc00Z|r miRaculix' Amulet of Ultimate Power" # Tooltip - Basic
+
+[I013 : mort]
+unam string = "TRIGSTR_4255"            # Name
+utip string = "TRIGSTR_8370"            # Tooltip - Basic
+ides string = ""                        # Description
+uhot string = ""                        # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\PASBTNEngineeringUpgrade.blp" # Interface Icon
+ubpx int = 1                            # Button Position (X)
+utub string = "map created by |cffffff00miRaculix., RJE|r\r\n\r\nMap Co-Creators:\r\n|cff00ff00OH.noes |r\r\n|cff00ff00Lawyerdude|r\r\n|cff00ff00Morakie|r\r\n|cff00ff00LazyBum|r\r\n|cff00ff00LunarStrain|r\r\n\r\nlike the map & want to contribute / support, so we can continue releasing new versions?\r\n|cff7878ffpaypal.me/footmenfrenzy\r\npatreon.com/miRaculix|r" # Tooltip - Extended
+
+[I014 : mort]
+unam string = "TRIGSTR_4258"            # Name
+utip string = "TRIGSTR_11791"           # Tooltip - Basic
+ides string = ""                        # Description
+uhot string = ""                        # Hotkey
+utub string = "TRIGSTR_13771"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp" # Interface Icon
+
+[I016 : mort]
+unam string = "TRIGSTR_4261"            # Name
+utip string = "TRIGSTR_13786"           # Tooltip - Basic
+ides string = ""                        # Description
+uhot string = ""                        # Hotkey
+utub string = "TRIGSTR_16901"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNMaskOfDeath.blp" # Interface Icon
+ubpx int = 3                            # Button Position (X)
+
+[I017 : spro]
+unam string = "TRIGSTR_5731" @base      # Name
+utip string = "TRIGSTR_5732"            # Tooltip - Basic
+uhot string = "TRIGSTR_1523"            # Hotkey
+ides string = "TRIGSTR_1714"            # Description
+ifil string = "Objects\\InventoryItems\\Glyph\\Glyph.mdl" # Model Used
+isca real = 0.7                         # Scaling Value
+utub string = "TRIGSTR_11243"           # Tooltip - Extended
+
+[I018 : shas]
+end = base
+uhot string = ""                        # Hotkey
+unam string = "TRIGSTR_4770" @0         # Name
+
+[I019 : shas]
+end = base
+uhot string = ""                        # Hotkey
+unam string = "TRIGSTR_4771" @0         # Name
+
+[I01A : rsps]
+unam string = "TRIGSTR_4774"            # Name
+
+[I01B : shas]
+uhot string = "TRIGSTR_1362" @base      # Hotkey
+unam string = "TRIGSTR_4601"            # Name
+ifil string = "Items\\ScrollOfHealing.mdl" # Model Used
+
+[I01C : sror]
+end = base
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2403"            # Hotkey
+utip string = "TRIGSTR_4613" @0         # Tooltip - Basic
+utub string = "TRIGSTR_3444"            # Tooltip - Extended
+unam string = "TRIGSTR_4615" @0         # Name
+
+[I01E : pghe]
+end = base
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2779"            # Hotkey
+unam string = "TRIGSTR_5660" @0         # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSpeedUp.blp" @0 # Interface Icon
+
+[I01F : shas]
+end = base
+uhot string = ""                        # Hotkey
+unam string = "TRIGSTR_5835" @0         # Name
+
+[I01G : sror]
+ubpy int = 1 @base                      # Button Position (Y)
+utip string = "TRIGSTR_5870"            # Tooltip - Basic
+utub string = "TRIGSTR_5881" @base      # Tooltip - Extended
+unam string = "TRIGSTR_5872"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNArcaniteArchitecture.blp" # Interface Icon
+ides string = "TRIGSTR_5871"            # Description
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_2780"            # Hotkey
+
+[I01H : frgd]
+utip string = "TRIGSTR_3948"            # Tooltip - Basic
+unam string = "TRIGSTR_4538"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNfireStaff.blp" # Interface Icon
+utub string = "|cffffcc00Gives:|r\r\n+15 strength\r\nBlink, which causes a level 4 Flame Strike at the targeted location|n|n|cffff0000Flame Strike|r|n340 damage over first 2 seconds|n80 damage over next 2 seconds" # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\n+15 strength\r\nBlink, which causes a level 4 Flame Strike at the targeted location|n|n|cffff0000Flame Strike|r|n340 damage over first 2 seconds|n80 damage over next 2 seconds" # Description
+
+[I01I : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNfireStaff.blp" # Interface Icon
+unam string = "TRIGSTR_5917"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16260"           # Tooltip - Basic
+uhot string = "TRIGSTR_1483"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+utub string = "|cffffcc00Gives:|r\r\n+15 strength\r\nBlink, which causes a level 4 Flame Strike at the targeted location|n|n|cffff0000Flame Strike|r|n340 damage over first 2 seconds|n80 damage over next 2 seconds\r\n\r\n|cffffcc00Requires:|r\r\nBelt of Giant Strength\r\nKelen's Dagger of Escape\r\n|cffffcc00Total Cost:|r 2750|nTeleports the Hero a distance of up to 1000. |n|n|cffff0000Banned on:|r\r\n|cffffdc00Jaina, Warden, Edge, Pirate, Craziest Cat Ever, Warlock, Akama & Shadow Shifter|r" # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\n+15 strength\r\nBlink, which causes a level 4 Flame Strike at the targeted location|n|n|cffff0000Flame Strike|r|n340 damage over first 2 seconds|n80 damage over next 2 seconds\r\n\r\n|cffffcc00Requires:|r\r\nBelt of Giant Strength\r\nKelen's Dagger of Escape\r\n|cffffcc00Total Cost:|r 2750|nTeleports the Hero a distance of up to 1000. |n|n|cffff0000Banned on:|r\r\n|cffffdc00Jaina, Warden, Edge, Pirate, Craziest Cat Ever, Warlock, Akama & Shadow Shifter|r" # Description
+
+[I01L : sres]
+end = base
+unam string = "TRIGSTR_6366"            # Name
+
+[I01M : sres]
+end = base
+unam string = "TRIGSTR_6367"            # Name
+
+[I01N : sres]
+end = base
+unam string = "TRIGSTR_6368"            # Name
+
+[I01O : hslv]
+uhot string = "TRIGSTR_2339"            # Hotkey
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+ides string = "TRIGSTR_7725"            # Description
+unam string = "TRIGSTR_7726"            # Name
+utub string = "TRIGSTR_10455"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNEnergyPotion.blp" # Interface Icon
+ifil string = "Items\\PotionBlue.mdl"   # Model Used
+utip string = "Purchase miRaculix' special brew" # Tooltip - Basic
+
+[I01P : spro]
+unam string = "TRIGSTR_6337" @base      # Name
+utip string = "TRIGSTR_8702"            # Tooltip - Basic
+ides string = "TRIGSTR_6531"            # Description
+ifil string = "Objects\\InventoryItems\\Glyph\\Glyph.mdl" # Model Used
+isca real = 0.7                         # Scaling Value
+utub string = "TRIGSTR_11244"           # Tooltip - Extended
+ubpx int = 1                            # Button Position (X)
+uhot string = "TRIGSTR_1540"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGebo.BLP" # Interface Icon
+
+[I01Q : woms]
+unam string = "TRIGSTR_1043"            # Name
+utip string = "TRIGSTR_8266"            # Tooltip - Basic
+utub string = "TRIGSTR_11038"           # Tooltip - Extended
+ides string = "TRIGSTR_11039"           # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGlaringBeam.blp" # Interface Icon
+ubpx int = 1                            # Button Position (X)
+
+[I01R : clfm]
+end = base
+utub string = "TRIGSTR_7215"            # Tooltip - Extended
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_8722"            # Hotkey
+unam string = "TRIGSTR_6469" @0         # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNCoD.blp" @0 # Interface Icon
+utip string = "TRIGSTR_16723" @0        # Tooltip - Basic
+
+[I01S : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNCoD.blp" # Interface Icon
+unam string = "TRIGSTR_6474"            # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16261"           # Tooltip - Basic
+uhot string = "TRIGSTR_1689"            # Hotkey
+utub string = "|cffffcc00Grants:|r\r\n+30 Strength\r\n15HP/s Life Regeneration\r\n+10 Armor\r\nPermanent Immolation (70DMG/s)|n\r\n|cffffcc00Requires:|r\r\nGauntlet of Orge Strength\r\nCloak of Flames\r\n|cffffcc00Total Cost:|r 3500" # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\n+30 Strength\r\n15HP/s Life Regeneration\r\n+10 Armor\r\nPermanent Immolation (70DMG/s)|n\r\n|cffffcc00Requires:|r\r\nGauntlet of Orge Strength\r\nCloak of Flames\r\n|cffffcc00Total Cost:|r 3500" # Description
+
+[I01T : sres]
+end = base
+unam string = "TRIGSTR_6805"            # Name
+
+[I01U : sres]
+end = base
+unam string = "TRIGSTR_6806"            # Name
+
+[I01V : sres]
+end = base
+unam string = "TRIGSTR_6807"            # Name
+
+[I01W : sres]
+end = base
+unam string = "TRIGSTR_7268"            # Name
+
+[I01X : sres]
+end = base
+unam string = "TRIGSTR_5595"            # Name
+
+[I01Y : will]
+uhot string = "TRIGSTR_1513" @base      # Hotkey
+unam string = "TRIGSTR_5511"            # Name
+utip string = "TRIGSTR_5512"            # Tooltip - Basic
+ides string = "TRIGSTR_5513"            # Description
+utub string = "TRIGSTR_5358"            # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNEnsnare.blp" # Interface Icon
+ubpx int = 2                            # Button Position (X)
+
+[I01Z : rde3]
+end = base
+utub string = "TRIGSTR_10744"           # Tooltip - Extended
+uhot string = "TRIGSTR_1590"            # Hotkey
+unam string = "TRIGSTR_2333"            # Name
+ides string = "TRIGSTR_10996" @0        # Description
+utip string = "TRIGSTR_2334"            # Tooltip - Basic
+iico string = "ReplaceableTextures\\CommandButtons\\BTNNobleSword.blp" @0 # Interface Icon
+ubpx int = 2 @0                         # Button Position (X)
+
+[I020 : stwp]
+uhot string = "TRIGSTR_3481" @base      # Hotkey
+unam string = "TRIGSTR_2089"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNMassTeleport.blp" # Interface Icon
+utip string = "TRIGSTR_8224"            # Tooltip - Basic
+ides string = "TRIGSTR_13430"           # Description
+ifil string = "Items\\ScrolRed.mdl"     # Model Used
+ubpy int = 2                            # Button Position (Y)
+utub string = "Hero channels for 1.5s, then transports up to 24 nearby friendly units to a target friendly town hall.|n|cff00ff00Charges:|r 1" # Tooltip - Extended
+
+[I021 : spro]
+unam string = "TRIGSTR_7232" @base      # Name
+utip string = "TRIGSTR_8424"            # Tooltip - Basic
+ides string = "TRIGSTR_8425"            # Description
+ifil string = "Objects\\InventoryItems\\Glyph\\Glyph.mdl" # Model Used
+isca real = 0.7                         # Scaling Value
+utub string = "TRIGSTR_8447"            # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNScrollOfInferno.blp" # Interface Icon
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1821"            # Hotkey
+
+[I022 : spro]
+unam string = "TRIGSTR_8665" @base      # Name
+utip string = "TRIGSTR_8666"            # Tooltip - Basic
+uhot string = "TRIGSTR_2404"            # Hotkey
+ides string = "TRIGSTR_8667"            # Description
+ifil string = "Objects\\InventoryItems\\Glyph\\Glyph.mdl" # Model Used
+isca real = 0.7                         # Scaling Value
+utub string = "TRIGSTR_8668"            # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNPD3WizIllusion.BLP" # Interface Icon
+ubpy int = 1                            # Button Position (Y)
+
+[I023 : will]
+end = base
+uhot string = "TRIGSTR_1809"            # Hotkey
+unam string = "TRIGSTR_8674" @0         # Name
+
+[I026 : mort]
+unam string = "TRIGSTR_5910"            # Name
+utip string = "TRIGSTR_5920"            # Tooltip - Basic
+ides string = ""                        # Description
+uhot string = ""                        # Hotkey
+utub string = "TRIGSTR_16902"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNWarriorStrength.blp" # Interface Icon
+ubpy int = 1                            # Button Position (Y)
+
+[I00J : hslv]
+end = base
+unam string = "TRIGSTR_10452"           # Name
+ides string = "TRIGSTR_10454"           # Description
+utub string = "TRIGSTR_14309"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNEnergyPotion.blp" # Interface Icon
+uhot string = "TRIGSTR_1551" @0         # Hotkey
+ubpx int = 1 @0                         # Button Position (X)
+ifil string = "Items\\PotionPurple.mdl" @0 # Model Used
+utip string = "Purchase miRaculix' special brew" # Tooltip - Basic
+
+[I027 : pinv]
+end = base
+uhot string = "TRIGSTR_1862"            # Hotkey
+unam string = "TRIGSTR_10456" @0        # Name
+
+[I028 : shas]
+uhot string = "TRIGSTR_1834" @base      # Hotkey
+unam string = "TRIGSTR_10457"           # Name
+ifil string = "Items\\ScrollOfHealing.mdl" # Model Used
+
+[I029 : will]
+uhot string = "TRIGSTR_1944" @base      # Hotkey
+unam string = "TRIGSTR_10458"           # Name
+ubpx int = 3                            # Button Position (X)
+
+[I02A : pams]
+end = base
+utub string = "TRIGSTR_6913"            # Tooltip - Extended
+ides string = "TRIGSTR_10459" @0        # Description
+ubpy int = 1                            # Button Position (Y)
+ubpx int = 0                            # Button Position (X)
+unam string = "TRIGSTR_10461" @0        # Name
+
+[I02B : whwd]
+uhot string = "TRIGSTR_2597" @base      # Hotkey
+unam string = "TRIGSTR_10462"           # Name
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[I02C : gobm]
+end = base
+uhot string = "TRIGSTR_2781"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNStasisTrap.blp" # Interface Icon
+ides string = "TRIGSTR_10463"           # Description
+unam string = "TRIGSTR_10464"           # Name
+utip string = "TRIGSTR_10465"           # Tooltip - Basic
+utub string = "TRIGSTR_11246" @0        # Tooltip - Extended
+ubpx int = 2                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[I01J : rhe3]
+unam string = "TRIGSTR_5362"            # Name
+utub string = "TRIGSTR_3472"            # Tooltip - Extended
+ides string = "TRIGSTR_3473"            # Description
+uhot string = ""                        # Hotkey
+ifil string = "Illusion.mdl"            # Model Used
+
+[I02D : whwd]
+uhot string = "TRIGSTR_2598" @base      # Hotkey
+unam string = "TRIGSTR_5078"            # Name
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[I02E : shas]
+uhot string = "TRIGSTR_1558" @base      # Hotkey
+unam string = "TRIGSTR_5154"            # Name
+ifil string = "Items\\ScrollOfHealing.mdl" # Model Used
+
+[I02F : will]
+uhot string = "TRIGSTR_2405" @base      # Hotkey
+ubpx int = 3                            # Button Position (X)
+unam string = "TRIGSTR_4229"            # Name
+
+[I02G : dust]
+end = base
+ubpx int = 0                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_928"             # Hotkey
+unam string = "TRIGSTR_11163" @0        # Name
+
+[nams : pams]
+end = base
+utub string = "TRIGSTR_11248"           # Tooltip - Extended
+ides string = "TRIGSTR_10460" @0        # Description
+uhot string = "TRIGSTR_2599"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+unam string = "TRIGSTR_10604" @0        # Name
+
+[ICPP : wtlg]
+ides string = ""                        # Description
+unam string = "TRIGSTR_9205"            # Name
+utip string = "TRIGSTR_12342"           # Tooltip - Basic
+utub string = "TRIGSTR_12343"           # Tooltip - Extended
+uhot string = ""                        # Hotkey
+ifil string = "none.mdl"                # Model Used
+iico string = "ReplaceableTextures\\WorldEditUI\\Editor-Ally-HighPriority.blp" # Interface Icon
+
+[I025 : rspd]
+unam string = "TRIGSTR_12451"           # Name
+utub string = "TRIGSTR_12452"           # Tooltip - Extended
+ides string = "TRIGSTR_12453"           # Description
+utip string = ""                        # Tooltip - Basic
+uhot string = ""                        # Hotkey
+iclg int = 165                          # Tinting Color 2 (Green)
+iclb int = 0                            # Tinting Color 3 (Blue)
+
+[I02H : rre1]
+unam string = "TRIGSTR_12429"           # Name
+iclg int = 215                          # Tinting Color 2 (Green)
+iclb int = 0                            # Tinting Color 3 (Blue)
+utip string = ""                        # Tooltip - Basic
+utub string = "TRIGSTR_12433"           # Tooltip - Extended
+
+[I02I : wswd]
+end = base
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2600"            # Hotkey
+unam string = "TRIGSTR_7292" @0         # Name
+
+[I02J : rde3]
+end = base
+utub string = "TRIGSTR_11661"           # Tooltip - Extended
+uhot string = "TRIGSTR_1561"            # Hotkey
+unam string = "TRIGSTR_1057"            # Name
+ides string = "TRIGSTR_11662" @0        # Description
+utip string = "TRIGSTR_12624"           # Tooltip - Basic
+iico string = "ReplaceableTextures\\CommandButtons\\BTNRing.blp" @0 # Interface Icon
+ubpx int = 1 @0                         # Button Position (X)
+
+[I02L : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSpell_Nature_SpiritArmor.blp" # Interface Icon
+unam string = "TRIGSTR_12703"           # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_16262"           # Tooltip - Basic
+uhot string = "TRIGSTR_2601"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+utub string = "|cffffcc00Gives:|r\r\n+550 HP\r\n+10 Armor\r\n20% Magic Resistance|nHP Regeneration 4HP/s\r\n\r\n|cffffcc00Requires:|r\r\nRing of Resilience\r\nShield of the Gods|n\r\n|cffffcc00Total Cost:|r 2100" # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\n+550 HP\r\n+10 Armor\r\n20% Magic Resistance|nHP Regeneration 4HP/s\r\n\r\n|cffffcc00Requires:|r\r\nRing of Resilience\r\nShield of the Gods|n\r\n|cffffcc00Total Cost:|r 2100" # Description
+
+[I02M : frgd]
+utub string = "TRIGSTR_11806"           # Tooltip - Extended
+utip string = "TRIGSTR_12705"           # Tooltip - Basic
+ides string = "TRIGSTR_11831"           # Description
+unam string = "TRIGSTR_12706"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSpell_Nature_SpiritArmor.blp" # Interface Icon
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[I02N : dust]
+ubpx int = 0 @base                      # Button Position (X)
+ubpy int = 1 @base                      # Button Position (Y)
+uhot string = "TRIGSTR_2406" @base      # Hotkey
+unam string = "TRIGSTR_7828"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSentryAmuletTier3.blp" # Interface Icon
+ides string = "TRIGSTR_8979"            # Description
+utub string = "TRIGSTR_16649"           # Tooltip - Extended
+utip string = "TRIGSTR_12607"           # Tooltip - Basic
+
+[I02K : hslv]
+uhot string = "TRIGSTR_3514"            # Hotkey
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+ides string = "TRIGSTR_12166"           # Description
+unam string = "TRIGSTR_12187"           # Name
+utip string = "TRIGSTR_12443"           # Tooltip - Basic
+utub string = "TRIGSTR_12481"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNEnergyPotion.blp" # Interface Icon
+ifil string = "Items\\PotionBlue.mdl"   # Model Used
+
+[I02P : spro]
+unam string = "TRIGSTR_13624" @base     # Name
+utip string = "TRIGSTR_13625"           # Tooltip - Basic
+ides string = "TRIGSTR_17403"           # Description
+ifil string = "Objects\\InventoryItems\\Glyph\\Glyph.mdl" # Model Used
+isca real = 0.9                         # Scaling Value
+utub string = "TRIGSTR_11249"           # Tooltip - Extended
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_1876"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNBerserkForTrolls.blp" # Interface Icon
+
+[I02Q : pinv]
+end = base
+uhot string = "TRIGSTR_1935"            # Hotkey
+ifil string = "Items\\PotionPurple.mdl" # Model Used
+
+[I02R : pinv]
+uhot string = "TRIGSTR_2602" @base      # Hotkey
+ifil string = "Items\\PotionPurple.mdl" @base # Model Used
+unam string = "TRIGSTR_12886"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNGreaterInvisibility.blp" # Interface Icon
+utub string = "TRIGSTR_12887"           # Tooltip - Extended
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+utip string = "TRIGSTR_13379"           # Tooltip - Basic
+
+[I02S : infs]
+ides string = "TRIGSTR_14024"           # Description
+utub string = "TRIGSTR_14025"           # Tooltip - Extended
+uhot string = "TRIGSTR_1631"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+
+[I02T : wneg]
+uhot string = "TRIGSTR_1044" @base      # Hotkey
+unam string = "TRIGSTR_14811"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNPurify.blp" # Interface Icon
+utip string = "TRIGSTR_14818"           # Tooltip - Basic
+utub string = "TRIGSTR_11250"           # Tooltip - Extended
+ides string = "TRIGSTR_14516"           # Description
+ubpy int = 2                            # Button Position (Y)
+
+[I02X : dust]
+ubpx int = 2 @base                      # Button Position (X)
+uhot string = "TRIGSTR_2215" @base      # Hotkey
+unam string = "TRIGSTR_13305"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNSentryAmuletTier3.blp" # Interface Icon
+utip string = "TRIGSTR_15701"           # Tooltip - Basic
+utub string = "|cffffcc00Gives:|r\r\nActivated ability with enhanced Dust of Appearance (+50 Bonus Range)\r\n+250 HP\r\n+200 Mana\r\nIncreased Mana Regeneration by 150%\r\nIncreased movement speed\r\n|cffffcc00Requires:|r\r\nSobi Mask\r\nmiRaculix' Amulet of Power\r\n|cffffcc00Total Cost:|r 200|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\nActivated ability with enhanced Dust of Appearance (+50 Bonus Range)\r\n+250 HP\r\n+200 Mana\r\nIncreased Mana Regeneration by 150%\r\nIncreased movement speed\r\n|cffffcc00Requires:|r\r\nSobi Mask\r\nmiRaculix' Amulet of Power\r\n|cffffcc00Total Cost:|r 200" # Description
+
+[I030 : frgd]
+utub string = "TRIGSTR_11530"           # Tooltip - Extended
+utip string = "TRIGSTR_12144"           # Tooltip - Basic
+ides string = "TRIGSTR_11532"           # Description
+unam string = "TRIGSTR_12740"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNAmulet.blp" # Interface Icon
+
+[I02O : frgd]
+utip string = "TRIGSTR_16267"           # Tooltip - Basic
+unam string = "TRIGSTR_13211"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNAmulet.blp" # Interface Icon
+uhot string = "TRIGSTR_1572"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+utub string = "|cffffcc00Grants:|r\r\n+200 HP\r\n+200 Mana\r\nIncreased Movement speed\r\nAbility to cast Rejuvination\r\n\r\n|cffffcc00Rejuvination|r\r\n|cffffcc00Health|r 550\r\n|cffffcc00Mana|r 50\r\n|cffffcc00Duration|r 10s\r\n|cffffcc00Cooldown|r 40s\r\n\r\n|cffffcc00Requires:|r\r\nmiRaculix's Amulet\r\nSobi Mask\r\nRing of Regeneration\r\n|cffffcc00Cost|r 300|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\n+200 HP\r\n+200 Mana\r\nIncreased Movement speed\r\nAbility to cast Rejuvination\r\n\r\n|cffffcc00Rejuvination|r\r\n|cffffcc00Health|r 550\r\n|cffffcc00Mana|r 50\r\n|cffffcc00Duration|r 10s\r\n|cffffcc00Cooldown|r 40s\r\n\r\n|cffffcc00Requires:|r\r\nmiRaculix's Amulet\r\nSobi Mask\r\nRing of Regeneration\r\n|cffffcc00Cost|r 300" # Description
+
+[I02W : frgd]
+utip string = "TRIGSTR_16268"           # Tooltip - Basic
+unam string = "TRIGSTR_13220"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNElemental Shield.blp" # Interface Icon
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_2782"            # Hotkey
+ubpy int = 1                            # Button Position (Y)
+utub string = "|cffffcc00Grants:|r\r\n+250 HP\r\n+200 Mana\r\nIncreased Movement speed\r\nItem carrier receives a Spell Shield (60s cooldown)\r\n\r\n|cffffcc00Requires:|r\r\nmiRaculix's Amulet\r\nAmulet of Spell Shield\r\n|cffffcc00Cost|r 1000|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\n+250 HP\r\n+200 Mana\r\nIncreased Movement speed\r\nItem carrier receives a Spell Shield (60s cooldown)\r\n\r\n|cffffcc00Requires:|r\r\nmiRaculix's Amulet\r\nAmulet of Spell Shield\r\n|cffffcc00Cost|r 1000" # Description
+
+[I031 : frgd]
+utub string = "TRIGSTR_14992"           # Tooltip - Extended
+utip string = "TRIGSTR_13222"           # Tooltip - Basic
+ides string = "TRIGSTR_14993"           # Description
+unam string = "TRIGSTR_5925"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNElemental Shield.blp" # Interface Icon
+
+[I033 : totw]
+unam string = "TRIGSTR_15126"           # Name
+utip string = "TRIGSTR_17874"           # Tooltip - Basic
+ides string = "TRIGSTR_16991"           # Description
+utub string = "TRIGSTR_16992"           # Tooltip - Extended
+uhot string = "TRIGSTR_1045"            # Hotkey
+iico string = "ReplaceableTextures\\CommandButtons\\BTNPenguin.blp" # Interface Icon
+ubpx int = 3                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+
+[I03A : woms]
+unam string = "TRIGSTR_12161"           # Name
+uhot string = "TRIGSTR_931"             # Hotkey
+utip string = "TRIGSTR_17875"           # Tooltip - Basic
+utub string = "TRIGSTR_3276"            # Tooltip - Extended
+ides string = "TRIGSTR_3390"            # Description
+iico string = "ReplaceableTextures\\CommandButtons\\BTNCarrionSwarm1.blp" # Interface Icon
+ubpy int = 2                            # Button Position (Y)
+
+[I03H : shar]
+
+[I03M : wlsd]
+unam string = "TRIGSTR_1132"            # Name
+utip string = "TRIGSTR_4211"            # Tooltip - Basic
+ides string = "TRIGSTR_6977"            # Description
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+uhot string = "TRIGSTR_2603"            # Hotkey
+utub string = "TRIGSTR_13711"           # Tooltip - Extended
+
+[I03N : kpin]
+ides string = "TRIGSTR_16467"           # Description
+utub string = "TRIGSTR_16564"           # Tooltip - Extended
+uhot string = "TRIGSTR_8774"            # Hotkey
+ubpx int = 3                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)
+
+[I03P : bspd]
+utub string = "TRIGSTR_16732"           # Tooltip - Extended
+ides string = "TRIGSTR_16733"           # Description
+ubpx int = 1                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1767"            # Hotkey
+
+[I03Q : manh]
+ides string = ""                        # Description
+unam string = "TRIGSTR_3738"            # Name
+utip string = "TRIGSTR_15198"           # Tooltip - Basic
+utub string = "TRIGSTR_15294"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNBreathOfFrost.blp" # Interface Icon
+ifil string = "Abilities\\Spells\\Items\\AIam\\AIamTarget.mdl" # Model Used
+
+[I03S : manh]
+ides string = ""                        # Description
+unam string = "TRIGSTR_15295"           # Name
+utip string = "TRIGSTR_15296"           # Tooltip - Basic
+utub string = "TRIGSTR_15297"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\PassiveButtons\\PASBTNCriticalStrike.blp" # Interface Icon
+ifil string = "Abilities\\Spells\\Items\\AIam\\AIamTarget.mdl" # Model Used
+
+[I03T : manh]
+ides string = ""                        # Description
+unam string = "TRIGSTR_15311"           # Name
+utip string = "TRIGSTR_15312"           # Tooltip - Basic
+utub string = "TRIGSTR_15313"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\PassiveButtons\\PASBTNFeedBack.blp" # Interface Icon
+ifil string = "Abilities\\Spells\\Items\\AIam\\AIamTarget.mdl" # Model Used
+
+[I03U : manh]
+ides string = ""                        # Description
+unam string = "TRIGSTR_15316"           # Name
+utip string = "TRIGSTR_15854"           # Tooltip - Basic
+utub string = "TRIGSTR_15855"           # Tooltip - Extended
+iico string = "ReplaceableTextures\\CommandButtons\\BTNWarStomp.blp" # Interface Icon
+ifil string = "Abilities\\Spells\\Items\\AIam\\AIamTarget.mdl" # Model Used
+
+[I03V : pgin]
+unam string = "TRIGSTR_17140"           # Name
+
+[I03X : gold]
+
+[I03Y : frgd]
+utub string = "TRIGSTR_17671"           # Tooltip - Extended
+utip string = "TRIGSTR_15707"           # Tooltip - Basic
+ides string = "TRIGSTR_17672"           # Description
+unam string = "TRIGSTR_15797"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNMoonAmulet.blp" # Interface Icon
+
+[I03Z : frgd]
+utip string = "TRIGSTR_15870"           # Tooltip - Basic
+unam string = "TRIGSTR_16151"           # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNMoonAmulet.blp" # Interface Icon
+uhot string = "TRIGSTR_2049"            # Hotkey
+utub string = "|cffffcc00Grants:|r\r\n+200 HP\r\n+300 Mana\r\n+4 Armor|nIncreased Movement speed\r\nAbility to cast Speed Scroll\r\n\r\n|cffffcc00Speed Scroll|r\r\n|cffffcc00Duration|r 20s\r\n|cffffcc00Cooldown|r 35s\r\n\r\n|cffffcc00Requires:|r\r\nmiRaculix's Amulet\r\nnMedallion of Glim\r\n|cffffcc00Cost|r 500|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+ides string = "|cffffcc00Grants:|r\r\n+200 HP\r\n+300 Mana\r\n+4 Armor|nIncreased Movement speed\r\nAbility to cast Speed Scroll\r\n\r\n|cffffcc00Speed Scroll|r\r\n|cffffcc00Duration|r 20s\r\n|cffffcc00Cooldown|r 35s\r\n\r\n|cffffcc00Requires:|r\r\nmiRaculix's Amulet\r\nnMedallion of Glim\r\n|cffffcc00Cost|r 500" # Description
+
+[I040 : will]
+uhot string = "TRIGSTR_3530" @base      # Hotkey
+unam string = "TRIGSTR_3405"            # Name
+ides string = "TRIGSTR_4247"            # Description
+utub string = "TRIGSTR_4252"            # Tooltip - Extended
+utip string = "TRIGSTR_4864"            # Tooltip - Basic
+ubpx int = 2                            # Button Position (X)
+ubpy int = 2                            # Button Position (Y)
+
+[I041 : scav]
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_977"             # Hotkey
+
+[I042 : rhth]
+end = base
+ubpx int = 2                            # Button Position (X)
+uhot string = "TRIGSTR_3732"            # Hotkey
+ubpy int = 2                            # Button Position (Y)
+ides string = "TRIGSTR_15891"           # Description
+utub string = "TRIGSTR_16507"           # Tooltip - Extended
+
+[I046 : stwp]
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1897"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+
+[I034 : lmbr]
+unam string = "TRIGSTR_17888"           # Name
+
+[I048 : rde3]
+end = base
+utub string = "TRIGSTR_17916"           # Tooltip - Extended
+uhot string = "TRIGSTR_2276"            # Hotkey
+unam string = "TRIGSTR_17917"           # Name
+ides string = "TRIGSTR_17918" @0        # Description
+utip string = "TRIGSTR_17919"           # Tooltip - Basic
+iico string = "ReplaceableTextures\\CommandButtons\\BTNNobleSword.blp" @0 # Interface Icon
+ubpx int = 2 @0                         # Button Position (X)
+
+[I049 : nspi]
+end = base
+ubpy int = 2                            # Button Position (Y)
+uhot string = "TRIGSTR_1006"            # Hotkey
+
+[I04A : dust]
+ubpx int = 0 @base                      # Button Position (X)
+ubpy int = 1 @base                      # Button Position (Y)
+uhot string = "TRIGSTR_2407" @base      # Hotkey
+unam string = "TRIGSTR_4424"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNWindWalkOn.blp" # Interface Icon
+ides string = "TRIGSTR_4398"            # Description
+utub string = "TRIGSTR_4399"            # Tooltip - Extended
+utip string = "TRIGSTR_4489"            # Tooltip - Basic
+
+[I04B : dust]
+uhot string = "TRIGSTR_2338" @base      # Hotkey
+unam string = "TRIGSTR_4491"            # Name
+iico string = "ReplaceableTextures\\CommandButtons\\BTNWindWalkOn.blp" # Interface Icon
+utip string = "TRIGSTR_4588"            # Tooltip - Basic
+ubpx int = 2                            # Button Position (X)
+utub string = "|cffffcc00Gives:|r\r\nActivated ability that casts Wind Walk\r\n+30 All Stats\r\n+20% Attack Speed\r\n+300 HP\r\n+200 Mana\r\nIncreased movement speed\r\n\r\n|cffffcc00Wind Walk:|r\r\nDuration: 20s\r\nDamage: 50\r\nMovement Speed Increase: 10%\r\nCooldown: 45s\r\n\r\n|cffffcc00Requires:|r\r\nCirclet of Nobility\r\n|cffffcc00Total Cost:|r 4000\r\n\r\n|cffff0000Banned on:|r\r\n|cffffdc00Blademaster, Shere-Khan, Jaood, Shadow, Soviet Sniper & Crazy Cat|r|n|nAmulet component: miRaculix's Amulet is consumed first. Boots of Speed may substitute only while this hero carries a completed amulet upgrade; that upgrade is kept." # Tooltip - Extended
+ides string = "|cffffcc00Gives:|r\r\nActivated ability that casts Wind Walk\r\n+30 All Stats\r\n+20% Attack Speed\r\n+300 HP\r\n+200 Mana\r\nIncreased movement speed\r\n\r\n|cffffcc00Wind Walk:|r\r\nDuration: 20s\r\nDamage: 50\r\nMovement Speed Increase: 10%\r\nCooldown: 45s\r\n\r\n|cffffcc00Requires:|r\r\nCirclet of Nobility\r\n|cffffcc00Total Cost:|r 4000\r\n\r\n|cffff0000Banned on:|r\r\n|cffffdc00Blademaster, Shere-Khan, Jaood, Shadow, Soviet Sniper & Crazy Cat|r" # Description
+
+[I015 : anfg]
+iico string = "ReplaceableTextures\\CommandButtons\\BTNForkOfLightning.blp" # Interface Icon
+unam string = "TRIGSTR_11507"           # Name
+ifil string = "Objects\\InventoryItems\\CrystalShard\\CrystalShard.mdl" # Model Used
+utip string = "TRIGSTR_11508"           # Tooltip - Basic
+utub string = "TRIGSTR_11509"           # Tooltip - Extended
+ides string = "TRIGSTR_11511"           # Description
+uhot string = "TRIGSTR_2604"            # Hotkey
+ubpx int = 1                            # Button Position (X)
+ubpy int = 1                            # Button Position (Y)

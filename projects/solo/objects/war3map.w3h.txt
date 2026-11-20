@@ -322,13 +322,6 @@ fube string = "Movement speed reduced by 25%." # Tooltip - Extended
 ftat string = "Abilities\\Spells\\Human\\slow\\slowtarget.mdl" # Target
 fta0 string = "origin"                  # Target Attachment Point 1
 
-[BMuv : BOae]
-end = new
-fnam string = "Sadism"                  # Name (Editor Only)
-ftip string = "Sadism"                  # Tooltip
-fube string = "Mundo is regenerating health and moving faster." # Tooltip - Extended
-fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerate.blp" # Icon
-
 [BGbn : Bslo]
 end = new
 fnam string = "Guardian Disruption"     # Name (Editor Only)
@@ -357,32 +350,6 @@ fnam string = "Undying"                 # Name (Editor Only)
 ftip string = "Undying"                 # Tooltip
 fube string = "Movement and attack speed increased." # Tooltip - Extended
 fart string = "ReplaceableTextures\\CommandButtons\\BTNRegenerate.blp" # Icon
-
-[BMwR : Beng]
-end = new
-fnam string = "Cleaver Wound"           # Name (Editor Only)
-ftip string = "Cleaver Wound"           # Tooltip
-fube string = "Movement impaired. Speed Scroll cannot grant haste while wounded." # Tooltip - Extended
-fart string = "ReplaceableTextures\\CommandButtons\\BTNMundoCleaver.blp" # Icon
-ftat string = ""                        # Target
-feat string = ""                        # Effect
-fsat string = ""                        # Special
-fmat string = ""                        # Missile Art
-flig string = ""                        # Lightning
-ftac int = 0                            # Target Attachments
-
-[BMwS : Bslo]
-end = new
-fnam string = "Cleaver Wound"           # Name (Editor Only)
-ftip string = "Cleaver Wound"           # Tooltip
-fube string = "Movement impaired. Speed Scroll cannot grant haste while wounded." # Tooltip - Extended
-fart string = "ReplaceableTextures\\CommandButtons\\BTNMundoCleaver.blp" # Icon
-ftat string = ""                        # Target
-feat string = ""                        # Effect
-fsat string = ""                        # Special
-fmat string = ""                        # Missile Art
-flig string = ""                        # Lightning
-ftac int = 0                            # Target Attachments
 
 [BGs1 : BNsi]
 end = new
