@@ -23,6 +23,10 @@ ff check       # every check a change passes before it is committed
 On Linux, `./ff`; on Windows, `ff` (`ff.cmd`). `ff install` uses `Documents/Warcraft III/Maps` on Windows; elsewhere,
 set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
 
+## Balance wiki
+
+Generate a searchable offline guide to the heroes, abilities, items and triggers in either map. The [balance wiki guide](tools/wiki/README.md) has setup instructions, examples and the edit proposal workflow. Open **Open Balance Wiki.html** in the checkout to choose between the generated starting-map guides.
+
 ## Layout
 
 - `projects/<map>/src/`: every text file of the map: the script (`war3map.j`), the string table (`war3map.wts`), the
