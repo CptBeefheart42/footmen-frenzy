@@ -12,6 +12,7 @@
     ff e2e suite | ladder         every scenario, played and judged, then the ladder check / only the ladder check
                                   (suite --runs 799x:ffa solo:solo ... --no-probe: only these, without the probe)
     ff e2e probe | probe-build    the WC3 3.0 probe map: build, play and judge it / only build it
+    ff objects fix-types <map>    store every object-data cell with its field's type (WC3 reads a wrong one as 0)
     ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
@@ -35,6 +36,7 @@ import blobs  # noqa: E402
 import e2e  # noqa: E402
 import hotkeys  # noqa: E402
 import leaks  # noqa: E402
+import objecttypes  # noqa: E402
 import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
@@ -130,6 +132,16 @@ def check() -> int:
     print('\n'.join(found) if found else 'none found')
     if found:
         failed.append('private details')
+    print('== object data types')
+    for name, proj in projects().items():
+        wrong = objecttypes.mismatches(proj.objects)
+        for path, number, field, stored, want in wrong[:20]:
+            print(f'{path.relative_to(ROOT)}:{number}: {field} is stored as {stored}, Warcraft III reads it as {want}')
+        if wrong:
+            print(f'{name}: {len(wrong)} cell(s) with the wrong type (WC3 3.0 reads them as 0): ff objects fix-types {name}')
+            failed.append(f'object data types {name}')
+        else:
+            print(f'{name}: every cell has its field\'s type')
     print('== hotkeys')
     for name, proj in projects().items():
         changed = hotkeys.differences(proj)
@@ -270,6 +282,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('scenario', nargs='?')
     p.add_argument('--runs', nargs='+', metavar='MAP:SCENARIO', help='suite: only these runs (default: all)')
     p.add_argument('--no-probe', action='store_true', help='suite: without the probe map')
+    p = commands.add_parser('objects', help="a map's object data (objects/*.txt)")
+    p.add_argument('action', choices=['fix-types'])
+    p.add_argument('map', choices=list(projects()))
     p = commands.add_parser('hotkeys', help="rewrite a map's hotkey list after an intended change")
     p.add_argument('map', choices=list(projects()))
     commands.add_parser('check', help='every check a change passes before it is committed')
@@ -289,6 +304,9 @@ def main(argv: list[str] | None = None) -> int:
             return docker(args.rest or ['check'])
         if args.command == 'e2e':
             return e2e_command(args)
+        if args.command == 'objects':
+            print(f'fixed {objecttypes.fix(project(args.map).objects)} cell type(s) in projects/{args.map}/objects')
+            return 0
         if args.command == 'hotkeys':
             print(f'wrote {hotkeys.write(project(args.map))}')
             return 0
