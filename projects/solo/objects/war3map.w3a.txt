@@ -25525,6 +25525,7 @@ hwdu.5.0 string = "oeye"                # Ward Unit Type
 hwdu.6.0 string = "oeye"                # Ward Unit Type
 atar.5.0 string = "_"                   # Targets Allowed
 atar.6.0 string = "_"                   # Targets Allowed
+hwdu.1.0 string = "oeye"                # Ward Unit Type
 
 [A0LG : AHab]
 end = base
@@ -26107,37 +26108,36 @@ aran.3.0 unreal = 550                   # Cast Range
 aran.4.0 unreal = 600                   # Cast Range
 aran.5.0 unreal = 650                   # Cast Range
 aran.6.0 unreal = 700                   # Cast Range
-adur.2.0 unreal = 15                    # Duration - Normal
-adur.3.0 unreal = 15                    # Duration - Normal
-adur.4.0 unreal = 15                    # Duration - Normal
-adur.5.0 unreal = 15                    # Duration - Normal
-adur.6.0 unreal = 15                    # Duration - Normal
-ahdu.2.0 unreal = 15                    # Duration - Hero
-ahdu.3.0 unreal = 15                    # Duration - Hero
-ahdu.4.0 unreal = 15                    # Duration - Hero
-ahdu.5.0 unreal = 15                    # Duration - Hero
-ahdu.6.0 unreal = 15                    # Duration - Hero
-acdn.1.0 unreal = 12                    # Cooldown
-acdn.2.0 unreal = 12                    # Cooldown
-acdn.3.0 unreal = 10                    # Cooldown
-acdn.4.0 unreal = 10                    # Cooldown
-acdn.5.0 unreal = 10                    # Cooldown
-acdn.6.0 unreal = 10                    # Cooldown
+adur.2.0 unreal = 17                    # Duration - Normal
+adur.3.0 unreal = 20                    # Duration - Normal
+adur.4.0 unreal = 25                    # Duration - Normal
+adur.5.0 unreal = 30                    # Duration - Normal
+adur.6.0 unreal = 35                    # Duration - Normal
+ahdu.2.0 unreal = 17                    # Duration - Hero
+ahdu.3.0 unreal = 20                    # Duration - Hero
+ahdu.4.0 unreal = 25                    # Duration - Hero
+ahdu.5.0 unreal = 30                    # Duration - Hero
+ahdu.6.0 unreal = 35                    # Duration - Hero
+acdn.1.0 unreal = 11                    # Cooldown
+acdn.2.0 unreal = 10                    # Cooldown
+acdn.3.0 unreal = 9                     # Cooldown
+acdn.4.0 unreal = 8                     # Cooldown
+acdn.5.0 unreal = 7                     # Cooldown
+acdn.6.0 unreal = 7                     # Cooldown
 amcs.1.0 int = 75                       # Mana Cost
 amcs.2.0 int = 75                       # Mana Cost
 amcs.3.0 int = 75                       # Mana Cost
 amcs.4.0 int = 75                       # Mana Cost
 amcs.5.0 int = 75                       # Mana Cost
 amcs.6.0 int = 75                       # Mana Cost
-hwdu.2.0 string = "ohwd"                # Ward Unit Type
-hwdu.3.0 string = "ohwd"                # Ward Unit Type
-hwdu.4.0 string = "ohwd"                # Ward Unit Type
-hwdu.5.0 string = "ohwd"                # Ward Unit Type
-hwdu.6.0 string = "ohwd"                # Ward Unit Type
+hwdu.2.0 string = "owh2"                # Ward Unit Type
+hwdu.3.0 string = "owh3"                # Ward Unit Type
+hwdu.4.0 string = "owh4"                # Ward Unit Type
+hwdu.5.0 string = "owh5"                # Ward Unit Type
+hwdu.6.0 string = "owh6"                # Ward Unit Type
 arac.0.0 string = "other"               # Race
 arqa.0.0 string = ""                    # Requirements - Levels
-atar.5.0 string = "_"                   # Targets Allowed
-atar.6.0 string = "_"                   # Targets Allowed
+hwdu.1.0 string = "owh1"                # Ward Unit Type
 
 [A0M3 : Aoar]
 alev.0.0 int = 6 @base                  # Levels
@@ -35424,9 +35424,9 @@ Hwe2.5.1 int = 3                        # Summoned Unit Count
 acdn.6.0 unreal = 6                     # Cooldown
 adur.6.0 unreal = 30                    # Duration - Normal
 amcs.6.0 int = 75                       # Mana Cost
-Hwe1.6.0 string = "osp4"                # Summoned Unit Type
+Hwe1.6.0 string = "ows4"                # Summoned Unit Type
 adur.5.0 unreal = 25                    # Duration - Normal
-Hwe1.5.0 string = "osp4"                # Summoned Unit Type
+Hwe1.5.0 string = "ows4"                # Summoned Unit Type
 aran.6.0 unreal = 650                   # Cast Range
 aran.5.0 unreal = 600                   # Cast Range
 acdn.5.0 unreal = 7                     # Cooldown
@@ -35452,7 +35452,7 @@ Hwe2.2.1 int = 3                        # Summoned Unit Count
 Hwe2.3.1 int = 2                        # Summoned Unit Count
 Hwe2.1.1 int = 2                        # Summoned Unit Count
 Hwe1.2.0 string = "osp1"                # Summoned Unit Type
-Hwe1.3.0 string = "osp2"                # Summoned Unit Type
+Hwe1.3.0 string = "ows2"                # Summoned Unit Type
 Hwe2.6.1 int = 4                        # Summoned Unit Count
 acdn.1.0 unreal = 11                    # Cooldown
 acdn.2.0 unreal = 10 @0                 # Cooldown
@@ -35463,6 +35463,8 @@ abuf.5.0 string = "BOwd" @0             # Buffs
 atar.5.0 string = "_" @0                # Targets Allowed
 abuf.6.0 string = "BOwd" @0             # Buffs
 atar.6.0 string = "_" @0                # Targets Allowed
+Hwe1.1.0 string = "osp1"                # Summoned Unit Type
+Hwe1.4.0 string = "ows3"                # Summoned Unit Type
 
 [AGf1 : AHad]
 end = new
@@ -38423,3 +38425,57 @@ abuf.1.0 string = "B00F" @0             # Buffs
 
 [A0KF : AItx]
 Iatt.1.1 int = 150                      # Attack Bonus
+
+[Awh1 : Aoar]
+end = new
+alev.0.0 int = 1                        # Levels
+Oar1.1.1 unreal = 0.01                  # Amount of Hit Points Regenerated
+Oar2.1.2 int = 1                        # Percentage
+aare.1.0 unreal = 500                   # Area of Effect
+atar.1.0 string = "ground,air,organic,vuln,invu,friend,neutral" # Targets Allowed
+abuf.1.0 string = "Boar"                # Buffs
+
+[Awh2 : Aoar]
+end = new
+alev.0.0 int = 1                        # Levels
+Oar1.1.1 unreal = 0.015                 # Amount of Hit Points Regenerated
+Oar2.1.2 int = 1                        # Percentage
+aare.1.0 unreal = 500                   # Area of Effect
+atar.1.0 string = "ground,air,organic,vuln,invu,friend,neutral" # Targets Allowed
+abuf.1.0 string = "Boar"                # Buffs
+
+[Awh3 : Aoar]
+end = new
+alev.0.0 int = 1                        # Levels
+Oar1.1.1 unreal = 0.03                  # Amount of Hit Points Regenerated
+Oar2.1.2 int = 1                        # Percentage
+aare.1.0 unreal = 500                   # Area of Effect
+atar.1.0 string = "ground,air,organic,vuln,invu,friend,neutral" # Targets Allowed
+abuf.1.0 string = "Boar"                # Buffs
+
+[Awh4 : Aoar]
+end = new
+alev.0.0 int = 1                        # Levels
+Oar1.1.1 unreal = 0.038                 # Amount of Hit Points Regenerated
+Oar2.1.2 int = 1                        # Percentage
+aare.1.0 unreal = 500                   # Area of Effect
+atar.1.0 string = "ground,air,organic,vuln,invu,friend,neutral" # Targets Allowed
+abuf.1.0 string = "Boar"                # Buffs
+
+[Awh5 : Aoar]
+end = new
+alev.0.0 int = 1                        # Levels
+Oar1.1.1 unreal = 0.045                 # Amount of Hit Points Regenerated
+Oar2.1.2 int = 1                        # Percentage
+aare.1.0 unreal = 500                   # Area of Effect
+atar.1.0 string = "ground,air,organic,vuln,invu,friend,neutral" # Targets Allowed
+abuf.1.0 string = "Boar"                # Buffs
+
+[Awh6 : Aoar]
+end = new
+alev.0.0 int = 1                        # Levels
+Oar1.1.1 unreal = 0.05                  # Amount of Hit Points Regenerated
+Oar2.1.2 int = 1                        # Percentage
+aare.1.0 unreal = 500                   # Area of Effect
+atar.1.0 string = "ground,air,organic,vuln,invu,friend,neutral" # Targets Allowed
+abuf.1.0 string = "Boar"                # Buffs

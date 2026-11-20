@@ -994,9 +994,11 @@ A,A0E4,ahky,V
 A,A0E4,arhk,R
 A,A0E4,arpx,3
 A,A0E5,abpx,0
+A,A0E5,abpy,2
 A,A0E5,ahky,Z
 A,A0E5,arhk,Q
 A,A0E5,arpx,0
+A,A0E5,arpy,0
 A,A0E6,abpy,0
 A,A0E6,ahky,R
 A,A0E6,arhk,R
@@ -1482,9 +1484,11 @@ A,A0LE,aubx,0
 A,A0LE,auby,0
 A,A0LE,auhk,C
 A,A0LF,abpx,1
+A,A0LF,abpy,2
 A,A0LF,ahky,X
 A,A0LF,arhk,W
 A,A0LF,arpx,1
+A,A0LF,arpy,0
 A,A0LG,abpx,1
 A,A0LG,arhk,W
 A,A0LG,arpx,1
@@ -1532,9 +1536,12 @@ A,A0M0,arhk,Q
 A,A0M1,ahky,X
 A,A0M1,arhk,W
 A,A0M1,arpx,1
+A,A0M2,abpx,2
+A,A0M2,abpy,2
 A,A0M2,ahky,C
 A,A0M2,arhk,E
 A,A0M2,arpx,2
+A,A0M2,arpy,0
 A,A0M2,auhk,C
 A,A0M4,abpx,3
 A,A0M4,ahky,V

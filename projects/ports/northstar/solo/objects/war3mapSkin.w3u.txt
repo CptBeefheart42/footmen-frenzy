@@ -5889,7 +5889,7 @@ upro string = "TRIGSTR_5959"
 utip string = "TRIGSTR_6030"            # Tooltip - Basic
 uawt string = "TRIGSTR_6302"
 utpr string = "TRIGSTR_6341"
-utub string = "TRIGSTR_18068"           # Tooltip - Extended
+utub string = "Serpent Ward (Z), Sentry Ward (X), Healing Ward (C) and Transmute (V).|n|nUse Healing Ward to sustain nearby allies. Attacks land and air units." # Tooltip - Extended
 ussi string = "ReplaceableTextures\\CommandButtons\\BTNWitchDoctor.blp" # Icon - Score Screen
 uico string = "ReplaceableTextures\\CommandButtons\\BTNWitchDoctor.blp" # Icon - Game Interface
 uabs string = "AInv"                    # Normal Skin
@@ -8032,3 +8032,35 @@ upor string = "units\\undead\\Skeleton\\Skeleton_portrait.mdl" # Portrait Model 
 uclr int = 125                          # Tinting Color 1 (Red)
 uclg int = 125                          # Tinting Color 2 (Green)
 uclb int = 125                          # Tinting Color 3 (Blue)
+
+[owh1 : ohwd]
+uabs string = "Awh1"                    # Normal Skin
+
+[owh2 : ohwd]
+uabs string = "Awh2"                    # Normal Skin
+
+[owh3 : ohwd]
+uabs string = "Awh3"                    # Normal Skin
+
+[owh4 : ohwd]
+uabs string = "Awh4"                    # Normal Skin
+
+[owh5 : ohwd]
+uabs string = "Awh5"                    # Normal Skin
+
+[owh6 : ohwd]
+uabs string = "Awh6"                    # Normal Skin
+
+[ows2 : osp2]
+unsf string = " (Level 3)"              # Name - Editor Suffix
+uabs string = "Aspo,ACmi" @base         # Normal Skin
+
+[ows3 : osp3]
+end = base
+unsf string = " (Level 4)"              # Name - Editor Suffix
+uabs string = "Aspo,ACmi"               # Normal Skin
+
+[ows4 : osp4]
+end = base
+unsf string = " (Level 5&6)"            # Name - Editor Suffix
+uabs string = "Aspo,ACmi"               # Normal Skin

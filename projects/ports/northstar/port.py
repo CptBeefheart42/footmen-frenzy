@@ -16,7 +16,7 @@ from build import check_reachable, check_script, stage_sources
 from repo import BUILD, Project
 import toolchain
 
-REVISION = "9d967d5aa2ee8819b8defb8527b495cc2bcf260f"
+REVISION = "d5a1d53027e801238ba29ce091e953b1bc0c479a"
 MEDIA = "https://media.githubusercontent.com/media/NorthStarEnergy/Footmen-Frenzy"
 
 

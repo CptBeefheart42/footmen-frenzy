@@ -8,7 +8,7 @@ install the maps, on Windows and Linux.
 | 799X ("9v3") | 4 sides of 3, 12 observer slots | `projects/799x` | Reforged_Footmen_Frenzy_v7.9.9X-T19 |
 | Solo Foots | 4, 12 observer slots | `projects/solo` | Solo Foots UPDATE38 |
 
-[Standalone NorthStar maps and build instructions](projects/ports/northstar/README.md) cover 799X RC56, Solo RC27 and FFA v96.
+[Standalone NorthStar maps and build instructions](projects/ports/northstar/README.md) cover 799X RC57, Solo RC28 and FFA v97.
 
 ## Get started
 

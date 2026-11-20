@@ -2,9 +2,9 @@
 
 | Family | Starting map | Editable project |
 |---|---|---|
-| 799X | RC56 Guardian Pylon | [799X](799x/) |
-| Solo Foots | RC27 Guardian Pylon | [Solo](solo/) |
-| FFA Foots | v96 Guardian Pylon | [FFA](ffa/) |
+| 799X | RC57 Witch Doctor Wards | [799X](799x/) |
+| Solo Foots | RC28 Witch Doctor Wards | [Solo](solo/) |
+| FFA Foots | v97 Witch Doctor Wards | [FFA](ffa/) |
 
 With Python 3.10+, the .NET 6 SDK and pjass installed as described in the repository README, run a build from the repository root.
 
@@ -20,6 +20,6 @@ Edit gameplay scripts and strings in `src/` and units, abilities, items and othe
 
 These builds use the standalone maps' gameplay. The league builds continue to use `ff build 799x` and `ff build solo`. League scoring and observer integration for a standalone port would require a separate integration and gameplay test.
 
-[NorthStar source and complete starting maps](https://github.com/NorthStarEnergy/Footmen-Frenzy/tree/9d967d5aa2ee8819b8defb8527b495cc2bcf260f)
+[NorthStar source and complete starting maps](https://github.com/NorthStarEnergy/Footmen-Frenzy/tree/d5a1d53027e801238ba29ce091e953b1bc0c479a)
 
 Info opens match stats for everyone. Hotkeys opens the spell and item key editor. Twisted Fate can be chosen with `-tf` in All Pick and can be dealt at the start of All Random.
