@@ -3,7 +3,13 @@ from io import BytesIO
 import struct
 
 
-def widgets(data, filename):
+def widgets(data: bytes, filename: str) -> list[dict]:
+    """The placed units and items (war3mapUnits.doo) or doodads and destructibles (war3map.doo) of a map: id,
+    position, owner, drops, inventory, abilities and random settings of each.
+
+    Raises:
+        ValueError: An unknown format, or a truncated or overlong file.
+    """
     stream = BytesIO(data)
 
     def unpack(fmt):

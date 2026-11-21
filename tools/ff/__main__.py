@@ -19,6 +19,8 @@
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
     ff release <version>          build every map with its release name (project.json) into build/release/ and zip them
+    ff wiki <map>|all             build the map(s) and write their wiki bundles for the league website into build/wiki/
+    ff wiki stock-pack <game>     list a new stock pack (the game's data the wiki needs) from a local WC3 2.0.4 install
 """
 from __future__ import annotations
 
@@ -44,6 +46,7 @@ import toolchain  # noqa: E402
 from build import BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
 from repo import BUILD, ROOT, project, projects, setting  # noqa: E402
+from wiki import export as wiki  # noqa: E402
 
 
 def doctor() -> int:
@@ -216,6 +219,22 @@ def release(version: str) -> Path:
     return archive
 
 
+def wiki_command(args) -> int:
+    """ff wiki <map>|all | ff wiki stock-pack <game>."""
+    if args.target == 'stock-pack':
+        if not args.game:
+            raise RuntimeError('usage: ff wiki stock-pack <Warcraft III 2.0.4 install folder>')
+        print(f'listed {wiki.new_pack(args.game.expanduser())} in data/wiki_stock.json (ff blobs upload publishes it)')
+        return 0
+    pack = wiki.stock_pack()
+    if pack is None:
+        raise RuntimeError('the wiki needs the stock pack, which only the release store has (blob_url in ff.local.json)')
+    chosen = projects() if args.target == 'all' else {args.target: project(args.target)}
+    entries = [wiki.export(proj, build(proj, f'{name}-dev.w3x'), pack) for name, proj in chosen.items()]
+    print(f'wrote {wiki.write_index(entries)}')
+    return 0
+
+
 def e2e_command(args) -> int:
     """Runs `ff e2e <action> [map scenario]`; returns the exit code."""
     if args.action == 'suite':
@@ -244,6 +263,7 @@ def blob_command(args) -> int:
         return 0
     listed = [blobs.Blob(b['sha256'], b['size']) for p in projects().values()
               for b in json.loads(p.binaries.read_text(encoding='utf-8')).values()]
+    listed.append(wiki.listed_pack())
     done = blobs.upload([b for b in listed if b.path.is_file()])
     print(f'uploaded {len(done)} binary file(s) to the release store')
     return 0
@@ -294,6 +314,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('map', choices=list(projects()))
     p = commands.add_parser('hotkeys', help="rewrite a map's hotkey list after an intended change")
     p.add_argument('map', choices=list(projects()))
+    p = commands.add_parser('wiki', help='the wiki bundles of the maps, for the league website')
+    p.add_argument('target', choices=[*projects(), 'all', 'stock-pack'])
+    p.add_argument('game', nargs='?', type=Path, help='stock-pack: the Warcraft III 2.0.4 install folder')
     commands.add_parser('check', help='every check a change passes before it is committed')
     args = parser.parse_args(argv)
     try:
@@ -325,6 +348,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == 'hotkeys':
             print(f'wrote {hotkeys.write(project(args.map))}')
             return 0
+        if args.command == 'wiki':
+            return wiki_command(args)
         if args.command == 'release':
             release(args.version)
             return 0

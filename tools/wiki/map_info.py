@@ -1,9 +1,16 @@
 """Map rules, players, tech restrictions and global random tables in Reforged W3I files."""
 import struct
-from .map_values import text
+
+from .mapfiles import text
 
 
-def settings(data):
+def settings(data: bytes) -> dict:
+    """The map's settings (war3map.w3i, formats 31-33 and 39) as a dict: name, players, forces, upgrades,
+    tech restrictions and the random unit and item tables.
+
+    Raises:
+        ValueError: An unknown format, or a truncated or overlong file.
+    """
     pos = 0
 
     def read(fmt):
