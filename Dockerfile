@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev m
 # Debian bookworm: Python 3.11 (ff needs 3.10 or newer).
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bookworm-slim
 RUN apt-get update \
- && apt-get install -y --no-install-recommends python3 python3-openpyxl lua5.3 git git-lfs \
+ && apt-get install -y --no-install-recommends python3 python3-openpyxl python3-pil lua5.3 git git-lfs \
  && rm -rf /var/lib/apt/lists/*
 COPY --from=pjass /pjass/pjass /usr/local/bin/pjass
 # CI runs its steps in this image: the checkout step is a JavaScript action and needs Node.js.

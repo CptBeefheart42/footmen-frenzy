@@ -18,7 +18,8 @@
     ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
-    ff release <version>          build every map with its release name (project.json) into build/release/ and zip them
+    ff release <version>          build every map with its release name (project.json) into build/release/ and zip them,
+                                  with the maps' wiki bundles when the stock pack is available (Footmen_Frenzy_<v>-wiki.zip)
     ff wiki <map>|all             build the map(s) and write their wiki bundles for the league website into build/wiki/
     ff wiki stock-pack <game>     list a new stock pack (the game's data the wiki needs) from a local WC3 2.0.4 install
 """
@@ -131,7 +132,8 @@ def simulate(scenarios: list[str] | None = None, build_maps: bool = True) -> int
 
 
 def check() -> int:
-    """Runs every check: private details, shared code, tool tests, a full build of every map, and the simulation."""
+    """Runs every check: private details, shared code, tool tests, a full build of every map, the wiki export and the
+    simulation."""
     failed = []
     print('== private details')
     found = leaks.scan(leaks.tracked_and_staged())
@@ -170,11 +172,33 @@ def check() -> int:
             print(error)
             failed.append(f'build {name}')
     if not any(f.startswith('build') for f in failed):
+        print('== wiki')
+        if not check_wiki():
+            failed.append('wiki')
         print('== simulation')
         if simulate(build_maps=False) != 0:
             failed.append('simulation')
     print('all checks passed' if not failed else 'FAILED: ' + ', '.join(failed))
     return 1 if failed else 0
+
+
+def check_wiki() -> bool:
+    """Exports the wiki bundles of the maps `ff check` built (into build/wiki-check/); skipped without the stock
+    pack or Pillow. Returns False when an export fails."""
+    if not wiki.has_pillow():
+        print('skipped: needs Pillow')
+        return True
+    try:
+        pack = wiki.stock_pack()
+        if pack is None:
+            print('skipped: needs the stock pack (release store, maintainers)')
+            return True
+        for name, proj in projects().items():
+            wiki.export(proj, BUILD / name / f'{name}-check.w3x', pack, BUILD / 'wiki-check')
+    except (ValueError, RuntimeError, OSError) as error:
+        print(error)
+        return False
+    return True
 
 
 DOCKER_IMAGE = 'footmen-frenzy-check'
@@ -215,6 +239,13 @@ def release(version: str) -> Path:
         for path in built:
             z.write(folder / path.name, path.name)
     print(f'release {version}: ' + ', '.join(p.name for p in built) + f' -> {archive}')
+    pack = wiki.stock_pack()
+    if pack is None:
+        print('no wiki bundles: the stock pack is in the release store only (blob_url in ff.local.json)')
+    else:
+        entries = [wiki.export(proj, path, pack) for proj, path in zip(projects().values(), built)]
+        wiki.write_index(entries)
+        print(f'wiki -> {wiki.release_zip(entries, folder / f"Footmen_Frenzy_{version}-wiki.zip")}')
     return archive
 
 

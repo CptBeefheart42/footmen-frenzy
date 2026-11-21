@@ -1,6 +1,7 @@
 # A release: pushing a tag v<version> builds every map with its release name (projects/<map>/project.json
-# release_name) and publishes them, zipped, as a release of this repository on the CI's own forge. Runs in the image of
-# Dockerfile, like check.yml; secrets.BLOB_TOKEN reads the binary files, the job's own token creates the release.
+# release_name) and publishes them, zipped, as a release of this repository on the CI's own forge, with the maps' wiki
+# bundles for the league website (Footmen_Frenzy_<version>-wiki.zip). Runs in the image of Dockerfile, like check.yml;
+# secrets.BLOB_TOKEN reads the binary files and the wiki's stock pack, the job's own token creates the release.
 name: release
 on:
   push:
@@ -34,10 +35,11 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API: ${{ github.server_url }}/api/v1/repos/${{ github.repository }}
         run: |
-          zip=$(ls build/release/*.zip)
           id=$(python3 -c 'import json,sys; print(json.dumps({"tag_name": sys.argv[1], "name": sys.argv[1]}))' "$GITHUB_REF_NAME" \
             | curl -sSf -X POST "$API/releases" -H "Authorization: token $TOKEN" -H 'Content-Type: application/json' -d @- \
             | python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')
-          curl -sSf -X POST "$API/releases/$id/assets?name=$(basename "$zip")" -H "Authorization: token $TOKEN" \
-            -F "attachment=@$zip" > /dev/null
-          echo "published $(basename "$zip")"
+          for zip in build/release/*.zip; do
+            curl -sSf -X POST "$API/releases/$id/assets?name=$(basename "$zip")" -H "Authorization: token $TOKEN" \
+              -F "attachment=@$zip" > /dev/null
+            echo "published $(basename "$zip")"
+          done
