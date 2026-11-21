@@ -1,0 +1,10 @@
+{
+ "sha256": "6286bb7e6d4c5cbad79f7bf7cdfef4cd8d7068bc82ea45a872528d9cb7eeb6ac",
+ "size": 3628684,
+ "versions": [
+  {
+   "build_key": "9a94ff7d25781db6c09190cd69d52458",
+   "version": "2.0.4.23745"
+  }
+ ]
+}

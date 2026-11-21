@@ -23,9 +23,12 @@ ff check       # every check a change passes before it is committed
 On Linux, `./ff`; on Windows, `ff` (`ff.cmd`). `ff install` uses `Documents/Warcraft III/Maps` on Windows; elsewhere,
 set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
 
-## Balance wiki
+## Wiki
 
-Generate a searchable offline guide to the heroes, abilities, items and triggers in either map. The [balance wiki guide](tools/wiki/README.md) includes ready-to-open NorthStar downloads for 799X, Solo and FFA, plus setup instructions, examples and the edit proposal workflow. Open **Open Balance Wiki.html** in the checkout to choose between the generated starting-map guides.
+`ff wiki <map>|all` builds the map(s) and writes their wiki bundles into `build/wiki/`: what a player meets in a game
+(heroes, spells, units, items, upgrades, Colossal waves), with names, stats per level, links and icons, as one JSON file
+per map for the league website's Wiki tab. Every release carries them as `Footmen_Frenzy_<version>-wiki.zip`.
+How it works: [tools/wiki/README.md](tools/wiki/README.md).
 
 ## Layout
 

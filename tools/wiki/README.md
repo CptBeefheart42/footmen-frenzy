@@ -1,77 +1,53 @@
-# Footmen Frenzy balance wiki
+# Wiki bundles
 
-The wiki opens in a browser and works offline. Select a hero to follow their abilities, summoned units, items and upgrades. Each generated page identifies its input map and SHA256.
+The league website's Wiki tab shows what a player meets in a game of each map: heroes and their spells, units and
+summons, buildings, items, upgrades and the Colossal waves, with names, stats per level, command keys, links and
+icons. This folder makes its data; the website (efl-bot) shows it.
 
-## Download the NorthStar Tavern Page guides
+```
+ff wiki 799x       # build the map, then write build/wiki/799x.json (+ .json.gz) and build/wiki/index.json
+ff wiki all        # every map
+```
 
-Each download contains the installed test, editable-source and release snapshots. Extract one ZIP and open **Open Balance Wiki.html** to choose an edition. These numbers describe the map named on each page.
+`ff release <version>` writes the same bundles for the released maps and zips them into
+`build/release/Footmen_Frenzy_<version>-wiki.zip` (`index.json`, `<map>.json`, `<map>.json.gz`), which the release
+publishes next to the maps. The website's deploy installs that zip from the release the bot fleet hosts.
 
-[799X ZIP](https://github.com/user-attachments/files/35171269/Balance-Wiki-799x.zip) · [Solo Foots ZIP](https://github.com/user-attachments/files/35171270/Balance-Wiki-solo.zip) · [FFA Foots ZIP](https://github.com/user-attachments/files/35171271/Balance-Wiki-ffa.zip)
+## What a bundle is made from
 
-## Generate a guide
+- **The finished map** (`build/<map>/`): its object data after the WC3 3.0 level fill and the map fixes (exported as
+  text by the runner, `objects export`), its script with the league addons, and its other files as packed (string
+  table, settings, placements, imported icons). So a bundle shows the values the game loads.
+- **The game's data** (the stock pack): a map stores only what it changes, so base values, names, field labels and
+  most icons come from Warcraft III 2.0.4: its object tables, editor metadata and command-button icons. The pack holds
+  Blizzard's files, so it lives only in the maintainers' private release store; `data/wiki_stock.json` names it by
+  checksum. Without access to the store (`blob_url` in `ff.local.json`), `ff wiki` stops and `ff check` skips the wiki.
+- Icons need Pillow (`apt install python3-pil` or `pip install pillow`); the check image has it.
 
-Use Python 3.10+ and a matching StormLib shared library. On Windows set `STORMLIB_DLL` to the full path of the 64-bit StormLib DLL when using 64-bit Python. On Linux install the system StormLib shared library or set the same variable to its path. Install Pillow to decode imported portraits. An extracted map directory can be read with Python alone.
+A new stock pack, from a local 2.0.4 install (maintainers; the install tools/slk/extract_ability_defaults.py reads):
 
-Run these commands from the repository root to generate both starting-map guides, then double-click **Open Balance Wiki.html**. On Windows, `.\Export-Wiki.ps1` runs both commands.
+```
+ff wiki stock-pack ~/wc3-stage    # writes the pack into the blob cache and lists it in data/wiki_stock.json
+ff blobs upload                   # publishes it to the release store
+```
 
-~~~sh
-python tools/export_wiki.py 799x
-python tools/export_wiki.py solo
-~~~
+## How the objects are found
 
-The default reads the checked-in `projects/<map>/base.w3x`. To see current gameplay, run `ff build solo` and then `python tools/export_wiki.py solo --source built`. This reads the assembled `build/solo/solo-dev.w3x`, including the project's object and script changes. Use `--map` for any other filename. The command prints the path to the generated HTML.
+1. `catalog.py` indexes every object the map defines or names (script, settings, placements, game constants) and
+   follows the references between objects (ability lists, trained units, parents ...). Values resolve the way the
+   game resolves them: each ancestor's game row first, then the map's fields, per level and data pointer.
+2. `tables.py` reads the hero and troop tables the script fills at start (`set udg_hero_type[i] = ...`); which
+   functions and arrays make up a table is listed in `reports.json`, with the labels of the stats shown per group.
+3. `reachability.py` builds the gameplay graph: roots (the hero selection roster, troop bases, placed objects, Colossal
+   waves, objects the script hands out) and edges (abilities, summons, trained units, drops, upgrades ...), each with
+   its sources. Only triggers that can run count. A walk from the roots gives the objects a player can meet.
+4. `bundle.py` keeps what the website shows: the reached objects (and the ones they are based on or refer to), their
+   stats, links, tooltips and icons, without the script and the map's other files.
 
-~~~sh
-python tools/export_wiki.py 799x --map "799x test.w3x"
-python tools/export_wiki.py ffa --map "FFA Foots.w3x"
-python tools/export_wiki.py solo --directory "extracted-map" --format json
-python tools/export_wiki.py 799x --report abilities --id AHwe --fields Hwe1 Hwe2 --format fragment
-python tools/export_wiki.py 799x --report spawns --id h060 --format json
-~~~
+`script.py`, `map_info.py` (war3map.w3i) and `placements.py` (war3mapUnits.doo, war3map.doo) read the map's files;
+the binary layouts follow War3Net's readers
+([widgets](https://github.com/Drake53/War3Net/tree/master/src/War3Net.Build.Core/Serialization/Binary/Widget),
+[map info](https://github.com/Drake53/War3Net/blob/master/src/War3Net.Build.Core/Serialization/Binary/Info/MapInfo.cs)).
 
-HTML, JSON and filtered reports are written under `build/wiki-exports`. Use `--output` to select another filename. An extracted directory should contain the map's binary object files and its assembled script. The project's text object sources are converted during `ff build`.
-
-## Follow a balance value
-
-The player guide opens to the traced hero directory. Pick a portrait to follow a spell, summon, buff, item or production chain. The directory combines matching display names and keeps distinct variants selectable. Spell pages group identical targets across levels. Summoned-unit pages include their own abilities and any recognized summon-event stat tables. The Colossal waves section shows each boss's base stats and the scaling rules recognized in the selected map.
-
-The hero directory opens the roster hero directly. Morph forms are small links on the hero page. No-Transmute copies and debug hire buttons are available in Advanced. Ability cards show the command-card position and learn key when available. Click the browsing path above the page to return to a hero, a spell, or the filtered results. The browser's Back and Forward buttons restore the same path.
-
-**Advanced** opens the technical record for the same selection. Use the pencil to stage an edit. **Reachability and asset review** distinguishes traced objects, supporting parent or requirement records, other map records, unresolved IDs, dynamic creation sites and imports without a traced reference. An import can also be used by a dynamically constructed path or by engine convention. These inventories support investigation before changing map assets.
-
-Portraits come from map imports and the local Warcraft installation. The game-data importer remembers the CASC location under ignored `build/`. Install Pillow in the exporter’s Python environment to decode Warcraft artwork. Objects without assigned or decodable art use a linked owner’s artwork when available. Advanced review lists those records.
-
-* Open **Heroes**, choose a hero and follow a spell under **Abilities and dependencies**. A summoned-unit field links to that unit's stats and abilities. **Referenced by** traces links in the other direction. Each object retains its case-sensitive ID, field ID, level, data pointer, parent and payload name.
-* Compare **Object stats** with the **Troop spawn settings** and **Hero starting stats and growth** tables. The first reads object data and available Warcraft defaults. The other two read JASS initialization assignments. A value's source identifies the input that supplied it. A dash in a summary indicates an absent assignment or field.
-* **Trigger functions** supports full-text searches for an array, native, formula or rawcode. Function pages show line numbers, callers, callbacks and referenced objects. **Scripted unit creation sites** includes variable and expression arguments. Spell pages show possible call paths from recognized spell-ID checks to literal unit creation, including separately registered trigger actions. Runtime branches, indirect IDs, timers and mode-specific changes still require reading the linked code or observing a game.
-* **Gameplay & profile files** includes map rules, per-player tech/upgrade restrictions, global random tables, individual unit and doodad placements, inventories, drop chances, miscellaneous constants, JASS globals, WTS strings and unresolved script IDs. **Models, projectiles & visual effects** lists model paths with their field or script references. The index includes map-defined objects even when their playability or availability depends on mode or script.
-* **Scripted item combinations** links direct item-removal and item-grant statements to their functions. Branches and helper-selected ingredients are visible in the source. An item's building relationships also expose shop stock and requirements.
-
-## Load stock Warcraft data
-
-Map archives store many balance fields as differences from Warcraft defaults. On Windows, pass your Warcraft III installation and a 64-bit CascLib DLL to cache stock values and portraits.
-
-~~~powershell
-python tools/wiki/import_game_data.py --game "C:\Program Files (x86)\Warcraft III" --dll "C:\WarcraftTools\CascLib.dll"
-.\Export-Wiki.ps1
-~~~
-
-The importer reads stock SLKs, editor metadata, English names, object profiles and the custom balance layer into ignored `build/wiki-game-data.zip`. The wiki records the game build and source table checksums. Refresh the cache after updating Warcraft. With no cache, the wiki reports that stock data is absent and still exposes the map's field values and trigger source. Stock data from the installed game represents that game version, including when the selected map is an older release.
-
-## Prepare balance changes
-
-Use the pencil next to a name to jump to its editable map fields. In Advanced, each stored object field, shared WTS string and map source line has its own pencil. This includes ability lists and level-specific summoned-unit IDs. Changes to a shared string apply to every reference to that WTS entry. Open **Edit list** to review, remove or download changes. Proposals are saved locally in browsers that permit local storage for file pages. Downloading the change list preserves a portable copy.
-
-~~~powershell
-python tools/stage_wiki_edits.py 799x balance-changes.json
-~~~
-
-Staging checks the map family and source fingerprint, validates original values, then writes changed payload copies and the proposal under `build/wiki-edits`. Object edits identify the record by rawcode, field, level, pointer, kind and byte offset. Source edits preserve line endings. For an exact archive, use `python tools/stage_wiki_edits.py 799x balance-changes.json --map "my-build.w3x"`.
-
-Review staged payloads against the same baseline before integrating them into a map project. Apply reviewed changes to the corresponding text sources in projects/<map>/objects or src, then use the normal ff build workflow. Game-owned defaults, placement records and computed results are available for inspection. Changing one of those involves adding a map override, editing the placement in the editor, or changing its underlying formula.
-
-## Extend and verify
-
-Add object or JASS summary reports to `tools/wiki/reports.json`. Object reports specify the file extension, display name field and field labels. JASS reports specify the functions, identity array and value arrays. Summary extraction recognizes unconditional assignments at fixed indices and same-function copies from a previously initialized slot. Unsupported expressions produce a diagnostic. The full wiki retains the function source independently of those summaries.
-
-Run `python -m unittest tests.test_balance_wiki` for regression checks. The widget and map-info readers validate the consumed byte length for the active families' layouts. Binary format references are the [War3Net widget readers](https://github.com/Drake53/War3Net/tree/master/src/War3Net.Build.Core/Serialization/Binary/Widget) and [map info reader](https://github.com/Drake53/War3Net/blob/master/src/War3Net.Build.Core/Serialization/Binary/Info/MapInfo.cs).
+Tests: `tests/test_wiki.py` (part of `ff check`). The export test of the real 9v3 map runs where the stock pack is in
+the blob cache.
