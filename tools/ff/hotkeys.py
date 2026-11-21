@@ -12,6 +12,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import objectdata
 from repo import Project
 
 ABILITY_FIELDS = ('ahky', 'auhk', 'arhk', 'abpx', 'abpy', 'aubx', 'auby', 'arpx', 'arpy')
@@ -20,45 +21,17 @@ HEADER = ('# Hotkey list (tools/ff/hotkeys.py): every hotkey and command-card po
           '# on a unit\'s command card (C rows). `ff check` fails on any difference; `ff hotkeys <map>` rewrites it after\n'
           '# an intended change. Rows: A,ability,field,value / U,unit,field,value / C,unit,pos|key,where,abilities\n')
 
-OBJECT = re.compile(r'^\[(\S+?)(?: : \S+)?\]')
-CELL = re.compile(r'^([A-Za-z0-9]{4})(?:\.(\d+)\.(\d+))? (int|real|unreal|string) = (.*)$')
 TRIGSTR = re.compile(r'^TRIGSTR_0*(\d+)$')
-ESCAPES = {'"': '"', '\\': '\\', 'n': '\n', 'r': '\r', 't': '\t'}
-
-
-def unquote(text: str) -> tuple[str, str]:
-    """Reads a quoted string literal at the start of `text`; returns its value and the rest of the line."""
-    out, i = [], 1
-    while text[i] != '"':
-        if text[i] == '\\':
-            i += 1
-            if text[i] == 'u':
-                out.append(chr(int(text[i + 1:i + 5], 16)))
-                i += 4
-            else:
-                out.append(ESCAPES[text[i]])
-        else:
-            out.append(text[i])
-        i += 1
-    return ''.join(out), text[i + 1:]
 
 
 def read_objects(path: Path) -> dict[str, dict[str, str]]:
     """The level-0 cells of one object-data text file: object code -> field -> value as text."""
     objects: dict[str, dict[str, str]] = {}
-    cells: dict[str, str] = {}
-    if not path.is_file():
-        return objects
-    for line in path.read_text(encoding='utf-8').splitlines():
-        header = OBJECT.match(line)
-        if header:
-            cells = objects.setdefault(header.group(1), {})
-            continue
-        cell = CELL.match(line)
-        if not cell or (cell.group(2) not in (None, '0')):
-            continue
-        field, kind, rest = cell.group(1), cell.group(4), cell.group(5)
-        cells[field] = unquote(rest)[0] if kind == 'string' else rest.split()[0]
+    for record in objectdata.read(path):
+        cells = objects.setdefault(record.code, {})
+        for cell in record.cells:
+            if cell.level == 0:
+                cells[cell.field] = str(cell.value)
     return objects
 
 
