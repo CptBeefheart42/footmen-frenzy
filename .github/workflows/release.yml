@@ -38,9 +38,9 @@ jobs:
           FF_BLOB_TOKEN: ${{ secrets.BLOB_TOKEN }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API: ${{ github.server_url }}/api/v1/repos/${{ github.repository }}
-          VERSION: ${{ inputs.version || github.ref_name }}
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
         run: |
-          version="${VERSION#v}"
+          version="${RELEASE_VERSION#v}"
           curl -sSf "$API/releases?limit=50" -H "Authorization: token $TOKEN" -o "$RUNNER_TEMP/releases.json"
           python3 tools/ff release "$version" --releases "$RUNNER_TEMP/releases.json" --tag "v$version"
           cat build/release/notes.md

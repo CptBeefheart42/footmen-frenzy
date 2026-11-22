@@ -41,7 +41,8 @@ def dotnet() -> tuple[str, dict]:
     Raises:
         MissingTool: No .NET SDK found.
     """
-    env = dict(os.environ, DOTNET_CLI_TELEMETRY_OPTOUT='1', DOTNET_NOLOGO='1')
+    env = {k: v for k, v in os.environ.items() if k.lower() != 'version'}
+    env.update(DOTNET_CLI_TELEMETRY_OPTOUT='1', DOTNET_NOLOGO='1')
     found = shutil.which('dotnet')
     if found:
         return found, env
