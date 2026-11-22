@@ -20,7 +20,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 MAPS = ('799x', 'solo')
 # Variants of a map built with some settings changed (tools/ff SIM_VARIANTS): only their own scenarios run on them.
-VARIANTS = ('799x-sub',)
+VARIANTS = ('799x-sub', '799x-pertav')
 
 
 @dataclass

@@ -98,7 +98,8 @@ def link_skills() -> str:
 
 # Map variants the simulation plays too: a map built with some settings changed. Their scenarios are named
 # <variant>_*.lua (tests/simulation/run.py).
-SIM_VARIANTS = {'799x-sub': ('799x', {'sub': {'enabled': True}})}
+SIM_VARIANTS = {'799x-sub': ('799x', {'sub': {'enabled': True}}),
+                '799x-pertav': ('799x', {'taverns': {'per_player': True}})}
 
 
 def simulate(scenarios: list[str] | None = None, build_maps: bool = True) -> int:

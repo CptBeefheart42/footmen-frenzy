@@ -3935,6 +3935,30 @@ function DraftRemember takes unit shop, integer id returns nothing
     endif
 endfunction
 
+// The Hero Tavern a player hires from. With per-player taverns (project setting taverns.per_player) every player has
+// their own, 320 in front of their base; otherwise the team shares one. DraftShop, DraftPage, DraftX/Y and
+// DraftShown[index*10+i] are indexed by tavern: 1-4 a team's, 5-16 a player's (4 + player number).
+function DraftShopIndex takes integer pn returns integer
+    if FF_CFG_TAVERNS_PER_PLAYER then
+        return 4 + pn
+    endif
+    return udg_teamnumber[pn]
+endfunction
+
+// The direction from a player's start location towards the map centre (slightly south of it).
+function DraftBaseAngle takes integer pn returns real
+    local integer start = GetPlayerStartLocation(ConvertedPlayer(pn))
+    return Atan2(-256.0-GetStartLocationY(start), -GetStartLocationX(start))
+endfunction
+
+function DraftFrontX takes integer pn, real forward returns real
+    return GetStartLocationX(GetPlayerStartLocation(ConvertedPlayer(pn))) + forward*Cos(DraftBaseAngle(pn))
+endfunction
+
+function DraftFrontY takes integer pn, real forward returns real
+    return GetStartLocationY(GetPlayerStartLocation(ConvertedPlayer(pn))) + forward*Sin(DraftBaseAngle(pn))
+endfunction
+
 function MF_StockUnit takes unit shop, integer id, integer current, integer maximum returns nothing
     local integer key = GetHandleId(shop)
     local integer count
@@ -31884,7 +31908,7 @@ function FFRandom_Sold takes nothing returns nothing
     set pn = GetConvertedPlayerId(p)
     set team = udg_teamnumber[pn]
     call RemoveUnit(sold)
-    if pn >= 1 and pn <= 12 and team >= 1 and team <= 4 and shop == DraftShop[team] and T66_RandomLeft[team] > 0 and GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and (udg_herO[pn] == null or udg_mode_debugmode) then
+    if pn >= 1 and pn <= 12 and team >= 1 and team <= 4 and shop == DraftShop[DraftShopIndex(pn)] and T66_RandomLeft[team] > 0 and GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and (udg_herO[pn] == null or udg_mode_debugmode) then
         set index = 0
         loop
             exitwhen i > udg_total_hero_count
@@ -37989,8 +38013,8 @@ function Trig_repick_command_Func002Func006Func002A takes nothing returns nothin
         call SetPlayerName(udg_temp_player, udg_orig_player_name[udg_temp_playernumber])
         if ( Trig_repick_command_Func002Func006Func002Func001Func012C() ) then
             call T66_Position(udg_teamnumber[udg_temp_playernumber], false)
-            call SelectUnitForPlayerSingle(DraftShop[udg_teamnumber[udg_temp_playernumber]], udg_temp_player)
-            call PanCameraToTimedForPlayer(udg_temp_player, DraftX[udg_teamnumber[udg_temp_playernumber]], DraftY[udg_teamnumber[udg_temp_playernumber]], 0.25)
+            call SelectUnitForPlayerSingle(DraftShop[DraftShopIndex(udg_temp_playernumber)], udg_temp_player)
+            call PanCameraToTimedForPlayer(udg_temp_player, DraftX[DraftShopIndex(udg_temp_playernumber)], DraftY[DraftShopIndex(udg_temp_playernumber)], 0.25)
         else
         endif
     else
@@ -38030,8 +38054,8 @@ function Trig_repick_command_Func002Func006Func003A takes nothing returns nothin
         call SetPlayerName(udg_temp_player, udg_orig_player_name[udg_temp_playernumber])
         if ( Trig_repick_command_Func002Func006Func003Func001Func011C() ) then
             call T66_Position(udg_teamnumber[udg_temp_playernumber], false)
-            call SelectUnitForPlayerSingle(DraftShop[udg_teamnumber[udg_temp_playernumber]], udg_temp_player)
-            call PanCameraToTimedForPlayer(udg_temp_player, DraftX[udg_teamnumber[udg_temp_playernumber]], DraftY[udg_teamnumber[udg_temp_playernumber]], 0.25)
+            call SelectUnitForPlayerSingle(DraftShop[DraftShopIndex(udg_temp_playernumber)], udg_temp_player)
+            call PanCameraToTimedForPlayer(udg_temp_player, DraftX[DraftShopIndex(udg_temp_playernumber)], DraftY[DraftShopIndex(udg_temp_playernumber)], 0.25)
         else
         endif
     else
@@ -65453,7 +65477,7 @@ function DraftPubSD takes nothing returns boolean
     return udg_mode_pub and udg_selected_mode == 3
 endfunction
 
-function DraftRefreshPub takes integer team returns nothing
+function DraftRefreshPub takes integer shop, integer team returns nothing
     local integer array normal
     local integer array carry
     local integer normals = 0
@@ -65491,17 +65515,17 @@ function DraftRefreshPub takes integer team returns nothing
     if j < 10 and carries > 0 then
         set shown = shown + 10 - j
     endif
-    if DraftPage[team]*10 >= shown then
-        set DraftPage[team] = 0
+    if DraftPage[shop]*10 >= shown then
+        set DraftPage[shop] = 0
     endif
-    call RemoveUnitFromStock(DraftShop[team], 'hTRZ')
-    if DraftPage[team] == 0 then
-        call AddUnitToStock(DraftShop[team], 'hTRZ', 1, 1)
+    call RemoveUnitFromStock(DraftShop[shop], 'hTRZ')
+    if DraftPage[shop] == 0 then
+        call AddUnitToStock(DraftShop[shop], 'hTRZ', 1, 1)
     endif
     set i = 0
     loop
         exitwhen i >= 10
-        set slot = DraftPage[team]*10+i
+        set slot = DraftPage[shop]*10+i
         set id = 0
         if slot < j then
             set id = normal[slot]
@@ -65511,14 +65535,15 @@ function DraftRefreshPub takes integer team returns nothing
             set id = normal[slot-carries]
         endif
         if id != 0 then
-            call AddUnitToStock(DraftShop[team],id,1,1)
-            set DraftShown[team*10+i] = id
+            call AddUnitToStock(DraftShop[shop],id,1,1)
+            set DraftShown[shop*10+i] = id
         endif
         set i = i + 1
     endloop
 endfunction
 
-function DraftRefresh takes integer team returns nothing
+// Restocks one tavern from its team's pool: the page it shows, without the heroes the team has taken.
+function DraftRefreshShop takes integer shop, integer team returns nothing
     local integer i = 0
     local integer index
     local integer id
@@ -65528,31 +65553,47 @@ function DraftRefresh takes integer team returns nothing
     endif
     loop
         exitwhen i >= capacity
-        set index = team*10+i
+        set index = shop*10+i
         if DraftShown[index] != 0 then
-            call RemoveUnitFromStock(DraftShop[team], DraftShown[index])
+            call RemoveUnitFromStock(DraftShop[shop], DraftShown[index])
             set DraftShown[index] = 0
         endif
         set i = i + 1
     endloop
     if DraftPubSD() then
-        call DraftRefreshPub(team)
+        call DraftRefreshPub(shop, team)
         return
     endif
-    call RemoveUnitFromStock(DraftShop[team], 'hTRZ')
-    if DraftPage[team] == 0 then
-        call AddUnitToStock(DraftShop[team], 'hTRZ', 1, 1)
+    call RemoveUnitFromStock(DraftShop[shop], 'hTRZ')
+    if DraftPage[shop] == 0 then
+        call AddUnitToStock(DraftShop[shop], 'hTRZ', 1, 1)
     endif
     set i = 0
     loop
-        exitwhen i >= 8 or DraftPage[team]*8+i >= DraftCount[team]
-        set index = team*256+DraftPage[team]*8+i+1
+        exitwhen i >= 8 or DraftPage[shop]*8+i >= DraftCount[team]
+        set index = team*256+DraftPage[shop]*8+i+1
         set id = DraftPool[index]
         if not DraftTaken[index] and DraftEligible(team,id) then
-            call AddUnitToStock(DraftShop[team], id, 1, 1)
-            set DraftShown[team*10+i] = id
+            call AddUnitToStock(DraftShop[shop], id, 1, 1)
+            set DraftShown[shop*10+i] = id
         endif
         set i = i + 1
+    endloop
+endfunction
+
+// Restocks every tavern of a team: the team's own, or each of its players' with per-player taverns.
+function DraftRefresh takes integer team returns nothing
+    local integer pn = 1
+    if not FF_CFG_TAVERNS_PER_PLAYER then
+        call DraftRefreshShop(team, team)
+        return
+    endif
+    loop
+        exitwhen pn > 12
+        if udg_teamnumber[pn] == team and DraftShop[4+pn] != null then
+            call DraftRefreshShop(4+pn, team)
+        endif
+        set pn = pn + 1
     endloop
 endfunction
 
@@ -65562,9 +65603,7 @@ function AddAPHeroesToDraft takes nothing returns nothing
         loop
             exitwhen team > 4
             call DraftAddHero(team, 'HTf1')
-            if DraftShop[team] != null then
-                call DraftRefresh(team)
-            endif
+            call DraftRefresh(team)
             set team = team + 1
         endloop
     endif
@@ -65578,21 +65617,22 @@ function DraftSale takes nothing returns nothing
     local integer team = udg_teamnumber[pn]
     local integer id = GetUnitTypeId(sold)
     local integer i = 1
+    local integer own = DraftShopIndex(pn)
     if GetUnitTypeId(shop) != 'nTDP' then
         return
     endif
-    if team < 1 or team > 4 or shop != DraftShop[team] or not DraftPending[pn] or (udg_herO[pn] != null and not udg_mode_debugmode) then
+    if team < 1 or team > 4 or shop != DraftShop[own] or not DraftPending[pn] or (udg_herO[pn] != null and not udg_mode_debugmode) then
         call RemoveUnit(sold)
         return
     endif
     if id == 'hTNP' then
         call StartSoundForPlayerBJ(p, FF_DraftPageClick)
         call RemoveUnit(sold)
-        set DraftPage[team] = DraftPage[team] + 1
-        if not DraftPubSD() and DraftPage[team]*8 >= DraftCount[team] then
-            set DraftPage[team] = 0
+        set DraftPage[own] = DraftPage[own] + 1
+        if not DraftPubSD() and DraftPage[own]*8 >= DraftCount[team] then
+            set DraftPage[own] = 0
         endif
-        call DraftRefresh(team)
+        call DraftRefreshShop(own, team)
         call SelectUnitForPlayerSingle(shop, p)
     
     elseif IsUnitType(sold, UNIT_TYPE_HERO) then
@@ -65616,6 +65656,51 @@ function DraftSale takes nothing returns nothing
     set shop = null
 endfunction
 
+// Opens a player's own tavern while they may hire a hero and closes it once they can't (per-player taverns).
+function DraftUpdatePlayer takes integer pn, integer team, boolean wants returns nothing
+    local player p = ConvertedPlayer(pn)
+    local integer shop = 4 + pn
+    if wants then
+        if DraftShop[shop] == null then
+            set DraftShop[shop] = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), 'nTDP', DraftX[shop], DraftY[shop], 270.)
+            call SetUnitScale(DraftShop[shop], 0.70, 0.70, 0.70)
+            call BlzSetUnitRealField(DraftShop[shop], UNIT_RF_SELECTION_SCALE, 0.9*BlzGetUnitRealField(DraftShop[shop], UNIT_RF_SELECTION_SCALE))
+            call BlzSetUnitName(DraftShop[shop], GetPlayerName(p) + " - Hero Tavern")
+            if DraftPubSD() then
+                call BlzUnitHideAbility(DraftShop[shop], 'Ane2', true)
+            endif
+            call SetUnitTypeSlots(DraftShop[shop], 12)
+            set DraftPage[shop] = 0
+            call DraftRefreshShop(shop, team)
+        endif
+        if not DraftPending[pn] then
+            set DraftWisp[pn] = CreateUnit(p, 'eTWP', DraftX[shop], DraftY[shop]-96., 90.)
+            call SelectUnitForPlayerSingle(DraftShop[shop], p)
+            call PanCameraToTimedForPlayer(p, DraftX[shop], DraftY[shop], 0.25)
+        endif
+    else
+        if DraftWisp[pn] != null then
+            call RemoveUnit(DraftWisp[pn])
+            set DraftWisp[pn] = null
+        endif
+        if DraftShop[shop] != null then
+            call RemoveUnit(DraftShop[shop])
+            set DraftShop[shop] = null
+        endif
+    endif
+    set p = null
+endfunction
+
+// Selecting another player's tavern selects your own (per-player taverns).
+function DraftSelect takes nothing returns nothing
+    local player p = GetTriggerPlayer()
+    local integer pn = GetConvertedPlayerId(p)
+    if pn >= 1 and pn <= 12 and GetUnitTypeId(GetTriggerUnit()) == 'nTDP' and DraftShop[4+pn] != null and GetTriggerUnit() != DraftShop[4+pn] then
+        call SelectUnitForPlayerSingle(DraftShop[4+pn], p)
+    endif
+    set p = null
+endfunction
+
 function DraftUpdate takes nothing returns nothing
     local integer pn = 1
     local integer team
@@ -65626,7 +65711,11 @@ function DraftUpdate takes nothing returns nothing
         exitwhen pn > 12
         set p = ConvertedPlayer(pn)
         set team = udg_teamnumber[pn]
-        if team >= 1 and team <= 4 then
+        if team >= 1 and team <= 4 and FF_CFG_TAVERNS_PER_PLAYER then
+            set wants = udg_player_active[pn] and GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and (udg_herO[pn] == null or udg_mode_debugmode)
+            call DraftUpdatePlayer(pn, team, wants)
+            set DraftPending[pn] = wants
+        elseif team >= 1 and team <= 4 then
             set wants = udg_player_active[pn] and GetPlayerSlotState(p) == PLAYER_SLOT_STATE_PLAYING and (udg_herO[pn] == null or udg_mode_debugmode)
             if wants then
                 set waiting[team] = waiting[team] + 1
@@ -65669,6 +65758,7 @@ function DraftStart takes nothing returns nothing
     local group patrons = CreateGroup()
     local unit u
     local trigger sales = CreateTrigger()
+    local trigger selects
     call GroupEnumUnitsInRect(patrons, gg_rct_TAVERN_AREA, null)
     loop
         set u = FirstOfGroup(patrons)
@@ -65737,6 +65827,18 @@ function DraftStart takes nothing returns nothing
                 set i = i + 1
             endloop
         endif
+    endif
+    if FF_CFG_TAVERNS_PER_PLAYER then
+        set i = 1
+        loop
+            exitwhen i > 12
+            set DraftX[4+i] = DraftFrontX(i, 320.)
+            set DraftY[4+i] = DraftFrontY(i, 320.)
+            set i = i + 1
+        endloop
+        set selects = CreateTrigger()
+        call TriggerRegisterAnyUnitEventBJ(selects, EVENT_PLAYER_UNIT_SELECTED)
+        call TriggerAddAction(selects, function DraftSelect)
     endif
     call TriggerRegisterAnyUnitEventBJ(sales, EVENT_PLAYER_UNIT_SELL)
     call AddAPHeroesToDraft()
