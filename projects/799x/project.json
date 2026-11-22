@@ -20,6 +20,9 @@
     },
     "sub": {
       "enabled": false
+    },
+    "taverns": {
+      "per_player": false
     }
   }
 }

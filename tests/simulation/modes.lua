@@ -122,6 +122,28 @@ function M.checkTaverns(kind, check)
     end)
 end
 
+--- Check (per-player taverns, the 799x-pertav variant): each of `slots` has an own draft tavern (DraftShop[4 + slot])
+--- with heroes for sale and their wisp, and no team tavern stands.
+function M.checkPlayerTaverns(kind, slots)
+    T.check(kind .. ": every player has an own draft tavern with heroes", function()
+        T.advance(0.5)
+        T.eq(#M.neutral("nTDP"), #slots, "draft taverns")
+        for _, slot in ipairs(slots) do
+            local tavern = DraftShop[4 + slot]
+            T.ok(tavern, "slot " .. slot .. "'s tavern")
+            T.ok(tavern and #M.heroesIn(tavern) > 0, "slot " .. slot .. "'s tavern has heroes")
+            T.ok(T.unitsOf(slot, "eTWP")[1], "slot " .. slot .. "'s wisp")
+        end
+        for team = 1, 4 do T.ok(DraftShop[team] == nil, "no tavern of team " .. team) end
+    end)
+end
+
+--- Whether `shop` has hero `code` in stock.
+function M.sells(shop, code)
+    for _, have in ipairs(M.heroesIn(shop)) do if have == code then return true end end
+    return false
+end
+
 --- Check (Solo): each of `slots` has own taverns (`n02I`) with heroes for sale.
 function M.checkOwnTaverns(slots)
     T.check("every player has own taverns with heroes", function()
