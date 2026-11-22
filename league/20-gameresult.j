@@ -267,9 +267,10 @@ function FF_gr_Poll takes nothing returns nothing
         call FF_gr_RefreshStats()
         call FF_gr_Flush()
     endif
-    // The kill log's last write in the same tick as the final stats rows: both carry the same counters.
+    // The kill log and ping probe's last writes in the same tick as the final stats rows.
     if FF_gr_ended then
         call FF_kl_Final()
+        call FF_pg_Final()
     endif
 endfunction
 

@@ -152,7 +152,7 @@ def play(proj: Project, scenario: str, built: Path) -> int:
     """Plays a built scenario on the test client; the files land in build/e2e/<map>-<scenario>/. Returns run.py's code."""
     return subprocess.run([sys.executable, str(ROOT / 'tests' / 'e2e' / 'run.py'), str(built),
                            str(OUT / run_name(proj, scenario)), '--lobby', menu_name(proj, scenario), '--done', 'ff_e2e.txt', '--timeout', str(TIMEOUT),
-                           '--collect', 'ff_result*.txt', 'ff_killlog*.txt', 'ff_e2e*.txt'], cwd=ROOT).returncode
+                           '--collect', 'ff_result*.txt', 'ff_killlog*.txt', 'ff_ping*.txt', 'ff_e2e*.txt'], cwd=ROOT).returncode
 
 
 def judge(proj: Project, scenario: str, bot: bool = True) -> int:

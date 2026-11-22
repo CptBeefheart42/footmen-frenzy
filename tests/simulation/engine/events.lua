@@ -124,6 +124,31 @@ function TriggerRegisterVariableEvent(t, name, op, v)
     return H("event")
 end
 
+-- Sync events (BlzSendSyncData): in multiplayer every active user client sends on the same tick
+-- and echoes back after its network RTT. W.playerRtt[slot] holds seconds (default 0.10; false or
+-- negative simulates a client that does not echo).
+W.playerRtt = {}
+function BlzTriggerRegisterPlayerSyncEvent(t, p, prefix, fromServer)
+    return addReg({ name = "PLAYER_SYNC" }, { trig = t, player = p, prefix = prefix, fromServer = fromServer })
+end
+function BlzSendSyncData(prefix, data)
+    for slot = 1, 24 do
+        local p = W.P(slot - 1)
+        if p.slot == PLAYER_SLOT_STATE_PLAYING and p.controller == MAP_CONTROL_USER then
+            local rtt = W.playerRtt[slot]
+            if rtt == nil then rtt = 0.10 end
+            if rtt and rtt >= 0 then
+                W.schedule(W.now + rtt, function()
+                    W.fire("PLAYER_SYNC", { player = p, syncPrefix = prefix, syncData = data }, function(r)
+                        return (not r.player or r.player == p) and (not r.prefix or r.prefix == prefix)
+                    end)
+                end)
+            end
+        end
+    end
+    return true
+end
+
 -- ---------------------------------------------------------------------------------------------
 -- event responses
 -- ---------------------------------------------------------------------------------------------
@@ -165,6 +190,8 @@ GetSummonedUnit = field("summoned")
 GetSummoningUnit = field("unit")
 GetOrderedUnit = field("unit")
 GetIssuedOrderId = field("order", 0)
+BlzGetTriggerSyncPrefix = field("syncPrefix", "")
+BlzGetTriggerSyncData = field("syncData", "")
 
 -- ---------------------------------------------------------------------------------------------
 -- regions: enter / leave events fire when a unit is created inside one or moves across its edge

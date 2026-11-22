@@ -55,6 +55,9 @@ function T.cameraBounds() return W.cameraBounds end
 --- Player of roster slot `slot`.
 function T.player(slot) return P(slot - 1) end
 
+--- Synthetic sync RTT in seconds for `slot` (default 0.10; false or negative suppresses echo).
+function T.setPlayerRtt(slot, seconds) W.playerRtt[slot] = seconds end
+
 --- A new unit of type `code` for `slot` at x, y (default 0, 0).
 function T.unit(slot, code, x, y) return W.newUnit(P(slot - 1), s2id(code), x or 0, y or 0, 0) end
 --- The map's footman, the tier-0 unit every base sends (udg_spawn_unit[0]: h060 on 799X, hfoo on Solo).

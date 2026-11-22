@@ -10,6 +10,7 @@ The field-by-field formats live where they're written; this page is the overview
 |---|---|---|---|
 | `ff_result.txt` / `ff_result_<token>.txt` | `league/20-gameresult.j` (+ `15-stats.j`, `16-usage.j`), every client | efl-bot `efl_league/ff_result.py` → `/report_match` | addon headers; `docs/ff_result-sample.txt` |
 | `ff_killlog_<token>.txt` | `league/10-killlog.j`, bot clients only | efl-bot `efl_league/killlog.py` | `10-killlog.j` header |
+| `ff_ping_<token>.txt` | `league/18-ping.j`, bot clients only (anonymous) | efl-bot `efl_league/ping_report.py` → `/ping_report` | `18-ping.j` header |
 | `ff_e2e.txt` / `ff_e2e_phase.txt` | e2e builds only (`tests/e2e/addons/core`) | `tests/e2e/run.py`, `check_e2e.py` | `core/00-e2e-core.j` header |
 
 `<token>`: a bot client's game token (`FF_DataFile`), so concurrent games on one box don't overwrite each other. Any
@@ -94,6 +95,7 @@ Solo adds `nopool`. All are 0/1 except `sel` (the selected mode) and `colossal`.
 | The kill log is written one last time at `gameend` and then frozen, so it equals the final stats rows | simulation `799x_kd_gameend` |
 | Gold between allies per route: `-pool` in `pool_out`/`pool_in`, the Allies menu in `given`/`recv`, a fallen ally's gold in `inh_out`/`inh_in`; script gold moves never reach `given`/`recv`; autopool from an eliminated player, or into one who has left, is `inh_*`, never `pool_*`; out − in over all routes = gold really given | simulation `799x_trade`, `799x_pool_net`, `799x_pool_fallen`, `799x_pool_leaver`; e2e `trade` (a real Allies-menu trade and `-pool` there and back), `ffa` (autopool, inheritance and `SetPlayerState` leave `given`/`recv` at 0); selftest |
 | Kill-log rows: owner rows 5 fields, feed rows 6 fields; only bot clients write it | e2e `check_files`; selftest (a short row) |
+| `ff_ping_<token>.txt`: bot clients only, strictly anonymous (`format,1`, `round`, `summary`, `pingend`; zero BattleTags, player names or slot indices; every `Preload` line ≤ 259 chars) | simulation `ping_probe`, `ping_probe_nonbot` |
 | `use` `tech` is the level reached; `rsch`/`rlvl` count only the levels a player researched themselves and their sum (allies' team copies, start-of-game and mode grants fire no research event), so an upgrade costing base + step × (level − 1) cost base × rsch + step × (rlvl − rsch). `pawn` counts items sold back to a shop, for the selling player; the purchase stays in `item` | simulation `799x_economy` |
 | Observer commands are not counted as player usage | simulation `799x_observer`; e2e `observer`, `solo-observer` |
 

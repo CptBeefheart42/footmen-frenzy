@@ -10,6 +10,7 @@ function FF_BootTick takes nothing returns nothing
     set FF_gameToken = FF_ComputeGameToken()  // before the first flush names a file
     set FF_hostBotGame = FF_HostBotInGame()
     call FF_KillLog_Init()
+    call FF_Ping_Init()
     call FF_Stats_Init()
     call FF_Usage_Init()
     call FF_GameResult_Init()
