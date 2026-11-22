@@ -15,6 +15,7 @@ Steps, all under build/<map>/:
 from __future__ import annotations
 
 import dataclasses
+import re
 import shutil
 import subprocess
 import sys
@@ -57,8 +58,22 @@ class TestParts:
     anchors: bool = True
 
 
+@dataclasses.dataclass(frozen=True)
+class Branding:
+    """What a release build stamps into the map (war3map.wts) and the release gate checks.
+
+    Attributes:
+        loading_title: The loading-screen title; empty = the map's own.
+        credits: A line appended to the in-game Credits quest; empty = none.
+        author: The author the map must name (checked only); empty = not checked.
+    """
+    loading_title: str = ''
+    credits: str = ''
+    author: str = ''
+
+
 def build(project: Project, name: str, out: Path | None = None, settings: dict | None = None,
-          test: TestParts | None = None, title: str | None = None) -> Path:
+          test: TestParts | None = None, title: str | None = None, branding: Branding | None = None) -> Path:
     """Builds `project` into build/<map>/<name>.
 
     Args:
@@ -69,6 +84,7 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
         test: The parts of a test build. Such a map is never released: the release gate (`verify-map`, which rejects
             test code) is left out.
         title: The in-game map name, when it is not the file name without its extension.
+        branding: The loading title, credits line and author of a release build.
 
     Returns:
         The built map.
@@ -110,6 +126,11 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
         'FF_JASS_ANCHORS': str(anchors) if anchors.is_file() else '', 'FF_JASS_STUB_FUNCS': ','.join(stubs),
         'FF_BASEMAP': str(packed), 'FF_OUTPUT': str(out), 'FF_OUTPUT_MAP': name,
         'FF_OBJECT_OVERRIDES': overrides, 'FF_MAP_NAME': title}
+    branding = branding or Branding()
+    if branding.loading_title:
+        environment['FF_LOADING_TITLE'] = branding.loading_title
+    if branding.credits:
+        environment['FF_CREDITS_LINE'] = branding.credits
     if test and test.slots:
         environment['FF_SLOT_CONTROLLERS'] = test.slots
     step('add the league addons and the 3.0 fixes', toolchain.run_dotnet_tool('tools/runner', [], environment))
@@ -117,7 +138,12 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
         check_reachable(project, finished)
         check_script(out / 'war3map.j')
         return finished
-    verify = ['verify-map', str(finished), '--name', title, '--overrides', str(OVERRIDES)]
+    verify = ['verify-map', str(finished), '--name', title, '--overrides', str(OVERRIDES),
+              '--funcs', ','.join(entry_points(project))]
+    for option, value in (('--author', branding.author), ('--loading-title', branding.loading_title),
+                          ('--credits', branding.credits), ('--imports', ','.join(addon_imports(project)))):
+        if value:
+            verify += [option, value]
     if anchors.is_file():
         verify += ['--anchors', str(anchors)]
     if project.stub_functions:
@@ -126,6 +152,23 @@ def build(project: Project, name: str, out: Path | None = None, settings: dict |
     check_reachable(project, finished)
     check_script(out / 'war3map.j')
     return finished
+
+
+def entry_points(project: Project) -> list[str]:
+    """The addon functions a built map must define: the league systems FF_Init starts (league/90-init.j), the early
+    init and the map addons' FF_MapInit, when they exist."""
+    started = re.findall(r'^\s*call (FF_\w+_Init)\(\)', (LEAGUE / '90-init.j').read_text(encoding='utf-8'), re.M)
+    sources = [p.read_text(encoding='utf-8') for p in LEAGUE.glob('*.j')]
+    own = [p.read_text(encoding='utf-8') for p in project.addons.glob('*.j')] if project.addons.is_dir() else []
+    optional = [f for f, texts in (('FF_EarlyInit', sources), ('FF_MapInit', own))
+                if any(re.search(rf'^function {f} takes', t, re.M) for t in texts)]
+    return started + optional
+
+
+def addon_imports(project: Project) -> list[str]:
+    """The archive entries the map addons add (projects/<map>/addons/imports/<path>), as the game names them."""
+    folder = project.addons / 'imports'
+    return sorted(str(p.relative_to(folder)).replace('/', '\\') for p in folder.rglob('*') if p.is_file())
 
 
 def merged(base: dict, changes: dict) -> dict:

@@ -1,6 +1,11 @@
 {
   "map_type": "799X",
-  "release_name": "Reforged_Footmen_Frenzy_v{version}.w3x",
+  "release": {
+    "file": "Reforged_Footmen_Frenzy_v{version}.w3x",
+    "title": "|cffffcc00Reforged|r Footmen {version}",
+    "author": "RJE",
+    "credits": "Co-Authored by |cffffff00CptnBeefheart|r"
+  },
   "start_map": {
     "name": "Reforged_Footmen_Frenzy_v7.9.9X-T19.w3x"
   },

@@ -17,6 +17,7 @@ import blobs  # noqa: E402
 import leaks  # noqa: E402
 import build  # noqa: E402
 import lookup  # noqa: E402
+import releases  # noqa: E402
 from install import install  # noqa: E402
 from repo import ROOT as REPO, projects  # noqa: E402
 
@@ -93,6 +94,51 @@ class SettingsTest(unittest.TestCase):
         used = set(re.findall(r'\bFF_CFG_\w+', (project.src / 'war3map.j').read_text(encoding='utf-8', errors='replace')))
         defined = set(re.findall(r'constant \w+ (FF_CFG_\w+)', build.settings_addon(project)))
         self.assertEqual(used - defined, set())
+
+
+class ReleaseTest(unittest.TestCase):
+    """A release names and stamps its maps from project.json and numbers Solo on its own across releases."""
+
+    def test_names_of_the_released_maps(self):
+        found = projects()
+        self.assertEqual(found['799x'].release.names('7.9.9X-rc1', '799x'), (
+            'Reforged_Footmen_Frenzy_v7.9.9X-rc1.w3x', '|cffffcc00Reforged|r Footmen 7.9.9X-rc1', ''))
+        self.assertEqual(found['solo'].release.names('1.8-2', 'solo'), (
+            'Footmen_Frenzy_Solo_v1.8-2.w3x', 'Footmen Frenzy Solo v1.8-2', 'Footmen Frenzy Solo v1.8-2'))
+        # the fleet tells the Solo map from the league map by "_solo_" in its file name
+        self.assertIn('_solo_', found['solo'].release.names('1.8-1', 'solo')[0].lower())
+        self.assertNotIn('_solo_', found['799x'].release.names('7.9.9X', '799x')[0].lower())
+
+    def test_own_version_counts_rebuilds_of_one_base(self):
+        self.assertEqual(releases.own_version('1.8', '', True), '1.8-1')
+        self.assertEqual(releases.own_version('1.8', '1.8-3', True), '1.8-4')
+        self.assertEqual(releases.own_version('1.8', '1.8-3', False), '1.8-3')
+        self.assertEqual(releases.own_version('1.10', '1.8-3', False), '1.10-1')
+        with self.assertRaises(ValueError):
+            releases.own_version('1.8', '1.9-1', True)
+
+    def test_notes_carry_the_manifest_the_next_release_reads(self):
+        maps = {'799x': releases.ReleasedMap('7.9.9X-rc1', 'Reforged_Footmen_Frenzy_v7.9.9X-rc1.w3x',
+                                             '|cffffcc00Reforged|r Footmen 7.9.9X-rc1', 'RJE'),
+                'solo': releases.ReleasedMap('1.8-1', 'Footmen_Frenzy_Solo_v1.8-1.w3x', 'Footmen Frenzy Solo v1.8-1',
+                                             'RJE', 'fpv1:ab')}
+        body = releases.notes('v7.9.9X-rc1', 'Footmen_Frenzy_7.9.9X-rc1.zip', maps, 'New heroes.\n')
+        self.assertIn('| Reforged Footmen 7.9.9X-rc1 | 7.9.9X-rc1 | Reforged_Footmen_Frenzy_v7.9.9X-rc1.w3x | RJE |', body)
+        self.assertIn('New heroes.', body)
+        listed = [{'tag_name': 'v7.9.9X-rc2', 'created_at': '2026-11-23T10:00:00Z', 'body': 'a rerun, no manifest'},
+                  {'tag_name': 'v7.9.9X-rc1', 'created_at': '2026-11-22T10:00:00Z', 'body': body},
+                  {'tag_name': 'v7.9.9X-rc0', 'created_at': '2026-11-21T10:00:00Z', 'draft': True, 'body': body}]
+        previous = releases.previous_manifest(listed, 'v7.9.9X-rc2')
+        self.assertEqual(previous['maps']['solo'], {'version': '1.8-1', 'file': 'Footmen_Frenzy_Solo_v1.8-1.w3x',
+                                                    'title': 'Footmen Frenzy Solo v1.8-1', 'author': 'RJE',
+                                                    'fingerprint': 'fpv1:ab'})
+        self.assertEqual(releases.previous_manifest(listed, 'v7.9.9X-rc1'), {})
+
+    def test_release_builds_check_every_addon_entry_point(self):
+        solo = projects()['solo']
+        self.assertEqual(build.entry_points(solo)[-2:], ['FF_EarlyInit', 'FF_MapInit'])
+        self.assertIn('FF_Stats_Init', build.entry_points(solo))
+        self.assertEqual(build.addon_imports(solo), ['war3mapImported\\FFZoom.fdf', 'war3mapImported\\FFZoom.toc'])
 
 
 class LeaksTest(unittest.TestCase):

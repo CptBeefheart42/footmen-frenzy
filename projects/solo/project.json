@@ -1,6 +1,13 @@
 {
   "map_type": "Solo Foots",
-  "release_name": "Solo_Foots_v{version}.w3x",
+  "release": {
+    "file": "Footmen_Frenzy_Solo_v{version}.w3x",
+    "title": "Footmen Frenzy Solo v{version}",
+    "loading_title": "Footmen Frenzy Solo v{version}",
+    "author": "RJE",
+    "credits": "Co-Authored by |cffffff00CptnBeefheart|r",
+    "own_version": "1.8"
+  },
   "start_map": {
     "name": "Solo Foots UPDATE38.w3x"
   },

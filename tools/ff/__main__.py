@@ -18,8 +18,10 @@
     ff hotkeys <map>              rewrite the map's hotkey list (projects/<map>/hotkeys.csv) after an intended change
     ff check                      every check a change passes before it is committed
     ff docker check               the same in a container (Linux or WSL with Docker; built locally from Dockerfile)
-    ff release <version>          build every map with its release name (project.json) into build/release/ and zip them,
-                                  with the maps' wiki bundles when the stock pack is available (Footmen_Frenzy_<v>-wiki.zip)
+    ff release <version> [--releases F] [--tag T]   build every map with its release name (project.json `release`)
+                                  into build/release/ and zip them, with the release notes (notes.md) and the maps' wiki
+                                  bundles when the stock pack is available (Footmen_Frenzy_<v>-wiki.zip); --releases: the
+                                  forge's release list, which numbers the maps that carry their own version
     ff wiki <map>|all             build the map(s) and write their wiki bundles for the league website into build/wiki/
     ff wiki stock-pack <game>     list a new stock pack (the game's data the wiki needs) from a local WC3 2.0.4 install
 """
@@ -43,8 +45,9 @@ import hotkeys  # noqa: E402
 import leaks  # noqa: E402
 import objecttypes  # noqa: E402
 import pr  # noqa: E402
+import releases  # noqa: E402
 import toolchain  # noqa: E402
-from build import BuildError, build  # noqa: E402
+from build import Branding, BuildError, build  # noqa: E402
 from install import install, maps_folder  # noqa: E402
 from repo import BUILD, ROOT, project, projects, setting  # noqa: E402
 from wiki import export as wiki  # noqa: E402
@@ -223,23 +226,41 @@ def docker(command: list[str]) -> int:
                            'python3', 'tools/ff', *command]).returncode
 
 
-def release(version: str) -> Path:
-    """Builds every map with its release name for `version` and zips them into build/release/; returns the zip."""
+RELEASE_NOTES = ROOT / 'docs' / 'release-notes'
+
+
+def release(version: str, releases_file: Path | None = None, tag: str = '') -> Path:
+    """Builds every map with its release name for `version` and zips them into build/release/, with the release
+    notes (build/release/notes.md) and, when the stock pack is available, the wiki bundles; returns the zip.
+
+    Args:
+        version: The release's version (the tag without its `v`); the version of every map not numbered on its own.
+        releases_file: The forge's release list (GET /releases) as JSON, for the previous release's manifest; without
+            it, maps numbered on their own start at rebuild 1.
+        tag: The release's tag (default v<version>).
+    """
     if not re.fullmatch(r'[0-9A-Za-z][0-9A-Za-z._-]*', version):
         raise RuntimeError(f'not a version: "{version}" (letters, digits, . _ -)')
+    tag = tag or f'v{version}'
+    previous = releases.previous_manifest(json.loads(releases_file.read_text(encoding='utf-8')), tag) \
+        if releases_file else {}
     folder = BUILD / 'release'
     shutil.rmtree(folder, ignore_errors=True)
     folder.mkdir(parents=True)
-    built = []
+    released, built = {}, []
     for name, proj in projects().items():
-        file_name = proj.release_name.format(version=version, map=name)
-        built.append(build(proj, file_name))
-        shutil.copy2(built[-1], folder / file_name)
+        released[name] = release_map(proj, version, previous.get('maps', {}).get(name, {}))
+        built.append(build(proj, released[name].file, title=released[name].title, branding=Branding(
+            proj.release.names(released[name].version, name)[2], proj.release.credits, proj.release.author)))
+        shutil.copy2(built[-1], folder / built[-1].name)
     archive = folder / f'Footmen_Frenzy_{version}.zip'
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as z:
         for path in built:
             z.write(folder / path.name, path.name)
     print(f'release {version}: ' + ', '.join(p.name for p in built) + f' -> {archive}')
+    text_file = RELEASE_NOTES / f'{tag}.md'
+    text = text_file.read_text(encoding='utf-8') if text_file.is_file() else ''
+    (folder / 'notes.md').write_text(releases.notes(tag, archive.name, released, text), encoding='utf-8')
     pack = wiki.stock_pack()
     if pack is None:
         print('no wiki bundles: the stock pack is in the release store only (blob_url in ff.local.json)')
@@ -248,6 +269,22 @@ def release(version: str) -> Path:
         wiki.write_index(entries)
         print(f'wiki -> {wiki.release_zip(entries, folder / f"Footmen_Frenzy_{version}-wiki.zip")}')
     return archive
+
+
+def release_map(proj, version: str, previous: dict) -> releases.ReleasedMap:
+    """The version, names and fingerprint of one map in a release; a map numbered on its own is built once with the
+    placeholder version first, to see whether it changed since the previous release."""
+    map_version = version
+    fingerprint = ''
+    if proj.release.own_version:
+        file, title, loading = proj.release.names(releases.PLACEHOLDER, proj.name)
+        placeholder = build(proj, file, out=BUILD / 'release-fingerprint' / proj.name, title=title,
+                            branding=Branding(loading, proj.release.credits, proj.release.author))
+        fingerprint = releases.fingerprint(placeholder)
+        map_version = releases.own_version(proj.release.own_version, previous.get('version', ''),
+                                             fingerprint != previous.get('fingerprint'))
+    file, title, _ = proj.release.names(map_version, proj.name)
+    return releases.ReleasedMap(map_version, file, title, proj.release.author, fingerprint)
 
 
 def wiki_command(args) -> int:
@@ -326,6 +363,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('file', nargs='?', type=Path, help='add: the file on disk')
     p = commands.add_parser('release', help='build every map with its release name and zip them')
     p.add_argument('version')
+    p.add_argument('--releases', type=Path, help="the forge's release list (GET /releases) as JSON, for the previous "
+                                                 "release's map versions")
+    p.add_argument('--tag', default='', help='the release tag (default: v<version>)')
     p = commands.add_parser('docker', help='run an ff command in a container built from Dockerfile')
     p.add_argument('rest', nargs=argparse.REMAINDER, help='the ff command, e.g. check')
     p = commands.add_parser('test', help='run a test suite')
@@ -382,7 +422,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == 'wiki':
             return wiki_command(args)
         if args.command == 'release':
-            release(args.version)
+            release(args.version, args.releases, args.tag)
             return 0
         proj = project(args.map)
         built = build(proj, args.name or f'{proj.name}-dev.w3x')

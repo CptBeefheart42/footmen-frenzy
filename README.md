@@ -23,6 +23,17 @@ ff check       # every check a change passes before it is committed
 On Linux, `./ff`; on Windows, `ff` (`ff.cmd`). `ff install` uses `Documents/Warcraft III/Maps` on Windows; elsewhere,
 set `maps_folder` in `ff.local.json` (a local settings file Git ignores).
 
+## Releases
+
+A tag `v<version>` (e.g. `v7.9.9X-rc1`) releases both maps on the forge (`.github/workflows/release.yml`): one zip
+`Footmen_Frenzy_<version>.zip` with `Reforged_Footmen_Frenzy_v<version>.w3x` and `Footmen_Frenzy_Solo_v<solo>.w3x`, the
+wiki zip, and notes with a table of the maps. A tag with `-rc` is a prerelease. How each map is named and stamped (lobby
+name, loading title, the line added to the Credits quest, the author the release gate checks) is the `release` block of
+its `project.json`. Solo is numbered on its own, `<base>-<rebuild>` (`own_version`, e.g. 1.8-3): the rebuild counts up
+only when the Solo map changed since the previous release, which the manifest in that release's notes says. The text in
+`docs/release-notes/<tag>.md`, when it exists, goes into the notes. Running the workflow by hand is a dry run: it builds
+and prints the notes and publishes nothing. `ff release <version>` builds the same into `build/release/` locally.
+
 ## Wiki
 
 `ff wiki <map>|all` builds the map(s) and writes their wiki bundles into `build/wiki/`: what a player meets in a game
@@ -42,7 +53,7 @@ How it works: [tools/wiki/README.md](tools/wiki/README.md).
 - `projects/<map>/base.w3x`: the starting map, the complete map as the World Editor last saved it (terrain, placed
   objects, imports). It and its twin are the only binary files in git.
 - `projects/<map>/project.json`: the release the starting map came from, the map's family name, the functions the build turns
-  off and the files it leaves out.
+  off, the files it leaves out, its settings and how its release is named (`release`).
 - `projects/<map>/addons/`: league addons and anchor hooks for this map only.
 - `league/`: the league addons both maps get: the result file the bot scores (`ff_result`), the kill log, per-player
   stats and usage, the observer camera, bot vision, AFK handling. The rules: `docs/result-contract.md`.

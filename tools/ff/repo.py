@@ -12,6 +12,33 @@ TOOLS = ROOT / '.tools'
 
 
 @dataclass(frozen=True)
+class Release:
+    """How a released map is named and stamped. Every text may hold {version}, the map's release version.
+
+    Attributes:
+        file: The map's file name, e.g. `Reforged_Footmen_Frenzy_v{version}.w3x`.
+        title: The map name in the lobby and the map list; empty = the file name without `.w3x`.
+        loading_title: The loading-screen title; empty = the map's own.
+        author: The author the map must name (checked, never rewritten); empty = not checked.
+        credits: A line appended to the map's in-game Credits quest; empty = none.
+        own_version: The base version of a map numbered on its own (`<base>-<rebuild>`, e.g. 1.8-3) instead of with
+            the release's tag; empty = the tag's version.
+    """
+    file: str = '{map}-{version}.w3x'
+    title: str = ''
+    loading_title: str = ''
+    author: str = ''
+    credits: str = ''
+    own_version: str = ''
+
+    def names(self, version: str, map_name: str) -> tuple[str, str, str]:
+        """The file name, title and loading title for one version."""
+        file = self.file.format(version=version, map=map_name)
+        title = self.title.format(version=version) if self.title else file.removesuffix('.w3x')
+        return file, title, self.loading_title.format(version=version)
+
+
+@dataclass(frozen=True)
 class Project:
     """One map project under projects/<name>/.
 
@@ -23,7 +50,7 @@ class Project:
             the league addons write).
         drop_entries: Files of the starting map the built map leaves out.
         settings: The map's game settings; the build hands them to the map script as FF_CFG_* constants.
-        release_name: The file name of a released map, with {version} for the release's version.
+        release: How the released map is named and stamped (project.json `release`).
     """
     name: str
     family: str
@@ -31,7 +58,7 @@ class Project:
     stub_functions: tuple[str, ...] = ()
     drop_entries: tuple[str, ...] = ()
     settings: dict = field(default_factory=dict, hash=False, compare=False)
-    release_name: str = '{map}-{version}.w3x'
+    release: Release = field(default_factory=Release, hash=False, compare=False)
 
     @property
     def folder(self) -> Path:
@@ -84,7 +111,7 @@ def projects() -> dict[str, Project]:
         found[meta.parent.name] = Project(meta.parent.name, data['map_type'], start['name'],
                                           tuple(data.get('stub_functions', ())),
                                           tuple(data.get('drop_entries', ())), data.get('settings', {}),
-                                          data.get('release_name', '{map}-{version}.w3x'))
+                                          Release(**data.get('release', {})))
     return found
 
 
