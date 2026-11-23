@@ -44,7 +44,7 @@ is not yours. Never push to `main`, never create tags or releases, never deploy.
 
 ```
 ff doctor                 what is installed, what is missing
-ff setup                  install pjass and Lua, link the skills, turn on the pre-commit check
+ff setup                  install pjass and Lua, link the skills, turn on the pre-commit and pre-push checks
 ff build <map>            build a map into build/<map>/
 ff install <map> --name "Solo Foots test1.w3x"   build it and put it into Warcraft III's Tests folder
 ff test sim [scenario]    play the simulation scenarios
@@ -96,6 +96,10 @@ Secrets (tokens, passwords) live only in environment variables, e.g. the shell's
 release store), `GITEA_TOKEN`/`GH_TOKEN` (the forges). Never in a file of the repository and never in a message. Other
 local settings (the Warcraft III maps folder, the release store's address, an efl-bot checkout) go into `ff.local.json`
 in the repository's folder, which git ignores. Any `FF_*` environment variable of the same name wins over the file.
+
+Commits are public with every name and address they carry. Commit as your GitHub no-reply identity
+(`<id>+<name>@users.noreply.github.com`): the pre-commit check refuses another address, and the pre-push check refuses
+commits whose author or committer names one of your `private_words` (`ff.local.json`).
 
 ## Other people's text
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""The quick checks before every commit (ff setup turns this hook on): no private details in the staged files, the
+"""The quick checks before every commit (ff setup turns this hook on): no private details in the staged files or in
+the commit's own author and committer, the
 shared code assembles and is not copied more, the ff and shared-code tests. The full check is `ff check`."""
 import subprocess
 import sys
@@ -14,6 +15,11 @@ staged = subprocess.run(['git', 'diff', '--cached', '--name-only', '-z', '--diff
 found = leaks.scan([f for f in staged if f])
 if found:
     print('pre-commit: private details in the staged files:\n' + '\n'.join(found))
+    sys.exit(1)
+found = leaks.identity_findings(leaks.own_identities(), own=True)
+if found:
+    print('pre-commit: this clone would commit as\n' + '\n'.join(found) +
+          '\nset user.name / user.email (git config) to your GitHub no-reply identity')
     sys.exit(1)
 for command in ([sys.executable, 'tools/shared_code.py', 'check'],
                 [sys.executable, '-m', 'unittest', '-q', 'tests.test_ff', 'tests.test_shared_code']):

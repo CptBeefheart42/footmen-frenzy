@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -109,6 +110,23 @@ class LeaksTest(unittest.TestCase):
 
     def test_repository_is_clean(self):
         self.assertEqual(leaks.scan(leaks.tracked_and_staged()), [])
+
+    def test_identities_naming_a_private_word_are_refused(self):
+        at = '@'
+        noreply = f'Some One <1+someone{at}users.noreply.github.com>'
+        with unittest.mock.patch.object(leaks, 'private_words', return_value=['secretname']):
+            found = leaks.identity_findings([noreply, f'SecretName <x{at}mail.example>', f'Other <secretname{at}x.org>'])
+            self.assertEqual(found, ['SecretName: a private word from ff.local.json',
+                                     'Other: a private word from ff.local.json'])
+            # the clone's own identity must be a GitHub no-reply address; a contributor's commits keep theirs
+            self.assertEqual(leaks.identity_findings([f'Other <other{at}mail.example>']), [])
+            self.assertEqual(len(leaks.identity_findings([f'Other <other{at}mail.example>'], own=True)), 1)
+            self.assertEqual(leaks.identity_findings([noreply], own=True), [])
+
+    def test_identities_of_the_commits_to_push(self):
+        found = leaks.pushed_identities(['-1', 'HEAD'])
+        self.assertTrue(found and all(re.fullmatch(r'.+ <[^<>]+>', line) for line in found), found)
+        self.assertEqual(leaks.identity_findings(found), [])
 
 
 class InstallTest(unittest.TestCase):

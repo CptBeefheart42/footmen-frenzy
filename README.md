@@ -14,7 +14,7 @@ Install Git, Python 3.10 or newer and the .NET SDK (6 or newer), clone this repo
 
 ```
 ff doctor      # what is installed, what is missing
-ff setup       # pjass and Lua into .tools/, turns on the pre-commit check
+ff setup       # pjass and Lua into .tools/, turns on the pre-commit and pre-push checks
 ff build solo  # build a map into build/solo/
 ff install solo --name "Solo Foots test1.w3x"   # build, then put it into Warcraft III's Tests folder
 ff check       # every check a change passes before it is committed

@@ -74,12 +74,13 @@ def fail(message: str):
 
 
 def setup() -> int:
-    """Installs pjass and Lua into .tools/, makes the skills visible to Claude Code and turns on the pre-commit check."""
+    """Installs pjass and Lua into .tools/, makes the skills visible to Claude Code and turns on the pre-commit and
+    pre-push checks."""
     for install_one in (toolchain.setup_pjass, toolchain.setup_lua):
         print(install_one())
     print(link_skills())
     subprocess.run(['git', 'config', 'core.hooksPath', '.githooks'], cwd=ROOT, check=True)
-    print('pre-commit check: on')
+    print('pre-commit and pre-push checks: on')
     return doctor()
 
 
@@ -314,7 +315,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog='ff', description=__doc__.split('\n\n')[0])
     commands = parser.add_subparsers(dest='command', required=True)
     commands.add_parser('doctor', help='what is installed, what is missing')
-    commands.add_parser('setup', help='install pjass and Lua, turn on the pre-commit check')
+    commands.add_parser('setup', help='install pjass and Lua, turn on the pre-commit and pre-push checks')
     for name, text in (('build', 'build a map'), ('install', 'build a map and put it into the Warcraft III Tests folder')):
         p = commands.add_parser(name, help=text)
         p.add_argument('map', choices=list(projects()))

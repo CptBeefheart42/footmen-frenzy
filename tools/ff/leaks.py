@@ -1,6 +1,7 @@
 """Finds personal or private details in the files about to be committed: e-mail addresses, home-folder paths, and the
 words a maintainer lists in ff.local.json ("private_words": host names, account names) without putting them into the
-repository."""
+repository; and the same in the names and addresses commits carry (author, committer), which a public mirror publishes
+as they are."""
 from __future__ import annotations
 
 import json
@@ -60,3 +61,39 @@ def tracked_and_staged() -> list[str]:
     """Every file git tracks or has staged."""
     out = subprocess.run(['git', 'ls-files', '-z', '--cached'], cwd=ROOT, capture_output=True, check=True).stdout
     return [f for f in out.decode().split('\0') if f]
+
+
+NOREPLY = re.compile(r'<[^<>@]+@users\.noreply\.github\.com>')
+
+
+def identity_findings(identities: list[str], own: bool = False) -> list[str]:
+    """Returns one line per identity (`Name <address>`) that names a private word from ff.local.json.
+
+    Args:
+        identities: Authors and committers, as git prints them.
+        own: They are the identity this clone commits with, which must also use a GitHub no-reply address.
+    """
+    words = [w.lower() for w in private_words() if w]
+    findings = []
+    for identity in identities:
+        if any(word in identity.lower() for word in words):
+            findings.append(f'{identity.split("<")[0].strip() or identity}: a private word from ff.local.json')
+        elif own and not NOREPLY.search(identity):
+            findings.append(f'{identity}: not a GitHub no-reply address (user.email)')
+    return findings
+
+
+def own_identities() -> list[str]:
+    """The author and committer this clone's next commit would carry (`Name <address>`, without the date)."""
+    out = []
+    for var in ('GIT_AUTHOR_IDENT', 'GIT_COMMITTER_IDENT'):
+        ident = subprocess.run(['git', 'var', var], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        out.append(ident.rsplit('>', 1)[0] + '>' if '>' in ident else ident)
+    return out
+
+
+def pushed_identities(revisions: list[str]) -> list[str]:
+    """The authors and committers of the commits `git rev-list <revisions>` lists (e.g. `<old>..<new>`)."""
+    out = subprocess.run(['git', 'log', '--format=%an <%ae>%n%cn <%ce>', *revisions], cwd=ROOT,
+                         capture_output=True, text=True, check=True).stdout
+    return sorted({line for line in out.splitlines() if line})
