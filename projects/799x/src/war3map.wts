@@ -91069,7 +91069,7 @@ STRING 14515
 Hit Points: 750
 Armor: 2
 Damage: 16 + 2d2
-Attack Cooldown: 1.1s
+Attack Cooldown: 1.048s
 Attack Range: 110
 Unit Level: 2
 }
@@ -92081,7 +92081,7 @@ STRING 14657
 Hit Points: 750
 Armor: 2
 Damage: 16 + 2d2
-Attack Cooldown: 1.1s
+Attack Cooldown: 1.048s
 Attack Range: 110
 Unit Level: 2
 }
