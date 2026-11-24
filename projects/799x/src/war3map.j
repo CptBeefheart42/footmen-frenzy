@@ -3323,6 +3323,7 @@ constant real    TFP_FFDP_RIDE_SPEED  = 1400.0 // ally travel along the chain, u
 constant real    TFP_FFDP_RIDE_MAXTIME= 4.0    // hard stop on a ride that cannot converge
 constant real    TFP_FFDP_GRAB_RADIUS = 130.0  // how close an ally must be to be offered the grab
 constant real    TFP_FFDP_SHIELD_AOE  = 130.0  // allies shielded where the lantern lands
+constant real GL_PYLON_RADIUS = 162.5
 constant real    TFP_FFDP_LEASH       = 1500.0 // caster-to-lantern break distance
 constant real    TFP_FFDP_REFRESH     = 0.03   // how often grab abilities are handed out / taken back
 constant real    TFP_FFDP_ALIVE       = 0.405  // life above this == alive
@@ -5546,15 +5547,25 @@ function TFP_FFDP_ShieldGroup takes integer level returns nothing
     set u = null
 endfunction
 
+function TFP_LinkEnemy takes unit u, player owner returns boolean
+    return u != null and GetUnitTypeId(u) != 0 and GetWidgetLife(u) > 0.405 and IsUnitEnemy(u, owner) and not IsUnitType(u, UNIT_TYPE_STRUCTURE) and not IsUnitType(u, UNIT_TYPE_MAGIC_IMMUNE) and not BlzIsUnitInvulnerable(u) and GetUnitAbilityLevel(u, 'Aloc') == 0
+endfunction
+
+//! shared guardian-pylon/functions.j
+
 function TFP_FFDP_Plant takes integer i returns nothing
     local real x = TFP_FFDP_Tx[i]
     local real y = TFP_FFDP_Ty[i]
+    local real radius = TFP_FFDP_SHIELD_AOE
+    if GetUnitTypeId(TFP_FFDP_Caster[i]) == 'H043' then
+        set radius = GL_PYLON_RADIUS
+    endif
     call SetUnitX(TFP_FFDP_Lantern[i], x)
     call SetUnitY(TFP_FFDP_Lantern[i], y)
     call SetUnitFlyHeight(TFP_FFDP_Lantern[i], 0.0, 0.0)
     call DestroyEffect(AddSpecialEffect(TFP_FFDP_FX_LAND, x, y))
     set TFP_FFDP_GroundFx[i] = AddSpecialEffect("buildings\\other\\CircleOfPower\\CircleOfPower.mdl", x, y)
-    call BlzSetSpecialEffectScale(TFP_FFDP_GroundFx[i], 0.8)
+    call BlzSetSpecialEffectScale(TFP_FFDP_GroundFx[i], 0.8 * radius / TFP_FFDP_SHIELD_AOE)
     call BlzSetSpecialEffectColor(TFP_FFDP_GroundFx[i], 190, 255, 140)
     set TFP_FFDP_Phase[i] = 1
     set TFP_FFDP_Time[i]  = TFP_FFDP_Duration(TFP_FFDP_Level[i])
@@ -5564,9 +5575,12 @@ function TFP_FFDP_Plant takes integer i returns nothing
     set TFP_FFDP_FilterOwner = TFP_FFDP_Owner[i]
     set TFP_FFDP_FilterSkip  = null
     call GroupClear(TFP_FFDP_Cand)
-    call GroupEnumUnitsInRange(TFP_FFDP_Cand, x, y, TFP_FFDP_SHIELD_AOE, TFP_FFDP_Filt)
+    call GroupEnumUnitsInRange(TFP_FFDP_Cand, x, y, radius, TFP_FFDP_Filt)
     call TFP_FFDP_ShieldGroup(TFP_FFDP_Level[i])
     set TFP_FFDP_FilterOwner = null
+    if GetUnitTypeId(TFP_FFDP_Caster[i]) == 'H043' then
+        call GL_PylonImpact(TFP_FFDP_Caster[i], TFP_FFDP_Level[i], x, y)
+    endif
 endfunction
 
 function TFP_FFDP_BeginRide takes integer i, unit rider returns boolean
@@ -5679,9 +5693,7 @@ function TFP_LinkDistanceSquared takes real px, real py, real ax, real ay, real 
     return dx * dx + dy * dy
 endfunction
 
-function TFP_LinkEnemy takes unit u, player owner returns boolean
-    return u != null and GetUnitTypeId(u) != 0 and GetWidgetLife(u) > 0.405 and IsUnitEnemy(u, owner) and not IsUnitType(u, UNIT_TYPE_STRUCTURE) and not IsUnitType(u, UNIT_TYPE_MAGIC_IMMUNE) and not BlzIsUnitInvulnerable(u) and GetUnitAbilityLevel(u, 'Aloc') == 0
-endfunction
+
 
 function TFP_LinkEffect takes integer i, unit target, boolean stun returns nothing
     local unit dummy = CreateUnit(TFP_FFDP_Owner[i], 'hor3', GetUnitX(target), GetUnitY(target), 0.0)
@@ -5741,14 +5753,14 @@ function TFP_LinkGround takes integer i returns nothing
     local unit u
     call GroupClear(TFP_LinkNext)
     call GroupClear(TFP_LanternNext)
-    call GroupEnumUnitsInRange(TFP_LinkEnum, (ax + bx) * 0.5, (ay + by) * 0.5, SquareRoot(dx * dx + dy * dy) * 0.5 + 150.0, null)
+    call GroupEnumUnitsInRange(TFP_LinkEnum, (ax + bx) * 0.5, (ay + by) * 0.5, SquareRoot(dx * dx + dy * dy) * 0.5 + GL_PYLON_RADIUS, null)
     loop
         set u = FirstOfGroup(TFP_LinkEnum)
         exitwhen u == null
         call GroupRemoveUnit(TFP_LinkEnum, u)
         set ux = GetUnitX(u)
         set uy = GetUnitY(u)
-        if TFP_LinkEnemy(u, TFP_FFDP_Owner[i]) and (ux - bx) * (ux - bx) + (uy - by) * (uy - by) <= 130.0 * 130.0 then
+        if TFP_LinkEnemy(u, TFP_FFDP_Owner[i]) and (ux - bx) * (ux - bx) + (uy - by) * (uy - by) <= GL_PYLON_RADIUS * GL_PYLON_RADIUS then
             call GroupAddUnit(TFP_LanternNext, u)
             if not IsUnitInGroup(u, TFP_LanternInside[i]) then
                 call TFP_LinkEffect(i, u, true)
@@ -11417,7 +11429,7 @@ function GD_Pulse takes unit caster, real x, real y returns nothing
             if IsUnitAlly(u, owner) then
                 call SetUnitState(u, UNIT_STATE_MANA, RMinBJ(GetUnitState(u, UNIT_STATE_MAX_MANA), GetUnitState(u, UNIT_STATE_MANA) + 15.0))
                 if GetWidgetLife(u) < GetUnitState(u, UNIT_STATE_MAX_LIFE) then
-                    set amount = 125.0 + 25.0 * rank
+                    set amount = 25.0 + 25.0 * rank
                     if GetRandomInt(1, 4) == 1 then
                         set amount = 2.0 * amount
                     endif
@@ -11425,7 +11437,7 @@ function GD_Pulse takes unit caster, real x, real y returns nothing
                     call DestroyEffect(AddSpecialEffectTarget("Abilities\\Weapons\\Bolt\\BoltImpact.mdl", u, "chest"))
                 endif
             elseif IsUnitEnemy(u, owner) and not IsUnitType(u, UNIT_TYPE_MAGIC_IMMUNE) and not BlzIsUnitInvulnerable(u) then
-                set amount = 60.0 + 30.0 * rank
+                set amount = 25.0 + 25.0 * rank
                 if GetRandomInt(1, 4) == 1 then
                     set amount = 2.0 * amount
                 endif
@@ -11494,7 +11506,13 @@ function GD_Cast takes nothing returns nothing
     call BlzSetSpecialEffectScale(GD_Dome[i], 1.27098884)
     call BlzSetSpecialEffectColorByPlayer(GD_Dome[i], Player(1))
     call BlzPlaySpecialEffect(GD_Dome[i], ANIM_TYPE_STAND)
-    set GD_Left[i] = 400.0
+    if GetUnitAbilityLevel(caster, GD_ABILITY) == 1 then
+        set GD_Left[i] = 200.0
+    elseif GetUnitAbilityLevel(caster, GD_ABILITY) == 2 then
+        set GD_Left[i] = 240.0
+    else
+        set GD_Left[i] = 300.0
+    endif
     call UnitAddAbility(caster, GD_SLOW)
     if GD_Count == 1 then
         call TimerStart(GD_Timer, GD_PERIOD, true, function GD_Tick)
@@ -63203,8 +63221,11 @@ function GTW_Eligible takes unit u, player owner returns boolean
     return u != null and GetUnitTypeId(u) != 0 and GetWidgetLife(u) > 0.405 and IsUnitEnemy(u, owner) and not IsUnitType(u, UNIT_TYPE_STRUCTURE) and not IsUnitType(u, UNIT_TYPE_MAGIC_IMMUNE) and not BlzIsUnitInvulnerable(u) and GetUnitAbilityLevel(u, 'Aloc') == 0
 endfunction
 
+//! shared guardian-time-warp/functions.j
+
 function GTW_Explode takes integer i returns nothing
     local unit caster = GTW_Caster[i]
+    local real damage = GTW_Damage(GTW_Rank[i])
     local unit target
     local unit dummy
     local effect fx = AddSpecialEffect("Abilities\\Spells\\Other\\Doom\\DoomDeath.mdl", GTW_X[i], GTW_Y[i])
@@ -63217,7 +63238,7 @@ function GTW_Explode takes integer i returns nothing
         call DestroyEffect(LoadEffectHandle(GTW_Marks, GetHandleId(GTW_Hit[i]), GetHandleId(target)))
         call RemoveSavedHandle(GTW_Marks, GetHandleId(GTW_Hit[i]), GetHandleId(target))
         if GTW_Eligible(target, GetOwningPlayer(caster)) then
-            call UnitDamageTarget(caster, target, 20.0 + 10.0 * I2R(GTW_Rank[i]), false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
+            call UnitDamageTarget(caster, target, damage, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
             set dummy = CreateUnit(GetOwningPlayer(caster), 'hor3', GetUnitX(target), GetUnitY(target), 0.0)
             call UnitAddAbility(dummy, 'AGtz')
             call SetUnitAbilityLevel(dummy, 'AGtz', GTW_Rank[i])
@@ -63523,29 +63544,29 @@ endfunction
 
 function FF_CompactHeroTooltips_Init takes nothing returns nothing
     call BlzSetAbilityTooltip('A0DL', "Time Warp [|cffffcc00Z|r] - Level 1", 0)
-    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897930|r damage and stuns marked enemies for 0.5s.", 0)
+    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897985|r damage and stuns marked enemies for 0.5s.", 0)
     call BlzSetAbilityResearchTooltip('A0DL', "Learn Time Warp [|cffffcc00Q|r] - Level 1", 0)
-    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 1|nMark enemies in the orb's path. On arrival, it deals |cffff897930|r damage and stuns marked enemies for 0.5s.", 0)
+    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 1|nMark enemies in the orb's path. On arrival, it deals |cffff897985|r damage and stuns marked enemies for 0.5s.", 0)
     call BlzSetAbilityTooltip('A0DL', "Time Warp [|cffffcc00Z|r] - Level 2", 1)
-    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897940|r damage and stuns marked enemies for 0.75s.", 1)
+    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff8979120|r damage and stuns marked enemies for 0.75s.", 1)
     call BlzSetAbilityResearchTooltip('A0DL', "Learn Time Warp [|cffffcc00Q|r] - Level 2", 1)
-    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 4|nMark enemies in the orb's path. On arrival, it deals |cffff897940|r damage and stuns marked enemies for 0.75s.", 1)
+    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 4|nMark enemies in the orb's path. On arrival, it deals |cffff8979120|r damage and stuns marked enemies for 0.75s.", 1)
     call BlzSetAbilityTooltip('A0DL', "Time Warp [|cffffcc00Z|r] - Level 3", 2)
-    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897950|r damage and stuns marked enemies for 1s.", 2)
+    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff8979190|r damage and stuns marked enemies for 1s.", 2)
     call BlzSetAbilityResearchTooltip('A0DL', "Learn Time Warp [|cffffcc00Q|r] - Level 3", 2)
-    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 7|nMark enemies in the orb's path. On arrival, it deals |cffff897950|r damage and stuns marked enemies for 1s.", 2)
+    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 7|nMark enemies in the orb's path. On arrival, it deals |cffff8979190|r damage and stuns marked enemies for 1s.", 2)
     call BlzSetAbilityTooltip('A0DL', "Time Warp [|cffffcc00Z|r] - Level 4", 3)
-    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897960|r damage and stuns marked enemies for 1.25s.", 3)
+    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff8979285|r damage and stuns marked enemies for 1.25s.", 3)
     call BlzSetAbilityResearchTooltip('A0DL', "Learn Time Warp [|cffffcc00Q|r] - Level 4", 3)
-    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 10|nMark enemies in the orb's path. On arrival, it deals |cffff897960|r damage and stuns marked enemies for 1.25s.", 3)
+    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 10|nMark enemies in the orb's path. On arrival, it deals |cffff8979285|r damage and stuns marked enemies for 1.25s.", 3)
     call BlzSetAbilityTooltip('A0DL', "Time Warp [|cffffcc00Z|r] - Level 5", 4)
-    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897970|r damage and stuns marked enemies for 1.5s.", 4)
+    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff8979375|r damage and stuns marked enemies for 1.5s.", 4)
     call BlzSetAbilityResearchTooltip('A0DL', "Learn Time Warp [|cffffcc00Q|r] - Level 5", 4)
-    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 13|nMark enemies in the orb's path. On arrival, it deals |cffff897970|r damage and stuns marked enemies for 1.5s.", 4)
+    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 13|nMark enemies in the orb's path. On arrival, it deals |cffff8979375|r damage and stuns marked enemies for 1.5s.", 4)
     call BlzSetAbilityTooltip('A0DL', "Time Warp [|cffffcc00Z|r] - Level 6", 5)
-    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff897980|r damage and stuns marked enemies for 1.75s.", 5)
+    call BlzSetAbilityExtendedTooltip('A0DL', "Mark enemies in the orb's path. On arrival, it deals |cffff8979575|r damage and stuns marked enemies for 1.75s.", 5)
     call BlzSetAbilityResearchTooltip('A0DL', "Learn Time Warp [|cffffcc00Q|r] - Level 6", 5)
-    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 16|nMark enemies in the orb's path. On arrival, it deals |cffff897980|r damage and stuns marked enemies for 1.75s.", 5)
+    call BlzSetAbilityResearchExtendedTooltip('A0DL', "Requires hero level 16|nMark enemies in the orb's path. On arrival, it deals |cffff8979575|r damage and stuns marked enemies for 1.75s.", 5)
     call BlzSetAbilityTooltip('AOz1', "Felbolt [Z] - Level 1", 0)
     call BlzSetAbilityExtendedTooltip('AOz1', "Send the orb through enemies, dealing |cffff897960|r damage and slowing them by 25% for 2s.", 0)
     call BlzSetAbilityResearchTooltip('AOz1', "Learn Felbolt [Q] - Level 1", 0)
@@ -63719,17 +63740,17 @@ function FF_CompactHeroTooltips_Init takes nothing returns nothing
     call BlzSetAbilityResearchTooltip('AGr8', "Learn Detonate Barrel - Level 1", 0)
     call BlzSetAbilityResearchExtendedTooltip('AGr8', "Detonate your landed barrel now.", 0)
     call BlzSetAbilityTooltip('AZd1', "Guardian Shield [|cffffcc00V|r] - Level 1", 0)
-    call BlzSetAbilityExtendedTooltip('AZd1', "For 20s, nearby allies gain |cff86e99d150|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff897990|r damage. Pulses have a 25% chance to double.", 0)
+    call BlzSetAbilityExtendedTooltip('AZd1', "For 10s, nearby allies gain |cff86e99d50|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff897950|r damage. Pulses have a 25% chance to double.", 0)
     call BlzSetAbilityResearchTooltip('AZd1', "Learn Guardian Shield [|cffffcc00R|r] - Level 1", 0)
-    call BlzSetAbilityResearchExtendedTooltip('AZd1', "Requires hero level 6|nFor 20s, nearby allies gain |cff86e99d150|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff897990|r damage. Pulses have a 25% chance to double.", 0)
+    call BlzSetAbilityResearchExtendedTooltip('AZd1', "Requires hero level 6|nFor 10s, nearby allies gain |cff86e99d50|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff897950|r damage. Pulses have a 25% chance to double.", 0)
     call BlzSetAbilityTooltip('AZd1', "Guardian Shield [|cffffcc00V|r] - Level 2", 1)
-    call BlzSetAbilityExtendedTooltip('AZd1', "For 20s, nearby allies gain |cff86e99d175|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff8979120|r damage. Pulses have a 25% chance to double.", 1)
+    call BlzSetAbilityExtendedTooltip('AZd1', "For 12s, nearby allies gain |cff86e99d75|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff897975|r damage. Pulses have a 25% chance to double.", 1)
     call BlzSetAbilityResearchTooltip('AZd1', "Learn Guardian Shield [|cffffcc00R|r] - Level 2", 1)
-    call BlzSetAbilityResearchExtendedTooltip('AZd1', "Requires hero level 11|nFor 20s, nearby allies gain |cff86e99d175|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff8979120|r damage. Pulses have a 25% chance to double.", 1)
+    call BlzSetAbilityResearchExtendedTooltip('AZd1', "Requires hero level 11|nFor 12s, nearby allies gain |cff86e99d75|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff897975|r damage. Pulses have a 25% chance to double.", 1)
     call BlzSetAbilityTooltip('AZd1', "Guardian Shield [|cffffcc00V|r] - Level 3", 2)
-    call BlzSetAbilityExtendedTooltip('AZd1', "For 20s, nearby allies gain |cff86e99d200|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff8979150|r damage. Pulses have a 25% chance to double.", 2)
+    call BlzSetAbilityExtendedTooltip('AZd1', "For 15s, nearby allies gain |cff86e99d100|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff8979100|r damage. Pulses have a 25% chance to double.", 2)
     call BlzSetAbilityResearchTooltip('AZd1', "Learn Guardian Shield [|cffffcc00R|r] - Level 3", 2)
-    call BlzSetAbilityResearchExtendedTooltip('AZd1', "Requires hero level 16|nFor 20s, nearby allies gain |cff86e99d200|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff8979150|r damage. Pulses have a 25% chance to double.", 2)
+    call BlzSetAbilityResearchExtendedTooltip('AZd1', "Requires hero level 16|nFor 15s, nearby allies gain |cff86e99d100|r HP and 15 mana each second. Enemies are slowed, lose mana and take |cffff8979100|r damage. Pulses have a 25% chance to double.", 2)
     call BlzSetAbilityTooltip('ATf1', "Wild Cards [Z] - Level 1", 0)
     call BlzSetAbilityExtendedTooltip('ATf1', "Throw three piercing cards. Each enemy takes |cffff897990|r damage once per cast.|nCooldown: 10 sec", 0)
     call BlzSetAbilityResearchTooltip('ATf1', "Learn Wild Cards [Q] - Level 1", 0)
@@ -63879,29 +63900,29 @@ function FF_CompactHeroTooltips_Init takes nothing returns nothing
     call BlzSetAbilityResearchTooltip('ATfc', "Learn Gate - Level 1", 0)
     call BlzSetAbilityResearchExtendedTooltip('ATfc', "Press V, then click walkable ground to channel and teleport there once while Destiny is active.|n|nChannel: 0.67 sec|nRange: 5500|nDestiny reveal continues for its remaining duration. No additional mana cost; Destiny keeps its cooldown.", 0)
     call BlzSetAbilityTooltip('ATfd', "Psionic Recall [|cffffcc00C|r] - Level 1", 0)
-    call BlzSetAbilityExtendedTooltip('ATfd', "Place a pylon to shield nearby allied heroes for 100 and pull one allied hero to you. The tether heals allies and slows enemies.", 0)
+    call BlzSetAbilityExtendedTooltip('ATfd', "On landing, the pylon deals |cffff897940|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 100 and pull one allied hero to you. The tether heals allies and slows enemies.", 0)
     call BlzSetAbilityResearchTooltip('ATfd', "Learn Psionic Recall [|cffffcc00E|r] - Level 1", 0)
-    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 1|nPlace a pylon to shield nearby allied heroes for 100 and pull one allied hero to you. The tether heals allies and slows enemies.", 0)
+    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 1|nOn landing, the pylon deals |cffff897940|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 100 and pull one allied hero to you. The tether heals allies and slows enemies.", 0)
     call BlzSetAbilityTooltip('ATfd', "Psionic Recall [|cffffcc00C|r] - Level 2", 1)
-    call BlzSetAbilityExtendedTooltip('ATfd', "Place a pylon to shield nearby allied heroes for 140 and pull one allied hero to you. The tether heals allies and slows enemies.", 1)
+    call BlzSetAbilityExtendedTooltip('ATfd', "On landing, the pylon deals |cffff897970|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 140 and pull one allied hero to you. The tether heals allies and slows enemies.", 1)
     call BlzSetAbilityResearchTooltip('ATfd', "Learn Psionic Recall [|cffffcc00E|r] - Level 2", 1)
-    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 4|nPlace a pylon to shield nearby allied heroes for 140 and pull one allied hero to you. The tether heals allies and slows enemies.", 1)
+    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 4|nOn landing, the pylon deals |cffff897970|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 140 and pull one allied hero to you. The tether heals allies and slows enemies.", 1)
     call BlzSetAbilityTooltip('ATfd', "Psionic Recall [|cffffcc00C|r] - Level 3", 2)
-    call BlzSetAbilityExtendedTooltip('ATfd', "Place a pylon to shield nearby allied heroes for 180 and pull one allied hero to you. The tether heals allies and slows enemies.", 2)
+    call BlzSetAbilityExtendedTooltip('ATfd', "On landing, the pylon deals |cffff897990|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 180 and pull one allied hero to you. The tether heals allies and slows enemies.", 2)
     call BlzSetAbilityResearchTooltip('ATfd', "Learn Psionic Recall [|cffffcc00E|r] - Level 3", 2)
-    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 7|nPlace a pylon to shield nearby allied heroes for 180 and pull one allied hero to you. The tether heals allies and slows enemies.", 2)
+    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 7|nOn landing, the pylon deals |cffff897990|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 180 and pull one allied hero to you. The tether heals allies and slows enemies.", 2)
     call BlzSetAbilityTooltip('ATfd', "Psionic Recall [|cffffcc00C|r] - Level 4", 3)
-    call BlzSetAbilityExtendedTooltip('ATfd', "Place a pylon to shield nearby allied heroes for 220 and pull one allied hero to you. The tether heals allies and slows enemies.", 3)
+    call BlzSetAbilityExtendedTooltip('ATfd', "On landing, the pylon deals |cffff8979120|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 220 and pull one allied hero to you. The tether heals allies and slows enemies.", 3)
     call BlzSetAbilityResearchTooltip('ATfd', "Learn Psionic Recall [|cffffcc00E|r] - Level 4", 3)
-    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 10|nPlace a pylon to shield nearby allied heroes for 220 and pull one allied hero to you. The tether heals allies and slows enemies.", 3)
+    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 10|nOn landing, the pylon deals |cffff8979120|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 220 and pull one allied hero to you. The tether heals allies and slows enemies.", 3)
     call BlzSetAbilityTooltip('ATfd', "Psionic Recall [|cffffcc00C|r] - Level 5", 4)
-    call BlzSetAbilityExtendedTooltip('ATfd', "Place a pylon to shield nearby allied heroes for 260 and pull one allied hero to you. The tether heals allies and slows enemies.", 4)
+    call BlzSetAbilityExtendedTooltip('ATfd', "On landing, the pylon deals |cffff8979140|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 260 and pull one allied hero to you. The tether heals allies and slows enemies.", 4)
     call BlzSetAbilityResearchTooltip('ATfd', "Learn Psionic Recall [|cffffcc00E|r] - Level 5", 4)
-    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 13|nPlace a pylon to shield nearby allied heroes for 260 and pull one allied hero to you. The tether heals allies and slows enemies.", 4)
+    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 13|nOn landing, the pylon deals |cffff8979140|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 260 and pull one allied hero to you. The tether heals allies and slows enemies.", 4)
     call BlzSetAbilityTooltip('ATfd', "Psionic Recall [|cffffcc00C|r] - Level 6", 5)
-    call BlzSetAbilityExtendedTooltip('ATfd', "Place a pylon to shield nearby allied heroes for 300 and pull one allied hero to you. The tether heals allies and slows enemies.", 5)
+    call BlzSetAbilityExtendedTooltip('ATfd', "On landing, the pylon deals |cffff8979200|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 300 and pull one allied hero to you. The tether heals allies and slows enemies.", 5)
     call BlzSetAbilityResearchTooltip('ATfd', "Learn Psionic Recall [|cffffcc00E|r] - Level 6", 5)
-    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 16|nPlace a pylon to shield nearby allied heroes for 300 and pull one allied hero to you. The tether heals allies and slows enemies.", 5)
+    call BlzSetAbilityResearchExtendedTooltip('ATfd', "Requires hero level 16|nOn landing, the pylon deals |cffff8979200|r damage to nearby enemies within 162.5 range. Place a pylon to shield nearby allied heroes for 300 and pull one allied hero to you. The tether heals allies and slows enemies.", 5)
     call BlzSetAbilityTooltip('AFg1', "Force Field [|cffffcc00X|r] - Level 1", 0)
     call BlzSetAbilityExtendedTooltip('AFg1', "Place up to 4 barriers within 4s for 25 mana each. Each blocks movement for 3s. The 30s cooldown begins after the fourth cast or when the casting window ends.", 0)
     call BlzSetAbilityResearchTooltip('AFg1', "Learn Force Field [|cffffcc00W|r] - Level 1", 0)
