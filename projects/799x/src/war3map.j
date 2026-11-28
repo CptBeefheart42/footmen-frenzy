@@ -57460,7 +57460,7 @@ set udg_unit_att_CD[1]=1.15
 set udg_unit_bounty_base[1]=55
 set udg_unit_bounty_num_dice[1]=1
 set udg_unit_bounty_dice_sides[1]=4
-set udg_unit_range[1]=130
+set udg_unit_range[1]=135
 set udg_unit_level[1]=4
 
 // Dark Knight
@@ -57480,7 +57480,7 @@ set udg_unit_level[2]=6
 
 // Archer
 set udg_spawn_unit[3]='earc'
-set udg_unit_HP[3]=540
+set udg_unit_HP[3]=535
 set udg_unit_armor_type[3]=1
 set udg_unit_armor[3]=0
 set udg_unit_att_base[3]=35
@@ -57637,7 +57637,7 @@ set udg_unit_armor[13]=2
 set udg_unit_att_base[13]=47
 set udg_unit_att_num_dice[13]=1
 set udg_unit_att_dice_sides[13]=2
-set udg_unit_att_CD[13]=1.2
+set udg_unit_att_CD[13]=1.1
 set udg_unit_bounty_base[13]=40
 set udg_unit_bounty_num_dice[13]=1
 set udg_unit_bounty_dice_sides[13]=3
@@ -57646,7 +57646,7 @@ set udg_unit_level[13]=3
 
 // Spellbreaker
 set udg_spawn_unit[14]='hspt'
-set udg_unit_HP[14]=680
+set udg_unit_HP[14]=700
 set udg_unit_armor_type[14]=7
 set udg_unit_armor[14]=1
 set udg_unit_att_base[14]=39
@@ -57696,17 +57696,17 @@ set udg_unit_armor_type[17]=2
 set udg_unit_armor[17]=2
 set udg_unit_att_base[17]=16
 set udg_unit_att_num_dice[17]=2
-set udg_unit_att_dice_sides[17]=2
+set udg_unit_att_dice_sides[17]=3
 set udg_unit_att_CD[17]=1.047619048
 set udg_unit_bounty_base[17]=34
 set udg_unit_bounty_num_dice[17]=1
 set udg_unit_bounty_dice_sides[17]=3
-set udg_unit_range[17]=110
+set udg_unit_range[17]=120
 set udg_unit_level[17]=2
 
 // Milita
 set udg_spawn_unit[18]='hmil'
-set udg_unit_HP[18]=900
+set udg_unit_HP[18]=950
 set udg_unit_armor_type[18]=2
 set udg_unit_armor[18]=0
 set udg_unit_att_base[18]=34
@@ -57787,7 +57787,7 @@ set udg_unit_armor[23]=3
 set udg_unit_att_base[23]=27
 set udg_unit_att_num_dice[23]=1
 set udg_unit_att_dice_sides[23]=4
-set udg_unit_att_CD[23]=1.6
+set udg_unit_att_CD[23]=1.2
 set udg_unit_bounty_base[23]=35
 set udg_unit_bounty_num_dice[23]=1
 set udg_unit_bounty_dice_sides[23]=3
@@ -57848,7 +57848,7 @@ set udg_unit_armor[27]=3
 set udg_unit_att_base[27]=27
 set udg_unit_att_num_dice[27]=1
 set udg_unit_att_dice_sides[27]=4
-set udg_unit_att_CD[27]=1.6
+set udg_unit_att_CD[27]=1.2
 set udg_unit_bounty_base[27]=35
 set udg_unit_bounty_num_dice[27]=1
 set udg_unit_bounty_dice_sides[27]=3
@@ -57902,7 +57902,7 @@ set udg_unit_level[30]=6
 
 // [31] Archer (from 3)
 set udg_spawn_unit[31]='earc'
-set udg_unit_HP[31]=540
+set udg_unit_HP[31]=535
 set udg_unit_armor_type[31]=1
 set udg_unit_armor[31]=0
 set udg_unit_att_base[31]=35
@@ -57957,7 +57957,7 @@ set udg_unit_att_CD[34]=1.15
 set udg_unit_bounty_base[34]=55
 set udg_unit_bounty_num_dice[34]=1
 set udg_unit_bounty_dice_sides[34]=4
-set udg_unit_range[34]=130
+set udg_unit_range[34]=135
 set udg_unit_level[34]=4
 
 // [35] Dark Knight (from 2)
@@ -57983,7 +57983,7 @@ set udg_unit_armor[36]=2
 set udg_unit_att_base[36]=47
 set udg_unit_att_num_dice[36]=1
 set udg_unit_att_dice_sides[36]=2
-set udg_unit_att_CD[36]=1.2
+set udg_unit_att_CD[36]=1.1
 set udg_unit_bounty_base[36]=40
 set udg_unit_bounty_num_dice[36]=1
 set udg_unit_bounty_dice_sides[36]=3
@@ -58102,12 +58102,12 @@ set udg_unit_armor_type[44]=2
 set udg_unit_armor[44]=2
 set udg_unit_att_base[44]=16
 set udg_unit_att_num_dice[44]=2
-set udg_unit_att_dice_sides[44]=2
+set udg_unit_att_dice_sides[44]=3
 set udg_unit_att_CD[44]=1.047619048
 set udg_unit_bounty_base[44]=34
 set udg_unit_bounty_num_dice[44]=1
 set udg_unit_bounty_dice_sides[44]=3
-set udg_unit_range[44]=110
+set udg_unit_range[44]=120
 set udg_unit_level[44]=2
 
 // [45] Skeletal Mage (from 19)
@@ -58157,7 +58157,7 @@ set udg_unit_level[47]=3
 
 // [48] Militia (from 18)
 set udg_spawn_unit[48]='hmil'
-set udg_unit_HP[48]=900
+set udg_unit_HP[48]=950
 set udg_unit_armor_type[48]=2
 set udg_unit_armor[48]=0
 set udg_unit_att_base[48]=34
@@ -58172,7 +58172,7 @@ set udg_unit_level[48]=2
 
 // [49] Spellbreaker (from 14)
 set udg_spawn_unit[49]='hspt'
-set udg_unit_HP[49]=680
+set udg_unit_HP[49]=700
 set udg_unit_armor_type[49]=7
 set udg_unit_armor[49]=1
 set udg_unit_att_base[49]=39
