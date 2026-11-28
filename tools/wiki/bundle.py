@@ -17,7 +17,7 @@ from pathlib import Path
 SCHEMA = 1
 OBJECT_KEYS = ('id', 'group', 'name', 'parent', 'defined', 'art', 'command', 'linked_fields', 'stats')
 STAT_KEYS = ('field', 'label', 'level', 'value', 'additional')
-TEXT_FIELDS = {'unsf', 'utub', 'aub1', 'fube', 'gub1'}
+TEXT_FIELDS = {'unsf', 'utub', 'aub1', 'atp1', 'aret', 'arut', 'aut1', 'auu1', 'fube', 'gub1'}
 TRACE_LEFT_OUT = ('functions', 'dynamic', 'unresolved')
 
 
@@ -74,3 +74,4 @@ def save(bundle: dict, folder: Path, name: str) -> tuple[Path, Path]:
     """Writes `<name>.json` and its gzip copy `<name>.json.gz` (for servers that send it compressed)."""
     data = json.dumps(bundle, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode('utf-8')
     return write(folder / f'{name}.json', data), write(folder / f'{name}.json.gz', gzip.compress(data, mtime=0))
+
