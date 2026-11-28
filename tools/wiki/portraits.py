@@ -52,7 +52,7 @@ def paletted_blp(blob: bytes):
     return image
 
 
-def art_path(key: str, objects: dict) -> str | None:
+def art_paths(key: str, objects: dict):
     """The icon file an object shows: its own icon field, else its game row's, else its parent's."""
     family = key.split('/')[0]
     if family not in ART:
@@ -64,13 +64,13 @@ def art_path(key: str, objects: dict) -> str | None:
         obj = objects[key]
         for f in reversed(obj['fields']):
             if f[0] == field and f[3]:
-                return str(f[3]).split(',')[0].strip('" ')
+                yield str(f[3]).split(',')[0].strip('" ')
         for row in reversed(list(obj['stock'].values())):
             columns = {k.casefold(): v for k, v in row.items()}
             for suffix in (':sd', '', ':de', ':hd'):
                 value = columns.get(column.casefold() + suffix, '')
                 if value.strip('" ') not in ('', '_', '-'):
-                    return value.split(',')[0].strip('" ')
+                    yield value.split(',')[0].strip('" ')
         key = family + '/' + obj['parent']
     return None
 
@@ -99,18 +99,17 @@ def attach_portraits(db: dict, read, pack) -> None:
     """
     images, found = {}, {}
     for key, obj in db['objects'].items():
-        raw = art_path(key, db['objects'])
-        if not raw:
-            continue
-        path = PureWindowsPath(raw)
-        if path.drive or path.root or '..' in path.parts:
-            continue
-        name = str(path).lower()
-        if name not in found:
-            image = picture(path, read, pack)
-            found[name] = sha256(image).hexdigest()[:24] if image else None
-            if image:
-                images[found[name]] = b64encode(image).decode()
-        if found[name]:
-            obj['art'] = found[name]
+        for raw in art_paths(key, db['objects']):
+            path = PureWindowsPath(raw)
+            if path.drive or path.root or '..' in path.parts:
+                continue
+            name = str(path).lower()
+            if name not in found:
+                image = picture(path, read, pack)
+                found[name] = sha256(image).hexdigest()[:24] if image else None
+                if image:
+                    images[found[name]] = b64encode(image).decode()
+            if found[name]:
+                obj['art'] = found[name]
+                break
     db['portraits'] = images
